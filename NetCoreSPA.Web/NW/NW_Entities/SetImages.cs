@@ -5,14 +5,15 @@ namespace iCollect.NW.NW_Entities
 {
     public partial class SetImages
     {
+        public int Id { get; set; }
         public string Heading { get; set; }
         public short? PageNo { get; set; }
         public string Path { get; set; }
         public int SetId { get; set; }
         public int ImageId { get; set; }
-        public int Id { get; set; }
         public byte[] Thumbnail { get; set; }
         public byte[] Image { get; set; }
+        public bool? IsActive { get; set; }
 
         public virtual Sets Set { get; set; }
     }

@@ -68,9 +68,9 @@
                                             {{errorMsg}}
                                         </td>
                                     </tr>
-                                    <tr ng-repeat="(key, setImg) in $stateParams.SetDetail.setImages">
+                                    <tr  ng-repeat="(key, setImg) in $stateParams.SetDetail.setImages">
                                         <td>Images</td>
-                                        <td>
+                                        <td ng-if="setImg.isActive == true">
                                             <div>
                                                 <img ng-src="data:image/JPEG;base64,{{setImg.image}}">
                                             </div>

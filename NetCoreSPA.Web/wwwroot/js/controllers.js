@@ -3647,10 +3647,10 @@ function HomeCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compile, $
         if (id == undefined) {
             id = 0;
         } 
-        getSetSrv.get({ id: id }).$promise.then(function(response) {
 
-                $scope.SetDetail = JSON.parse(JSON.stringify(response));
-                $state.go('app.sets_edit', { SetDetail: $scope.SetDetail });
+        getSetSrv.get({ id: id }).$promise.then(function(response) {
+            $scope.SetDetail = JSON.parse(JSON.stringify(response));
+            $state.go('app.sets_edit', { SetDetail: $scope.SetDetail });
             },
             function(error) {
                 alert("Error getting orders from back-end : " + error);
@@ -3698,10 +3698,10 @@ function HomeCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compile, $
                             var newImage = JSON.parse(JSON.stringify(response));
                             newImage.thumbnail = null;
                             newImage.image = imgSrc;
-                            //newImage.new = true;
+                            newImage.image.isActive = true;
                             $state.params.SetDetail.setImages.push(newImage);
                         }
-                    )
+                    );
                 };
             }
         );
@@ -3767,7 +3767,9 @@ function HomeCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compile, $
                 if (data.setImages.length > 0) {
                     html = '';
                     data.setImages.forEach(function (img, index) {
-                        html += '<img src="data:image/JPEG;base64,' + img.thumbnail + '"/>';
+                        if (img.isActive == true) {
+                            html += '<img src="data:image/JPEG;base64,' + img.thumbnail + '"/>';
+                        }
                     });
                     return html;
                 }

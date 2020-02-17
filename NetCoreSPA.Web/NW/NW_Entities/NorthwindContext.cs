@@ -37,12 +37,14 @@ namespace iCollect.NW.NW_Entities
         public virtual DbSet<Suppliers> Suppliers { get; set; }
         public virtual DbSet<Territories> Territories { get; set; }
 
+        // Unable to generate entity type for table 'dbo.Temp1'. Please see the warning messages.
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer(@"Data Source=DESKTOP-7DQTMIU\SQLEXPRESS;Initial Catalog=Northwind;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer("Data Source=DESKTOP-7DQTMIU\\SQLEXPRESS;Initial Catalog=Northwind;Trusted_Connection=True;");
             }
         }
 
@@ -72,6 +74,8 @@ namespace iCollect.NW.NW_Entities
             {
                 entity.HasKey(e => e.CoinId);
 
+                entity.HasIndex(e => e.SetId);
+
                 entity.Property(e => e.CoinCode)
                     .HasMaxLength(50)
                     .IsUnicode(false);
@@ -98,6 +102,8 @@ namespace iCollect.NW.NW_Entities
             {
                 entity.HasKey(e => new { e.CustomerId, e.CustomerTypeId })
                     .ForSqlServerIsClustered(false);
+
+                entity.HasIndex(e => e.CustomerTypeId);
 
                 entity.Property(e => e.CustomerId)
                     .HasColumnName("CustomerID")
@@ -182,6 +188,8 @@ namespace iCollect.NW.NW_Entities
                 entity.HasKey(e => new { e.EmployeeId, e.TerritoryId })
                     .ForSqlServerIsClustered(false);
 
+                entity.HasIndex(e => e.TerritoryId);
+
                 entity.Property(e => e.EmployeeId).HasColumnName("EmployeeID");
 
                 entity.Property(e => e.TerritoryId)
@@ -210,6 +218,8 @@ namespace iCollect.NW.NW_Entities
 
                 entity.HasIndex(e => e.PostalCode)
                     .HasName("PostalCode");
+
+                entity.HasIndex(e => e.ReportsTo);
 
                 entity.Property(e => e.EmployeeId).HasColumnName("EmployeeID");
 
@@ -460,6 +470,8 @@ namespace iCollect.NW.NW_Entities
 
             modelBuilder.Entity<SetImages>(entity =>
             {
+                entity.HasIndex(e => e.SetId);
+
                 entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.Heading)
@@ -471,6 +483,8 @@ namespace iCollect.NW.NW_Entities
                     .HasColumnType("image");
 
                 entity.Property(e => e.ImageId).HasColumnName("imageId");
+
+                entity.Property(e => e.IsActive).HasColumnName("isActive");
 
                 entity.Property(e => e.PageNo).HasColumnName("pageNo");
 
@@ -577,6 +591,8 @@ namespace iCollect.NW.NW_Entities
             {
                 entity.HasKey(e => e.TerritoryId)
                     .ForSqlServerIsClustered(false);
+
+                entity.HasIndex(e => e.RegionId);
 
                 entity.Property(e => e.TerritoryId)
                     .HasColumnName("TerritoryID")
