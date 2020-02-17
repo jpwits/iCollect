@@ -3693,12 +3693,12 @@ function HomeCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compile, $
                 fReader.onloadend = function(event) {
                     var imgSrc = event.target.result;
                     imgSrc = imgSrc.replace('data:image/jpeg;base64,', '');
-
+                    imgSrc = imgSrc.replace('data:image/png;base64,', '');
                     getImage.get({ id: 0 }).$promise.then(function(response) {
                             var newImage = JSON.parse(JSON.stringify(response));
                             newImage.thumbnail = null;
                             newImage.image = imgSrc;
-                            newImage.image.isActive = true;
+                            newImage.isActive = true;
                             $state.params.SetDetail.setImages.push(newImage);
                         }
                     );
@@ -3741,24 +3741,24 @@ function HomeCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compile, $
         alert("Down to do");
     };
 
-    $scope.fileNameChanged = function (file) {
-        var input = document.getElementById("file1");
-        var fReader = new FileReader();
-        fReader.readAsDataURL(input.files[0]);
-        fReader.onloadend = function(event) {
-            var img = document.getElementById("file1");
-            img.src = event.target.result;
-            getImage.get({ id: 0 }).$promise.then(function(response) {
-                    var newImage = JSON.parse(JSON.stringify(response));
-                    newImage.thumbnail = null;
-                    newImage.image = img.src.replace('data:image/jpeg;base64,', '');
-                    //newImage.new = true;
-                    $state.params.SetDetail.setImages.push(newImage);
-                    $state.go('app.sets_edit', { SetDetail: $state.params.SetDetail });
-                }
-            )
-        };
-    };
+    //$scope.fileNameChanged = function (file) {
+    //    var input = document.getElementById("file1");
+    //    var fReader = new FileReader();
+    //    fReader.readAsDataURL(input.files[0]);
+    //    fReader.onloadend = function(event) {
+    //        var img = document.getElementById("file1");
+    //        img.src = event.target.result;
+    //        getImage.get({ id: 0 }).$promise.then(function(response) {
+    //                var newImage = JSON.parse(JSON.stringify(response));
+    //                newImage.thumbnail = null;
+    //                newImage.image = img.src.replace('data:image/jpeg;base64,', '');
+    //                //newImage.new = true;
+    //                $state.params.SetDetail.setImages.push(newImage);
+    //                $state.go('app.sets_edit', { SetDetail: $state.params.SetDetail });
+    //            }
+    //        )
+    //    };
+    //};
 
     $scope.dtColumns1 = [
         //here We will add .withOption('name','column_name') for send column name to the server to filter and sort
@@ -3767,7 +3767,7 @@ function HomeCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compile, $
                 if (data.setImages.length > 0) {
                     html = '';
                     data.setImages.forEach(function (img, index) {
-                        if (img.isActive == true) {
+                        if (img.isActive === true) {
                             html += '<img src="data:image/JPEG;base64,' + img.thumbnail + '"/>';
                         }
                     });

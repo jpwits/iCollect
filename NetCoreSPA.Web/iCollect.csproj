@@ -20,21 +20,33 @@
 
   <ItemGroup>
     <Compile Remove="Agile\**" />
+    <Compile Remove="ControllersAPI\**" />
+    <Compile Remove="Entities\**" />
+    <Compile Remove="obj\**" />
     <Compile Remove="wwwroot\css\plugins\**" />
     <Compile Remove="wwwroot\font-awesome\**" />
     <Compile Remove="wwwroot\js\**" />
     <Compile Remove="wwwroot\lib\**" />
     <Content Remove="Agile\**" />
+    <Content Remove="ControllersAPI\**" />
+    <Content Remove="Entities\**" />
+    <Content Remove="obj\**" />
     <Content Remove="wwwroot\css\plugins\**" />
     <Content Remove="wwwroot\font-awesome\**" />
     <Content Remove="wwwroot\js\**" />
     <Content Remove="wwwroot\lib\**" />
     <EmbeddedResource Remove="Agile\**" />
+    <EmbeddedResource Remove="ControllersAPI\**" />
+    <EmbeddedResource Remove="Entities\**" />
+    <EmbeddedResource Remove="obj\**" />
     <EmbeddedResource Remove="wwwroot\css\plugins\**" />
     <EmbeddedResource Remove="wwwroot\font-awesome\**" />
     <EmbeddedResource Remove="wwwroot\js\**" />
     <EmbeddedResource Remove="wwwroot\lib\**" />
     <None Remove="Agile\**" />
+    <None Remove="ControllersAPI\**" />
+    <None Remove="Entities\**" />
+    <None Remove="obj\**" />
     <None Remove="wwwroot\css\plugins\**" />
     <None Remove="wwwroot\font-awesome\**" />
     <None Remove="wwwroot\js\**" />
@@ -42,7 +54,29 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="NW\Controllers\CustomersController.cs" />
+    <Compile Remove="NW\Controllers\OrdersController.cs" />
     <Compile Remove="NW\Controllers\PmIssuesController.cs" />
+    <Compile Remove="NW\Controllers\ProductsController.cs" />
+    <Compile Remove="NW\NW_Entities\Categories.cs" />
+    <Compile Remove="NW\NW_Entities\Coins.cs" />
+    <Compile Remove="NW\NW_Entities\CustomerCustomerDemo.cs" />
+    <Compile Remove="NW\NW_Entities\CustomerDemographics.cs" />
+    <Compile Remove="NW\NW_Entities\Customers.cs" />
+    <Compile Remove="NW\NW_Entities\Employees.cs" />
+    <Compile Remove="NW\NW_Entities\EmployeeTerritories.cs" />
+    <Compile Remove="NW\NW_Entities\Images.cs" />
+    <Compile Remove="NW\NW_Entities\Images2.cs" />
+    <Compile Remove="NW\NW_Entities\Links.cs" />
+    <Compile Remove="NW\NW_Entities\Links1.cs" />
+    <Compile Remove="NW\NW_Entities\Links2.cs" />
+    <Compile Remove="NW\NW_Entities\OrderDetails.cs" />
+    <Compile Remove="NW\NW_Entities\Orders.cs" />
+    <Compile Remove="NW\NW_Entities\Products.cs" />
+    <Compile Remove="NW\NW_Entities\Region.cs" />
+    <Compile Remove="NW\NW_Entities\Shippers.cs" />
+    <Compile Remove="NW\NW_Entities\Suppliers.cs" />
+    <Compile Remove="NW\NW_Entities\Territories.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -54,10 +88,6 @@
 
   <ItemGroup>
     <None Remove=".bowerrc" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Include="obj\Debug\netcoreapp2.2\iCollect.AssemblyInfo.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -619,6 +649,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Models\" />
     <Folder Include="wwwroot\js\bootstrap\" />
   </ItemGroup>
 

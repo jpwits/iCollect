@@ -7,7 +7,6 @@ namespace iCollect.NW.NW_Entities
     {
         public Sets()
         {
-            Coins = new HashSet<Coins>();
             SetImages = new HashSet<SetImages>();
         }
 
@@ -19,7 +18,6 @@ namespace iCollect.NW.NW_Entities
         public string Range { get; set; }
         public string CatCode { get; set; }
 
-        public virtual ICollection<Coins> Coins { get; set; }
         public virtual ICollection<SetImages> SetImages { get; set; }
     }
 }

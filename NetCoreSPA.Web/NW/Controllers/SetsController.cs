@@ -74,12 +74,12 @@ namespace iCollect.ControllersAPI
             return new JsonResult(new SetImages());
         }
 
-        [HttpPut, Route("UploadFiles/{id}")]
-        public async Task<IActionResult> UploadFiles(int id, [FromBody] string files)
-        {
-            var newset = _context.Sets.FirstOrDefault();
-            return new JsonResult(new Images());
-        }
+        //[HttpPut, Route("UploadFiles/{id}")]
+        //public async Task<IActionResult> UploadFiles(int id, [FromBody] string files)
+        //{
+        //    var newset = _context.Sets.FirstOrDefault();
+        //    return new JsonResult(new Images());
+        //}
 
         public byte[] ImageToByteArray(System.Drawing.Image imageIn)
         {
