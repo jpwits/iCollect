@@ -1,0 +1,71 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "library": "jquery@3.4.1",
+      "destination": "wwwroot/lib/jquery/",
+      "files": [
+        "jquery.min.js"
+      ]
+    },
+    {
+      "library": "angular-resource@1.7.8",
+      "destination": "wwwroot/lib/angular-resource/",
+      "files": [
+        "angular-resource.min.js"
+      ]
+    },
+    {
+      "library": "angular.js@1.7.8",
+      "destination": "wwwroot/lib/angular.js/",
+      "files": [
+        "angular.min.js"
+      ]
+    },
+    {
+      "library": "angular-sanitize@1.7.8",
+      "destination": "wwwroot/lib/angular-sanitize/"
+    },
+    {
+      "library": "oclazyload@1.1.0",
+      "destination": "wwwroot/lib/oclazyload/",
+      "files": [
+        "ocLazyLoad.min.js"
+      ]
+    },
+    {
+      "library": "angular-translate@2.18.1",
+      "destination": "wwwroot/lib/angular-translate/",
+      "files": [
+        "angular-translate.min.js"
+      ]
+    },
+    {
+      "library": "angular-ui-router@1.0.22",
+      "destination": "wwwroot/lib/angular-ui-router/",
+      "files": [
+        "angular-ui-router.min.js"
+      ]
+    },
+    {
+      "library": "angular-ui-bootstrap@2.5.0",
+      "destination": "wwwroot/lib/angular-ui-bootstrap/",
+      "files": [
+        "ui-bootstrap-tpls.min.js"
+      ]
+    },
+    {
+      "library": "jqueryui@1.12.1",
+      "destination": "wwwroot/lib/jqueryui/"
+    },
+    {
+      "library": "pace@1.0.2",
+      "destination": "wwwroot/lib/pace/"
+    },
+    {
+      "library": "font-awesome@4.7.0",
+      "destination": "wwwroot/font-awesome/"
+    }
+  ]
+}

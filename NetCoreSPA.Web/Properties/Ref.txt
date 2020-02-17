@@ -1,0 +1,11 @@
+﻿dotnet ef dbcontext scaffold "Server=(localdb)\v11.0;Data Source=.;Initial Catalog=Northwind;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -o NW\NW_Entities -f
+
+[HttpGet("Details/{id}")]				-->		Use api/Sets/Details/1
+[HttpGet("{id}"), Route("Details")]		-->		Use api/Sets/Details?id=1
+
+MVC
+===
+[HttpGet("GetSets/{id}")]
+public async Task<IActionResult> Details(int id)
+return View(Set);
+
