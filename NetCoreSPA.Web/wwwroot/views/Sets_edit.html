@@ -13,9 +13,6 @@
         </div>
     </div>
 
-    <!--<div>
-        {{scope | json}}
-    </div>-->
     <div class="row">
         <div class="col-lg-9">
             <div class="wrapper wrapper-content animated fadeInRight">
@@ -77,7 +74,7 @@
                                         </td>
                                         <td>
                                             <div>
-                                                <button ng-click="Delete(setImg.ImageId)" class="btn btn-primary dim btn-default pull-right" type="button"><i class="fa fa-trash"></i>Remove</button>
+                                                <button ng-click="setImg.isActive = false" class="btn btn-primary dim btn-default pull-right" type="button"><i class="fa fa-trash"></i>Remove</button>
                                                 <button ng-click="ImageOrderUp(setImg.ImageId)" class="btn btn-primary dim btn-default pull-right" type="button"><i class="fa fa-chevron-up"></i>Up</button>
                                                 <button ng-click="ImageOrderDown(setImg.ImageId)" class="btn btn-primary dim btn-default pull-right" type="button"><i class="fa fa-chevron-down"></i>Down</button>
                                             </div>
@@ -133,50 +130,10 @@
                                         </td>
                                     </tr>
                                 </table>
-
-                                <!--<dl class="dl-horizontal">
-                                    <dt>Created by:</dt>
-                                    <dd>Alex Smith</dd>
-                                    <dt>Messages:</dt>
-                                    <dd> 162</dd>
-                                    <dt>Client:</dt>
-                                    <dd><a href = "" class="text-navy"> Zender Company</a></dd>
-                                    <dt>Version:</dt>
-                                    <dd> v1.4.2</dd>
-                                </dl>-->
                             </div>
                         </div>
-                        <!--<div class="col-lg-7" id="cluster_info">
-                            <dl class="dl-horizontal">
-                                <dt>Last Updated:</dt>
-                                <dd>16.08.2014 12:15:57</dd>
-                                <dt>Created:</dt>
-                                <dd> 10.07.2014 23:36:57</dd>
-                                <dt>Participants:</dt>
-                                <dd class="Set-people">
-                                    <a href = "" >< img alt="image" class="img-circle" src="img/a3.jpg"></a>
-                                    <a href = "" >< img alt="image" class="img-circle" src="img/a1.jpg"></a>
-                                    <a href = "" >< img alt="image" class="img-circle" src="img/a2.jpg"></a>
-                                    <a href = "" >< img alt="image" class="img-circle" src="img/a4.jpg"></a>
-                                    <a href = "" >< img alt="image" class="img-circle" src="img/a5.jpg"></a>
-                                </dd>
-                            </dl>
-                        </div>-->
                     </div>
-                    <!--<div class="row">
-                        <div class="col-lg-12">
-                            <dl class="dl-horizontal">
-                                <dt>Completed:</dt>
-                                <dd>
-                                    <div class="progress progress-striped active m-b-sm">
-                                        <div style = "width: 60%;" class="progress-bar"></div>
-                                    </div>
-                                    <small>Set completed in <strong>60%</strong>. Remaining close the Set, sign a contract and invoice.</small>
-                                </dd>
-                            </dl>
-                        </div>
-                    </div>-->
-                    <div class="row m-t-sm">
+                    <!--<div class="row m-t-sm">
                         <div class="col-lg-12">
                             <div class="panel blank-panel ui-tab">
                                 <uib-tabset>
@@ -445,11 +402,11 @@
                                 </uib-tabset>
                             </div>
                         </div>
-                    </div>
+                    </div>-->
                 </div>
             </div>
         </div>
-        <div class="col-lg-3">
+        <!--<div class="col-lg-3">
             <div class="wrapper wrapper-content project-manager">
                 <h4>Project description</h4>
                 <img src="img/zender_logo.png" class="img-responsive">
@@ -482,20 +439,18 @@
 
                 </div>
             </div>
-        </div>
+        </div>-->
     </div>
 </div>
 
-<h5>params</h5>
+<!--<h5>params</h5>
 <pre>{{$stateParams | json}}</pre>
 <h5>state</h5>
 <pre>{{$state.current | json}}</pre>
 <h5>scope</h5>
-<pre>{{$scope | json}}</pre>
+<pre>{{$scope | json}}</pre>-->
 
 <br />
-<br />
-<br />
-<br />
+
 
 

@@ -3615,13 +3615,11 @@ function getOrdersCtrl($scope, getOrdersSrv) {
 
     $scope.loadOrders = function () {
         getOrdersSrv.query().$promise.then(function (response) {
-
             $scope.orders = JSON.parse(JSON.stringify(response));
         }, function (error) {
             alert("Error getting orders from back-end : " + error);
         });
     };
-
     var result = $scope.loadOrders();
 }
 
@@ -3644,9 +3642,11 @@ function HomeCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compile, $
 
     $scope.loadSet = function (id) {
 
-        if (id == undefined) {
+        if (id === undefined) {
             id = 0;
-        } 
+        }
+
+        $scope.selectedId = Id;
 
         getSetSrv.get({ id: id }).$promise.then(function(response) {
             $scope.SetDetail = JSON.parse(JSON.stringify(response));
@@ -3658,15 +3658,10 @@ function HomeCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compile, $
     };
 
     $scope.Delete = function (imageId) {
-        delImage.delete({ id: imageId }).$promise.then(function (response) {
-                $state.go("app.sets_edit", { SetDetail: $scope.SetDetail });
-            },
-            function (error) {
-                alert("Error getting orders from back-end : " + error);
-            });
+        $scope.SetDetail.SetImage[imageId].IsActive = false;
     };
 
-    $scope.UpdateSet = function (sets) {
+    $scope.UpdateSet  = function (sets) {
         //sets.setImages[0].image = btoa(sets.setImages[0].image);
         set1 = fromCamel(sets);
         setStr = JSON.stringify(set1);
@@ -3777,11 +3772,12 @@ function HomeCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compile, $
                     return null;
                 }
             }),
+
         DTColumnBuilder.newColumn("setId", "Set Id").withOption('name', 'setId').
             renderWith(function (data, type, full, meta) {
                 //return '<a><span>' + data +'</span></a>';
                 //return '<a><span ng-click="loadSet(' + data +')">' + data +'</span></a>';
-                return '<a ng-click="loadSet(' + data +')">' + data +'</a>';
+                return '<a ng-click="loadSet(' + data +')">' + data + '</a>';
         }),
         DTColumnBuilder.newColumn("year", "Year").withOption('name', 'year'),
         DTColumnBuilder.newColumn("description", "Description").withOption('name', 'description'),
