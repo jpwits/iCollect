@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using iCollect.NW.NW_Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using iCollect.Models;
 
 namespace iCollect.NW.Controllers
 {
@@ -32,35 +33,17 @@ namespace iCollect.NW.Controllers
             //var sortColumnDir = Request.Form.Select(a => a.Key == "order[0][dir]").FirstOrDefault();
             ////filter parameter
             //var searchValue = Request.Form.Select(a => a.Key == "search[value]").FirstOrDefault();
-            List<Sets> allCustomer = new List<Sets>();
+            List<Sets> allSets = new List<Sets>();
             int pageSize =  length != null ? Convert.ToInt32(length) : 1;
             int skip = start != null ? Convert.ToInt32(start) : 0;
             int recordsTotal = 0;
             //Database query
             using (NorthwindContext dc = new NorthwindContext())
             {
-                //var v = (from a in dc.Customers select a);
-                //search
-                //if (!string.IsNullOrEmpty(searchValue))
-                //{
-                //    v = v.Where(a =>
-                //        a.CustomerID.Contains(searchValue) ||
-                //        a.CompanyName.Contains(searchValue) ||
-                //        a.ContactName.Contains(searchValue) ||
-                //        a.Phone.Contains(searchValue) ||
-                //        a.City.Contains(searchValue)
-                //        );
-                //}
-                ////sort
-                //if (!(string.IsNullOrEmpty(sortColumn) && string.IsNullOrEmpty(sortColumnDir)))
-                //{
-                //    //for make sort simpler we will add Syste.Linq.Dynamic reference
-                //    v = v.OrderBy(sortColumn + " " + sortColumnDir);
-                //}
                 recordsTotal = dc.Sets.Count();
-                allCustomer = dc.Sets.Include(a => a.SetImages).Skip(skip).Take(pageSize).ToList();
+                allSets = dc.Sets.Include(a => a.SetImages).Skip(skip).Take(pageSize).ToList();
 
-                foreach (var set in allCustomer)
+                foreach (var set in allSets)
                 {
                     if (set.SetImages.Count > 0)
                     {
@@ -77,12 +60,11 @@ namespace iCollect.NW.Controllers
                     }
                 }
             }
-            return Json(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = allCustomer });
+            return Json(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = allSets });
         }
 
         public byte[] ImageToByteArray(System.Drawing.Image imageIn)
         {
-
             using (var ms = new MemoryStream())
             {
                 imageIn.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);

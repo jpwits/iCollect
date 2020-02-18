@@ -32,10 +32,10 @@ namespace TGIS.Web
 						
 					//}
                     
-                    if (context.Database.EnsureCreated()) //This will wipe and re-create the dB...Yes!
-                    {
-                        DbInitializer.Initialize(context);  // Seed with Dummy data
-                    }
+                    //if (context.Database.EnsureCreated()) //This will wipe and re-create the dB...Yes!
+                    //{
+                    //    DbInitializer.Initialize(context);  // Seed with Dummy data
+                    //}
 				}
 				catch (Exception ex)
 				{
@@ -47,13 +47,14 @@ namespace TGIS.Web
 			host.Run();
 		}
 
-		public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
-			WebHost.CreateDefaultBuilder(args)
-				.UseKestrel()
-				.UseContentRoot(Directory.GetCurrentDirectory())
-				.UseSetting("detailedErrors", "true")
-				.UseIISIntegration()
-				.UseStartup<Startup>()
-				.CaptureStartupErrors(true);
-	}
+        public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
+            WebHost.CreateDefaultBuilder(args)
+                //.UseKestrel()
+                //.UseContentRoot(Directory.GetCurrentDirectory())
+                //.UseSetting("detailedErrors", "true")
+                //.UseIISIntegration()
+                .UseStartup<Startup>();
+
+        //.CaptureStartupErrors(true);
+    }
 }

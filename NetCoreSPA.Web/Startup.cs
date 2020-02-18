@@ -9,7 +9,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-//using Atlassian.Connect;
+using iCollect.DAL;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using Newtonsoft.Json.Serialization;
 using Newtonsoft.Json;
@@ -28,30 +29,39 @@ namespace TGIS.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddControllers()
+                .AddNewtonsoftJson();
 
-            services.AddMvc().AddJsonOptions(options =>
-            {
-                options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-                //options.SerializerSettings.ContractResolver = new DefaultContractResolver();
+            services.AddControllers()
+                .AddNewtonsoftJson(options =>
+                {
+                    options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                    //options.SerializerSettings.ContractResolver = new DefaultContractResolver();
+                });
+            //services.AddMvc().AddJsonOptions(options =>
+            //{
+            //    //options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+            //    //options.SerializerSettings.ContractResolver = new DefaultContractResolver();
 
-            });
-            services.AddCors(o => o.AddPolicy("AppPolicy", builder =>
-            {
-                builder.AllowAnyOrigin()
-                       .AllowAnyMethod()
-                       .AllowAnyHeader();
-            }));
+            //});
+            //services.AddCors(o => o.AddPolicy("AppPolicy", builder =>
+            //{
+            //    builder.AllowAnyOrigin()
+            //           .AllowAnyMethod()
+            //           .AllowAnyHeader();
+            //}));
 
             //Database Connection
             var connection = @"Data Source=DESKTOP-7DQTMIU\SQLEXPRESS;Initial Catalog=Northwind;Trusted_Connection=True;";
+            services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(
+                    Configuration.GetConnectionString("DefaultConnection")));
             services.AddDbContext<NorthwindContext>(options => options.UseSqlServer(connection));
 
-            //services.AddAtlassianConnect<IConnectDescriptorProvider>(opt =>
-            //{
-            //    opt.InstallCallbackPath = "/installed";
-            //    opt.AddOnKey = "com.example.myaddon.kg73.local";
-            //})
-            //.AddInMemoryPersister();
+             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddEntityFrameworkStores<ApplicationDbContext>();
+            services.AddControllersWithViews();
+            services.AddRazorPages();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -59,7 +69,7 @@ namespace TGIS.Web
         {
             if (env.IsDevelopment())
             {
-                app.UseBrowserLink();
+                //app.UseBrowserLink();
                 app.UseDeveloperExceptionPage();
             }
 
@@ -79,17 +89,21 @@ namespace TGIS.Web
             //options.DefaultFileNames.Clear();
             //options.DefaultFileNames.Add("/index.html");
             //app.UseDefaultFiles(options);
+            app.UseHttpsRedirection();
             app.UseStaticFiles();
-            app.UseFileServer(enableDirectoryBrowsing: false);
-            //app.UseAtlassianConnect();
-            app.UseMvc(routes =>
-            {
-                //routes.MapRoute(
-                //       name: "Services",
-                //       template: "GetServices",
-                //       defaults: new { controller = "Services", action = "GetServices" });
+            app.UseRouting();
 
-                routes.MapRoute("default", "{controller=Home}/{action=Index}/{id?}");
+            app.UseAuthentication();
+            app.UseAuthorization();
+
+            //app.UseFileServer(enableDirectoryBrowsing: false);
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapRazorPages();
             });
 
         }

@@ -3675,11 +3675,11 @@ function HomeCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compile, $
         });
     };
 
-    $scope.submit = function () {
-        if ($scope.form.file.$valid && $scope.file) {
-            $scope.upload($scope.file);
-        }
-    };
+    //$scope.submit = function () {
+    //    if ($scope.form.file.$valid && $scope.file) {
+    //        $scope.upload($scope.file);
+    //    }
+    //};
 
     $scope.uploadFiles = function(files) {
         files.forEach(function (file, index) {
@@ -3775,8 +3775,6 @@ function HomeCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compile, $
 
         DTColumnBuilder.newColumn("setId", "Set Id").withOption('name', 'setId').
             renderWith(function (data, type, full, meta) {
-                //return '<a><span>' + data +'</span></a>';
-                //return '<a><span ng-click="loadSet(' + data +')">' + data +'</span></a>';
                 return '<a ng-click="loadSet(' + data +')">' + data + '</a>';
         }),
         DTColumnBuilder.newColumn("year", "Year").withOption('name', 'year'),

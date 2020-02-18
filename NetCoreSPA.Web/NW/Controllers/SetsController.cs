@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Cors;
 using iCollect.NW.NW_Entities;
 using System.IO;
 using System.Drawing;
-using Microsoft.IdentityModel.Xml;
 using System.Text;
 using Newtonsoft.Json;
 
@@ -50,10 +49,6 @@ namespace iCollect.ControllersAPI
                     }
                 }
                 idx++;
-                //if (idx > 100)
-                //{
-                //    break;
-                //}
             }
 
             return qry;
