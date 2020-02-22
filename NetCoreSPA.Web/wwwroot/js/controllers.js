@@ -3638,7 +3638,7 @@ function getCustomersCtrl($scope, getCustomersSrv) {
     var result = $scope.loadCustomers();
 }
 
-function HomeCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compile, $templateCache, getSetSrv, getImage, updateImage, Upload, delImage) {
+function SetCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compile, $templateCache, getSetSrv, getImage, updateImage, Upload, delImage) {
 
     $scope.loadSet = function (id) {
 
@@ -3646,7 +3646,7 @@ function HomeCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compile, $
             id = 0;
         }
 
-        $scope.selectedId = Id;
+        $scope.selectedId = id;
 
         getSetSrv.get({ id: id }).$promise.then(function(response) {
             $scope.SetDetail = JSON.parse(JSON.stringify(response));
@@ -3795,7 +3795,8 @@ function HomeCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compile, $
 
     $scope.dtOptions1 = DTOptionsBuilder.newOptions().withOption('ajax', {
         dataSrc: "data",
-        url: "/home/getdata",
+        //url: "/home/getData",
+        url: "api/Sets/getData",
         type: "POST"
     })
         .withOption('processing', true) //for show progress bar
@@ -3897,7 +3898,7 @@ angular
     .controller('getOrdersCtrl', getOrdersCtrl)
     .controller('getProductsCtrl', getProductsCtrl)
     .controller('getCustomersCtrl', getCustomersCtrl)
-    .controller('HomeCtrl', HomeCtrl)
+    .controller('SetCtrl', SetCtrl)
     .controller("HelpDeskCtrl", HelpDeskCtrl);
 
 

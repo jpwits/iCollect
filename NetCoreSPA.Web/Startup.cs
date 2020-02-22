@@ -44,12 +44,12 @@ namespace TGIS.Web
             //    //options.SerializerSettings.ContractResolver = new DefaultContractResolver();
 
             //});
-            //services.AddCors(o => o.AddPolicy("AppPolicy", builder =>
-            //{
-            //    builder.AllowAnyOrigin()
-            //           .AllowAnyMethod()
-            //           .AllowAnyHeader();
-            //}));
+            services.AddCors(o => o.AddPolicy("AppPolicy", builder =>
+            {
+                builder.AllowAnyOrigin()
+                       .AllowAnyMethod()
+                       .AllowAnyHeader();
+            }));
 
             //Database Connection
             var connection = @"Data Source=DESKTOP-7DQTMIU\SQLEXPRESS;Initial Catalog=Northwind;Trusted_Connection=True;";
@@ -73,6 +73,7 @@ namespace TGIS.Web
                 app.UseDeveloperExceptionPage();
             }
 
+         
             // Middleware to handle all request
             app.Use(async (context, next) =>
                {
@@ -93,6 +94,7 @@ namespace TGIS.Web
             app.UseStaticFiles();
             app.UseRouting();
 
+            app.UseCors();
             app.UseAuthentication();
             app.UseAuthorization();
 

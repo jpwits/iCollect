@@ -19,7 +19,7 @@ namespace iCollect.NW.Controllers
         }
 
         public ActionResult getData()
-        {
+        { 
             //Datatable parameter
             var draw = Request.Form.Where(a => a.Key == "draw").Select(b => b.Value).FirstOrDefault()[0];
 
@@ -31,7 +31,7 @@ namespace iCollect.NW.Controllers
             //sorting parameter
             //var sortColumn = Request.Form.Select(a => a.Key == "columns[" + Request.Form.Select(ab => ab.Key == "order[0][column]").FirstOrDefault() + "][name]").FirstOrDefault();
             //var sortColumnDir = Request.Form.Select(a => a.Key == "order[0][dir]").FirstOrDefault();
-            ////filter parameter
+            //filter parameter
             //var searchValue = Request.Form.Select(a => a.Key == "search[value]").FirstOrDefault();
             List<Sets> allSets = new List<Sets>();
             int pageSize =  length != null ? Convert.ToInt32(length) : 1;
