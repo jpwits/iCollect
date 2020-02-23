@@ -3639,7 +3639,7 @@ function getCustomersCtrl($scope, getCustomersSrv) {
 }
 
 function SetCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compile, $templateCache, getSetSrv, getImage, updateImage, Upload, delImage) {
-
+    $scope.tableLength = 10;
     $scope.loadSet = function (id) {
 
         if (id === undefined) {
@@ -3663,9 +3663,9 @@ function SetCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compile, $t
 
     $scope.UpdateSet  = function (sets) {
         //sets.setImages[0].image = btoa(sets.setImages[0].image);
-        set1 = fromCamel(sets);
-        setStr = JSON.stringify(set1);
-        setParse = JSON.parse(setStr);
+        var set1 = fromCamel(sets);
+        var setStr = JSON.stringify(set1);
+        var setParse = JSON.parse(setStr);
 
         $scope.entry = new updateImage(sets);
         $scope.entry.$update(function (response) {
@@ -3683,7 +3683,7 @@ function SetCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compile, $t
 
     $scope.uploadFiles = function(files) {
         files.forEach(function (file, index) {
-                fReader = new FileReader();
+                var fReader = new FileReader();
                 fReader.readAsDataURL(file);
                 fReader.onloadend = function(event) {
                     var imgSrc = event.target.result;
@@ -3700,32 +3700,32 @@ function SetCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compile, $t
                 };
             }
         );
-        $state.go('app.sets_edit', { SetDetail: $state.params.SetDetail });
+        $state.go("app.sets_edit", { SetDetail: $state.params.SetDetail });
     };
 
     function fromCamel(o) {
-        var newO, origKey, newKey, value
+        var newO, origKey, newKey, value;
         if (o instanceof Array) {
-            return o.map(function (value) {
+            return o.map(function(value) {
                 if (typeof value === "object") {
-                    value = fromCamel(value)
+                    value = fromCamel(value);
                 }
-                return value
-            })
+                return value;
+            });
         } else {
-            newO = {}
+            newO = {};
             for (origKey in o) {
                 if (o.hasOwnProperty(origKey)) {
-                    newKey = (origKey.charAt(0).toUpperCase() + origKey.slice(1) || origKey).toString()
-                    value = o[origKey]
-                    if (value instanceof Array || (value !== null && value.constructor === Object)) {
-                        value = fromCamel(value)
+                    newKey = (origKey.charAt(0).toUpperCase() + origKey.slice(1) || origKey).toString();
+                    value = o[origKey];
+                    if (value instanceof Array || (value !== null && value !== undefined && value.constructor === Object)) {
+                        value = fromCamel(value);
                     }
-                    newO[newKey] = value
+                    newO[newKey] = value;
                 }
             }
         }
-        return newO
+        return newO;
     }
 
     $scope.ImageOrderUp = function (setId) {
@@ -3785,13 +3785,23 @@ function SetCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compile, $t
     ];
 
     $scope.dtInstanceCallback = (dtInstance) => {
-        //dtInstance.DataTable.on('draw.dt', () => {
-        //    let elements = angular.element("#" + dtInstance.id + " .ng-scope");
-        //    angular.forEach(elements, (element) => {
-        //        $compile(element)($scope);
-        //    });
+        dtInstance.DataTable.on('draw.dt', () => {
+            let elements = angular.element("#" + dtInstance.id + " .ng-scope");
+            angular.forEach(elements, (element) => {
+                $compile(element)($scope);
+            });
+        });
+
+        //dtInstance.DataTable.on('page.dt', () => {
+        //    console.log('Page');
         //});
     };
+
+    //var table = angular.element('entry-grid').DataTable();
+
+    //table.on('page.dt', function() {
+    //     console.log('Page');
+    //});
 
     $scope.dtOptions1 = DTOptionsBuilder.newOptions().withOption('ajax', {
         dataSrc: "data",
@@ -3805,7 +3815,7 @@ function SetCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compile, $t
         .withOption('createdRow', function (row, data, dataIndex) {
             // Recompiling so we can bind Angular directive to the DT
             $compile(angular.element(row).contents())($scope);
-            console.log("test");
+            //console.log("test");
         })
         .withPaginationType('full_numbers') // for get full pagination options // first / last / prev / next and page numbers
         //.withDisplayLength(10) // Page size
@@ -3821,10 +3831,16 @@ function SetCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compile, $t
         //})
         .withOption('drawCallback', function () {
             var table = this.DataTable();
+            //$scope.SetDetail.length = table.page.len();
+            //var test = table.page.len();
 
-            table.on('select', function () {
-                alert('Selected!');
-                // Enable/disable buttons here...
+            //table.on('select', function () {
+            //    alert('Selected!');
+            //    // Enable/disable buttons here...
+            //});
+
+            table.on('page.dt', function() {
+                console.log('Page');
             });
         })
         .withDOM('<"html5buttons"B>lTfgitp')
