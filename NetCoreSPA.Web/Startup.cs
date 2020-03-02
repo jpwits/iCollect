@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using iCollect.DAL;
+using iCollect.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using Newtonsoft.Json.Serialization;
@@ -85,11 +85,7 @@ namespace TGIS.Web
                        await next();
                    }
                });
-
-            //DefaultFilesOptions options = new DefaultFilesOptions();
-            //options.DefaultFileNames.Clear();
-            //options.DefaultFileNames.Add("/index.html");
-            //app.UseDefaultFiles(options);
+         
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();

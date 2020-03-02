@@ -3,7 +3,7 @@
   "defaultProvider": "cdnjs",
   "libraries": [
     {
-      "library": "jquery@3.4.1",
+      "library": "jquery@3.3.1",
       "destination": "wwwroot/lib/jquery/",
       "files": [
         "jquery.min.js"
@@ -66,6 +66,14 @@
     {
       "library": "font-awesome@4.7.0",
       "destination": "wwwroot/font-awesome/"
+    },
+    {
+      "library": "jquery-validate@1.19.1",
+      "destination": "wwwroot/lib/jquery-validate/"
+    },
+    {
+      "library": "jquery-validation-unobtrusive@3.2.11",
+      "destination": "wwwroot/lib/jquery-validation-unobtrusive/"
     }
   ]
 }
