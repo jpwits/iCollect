@@ -670,11 +670,6 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, IdlePro
             params: { SetDetail: null, EditSet: true },
             data: { pageTitle: 'Sets Edit' }
         })
-        .state('app.home', {
-            url: "/home",
-            templateUrl: "views/home.html",
-            data: { pageTitle: 'Home' }
-        })
         .state('app.activity_stream', {
             url: "/activity_stream",
             templateUrl: "views/activity_stream.html",

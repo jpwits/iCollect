@@ -3638,7 +3638,7 @@ function getCustomersCtrl($scope, getCustomersSrv) {
     var result = $scope.loadCustomers();
 }
 
-function SetCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compile, $templateCache, getSetSrv, getImage, updateImage, Upload, delImage) {
+function SetCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compile, getSetSrv) {
     $scope.tableLength = 10;
     $scope.loadSet = function (id) {
 
@@ -3661,48 +3661,14 @@ function SetCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compile, $t
         $scope.SetDetail.SetImage[imageId].IsActive = false;
     };
 
-    $scope.UpdateSet  = function (sets) {
-        //sets.setImages[0].image = btoa(sets.setImages[0].image);
-        var set1 = fromCamel(sets);
-        var setStr = JSON.stringify(set1);
-        var setParse = JSON.parse(setStr);
-
-        $scope.entry = new updateImage(sets);
-        $scope.entry.$update(function (response) {
-            alert("Saved successfully...");
-        }, function (error) {
-            alert("Error getting orders from back-end : " + error);
-        });
-    };
-
+  
     //$scope.submit = function () {
     //    if ($scope.form.file.$valid && $scope.file) {
     //        $scope.upload($scope.file);
     //    }
     //};
 
-    $scope.uploadFiles = function(files) {
-        files.forEach(function (file, index) {
-                var fReader = new FileReader();
-                fReader.readAsDataURL(file);
-                fReader.onloadend = function(event) {
-                    var imgSrc = event.target.result;
-                    imgSrc = imgSrc.replace('data:image/jpeg;base64,', '');
-                    imgSrc = imgSrc.replace('data:image/png;base64,', '');
-                    getImage.get({ id: 0 }).$promise.then(function(response) {
-                            var newImage = JSON.parse(JSON.stringify(response));
-                            newImage.thumbnail = null;
-                            newImage.image = imgSrc;
-                            newImage.isActive = true;
-                            $state.params.SetDetail.setImages.push(newImage);
-                        }
-                    );
-                };
-            }
-        );
-        $state.go("app.sets_edit", { SetDetail: $state.params.SetDetail });
-    };
-
+   
     function fromCamel(o) {
         var newO, origKey, newKey, value;
         if (o instanceof Array) {
@@ -3728,13 +3694,7 @@ function SetCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compile, $t
         return newO;
     }
 
-    $scope.ImageOrderUp = function (setId) {
-        alert("Up to do");
-    };
-
-    $scope.ImageOrderDown = function (setId) {
-        alert("Down to do");
-    };
+   
 
     //$scope.fileNameChanged = function (file) {
     //    var input = document.getElementById("file1");
@@ -3864,6 +3824,55 @@ function SetCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compile, $t
         ]);
 }
 
+
+function SetEditCtrl($scope, $state, getImage, updateImage) {
+    $scope.UpdateSet = function (sets) {
+        //sets.setImages[0].image = btoa(sets.setImages[0].image);
+        var set1 = fromCamel(sets);
+        var setStr = JSON.stringify(set1);
+        var setParse = JSON.parse(setStr);
+
+        $scope.entry = new updateImage(sets);
+        $scope.entry.$update(function (response) {
+            alert("Saved successfully...");
+        }, function (error) {
+            alert("Error getting orders from back-end : " + error);
+        });
+    };
+
+    $scope.uploadFiles = function (files) {
+        files.forEach(function (file, index) {
+            var fReader = new FileReader();
+            fReader.readAsDataURL(file);
+            fReader.onloadend = function (event) {
+                var imgSrc = event.target.result;
+                imgSrc = imgSrc.replace('data:image/jpeg;base64,', '');
+                imgSrc = imgSrc.replace('data:image/png;base64,', '');
+                getImage.get({ id: 0 }).$promise.then(function (response) {
+                    var newImage = JSON.parse(JSON.stringify(response));
+                    newImage.thumbnail = null;
+                    newImage.image = imgSrc;
+                    newImage.isActive = true;
+                    $state.params.SetDetail.setImages.push(newImage);
+                }
+                );
+            };
+        }
+        );
+        $state.go("app.sets_edit", { SetDetail: $state.params.SetDetail });
+    };
+
+    $scope.ImageOrderUp = function (setId) {
+        alert("Up to do");
+    };
+
+    $scope.ImageOrderDown = function (setId) {
+        alert("Down to do");
+    };
+
+
+}
+
 /*
  *
  * Pass all functions into module
@@ -3915,6 +3924,7 @@ angular
     .controller('getProductsCtrl', getProductsCtrl)
     .controller('getCustomersCtrl', getCustomersCtrl)
     .controller('SetCtrl', SetCtrl)
+    .controller('SetEditCtrl', SetEditCtrl)
     .controller("HelpDeskCtrl", HelpDeskCtrl);
 
 

@@ -44,6 +44,23 @@ function delImage($resource) {
     );
 }
 
+function passData() {
+
+    var persistObject = [];
+
+    function set(objectName, data) {
+        persistObject[objectName] = data;
+    }
+    function get(objectName) {
+        return persistObject[objectName];
+    }
+
+    return {
+        set: set,
+        get: get
+    };
+}
+
 angular
     .module('inspinia')
     .service('getProductsSrv', getProductsSrv)
@@ -53,4 +70,5 @@ angular
     .service('getImage', getImage)
     .service('delImage', delImage)
     .service('updateImage', updateImage)
+    .service('passData', passData)
     .service('getSetsSrv', getSetsSrv);

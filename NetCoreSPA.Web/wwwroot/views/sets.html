@@ -23,30 +23,18 @@
                                 <a ng-click="loadSet(undefined)" class="btn btn-primary btn-xs">New Set</a>
                             </div>
                         </div>
-                        <!--<div class="ibox-content">
-                            <div class="row m-b-sm m-t-sm">
-                                <div class="col-md-1">
-                                    <button type="button" id="loading-example-btn" class="btn btn-white btn-sm"><i class="fa fa-refresh"></i> Refresh</button>
-                                </div>
-                                <div class="col-md-11">
-                                    <div class="input-group">
-                                        <input type="text" placeholder="Search" class="input-sm form-control"> <span class="input-group-btn">
-                                            <button type="button" class="btn btn-sm btn-primary"> Go!</button>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>-->
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <h5>params</h5>
+    <!--<h5>params</h5>
     <pre>{{$stateParams | json}}</pre>
     <h5>state</h5>
-    <pre>{{$state.current | json}}</pre>
+    <pre>{{$state.current | json}}</pre>-->
     <form name="myForm" ng-submit="">
         <table id="entry-grid" datatable="" dt-options="dtOptions1" dt-columns="dtColumns1" dt-instance="dtInstanceCallback" class="table table-striped table-bSeted table-hover"></table>
     </form>
+    <!-- Need to replace this partial ng-include trick with shared service and localStorage : https://stackoverflow.com/questions/22408790/angularjs-passing-data-between-pages-->
+    <!--<div ng-include="'Views/Sets_edit.html'"></div>-->
 </div>
