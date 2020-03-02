@@ -3638,83 +3638,37 @@ function getCustomersCtrl($scope, getCustomersSrv) {
     var result = $scope.loadCustomers();
 }
 
-function SetCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compile, getSetSrv) {
-    $scope.tableLength = 10;
-    $scope.loadSet = function (id) {
+function SetCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compile, getSetSrv, passData) {
+   
+    $scope.session = passData.get("Session");
+    if ($scope.session == undefined) { $scope.session = 10; }
 
+    $scope.loadSet = function (id) {
         if (id === undefined) {
             id = 0;
         }
 
         $scope.selectedId = id;
 
-        getSetSrv.get({ id: id }).$promise.then(function(response) {
-            $scope.SetDetail = JSON.parse(JSON.stringify(response));
-            $state.go('app.sets_edit', { SetDetail: $scope.SetDetail });
+        getSetSrv.get({ id: id }).$promise.then(function (response) {
+            $scope.iCol = passData.set("Selected", JSON.parse(JSON.stringify(response)));
+            $state.go('app.sets_edit', { });
             },
             function(error) {
                 alert("Error getting orders from back-end : " + error);
             });
     };
 
-    $scope.Delete = function (imageId) {
-        $scope.SetDetail.SetImage[imageId].IsActive = false;
-    };
-
+    //$scope.Delete = function (imageId) {
+    //    $scope.SetDetail.SetImage[imageId].IsActive = false;
+    //};
   
     //$scope.submit = function () {
     //    if ($scope.form.file.$valid && $scope.file) {
     //        $scope.upload($scope.file);
     //    }
     //};
-
    
-    function fromCamel(o) {
-        var newO, origKey, newKey, value;
-        if (o instanceof Array) {
-            return o.map(function(value) {
-                if (typeof value === "object") {
-                    value = fromCamel(value);
-                }
-                return value;
-            });
-        } else {
-            newO = {};
-            for (origKey in o) {
-                if (o.hasOwnProperty(origKey)) {
-                    newKey = (origKey.charAt(0).toUpperCase() + origKey.slice(1) || origKey).toString();
-                    value = o[origKey];
-                    if (value instanceof Array || (value !== null && value !== undefined && value.constructor === Object)) {
-                        value = fromCamel(value);
-                    }
-                    newO[newKey] = value;
-                }
-            }
-        }
-        return newO;
-    }
-
-   
-
-    //$scope.fileNameChanged = function (file) {
-    //    var input = document.getElementById("file1");
-    //    var fReader = new FileReader();
-    //    fReader.readAsDataURL(input.files[0]);
-    //    fReader.onloadend = function(event) {
-    //        var img = document.getElementById("file1");
-    //        img.src = event.target.result;
-    //        getImage.get({ id: 0 }).$promise.then(function(response) {
-    //                var newImage = JSON.parse(JSON.stringify(response));
-    //                newImage.thumbnail = null;
-    //                newImage.image = img.src.replace('data:image/jpeg;base64,', '');
-    //                //newImage.new = true;
-    //                $state.params.SetDetail.setImages.push(newImage);
-    //                $state.go('app.sets_edit', { SetDetail: $state.params.SetDetail });
-    //            }
-    //        )
-    //    };
-    //};
-
     $scope.dtColumns1 = [
         //here We will add .withOption('name','column_name') for send column name to the server to filter and sort
         DTColumnBuilder.newColumn(null).withTitle('Image').notSortable().withOption('width', '50%')//.withClass('td-large')
@@ -3757,12 +3711,6 @@ function SetCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compile, ge
         //});
     };
 
-    //var table = angular.element('entry-grid').DataTable();
-
-    //table.on('page.dt', function() {
-    //     console.log('Page');
-    //});
-
     $scope.dtOptions1 = DTOptionsBuilder.newOptions().withOption('ajax', {
         dataSrc: "data",
         //url: "/home/getData",
@@ -3778,7 +3726,7 @@ function SetCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compile, ge
             //console.log("test");
         })
         .withPaginationType('full_numbers') // for get full pagination options // first / last / prev / next and page numbers
-        //.withDisplayLength(10) // Page size
+        .withDisplayLength($scope.session) // Page size
         .withOption('aaSorting', [0, 'asc']) // for default sorting column // here 0 means first column
         //You will only need $compile if the returned html contain directives that should be invoked, like ng - click and so on.Do that in the initComplete callback:
         //.withOption('initComplete', function () {
@@ -3791,8 +3739,7 @@ function SetCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compile, ge
         //})
         .withOption('drawCallback', function () {
             var table = this.DataTable();
-            //$scope.SetDetail.length = table.page.len();
-            //var test = table.page.len();
+            $scope.session = passData.set("Session", table.page.len());
 
             //table.on('select', function () {
             //    alert('Selected!');
@@ -3824,8 +3771,9 @@ function SetCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compile, ge
         ]);
 }
 
+function SetEditCtrl($scope, $state, getImage, updateImage, passData) {
+    $scope.iCol = passData.get("Selected");
 
-function SetEditCtrl($scope, $state, getImage, updateImage) {
     $scope.UpdateSet = function (sets) {
         //sets.setImages[0].image = btoa(sets.setImages[0].image);
         var set1 = fromCamel(sets);
@@ -3853,13 +3801,13 @@ function SetEditCtrl($scope, $state, getImage, updateImage) {
                     newImage.thumbnail = null;
                     newImage.image = imgSrc;
                     newImage.isActive = true;
-                    $state.params.SetDetail.setImages.push(newImage);
+                    $scope.iCol.setImages.push(newImage);
                 }
                 );
             };
         }
         );
-        $state.go("app.sets_edit", { SetDetail: $state.params.SetDetail });
+        $state.go("app.sets_edit", { });
     };
 
     $scope.ImageOrderUp = function (setId) {
@@ -3870,7 +3818,30 @@ function SetEditCtrl($scope, $state, getImage, updateImage) {
         alert("Down to do");
     };
 
-
+    function fromCamel(o) {
+        var newO, origKey, newKey, value;
+        if (o instanceof Array) {
+            return o.map(function (value) {
+                if (typeof value === "object") {
+                    value = fromCamel(value);
+                }
+                return value;
+            });
+        } else {
+            newO = {};
+            for (origKey in o) {
+                if (o.hasOwnProperty(origKey)) {
+                    newKey = (origKey.charAt(0).toUpperCase() + origKey.slice(1) || origKey).toString();
+                    value = o[origKey];
+                    if (value instanceof Array || (value !== null && value !== undefined && value.constructor === Object)) {
+                        value = fromCamel(value);
+                    }
+                    newO[newKey] = value;
+                }
+            }
+        }
+        return newO;
+    }
 }
 
 /*

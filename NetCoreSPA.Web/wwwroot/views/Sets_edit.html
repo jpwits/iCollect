@@ -22,17 +22,17 @@
                             <div class="col-lg-12">
                                 <div class="m-b-md" ng-if="$stateParams.EditSet == false">
                                     <button class="btn btn-white pull-right"
-                                            ng-click="UpdateSet($stateParams.SetDetail)">
+                                            ng-click="UpdateSet(iCol)">
                                         Edit Set
                                     </button>
-                                    <h2><strong>{{$stateParams.SetDetail.description}} </strong></h2>
+                                    <h2><strong>{{iCol.description}} </strong></h2>
                                 </div>
                                 <div class="m-b-md" ng-if="$stateParams.EditSet == true">
                                     <button class="btn btn-primary pull-right"
-                                            ng-click="UpdateSet($stateParams.SetDetail)">
+                                            ng-click="UpdateSet(iCol)">
                                         Save Set
                                     </button>
-                                    <h2><strong>{{$stateParams.SetDetail.description}}</strong></h2>
+                                    <h2><strong>{{iCol.description}}</strong></h2>
                                 </div>
                             </div>
                         </div>
@@ -43,9 +43,9 @@
                                         <td>Description Name:</td>
                                         <td colspan="2">
                                             <input ng-if="$stateParams.EditSet == true" type="text" name="input"
-                                                   ng-model="$stateParams.SetDetail.description">
+                                                   ng-model="iCol.description">
                                             <span ng-if="$stateParams.EditSet == false">
-                                                {{$stateParams.SetDetail.description}}
+                                                {{iCol.description}}
                                             </span>
                                         </td>
                                     </tr>
@@ -59,8 +59,8 @@
                                             <br>
                                             <br>Files:
                                             <ul>
-                                                <li ng-repeat="f in files" style="font:smaller">
-                                                    {{f.name}}
+                                                <li ng-repeat="file in files" style="font:smaller">
+                                                    {{file.name}}
                                                 </li>
                                             </ul>
                                             <span class="progress" ng-show="progress >= 0">
@@ -69,7 +69,7 @@
                                             {{errorMsg}}
                                         </td>
                                     </tr>
-                                    <tr ng-repeat="(key, setImg) in $stateParams.SetDetail.setImages">
+                                    <tr ng-repeat="(key, setImg) in iCol.setImages">
                                         <td>Images</td>
                                         <td ng-if="setImg.isActive == true">
                                             <div>
@@ -88,49 +88,49 @@
                                     <tr>
                                         <td>Set Id:</td>
                                         <td colspan="2">
-                                            <input type="text" name="input" ng-model="$stateParams.SetDetail.setId">
+                                            <input type="text" name="input" ng-model="iCol.setId">
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Coin Id:</td>
                                         <td colspan="2">
-                                            <input type="checkbox" name="input" ng-model="$stateParams.SetDetail.coinId">
+                                            <input type="checkbox" name="input" ng-model="iCol.coinId">
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Image Id:</td>
                                         <td colspan="2">
-                                            <input type="text" name="input" ng-model="$stateParams.SetDetail.imageId">
+                                            <input type="text" name="input" ng-model="iCol.imageId">
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Year:</td>
                                         <td colspan="2">
-                                            <input type="text" name="input" ng-model="$stateParams.SetDetail.year">
+                                            <input type="text" name="input" ng-model="iCol.year">
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Description:</td>
                                         <td colspan="2">
-                                            <input type="text" name="input" ng-model="$stateParams.SetDetail.description">
+                                            <input type="text" name="input" ng-model="iCol.description">
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Date:</td>
                                         <td colspan="2">
-                                            <input type="text" name="input" ng-model="$stateParams.SetDetail.date">
+                                            <input type="text" name="input" ng-model="iCol.date">
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Range:</td>
                                         <td colspan="2">
-                                            <input type="text" name="input" ng-model="$stateParams.SetDetail.range">
+                                            <input type="text" name="input" ng-model="iCol.range">
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>CatCode:</td>
                                         <td colspan="2">
-                                            <input type="text" name="input" ng-model="$stateParams.SetDetail.catCode">
+                                            <input type="text" name="input" ng-model="iCol.catCode">
                                         </td>
                                     </tr>
                                 </table>
