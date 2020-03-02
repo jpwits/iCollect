@@ -72,7 +72,6 @@ namespace TGIS.Web
                 //app.UseBrowserLink();
                 app.UseDeveloperExceptionPage();
             }
-
          
             // Middleware to handle all request
             app.Use(async (context, next) =>

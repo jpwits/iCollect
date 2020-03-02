@@ -3641,7 +3641,7 @@ function getCustomersCtrl($scope, getCustomersSrv) {
 function SetCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compile, getSetSrv, passData) {
    
     $scope.session = passData.get("Session");
-    if ($scope.session === undefined) { $scope.session = 10; }
+    if ($scope.session === undefined) { $scope.session = 50; }
 
     $scope.loadSet = function (id) {
         if (id === undefined) {
