@@ -3684,7 +3684,11 @@ function SetCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compile, ge
                     html = '';
                     data.setImages.forEach(function (img, index) {
                         if (img.isActive === true) {
-                            html += '<img src="data:image/JPEG;base64,' + img.thumbnail + '"/>';
+                            //html += '<img style="border:2px solid orange" src="data:image/JPEG;base64,' + img.thumbnail + '"/>';
+                            html += '<div class="iColcontainer">' +
+                                '<img style="border:1px solid grey" id="ImgId' + img.id + img.setId + '" src="data:image/JPEG;base64,' + img.thumbnail + '"/>' +
+                                '<input ng-click= "SelectPart($event)" type="checkbox" class="iColcheckbox"/>' +
+                                '</div>';
                         }
                     });
                     return html;
@@ -3704,6 +3708,19 @@ function SetCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compile, ge
         DTColumnBuilder.newColumn("range", "Range").withOption('name', 'range'),
         DTColumnBuilder.newColumn("catCode", "CatCode").withOption('name', 'catCode')
     ];
+
+    $scope.SelectPart = (part) => {
+        if (part.currentTarget.checked === true) {
+            part.currentTarget.previousSibling.style.border = "2px solid green";
+        }
+        else 
+        {
+            part.currentTarget.previousSibling.style.border = "1px solid grey";
+        }
+       // element = angular.element("#" + part.id + " .ng-scope");
+        $state.go('app.sets');
+        //$compile(part.currentTarget.previousSibling)($scope);
+    };
 
     $scope.dtInstanceCallback = (dtInstance) => {
         dtInstance.DataTable.on('draw.dt', () => {
@@ -3817,11 +3834,13 @@ function SetEditCtrl($scope, $state, getImage, updateImage, passData) {
         $state.go("app.sets_edit", { });
     };
 
-    $scope.ImageOrderUp = function (setId) {
+    $scope.ImageOrderUp = function (imageId) {
         alert("Up to do");
     };
 
-    $scope.ImageOrderDown = function (setId) {
+    $scope.ImageOrderDown = function (imageId) {
+        $scope.iCol.setImages[imageId].position = 1;
+
         alert("Down to do");
     };
 
