@@ -56,7 +56,15 @@
  * Contains several global data used in different view
  *
  */
-function MainCtrl($http) {
+function MainCtrl($http, $scope, passData, getUser) {
+
+    getUser.get({ username: " " }).$promise.then(function (response) {
+        passData.set("User", JSON.parse(JSON.stringify(response)));
+        $scope.User = passData.get("User");
+    },
+        function (error) {
+            alert("Error getting user from back-end : " + error);
+        });
 
     /*
      * countries - Used as duallistbox in form advanced view
@@ -3639,14 +3647,6 @@ function getCustomersCtrl($scope, getCustomersSrv) {
 }
 
 function SetCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compile, getSetSrv, passData, getUser) {
-    getUser.get({ username: " " }).$promise.then(function (response) {
-        var test = JSON.parse(JSON.stringify(response));
-        //$scope.iUser = passData.set("User", JSON.parse(JSON.stringify(response)));
-        },
-        function (error) {
-            alert("Error getting user from back-end : " + error);
-        });
-
     $scope.session = passData.get("Session");
     if ($scope.session === undefined) { $scope.session = 50; }
 
@@ -3658,7 +3658,7 @@ function SetCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compile, ge
         $scope.selectedId = id;
 
         getSetSrv.get({ id: id }).$promise.then(function (response) {
-            $scope.iCol = passData.set("Selected", JSON.parse(JSON.stringify(response)));
+            passData.set("Selected", JSON.parse(JSON.stringify(response)));
             $state.go('app.sets_edit', { });
             },
             function(error) {
@@ -3746,7 +3746,7 @@ function SetCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compile, ge
         //})
         .withOption('drawCallback', function () {
             var table = this.DataTable();
-            $scope.session = passData.set("Session", table.page.len());
+            passData.set("Session", table.page.len());
 
             //table.on('select', function () {
             //    alert('Selected!');
