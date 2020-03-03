@@ -3638,8 +3638,15 @@ function getCustomersCtrl($scope, getCustomersSrv) {
     var result = $scope.loadCustomers();
 }
 
-function SetCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compile, getSetSrv, passData) {
-   
+function SetCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compile, getSetSrv, passData, getUser) {
+    getUser.get({ username: " " }).$promise.then(function (response) {
+        var test = JSON.parse(JSON.stringify(response));
+        //$scope.iUser = passData.set("User", JSON.parse(JSON.stringify(response)));
+        },
+        function (error) {
+            alert("Error getting user from back-end : " + error);
+        });
+
     $scope.session = passData.get("Session");
     if ($scope.session === undefined) { $scope.session = 50; }
 

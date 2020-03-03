@@ -36,6 +36,11 @@ function updateImage($resource) {
     );
 }
 
+function getUser($resource) {
+    return $resource('api/Account/getUser/:username', { username: '@username' }
+    );
+}
+
 function delImage($resource) {
     return $resource('api/Sets/Delete/:id', { filename: '@id' }
         , {
@@ -71,4 +76,5 @@ angular
     .service('delImage', delImage)
     .service('updateImage', updateImage)
     .service('passData', passData)
+    .service('getUser', getUser)
     .service('getSetsSrv', getSetsSrv);

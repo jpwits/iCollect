@@ -70,6 +70,7 @@ namespace iCollect.ControllersAPI
             return Json(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = allSets });
         }
 
+        
         //public byte[] ImageToByteArray(System.Drawing.Image imageIn)
         //{
         //    using (var ms = new MemoryStream())
@@ -79,7 +80,7 @@ namespace iCollect.ControllersAPI
         //    }
         //}
 
-        // GET: Sets
+            // GET: Sets
         [HttpGet, Route("GetSets/{start}/{length}")]
         public List<Sets> Index(int start, int length)
         {
@@ -156,9 +157,6 @@ namespace iCollect.ControllersAPI
         }
 
         [HttpGet, Route("GetSet/{id}")]
-        //[HttpGet("GetSet/{id}")]
-        //[HttpGet("Details/{id}")]
-        //[HttpGet("{id}"), Route("Details")]
         public async Task<IActionResult> Details(int id)
         {
             if (id == 0)
