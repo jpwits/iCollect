@@ -3648,7 +3648,7 @@ function getCustomersCtrl($scope, getCustomersSrv) {
 
 function SetCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compile, $templateCache, getSetSrv, passData, $timeout) {
     $scope.session_pglen = passData.get("Session_PgLen");
-    if ($scope.session === undefined) { $scope.session = 50; }
+    if ($scope.session_pglen === undefined) { $scope.session = 50; }
 
     $scope.loadSet = function (id) {
         if (id === undefined) {
@@ -3803,15 +3803,17 @@ function SetEditCtrl($scope, $state, $compile, $templateCache, getImage, updateI
     $scope.iCol = passData.get("Selected");
 
     $scope.UpdateSet = function (sets) {
-        updateSets = sets;
-        updateSets.setImages = sets.setImages.concat(sets.delImages);
+        var clone = Object.assign({}, sets);
+        clone.setImages = clone.setImages.concat(clone.delImages);
 
-        $scope.entry = new updateImage(updateSets);
+        $scope.entry = new updateImage(clone);
         $scope.entry.$update(function (response) {
+          
             alert("Saved successfully...");
         }, function (error) {
             alert("Error getting orders from back-end : " + error);
         });
+        //sets.setImages.splice($scope.noOfImages);
     };
 
     $scope.uploadFiles = function (files) {
@@ -3879,7 +3881,6 @@ function SetEditCtrl($scope, $state, $compile, $templateCache, getImage, updateI
              $scope.iCol.setImages[index].position = index;
          });
 
-         //$state.go("app.sets_edit");
          //Jos : replace these #state.go's with single $compile
     };
 
