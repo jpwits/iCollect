@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace iCollect.NW.NW_Entities
+namespace iCollect.Entities
 {
     public partial class NorthwindContext : DbContext
     {
@@ -15,8 +15,11 @@ namespace iCollect.NW.NW_Entities
         {
         }
 
+        public virtual DbSet<CollectionSets> CollectionSets { get; set; }
+        public virtual DbSet<Collections> Collections { get; set; }
         public virtual DbSet<SetImages> SetImages { get; set; }
         public virtual DbSet<Sets> Sets { get; set; }
+        public virtual DbSet<UserParts> UserParts { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -29,7 +32,19 @@ namespace iCollect.NW.NW_Entities
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.HasAnnotation("ProductVersion", "2.2.6-servicing-10079");
+            modelBuilder.Entity<CollectionSets>(entity =>
+            {
+                entity.HasNoKey();
+            });
+
+            modelBuilder.Entity<Collections>(entity =>
+            {
+                entity.HasKey(e => e.CollectionId);
+
+                entity.Property(e => e.Name)
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+            });
 
             modelBuilder.Entity<SetImages>(entity =>
             {
@@ -54,6 +69,8 @@ namespace iCollect.NW.NW_Entities
                 entity.Property(e => e.Path)
                     .HasColumnName("path")
                     .HasMaxLength(250);
+
+                entity.Property(e => e.Position).HasColumnName("position");
 
                 entity.Property(e => e.SetId).HasColumnName("setId");
 
@@ -99,6 +116,20 @@ namespace iCollect.NW.NW_Entities
                     .HasMaxLength(50)
                     .IsUnicode(false);
             });
+
+            modelBuilder.Entity<UserParts>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.Property(e => e.UserId)
+                    .IsRequired()
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+            });
+
+            OnModelCreatingPartial(modelBuilder);
         }
+
+        partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }
 }

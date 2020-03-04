@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Cors;
-using iCollect.NW.NW_Entities;
+using iCollect.Entities;
 using System.IO;
 using System.Drawing;
 using System.Text;

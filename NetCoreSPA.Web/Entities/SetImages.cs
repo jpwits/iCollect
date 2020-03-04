@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace iCollect.NW.NW_Entities
+namespace iCollect.Entities
 {
     public partial class SetImages
     {
@@ -14,6 +14,7 @@ namespace iCollect.NW.NW_Entities
         public byte[] Thumbnail { get; set; }
         public byte[] Image { get; set; }
         public bool? IsActive { get; set; }
+        public int? Position { get; set; }
 
         public virtual Sets Set { get; set; }
     }

@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
-using iCollect.NW.NW_Entities;
+using iCollect.Entities;
 using iCollect;
 using TGIS.Web.DAL;
 

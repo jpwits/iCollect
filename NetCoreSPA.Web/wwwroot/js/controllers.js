@@ -3646,7 +3646,7 @@ function getCustomersCtrl($scope, getCustomersSrv) {
     var result = $scope.loadCustomers();
 }
 
-function SetCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compile, getSetSrv, passData, getUser) {
+function SetCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compile, $templateCache, getSetSrv, passData, $timeout) {
     $scope.session = passData.get("Session");
     if ($scope.session === undefined) { $scope.session = 50; }
 
@@ -3658,7 +3658,11 @@ function SetCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compile, ge
         $scope.selectedId = id;
 
         getSetSrv.get({ id: id }).$promise.then(function (response) {
-            passData.set("Selected", JSON.parse(JSON.stringify(response)));
+            var colList = JSON.parse(JSON.stringify(response));
+            colList.setImages = colList.setImages.sort(function (a, b) {
+                return a.position - b.position;
+            }).filter(img => img.isActive === true);
+            passData.set("Selected", colList);
             $state.go('app.sets_edit', { });
             },
             function(error) {
@@ -3666,9 +3670,7 @@ function SetCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compile, ge
             });
     };
 
-    //$scope.Delete = function (imageId) {
-    //    $scope.SetDetail.SetImage[imageId].IsActive = false;
-    //};
+   
   
     //$scope.submit = function () {
     //    if ($scope.form.file.$valid && $scope.file) {
@@ -3681,8 +3683,14 @@ function SetCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compile, ge
         DTColumnBuilder.newColumn(null).withTitle('Image').notSortable().withOption('width', '50%')//.withClass('td-large')
             .renderWith(function (data, type, full, meta) {
                 if (data.setImages.length > 0) {
+                    sortedImages = data.setImages.sort(function (a, b)
+                    {
+                        return a.position - b.position;
+                    });
+                    sortedImages = sortedImages.filter(img => img.isActive === true);
+
                     html = '';
-                    data.setImages.forEach(function (img, index) {
+                    sortedImages.forEach(function (img, index) {
                         if (img.isActive === true) {
                             //html += '<img style="border:2px solid orange" src="data:image/JPEG;base64,' + img.thumbnail + '"/>';
                             html += '<div class="iColcontainer">' +
@@ -3795,7 +3803,7 @@ function SetCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compile, ge
         ]);
 }
 
-function SetEditCtrl($scope, $state, getImage, updateImage, passData) {
+function SetEditCtrl($scope, $state, $compile, $templateCache, getImage, updateImage, passData, $timeout) {
     $scope.iCol = passData.get("Selected");
 
     $scope.UpdateSet = function (sets) {
@@ -3831,17 +3839,37 @@ function SetEditCtrl($scope, $state, getImage, updateImage, passData) {
             };
         }
         );
-        $state.go("app.sets_edit", { });
+        $state.go("app.sets_edit");
     };
 
-    $scope.ImageOrderUp = function (imageId) {
-        alert("Up to do");
+    $scope.ImageOrderUp = function (pos) {
+        if (pos > 0 && pos <= $scope.iCol.setImages.length-1) {
+            $scope.iCol.setImages[pos].position--;
+            $scope.iCol.setImages[pos - 1].position++;
+        }
+        $scope.iCol.setImages = $scope.iCol.setImages.sort(function (a, b) {
+            return a.position - b.position;
+        }).filter(img => img.isActive === true);
+        $state.go("app.sets_edit");
     };
 
-    $scope.ImageOrderDown = function (imageId) {
-        $scope.iCol.setImages[imageId].position = 1;
+    $scope.ImageOrderDown = function (pos) {
+        if (pos >= 0 && pos < $scope.iCol.setImages.length-1) {
+            $scope.iCol.setImages[pos].position++;
+            $scope.iCol.setImages[pos+1].position--;
+        }
+        $scope.iCol.setImages = $scope.iCol.setImages.sort(function (a, b) {
+            return a.position - b.position;
+        }).filter(img => img.isActive === true);
 
-        alert("Down to do");
+        $state.go("app.sets_edit");
+    };
+
+     $scope.Delete = function (imageId) {
+         $scope.iCol.SetImages[imageId].IsActive = false;
+         $scope.iCol.setImages = $scope.iCol.setImages.sort(function (a, b) {
+             return a.position - b.position;
+         }).filter(img => img.isActive === true);
     };
 
     function fromCamel(o) {

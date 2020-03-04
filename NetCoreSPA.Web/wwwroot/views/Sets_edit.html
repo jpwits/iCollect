@@ -52,10 +52,10 @@
                                     <tr>
                                         <td>Upload Images:</td>
                                         <td colspan="2">
-                                            <button ngf-select="uploadFiles($files)" multiple
-                                                    accept="image/*">
+                                            <input type="file" multiple="multiple" ngf-select="UploadFiles($files)" />
+                                            <!--<button ngf-select="uploadFiles($files)" multiple="multiple" accept="image/*">
                                                 Select Files
-                                            </button>
+                                            </button>-->
                                             <br>
                                             <br>Files:
                                             <ul>
@@ -63,24 +63,24 @@
                                                     {{file.name}}
                                                 </li>
                                             </ul>
-                                            <span class="progress" ng-show="progress >= 0">
-                                                <div style="width:{{progress}}%" ng-bind="progress + '%'"></div>
-                                            </span>
+                                            <!--<span class="progress" ng-show="progress >= 0">
+        <div style="width:{{progress}}%" ng-bind="progress + '%'"></div>
+    </span>-->
                                             {{errorMsg}}
                                         </td>
                                     </tr>
                                     <tr ng-repeat="(key, setImg) in iCol.setImages">
                                         <td>Images</td>
-                                        <td ng-if="setImg.isActive == true">
+                                        <td>
                                             <div>
                                                 <img ng-src="data:image/JPEG;base64,{{setImg.image}}">
                                             </div>
                                         </td>
                                         <td>
                                             <div>
-                                                <button ng-click="setImg.isActive = false" class="btn btn-primary dim btn-default pull-right" type="button"><i class="fa fa-trash"></i>Remove</button>
-                                                <button ng-click="ImageOrderUp(setImg.imageId)" class="btn btn-primary dim btn-default pull-right" type="button"><i class="fa fa-chevron-up"></i>Up</button>
-                                                <button ng-click="ImageOrderDown(setImg.imageId)" class="btn btn-primary dim btn-default pull-right" type="button"><i class="fa fa-chevron-down"></i>Down</button>
+                                                <button ng-click="setImg.isActive = false" class="btn btn-primary dim btn-default pull-right" type="button"><i class="fa fa-trash"></i>Remove</button>{{setImg.position}}
+                                                <button ng-click="ImageOrderUp(setImg.position)" class="btn btn-primary dim btn-default pull-right" type="button"><i class="fa fa-chevron-up"></i>Up </button>
+                                                <button ng-click="ImageOrderDown(setImg.position)" class="btn btn-primary dim btn-default pull-right" type="button"><i class="fa fa-chevron-down"></i>Down </button>
                                             </div>
                                         </td>
                                     </tr>
