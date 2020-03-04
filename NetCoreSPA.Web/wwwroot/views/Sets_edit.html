@@ -51,21 +51,18 @@
                                     </tr>
                                     <tr>
                                         <td>Upload Images:</td>
-                                        <td colspan="2">
-                                            <input type="file" multiple="multiple" ngf-select="UploadFiles($files)" />
-                                            <!--<button ngf-select="uploadFiles($files)" multiple="multiple" accept="image/*">
-                                                Select Files
-                                            </button>-->
-                                            <br>
+                                        <td>
+                                            <input type="file" multiple="multiple" ngf-select="uploadFiles($files)" /> <!--accept="image/*"-->
+                                            <!--<br>
                                             <br>Files:
                                             <ul>
                                                 <li ng-repeat="file in files" style="font:smaller">
                                                     {{file.name}}
                                                 </li>
-                                            </ul>
+                                            </ul>-->
                                             <!--<span class="progress" ng-show="progress >= 0">
-        <div style="width:{{progress}}%" ng-bind="progress + '%'"></div>
-    </span>-->
+                                                <div style="width:{{progress}}%" ng-bind="progress + '%'"></div>
+                                            </span>-->
                                             {{errorMsg}}
                                         </td>
                                     </tr>
@@ -73,14 +70,16 @@
                                         <td>Images</td>
                                         <td>
                                             <div>
+                                                
                                                 <img ng-src="data:image/JPEG;base64,{{setImg.image}}">
                                             </div>
                                         </td>
                                         <td>
                                             <div>
-                                                <button ng-click="setImg.isActive = false" class="btn btn-primary dim btn-default pull-right" type="button"><i class="fa fa-trash"></i>Remove</button>{{setImg.position}}
+                                                {{setImg.position}}
                                                 <button ng-click="ImageOrderUp(setImg.position)" class="btn btn-primary dim btn-default pull-right" type="button"><i class="fa fa-chevron-up"></i>Up </button>
                                                 <button ng-click="ImageOrderDown(setImg.position)" class="btn btn-primary dim btn-default pull-right" type="button"><i class="fa fa-chevron-down"></i>Down </button>
+                                                <button ng-click="Delete(setImg.position)" class="btn btn-primary dim btn-default pull-right" type="button"><i class="fa fa-trash"></i>Remove</button>
                                             </div>
                                         </td>
                                     </tr>
@@ -444,17 +443,25 @@
                 </div>
             </div>
         </div>-->
+
+    </div>
+    <div class="row">
+        <div class="col-lg-9">
+            <div class="wrapper wrapper-content animated fadeInRight">
+                <!--<h5>params</h5>
+                      <pre>{{$stateParams | json}}</pre>
+                      <h5>state</h5>
+                      <pre>{{$state.current | json}}</pre>-->
+                <h5>scope</h5>
+                <pre>{{$scope | json}}</pre>
+            </div>
+        </div>
     </div>
 </div>
 
-<!--<h5>params</h5>
-<pre>{{$stateParams | json}}</pre>
-<h5>state</h5>
-<pre>{{$state.current | json}}</pre>-->
-<!--<h5>scope</h5>
-<pre>{{$scope | json}}</pre>-->
 
-<br />
+
+
 
 
 

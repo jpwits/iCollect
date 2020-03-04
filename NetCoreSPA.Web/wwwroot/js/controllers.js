@@ -3647,7 +3647,7 @@ function getCustomersCtrl($scope, getCustomersSrv) {
 }
 
 function SetCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compile, $templateCache, getSetSrv, passData, $timeout) {
-    $scope.session = passData.get("Session");
+    $scope.session_pglen = passData.get("Session_PgLen");
     if ($scope.session === undefined) { $scope.session = 50; }
 
     $scope.loadSet = function (id) {
@@ -3657,8 +3657,11 @@ function SetCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compile, $t
 
         $scope.selectedId = id;
 
+        //testtable = this.DataTable();
+
         getSetSrv.get({ id: id }).$promise.then(function (response) {
             var colList = JSON.parse(JSON.stringify(response));
+            colList.delImages = colList.setImages.filter(img => img.isActive === false);
             colList.setImages = colList.setImages.sort(function (a, b) {
                 return a.position - b.position;
             }).filter(img => img.isActive === true);
@@ -3669,28 +3672,21 @@ function SetCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compile, $t
                 alert("Error getting orders from back-end : " + error);
             });
     };
-
-   
-  
-    //$scope.submit = function () {
-    //    if ($scope.form.file.$valid && $scope.file) {
-    //        $scope.upload($scope.file);
-    //    }
-    //};
    
     $scope.dtColumns1 = [
         //here We will add .withOption('name','column_name') for send column name to the server to filter and sort
         DTColumnBuilder.newColumn(null).withTitle('Image').notSortable().withOption('width', '50%')//.withClass('td-large')
             .renderWith(function (data, type, full, meta) {
                 if (data.setImages.length > 0) {
-                    sortedImages = data.setImages.sort(function (a, b)
+                    data.delImages = data.setImages.filter(img => img.isActive === false);
+
+                    data.setImages = data.setImages.sort(function (a, b)
                     {
                         return a.position - b.position;
-                    });
-                    sortedImages = sortedImages.filter(img => img.isActive === true);
+                    }).filter(img => img.isActive === true);
 
                     html = '';
-                    sortedImages.forEach(function (img, index) {
+                    data.setImages.forEach(function (img, index) {
                         if (img.isActive === true) {
                             //html += '<img style="border:2px solid orange" src="data:image/JPEG;base64,' + img.thumbnail + '"/>';
                             html += '<div class="iColcontainer">' +
@@ -3716,33 +3712,7 @@ function SetCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compile, $t
         DTColumnBuilder.newColumn("range", "Range").withOption('name', 'range'),
         DTColumnBuilder.newColumn("catCode", "CatCode").withOption('name', 'catCode')
     ];
-
-    $scope.SelectPart = (part) => {
-        if (part.currentTarget.checked === true) {
-            part.currentTarget.previousSibling.style.border = "2px solid green";
-        }
-        else 
-        {
-            part.currentTarget.previousSibling.style.border = "1px solid grey";
-        }
-       // element = angular.element("#" + part.id + " .ng-scope");
-        $state.go('app.sets');
-        //$compile(part.currentTarget.previousSibling)($scope);
-    };
-
-    $scope.dtInstanceCallback = (dtInstance) => {
-        dtInstance.DataTable.on('draw.dt', () => {
-            let elements = angular.element("#" + dtInstance.id + " .ng-scope");
-            angular.forEach(elements, (element) => {
-                $compile(element)($scope);
-            });
-        });
-
-        //dtInstance.DataTable.on('page.dt', () => {
-        //    console.log('Page');
-        //});
-    };
-
+   
     $scope.dtOptions1 = DTOptionsBuilder.newOptions().withOption('ajax', {
         dataSrc: "data",
         //url: "/home/getData",
@@ -3758,7 +3728,7 @@ function SetCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compile, $t
             //console.log("test");
         })
         .withPaginationType('full_numbers') // for get full pagination options // first / last / prev / next and page numbers
-        .withDisplayLength($scope.session) // Page size
+        .withDisplayLength($scope.session_pglen) // Page size
         .withOption('aaSorting', [0, 'asc']) // for default sorting column // here 0 means first column
         //You will only need $compile if the returned html contain directives that should be invoked, like ng - click and so on.Do that in the initComplete callback:
         //.withOption('initComplete', function () {
@@ -3771,7 +3741,7 @@ function SetCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compile, $t
         //})
         .withOption('drawCallback', function () {
             var table = this.DataTable();
-            passData.set("Session", table.page.len());
+            passData.set("Session_PgLen", table.page.len());
 
             //table.on('select', function () {
             //    alert('Selected!');
@@ -3801,18 +3771,42 @@ function SetCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compile, $t
                 }
             }
         ]);
+
+    $scope.dtInstanceCallback = (dtInstance) => {
+        dtInstance.DataTable.on('draw.dt', () => {
+            let elements = angular.element("#" + dtInstance.id + " .ng-scope");
+            angular.forEach(elements, (element) => {
+                $compile(element)($scope);
+            });
+        });
+
+        //dtInstance.DataTable.on('page.dt', () => {
+        //    console.log('Page');
+        //});
+    };
+
+    $scope.SelectPart = (part) => {
+        if (part.currentTarget.checked === true) {
+            part.currentTarget.previousSibling.style.border = "2px solid green";
+        }
+        else {
+            part.currentTarget.previousSibling.style.border = "1px solid grey";
+        }
+        // element = angular.element("#" + part.id + " .ng-scope");
+        // $state.go('app.sets');
+        //$compile(part.currentTarget.previousSibling)($scope);
+    };
+
 }
 
 function SetEditCtrl($scope, $state, $compile, $templateCache, getImage, updateImage, passData, $timeout) {
     $scope.iCol = passData.get("Selected");
 
     $scope.UpdateSet = function (sets) {
-        //sets.setImages[0].image = btoa(sets.setImages[0].image);
-        var set1 = fromCamel(sets);
-        var setStr = JSON.stringify(set1);
-        var setParse = JSON.parse(setStr);
+        updateSets = sets;
+        updateSets.setImages = sets.setImages.concat(sets.delImages);
 
-        $scope.entry = new updateImage(sets);
+        $scope.entry = new updateImage(updateSets);
         $scope.entry.$update(function (response) {
             alert("Saved successfully...");
         }, function (error) {
@@ -3833,13 +3827,19 @@ function SetEditCtrl($scope, $state, $compile, $templateCache, getImage, updateI
                     newImage.thumbnail = null;
                     newImage.image = imgSrc;
                     newImage.isActive = true;
+                   
+                    if ($scope.iCol.setImages.length == 0) {
+                        newImage.position = 0;
+                    }
+                    else {
+                        newImage.position = $scope.iCol.setImages[$scope.iCol.setImages.length - 1].position + 1;
+                    }
+
                     $scope.iCol.setImages.push(newImage);
                 }
                 );
             };
-        }
-        );
-        $state.go("app.sets_edit");
+        });
     };
 
     $scope.ImageOrderUp = function (pos) {
@@ -3850,7 +3850,7 @@ function SetEditCtrl($scope, $state, $compile, $templateCache, getImage, updateI
         $scope.iCol.setImages = $scope.iCol.setImages.sort(function (a, b) {
             return a.position - b.position;
         }).filter(img => img.isActive === true);
-        $state.go("app.sets_edit");
+       // $state.go("app.sets_edit");
     };
 
     $scope.ImageOrderDown = function (pos) {
@@ -3862,40 +3862,28 @@ function SetEditCtrl($scope, $state, $compile, $templateCache, getImage, updateI
             return a.position - b.position;
         }).filter(img => img.isActive === true);
 
-        $state.go("app.sets_edit");
+       // $state.go("app.sets_edit");
     };
 
-     $scope.Delete = function (imageId) {
-         $scope.iCol.SetImages[imageId].IsActive = false;
-         $scope.iCol.setImages = $scope.iCol.setImages.sort(function (a, b) {
-             return a.position - b.position;
-         }).filter(img => img.isActive === true);
+    $scope.Delete = function (pos) {
+        $scope.iCol.setImages[pos].isActive = false;
+        $scope.iCol.delImages.push($scope.iCol.setImages[pos]);
+        $scope.iCol.setImages.splice(pos,1);
+
+        //$scope.iCol.setImages[pos].isActive = false;
+        // $scope.iCol.setImages = $scope.iCol.setImages.sort(function (a, b) {
+        //     return a.position - b.position;
+        // }).filter(img => img.isActive === true);
+
+         $scope.iCol.setImages.forEach(function (image, index) {
+             $scope.iCol.setImages[index].position = index;
+         });
+
+         //$state.go("app.sets_edit");
+         //Jos : replace these #state.go's with single $compile
     };
 
-    function fromCamel(o) {
-        var newO, origKey, newKey, value;
-        if (o instanceof Array) {
-            return o.map(function (value) {
-                if (typeof value === "object") {
-                    value = fromCamel(value);
-                }
-                return value;
-            });
-        } else {
-            newO = {};
-            for (origKey in o) {
-                if (o.hasOwnProperty(origKey)) {
-                    newKey = (origKey.charAt(0).toUpperCase() + origKey.slice(1) || origKey).toString();
-                    value = o[origKey];
-                    if (value instanceof Array || (value !== null && value !== undefined && value.constructor === Object)) {
-                        value = fromCamel(value);
-                    }
-                    newO[newKey] = value;
-                }
-            }
-        }
-        return newO;
-    }
+ 
 }
 
 /*
