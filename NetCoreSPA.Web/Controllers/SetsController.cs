@@ -48,24 +48,7 @@ namespace iCollect.ControllersAPI
             using (NorthwindContext dc = new NorthwindContext())
             {
                 recordsTotal = dc.Sets.Count();
-                allSets = dc.Sets.Include(a => a.SetImages).Skip(skip).Take(pageSize).ToList();
-
-                foreach (var set in allSets)
-                {
-                    if (set.SetImages.Count > 0)
-                    {
-                        foreach (var setImg in set.SetImages)
-                        {
-                            if (setImg.Path != "NULL")
-                            {
-                                //Image image = Image.FromFile(setImg.Path);
-                                Image image = Image.FromStream(new MemoryStream(setImg.Image));
-                                Image thumb = image.GetThumbnailImage(120, 120, () => false, IntPtr.Zero);
-                                setImg.Thumbnail = ImageToByteArray(thumb);
-                            }
-                        }
-                    }
-                }
+                allSets = dc.Sets.Include(a => a.SetImages)/*.OrderByDescending(a => a.Description)*/.Skip(skip).Take(pageSize).ToList();
             }
             return Json(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = allSets });
         }
@@ -168,23 +151,7 @@ namespace iCollect.ControllersAPI
             var set = await _context.Sets
                 .Include(a => a.SetImages)
                 .FirstOrDefaultAsync(m => m.SetId == id);
-            //if (set == null)
-            //{
-            //    return NotFound();
-            //}
-            //else
-            //{
-            //    if (set.SetImages.Count > 0)
-            //    {
-            //        foreach (var setImg in set.SetImages)
-            //        {
-            //            if (setImg.Path != "NULL")
-            //            {
-            //                setImg.Image = ImageToByteArray(Image.FromFile(setImg.Path));
-            //            }
-            //        }
-            //    }
-            //}
+
             return new JsonResult(set);
         }
 
@@ -217,6 +184,20 @@ namespace iCollect.ControllersAPI
        // public async Task<int> Edit(int id)//, [FromBody] Sets sets)
         public async Task<int> Edit([FromBody] Sets data)
         {
+            if (data.SetImages.Count > 0)
+            {
+                foreach (var setImg in data.SetImages)
+                {
+                    if (setImg.Path != "NULL")
+                    {
+                        //Image image = Image.FromFile(setImg.Path);
+                        Image image = Image.FromStream(new MemoryStream(setImg.Image));
+                        Image thumb = image.GetThumbnailImage(120, 120, () => false, IntPtr.Zero);
+                        setImg.Thumbnail = ImageToByteArray(thumb);
+                    }
+                }
+            }
+
             _context.Update(data);
             int rc = await _context.SaveChangesAsync();
             return rc;

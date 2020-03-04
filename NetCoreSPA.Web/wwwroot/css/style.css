@@ -8587,10 +8587,10 @@ form .progress {
 
 .iColcontainer {
     position: relative;
-    /*width: 100px;
-    height: 100px;*/
+    /*width: 120px;
+    height: 120px;*/
     float: left;
-    margin-left: 10px;
+    margin-right: 10px;
 }
 
 .iColcheckbox {
