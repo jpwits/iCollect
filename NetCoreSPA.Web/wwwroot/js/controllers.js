@@ -3689,13 +3689,14 @@ function SetCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compile, $t
                             //html += '<img style="border:2px solid orange" src="data:image/JPEG;base64,' + img.thumbnail + '"/>';
                             html += '<div class="iColcontainer">';
                             if (index === 0) {
-                                html += '<img style="border:4px solid grey" id="ImgId' + img.id + img.setId + '" ng-src="data:' + img.type + ';base64,' + img.thumbnail + '"/>';
+                                html += '<img style="margin-right : 25px;border:4px solid grey" id="ImgId' + img.id + img.setId + '" ng-src="data:' + img.type + ';base64,' + img.thumbnail + '"/>';
+                                html += '<input ng-click= "SelectPart($event)" type="checkbox" class="iColcheckbox"/>';
                             }
                             else {
-                                html += '<img style="border:1px solid grey" id="ImgId' + img.id + img.setId + '" ng-src="data:' + img.type + ';base64,' + img.thumbnail + '"/>';
+                                html += '<img style="width:80%;height:80%;border:2px solid grey " id="ImgId' + img.id + img.setId + '" ng-src="data:' + img.type + ';base64,' + img.thumbnail + '"/>';
+                                html += '<input ng-click= "SelectPart($event)" type="checkbox" class="iColcheckbox"/>';
                             }
-                            html += '<input ng-click= "SelectPart($event)" type="checkbox" class="iColcheckbox"/>' +
-                                '</div>';
+                            html +='</div>';
                         }
                     });
                     return html;
