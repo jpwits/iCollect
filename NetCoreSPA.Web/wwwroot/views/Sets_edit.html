@@ -52,7 +52,7 @@
                                     <tr>
                                         <td>Upload Images:</td>
                                         <td>
-                                            <input type="file" multiple="multiple" ngf-select="uploadFiles($files)" /> <!--accept="image/*"-->
+                                            <input type="file" multiple="multiple" ngf-select="uploadFiles($files, iCol)" /> <!--accept="image/*"-->
                                             <!--<br>
                                             <br>Files:
                                             <ul>
@@ -71,7 +71,7 @@
                                         <td>Images</td>
                                         <td>
                                             <div>
-                                                <img ng-src="data:image/JPEG;base64,{{setImg.image}}">
+                                                <img ng-src="data:{{setImg.type}};base64,{{setImg.image}}">
                                             </div>
                                         </td>
                                         <td>

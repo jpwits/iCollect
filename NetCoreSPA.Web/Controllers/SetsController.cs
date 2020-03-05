@@ -11,6 +11,7 @@ using System.IO;
 using System.Drawing;
 using System.Text;
 using Newtonsoft.Json;
+using System.Drawing.Imaging;
 
 namespace iCollect.ControllersAPI
 {
@@ -48,7 +49,7 @@ namespace iCollect.ControllersAPI
             using (NorthwindContext dc = new NorthwindContext())
             {
                 recordsTotal = dc.Sets.Count();
-                allSets = dc.Sets.Include(a => a.SetImages)/*.OrderByDescending(a => a.Description)*/.Skip(skip).Take(pageSize).ToList();
+                allSets = dc.Sets.Include(a => a.SetImages).OrderByDescending(a => a.Description).Skip(skip).Take(pageSize).ToList();
             }
             return Json(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = allSets });
         }
@@ -83,7 +84,7 @@ namespace iCollect.ControllersAPI
                         {
                             Image image = Image.FromFile(setImg.Path);
                             Image thumb = image.GetThumbnailImage(120, 120, () => false, IntPtr.Zero);
-                            setImg.Thumbnail = ImageToByteArray(thumb);
+                            setImg.Thumbnail = ImageToByteArray(thumb,"image/unk");
                         }
                     }
                 }
@@ -108,12 +109,18 @@ namespace iCollect.ControllersAPI
             return new JsonResult(new SetImages());
         }
 
-        public byte[] ImageToByteArray(System.Drawing.Image imageIn)
+        public byte[] ImageToByteArray(System.Drawing.Image imageIn, string type)
         {
-
             using (var ms = new MemoryStream())
             {
-                imageIn.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
+                if (type == "image/gif")
+                {
+                    imageIn.Save(ms, System.Drawing.Imaging.ImageFormat.Gif);
+                }
+                else
+                {
+                    imageIn.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
+                }
                 return ms.ToArray();
             }
         }
@@ -193,7 +200,7 @@ namespace iCollect.ControllersAPI
                         //Image image = Image.FromFile(setImg.Path);
                         Image image = Image.FromStream(new MemoryStream(setImg.Image));
                         Image thumb = image.GetThumbnailImage(120, 120, () => false, IntPtr.Zero);
-                        setImg.Thumbnail = ImageToByteArray(thumb);
+                        setImg.Thumbnail = ImageToByteArray(thumb, setImg.Type);
                     }
                 }
             }
@@ -295,3 +302,12 @@ namespace iCollect.ControllersAPI
 
     }
 }
+
+
+//string imgType = "image/unknown";
+//var imgguid = imageIn.RawFormat.Guid;
+//foreach (ImageCodecInfo codec in ImageCodecInfo.GetImageDecoders())
+//{
+//    if (codec.FormatID == imgguid)
+//        imgType =  codec.MimeType;
+//}

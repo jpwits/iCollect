@@ -3689,10 +3689,10 @@ function SetCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compile, $t
                             //html += '<img style="border:2px solid orange" src="data:image/JPEG;base64,' + img.thumbnail + '"/>';
                             html += '<div class="iColcontainer">';
                             if (index === 0) {
-                                html += '<img style="border:4px solid grey" id="ImgId' + img.id + img.setId + '" src="data:image/JPEG;base64,' + img.thumbnail + '"/>';
+                                html += '<img style="border:4px solid grey" id="ImgId' + img.id + img.setId + '" ng-src="data:' + img.type + ';base64,' + img.thumbnail + '"/>';
                             }
                             else {
-                                html += '<img style="border:1px solid grey" id="ImgId' + img.id + img.setId + '" src="data:image/JPEG;base64,' + img.thumbnail + '"/>';
+                                html += '<img style="border:1px solid grey" id="ImgId' + img.id + img.setId + '" ng-src="data:' + img.type + ';base64,' + img.thumbnail + '"/>';
                             }
                             html += '<input ng-click= "SelectPart($event)" type="checkbox" class="iColcheckbox"/>' +
                                 '</div>';
@@ -3819,30 +3819,24 @@ function SetEditCtrl($scope, $state, $compile, $templateCache, getImage, updateI
         //sets.setImages.splice($scope.noOfImages);
     };
 
-    $scope.uploadFiles = function (files) {
+    $scope.uploadFiles = function (files, iCol) {
         files.forEach(function (file, index) {
             var fReader = new FileReader();
             fReader.readAsDataURL(file);
             fReader.onloadend = function (event) {
-                var imgSrc = event.target.result;
-                imgSrc = imgSrc.replace('data:image/jpeg;base64,', '');
-                imgSrc = imgSrc.replace('data:image/png;base64,', '');
-                getImage.get({ id: 0 }).$promise.then(function (response) {
-                    var newImage = JSON.parse(JSON.stringify(response));
-                    newImage.thumbnail = null;
-                    newImage.image = imgSrc;
-                    newImage.isActive = true;
+                newImage = new getImage();
+                newImage.type = event.target.result.split(';')[0].split(':')[1];
+                newImage.image = event.target.result.replace('data:' + newImage.type + ';base64,', '');
+                newImage.thumbnail = null;
+                newImage.isActive = true;
 
-                    if ($scope.iCol.setImages.length === 0) {
-                        newImage.position = 0;
-                    }
-                    else {
-                        newImage.position = $scope.iCol.setImages[$scope.iCol.setImages.length - 1].position + 1;
-                    }
-
-                    $scope.iCol.setImages.push(newImage);
+                if ($scope.iCol.setImages.length === 0) {
+                    newImage.position = 0;
                 }
-                );
+                else {
+                    newImage.position = $scope.iCol.setImages[$scope.iCol.setImages.length - 1].position + 1;
+                }
+                $scope.iCol.setImages.push(newImage);
             };
         });
     };

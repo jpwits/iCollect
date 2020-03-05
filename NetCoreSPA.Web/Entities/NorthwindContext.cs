@@ -78,6 +78,11 @@ namespace iCollect.Entities
                     .HasColumnName("thumbnail")
                     .HasColumnType("image");
 
+                entity.Property(e => e.Type)
+                    .HasColumnName("type")
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
                 entity.HasOne(d => d.Set)
                     .WithMany(p => p.SetImages)
                     .HasForeignKey(d => d.SetId)

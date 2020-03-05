@@ -15,6 +15,7 @@ namespace iCollect.Entities
         public byte[] Image { get; set; }
         public bool? IsActive { get; set; }
         public int? Position { get; set; }
+        public string Type { get; set; }
 
         public virtual Sets Set { get; set; }
     }
