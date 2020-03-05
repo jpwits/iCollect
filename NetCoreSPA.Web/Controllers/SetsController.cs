@@ -198,8 +198,11 @@ namespace iCollect.ControllersAPI
                     if (setImg.Path != "NULL")
                     {
                         //Image image = Image.FromFile(setImg.Path);
+                       
                         Image image = Image.FromStream(new MemoryStream(setImg.Image));
-                        Image thumb = image.GetThumbnailImage(120, 120, () => false, IntPtr.Zero);
+
+                        var aspect = image.Width / image.Height;
+                        Image thumb = image.GetThumbnailImage(120, 120/aspect, () => false, IntPtr.Zero);
                         setImg.Thumbnail = ImageToByteArray(thumb, setImg.Type);
                     }
                 }
