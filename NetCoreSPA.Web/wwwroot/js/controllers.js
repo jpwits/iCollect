@@ -3692,7 +3692,7 @@ function SetCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compile, $t
                             //html += '<img style="border:2px solid orange" src="data:image/JPEG;base64,' + img.thumbnail + '"/>';
                             html += '<div class="iColcontainer">';
                             if (index === 0) {
-                                html += '<img style="margin-right : 25px;border:4px solid grey" id="ImgId' + img.id + img.setId + '" ng-src="data:' + img.type + ';base64,' + img.thumbnail + '"/>';
+                                html += '<img style="margin-right : 25px;border:2px solid grey" id="ImgId' + img.id + img.setId + '" ng-src="data:' + img.type + ';base64,' + img.thumbnail + '"/>';
                                 html += '<input ng-click= "SelectPart($event)" type="checkbox" class="iColcheckbox"/>';
                             }
                             else {
@@ -3841,7 +3841,7 @@ function SetEditCtrl($scope, $state, $compile, $templateCache, getImage, updateI
                 }
                 $scope.iCol.setImages.push(newImage);
 
-                if (index === files.length - 1) {
+                if (newImage.position === files.length-1) {
                     $state.go("app.sets_edit");
                 }
             };
