@@ -3653,23 +3653,26 @@ function SetCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compile, $t
 
     $scope.loadSet = function (id) {
         if (id === undefined) {
-            id = 0;
-        }
-
-        $scope.selectedId = id;
-
-        getSetSrv.get({ id: id }).$promise.then(function (response) {
-            var colList = JSON.parse(JSON.stringify(response));
-            colList.delImages = colList.setImages.filter(img => img.isActive === false);
-            colList.setImages = colList.setImages.sort(function (a, b) {
-                return a.position - b.position;
-            }).filter(img => img.isActive === true);
-            passData.set("Selected", colList);
+            var iCol = new getSetSrv();
+            iCol.setImages = [];
+            iCol.delImages = [];
+            passData.set("Selected", iCol);
             $state.go('app.sets_edit', {});
-        },
+        }
+        else {
+            getSetSrv.get({ id: id }).$promise.then(function (response) {
+                var iCol = JSON.parse(JSON.stringify(response));
+                iCol.delImages = iCol.setImages.filter(img => img.isActive === false);
+                iCol.setImages = iCol.setImages.sort(function (a, b) {
+                    return a.position - b.position;
+                }).filter(img => img.isActive === true);
+                passData.set("Selected", iCol);
+                $state.go('app.sets_edit', {});
+            },
             function (error) {
                 alert("Error getting orders from back-end : " + error);
             });
+        }
     };
 
     $scope.dtColumns1 = [
@@ -3696,7 +3699,7 @@ function SetCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compile, $t
                                 html += '<img style="width:80%;height:80%;border:2px solid grey " id="ImgId' + img.id + img.setId + '" ng-src="data:' + img.type + ';base64,' + img.thumbnail + '"/>';
                                 html += '<input ng-click= "SelectPart($event)" type="checkbox" class="iColcheckbox"/>';
                             }
-                            html +='</div>';
+                            html += '</div>';
                         }
                     });
                     return html;
@@ -3794,7 +3797,7 @@ function SetCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compile, $t
             part.currentTarget.previousSibling.style.border = "2px solid green";
         }
         else {
-            part.currentTarget.previousSibling.style.border = "1px solid grey";
+            part.currentTarget.previousSibling.style.border = "2px solid grey";
         }
         // element = angular.element("#" + part.id + " .ng-scope");
         // $state.go('app.sets');
@@ -3809,7 +3812,6 @@ function SetEditCtrl($scope, $state, $compile, $templateCache, getImage, updateI
     $scope.UpdateSet = function (sets) {
         var clone = Object.assign({}, sets);
         clone.setImages = clone.setImages.concat(clone.delImages);
-
         $scope.entry = new updateImage(clone);
         $scope.entry.$update(function (response) {
 
@@ -3838,6 +3840,10 @@ function SetEditCtrl($scope, $state, $compile, $templateCache, getImage, updateI
                     newImage.position = $scope.iCol.setImages[$scope.iCol.setImages.length - 1].position + 1;
                 }
                 $scope.iCol.setImages.push(newImage);
+
+                if (index === files.length - 1) {
+                    $state.go("app.sets_edit");
+                }
             };
         });
     };

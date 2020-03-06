@@ -66,7 +66,7 @@ namespace iCollect.ControllersAPI
 
             // GET: Sets
         [HttpGet, Route("GetSets/{start}/{length}")]
-        public List<Sets> Index(int start, int length)
+        public List<Sets> GetSets(int start, int length)
         {
             var qry = _context.Sets
                 .Include(a=>a.SetImages)
@@ -147,14 +147,8 @@ namespace iCollect.ControllersAPI
         }
 
         [HttpGet, Route("GetSet/{id}")]
-        public async Task<IActionResult> Details(int id)
+        public async Task<IActionResult> GetSet(int id)
         {
-            if (id == 0)
-            {
-                var newset = _context.Sets.FirstOrDefault();
-                return new JsonResult(newset);
-            }
-
             var set = await _context.Sets
                 .Include(a => a.SetImages)
                 .FirstOrDefaultAsync(m => m.SetId == id);
@@ -197,12 +191,12 @@ namespace iCollect.ControllersAPI
                 {
                     if (setImg.Path != "NULL")
                     {
-                        //Image image = Image.FromFile(setImg.Path);
-                       
                         Image image = Image.FromStream(new MemoryStream(setImg.Image));
 
-                        var aspect = image.Width / image.Height;
-                        Image thumb = image.GetThumbnailImage(120, 120/aspect, () => false, IntPtr.Zero);
+                        double aspect = (double)image.Width / image.Height;
+                        var height = Convert.ToInt32(120 / aspect);
+
+                        Image thumb = image.GetThumbnailImage(120, height, () => false, IntPtr.Zero);
                         setImg.Thumbnail = ImageToByteArray(thumb, setImg.Type);
                     }
                 }
@@ -212,41 +206,6 @@ namespace iCollect.ControllersAPI
             int rc = await _context.SaveChangesAsync();
             return rc;
         }
-
-        // POST: Sets/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPut]
-        // [ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Edit(int id, /*[Bind("setId")]*/ [FromBody] Sets sets)
-        //{
-        //    if (id != ((Sets)sets).SetId)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    if (ModelState.IsValid)
-        //    {
-        //        try
-        //        {
-        //            _context.Update((Sets)sets);
-        //            await _context.SaveChangesAsync();
-        //        }
-        //        catch (DbUpdateConcurrencyException)
-        //        {
-        //            if (!SetsExists(((Sets)sets).SetId))
-        //            {
-        //                return NotFound();
-        //            }
-        //            else
-        //            {
-        //                throw;
-        //            }
-        //        }
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    return View(sets);
-        //}
 
         // GET: Sets/Delete/5
         [HttpPost, Route("Delete/{id}")]
@@ -281,36 +240,6 @@ namespace iCollect.ControllersAPI
         {
             return _context.Sets.Any(e => e.SetId == id);
         }
-
-        //public static byte[] GetBytesFromFile(string fullFilePath)
-        //{
-        //    // this method is limited to 2^32 byte files (4.2 GB)
-
-        //    FileStream fs = File.OpenRead(fullFilePath);
-        //    try
-        //    {
-        //        byte[] bytes = new byte[fs.Length];
-        //        fs.Read(bytes, 0, Convert.ToInt32(fs.Length));
-        //        fs.Close();
-        //        return bytes;
-        //    }
-        //    finally
-        //    {
-        //        fs.Close();
-        //    }
-
-        //}
-
-        // GET: Sets/Details/5
-
     }
 }
 
-
-//string imgType = "image/unknown";
-//var imgguid = imageIn.RawFormat.Guid;
-//foreach (ImageCodecInfo codec in ImageCodecInfo.GetImageDecoders())
-//{
-//    if (codec.FormatID == imgguid)
-//        imgType =  codec.MimeType;
-//}
