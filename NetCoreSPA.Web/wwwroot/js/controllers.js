@@ -3588,65 +3588,6 @@ function passwordMeterCtrl($scope) {
 
 }
 
-function getProjectsCtrl($scope, getProductsSrv) {
-    var txn = this;
-
-    $scope.loadProjects = function () {
-        getProductsSrv.query().$promise.then(function (response) {
-
-            $scope.products = JSON.parse(JSON.stringify(response));
-        }, function (error) {
-            alert("Error getting products from back-end : " + error);
-        });
-    };
-
-    var result = $scope.loadProjects();
-}
-
-
-function getProductsCtrl($scope, getProductsSrv) {
-    var txn = this;
-
-    $scope.loadProducts = function () {
-        getProductsSrv.query().$promise.then(function (response) {
-
-            $scope.products = JSON.parse(JSON.stringify(response));
-        }, function (error) {
-            alert("Error getting products from back-end : " + error);
-        });
-    };
-
-    var result = $scope.loadProducts();
-}
-
-function getOrdersCtrl($scope, getOrdersSrv) {
-    var txn = this;
-
-    $scope.loadOrders = function () {
-        getOrdersSrv.query().$promise.then(function (response) {
-            $scope.orders = JSON.parse(JSON.stringify(response));
-        }, function (error) {
-            alert("Error getting orders from back-end : " + error);
-        });
-    };
-    var result = $scope.loadOrders();
-}
-
-function getCustomersCtrl($scope, getCustomersSrv) {
-    var txn = this;
-
-    $scope.loadCustomers = function () {
-        getCustomersSrv.query().$promise.then(function (response) {
-
-            $scope.customers = JSON.parse(JSON.stringify(response));
-        }, function (error) {
-            alert("Error getting orders from back-end : " + error);
-        });
-    };
-
-    var result = $scope.loadCustomers();
-}
-
 function SetCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compile, $templateCache, getSetSrv, passData, $timeout) {
     $scope.session_pglen = passData.get("Session_PgLen");
     if ($scope.session_pglen === undefined) { $scope.session_pglen = 50; }
@@ -3674,6 +3615,53 @@ function SetCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compile, $t
             });
         }
     };
+    //$scope.dtColumnsjs = {
+    //    "columns": [
+    //        {
+    //            "title": "Image",
+    //            "data": "image",
+    //            "width": "50%",
+    //            "Sortable": "false",
+    //            "render": function (data) {
+    //                if (data.setImages.length > 0) {
+    //                    data.delImages = data.setImages.filter(img => img.isActive === false);
+
+    //                    data.setImages = data.setImages.sort(function (a, b) {
+    //                        return a.position - b.position;
+    //                    }).filter(img => img.isActive === true);
+
+    //                    html = '';
+    //                    data.setImages.forEach(function (img, index) {
+    //                        if (img.isActive === true) {
+    //                            html += '<div class="iColcontainer">';
+    //                            if (index === 0) {
+    //                                html += '<img style="margin-right : 25px;border:2px solid grey" id="ImgId' + img.id + img.setId + '" ng-src="data:' + img.type + ';base64,' + img.thumbnail + '"/>';
+    //                                html += '<input ng-click= "SelectPart($event)" type="checkbox" class="iColcheckbox"/>';
+    //                            }
+    //                            else {
+    //                                html += '<img style="width:80%;height:80%;border:2px solid grey " id="ImgId' + img.id + img.setId + '" ng-src="data:' + img.type + ';base64,' + img.thumbnail + '"/>';
+    //                                html += '<input ng-click= "SelectPart($event)" type="checkbox" class="iColcheckbox"/>';
+    //                            }
+    //                            html += '</div>';
+    //                        }
+    //                    });
+    //                    return html;
+    //                }
+    //                else {
+    //                    return null;
+    //                }
+    //            }
+    //        },
+    //        {
+    //            "data": "id", "orderable": false,
+    //            "render": function (id) {
+    //                return '<a ng-click="loadSet(' + data + ')">' + data + '</a>';
+
+    //            }
+    //        }
+    //    ]
+    //}
+
 
     $scope.dtColumns1 = [
         //here We will add .withOption('name','column_name') for send column name to the server to filter and sort
@@ -3689,10 +3677,9 @@ function SetCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compile, $t
                     html = '';
                     data.setImages.forEach(function (img, index) {
                         if (img.isActive === true) {
-                            //html += '<img style="border:2px solid orange" src="data:image/JPEG;base64,' + img.thumbnail + '"/>';
                             html += '<div class="iColcontainer">';
                             if (index === 0) {
-                                html += '<img style="margin-right : 25px;border:2px solid grey" id="ImgId' + img.id + img.setId + '" ng-src="data:' + img.type + ';base64,' + img.thumbnail + '"/>';
+                                html += '<img ng-click="loadSet(' + data.setId + ')" style="margin-right : 25px;border:2px solid grey" id="ImgId' + img.id + img.setId + '" ng-src="data:' + img.type + ';base64,' + img.thumbnail + '"/>';
                                 html += '<input ng-click= "SelectPart($event)" type="checkbox" class="iColcheckbox"/>';
                             }
                             else {
@@ -3709,10 +3696,10 @@ function SetCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compile, $t
                 }
             }),
 
-        DTColumnBuilder.newColumn("setId", "Set Id").withOption('name', 'setId').
-            renderWith(function (data, type, full, meta) {
-                return '<a ng-click="loadSet(' + data + ')">' + data + '</a>';
-            }),
+        //DTColumnBuilder.newColumn("setId", "Set Id").withOption('name', 'setId').
+        //    renderWith(function (data, type, full, meta) {
+        //        return '<a ng-click="loadSet(' + data + ')">' + data + '</a>';
+        //    }),
         DTColumnBuilder.newColumn("year", "Year").withOption('name', 'year'),
         DTColumnBuilder.newColumn("description", "Description").withOption('name', 'description'),
         DTColumnBuilder.newColumn("date", "Date").withOption('name', 'date'),
@@ -3720,15 +3707,23 @@ function SetCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compile, $t
         DTColumnBuilder.newColumn("catCode", "CatCode").withOption('name', 'catCode')
     ];
 
-    $scope.dtOptions1 = DTOptionsBuilder.newOptions().withOption('ajax', {
-        dataSrc: "data",
-        //url: "/home/getData",
-        url: "api/Sets/getData",
-        type: "POST"
-    })
+    $scope.dtOptions1 = DTOptionsBuilder.newOptions()
+        .withOption('ajax', {
+            dataSrc: "data",
+            //url: "/home/getData",
+            url: "api/Sets/getData",
+            type: "POST"
+        })
+        //.withOption('ajax', function (data, callback, settings) {
+        //    var test = getData().$promise.then(function (response) {
+        //        var iCol = JSON.parse(JSON.stringify(response));
+        //        return test;
+        //    });
+        //})
         .withOption('processing', true) //for show progress bar
         .withOption('serverSide', true) // for server side processing
         .withOption('responsive', true)
+        .withOption('stateSave', true)
         .withOption('createdRow', function (row, data, dataIndex) {
             // Recompiling so we can bind Angular directive to the DT
             $compile(angular.element(row).contents())($scope);
@@ -3736,15 +3731,15 @@ function SetCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compile, $t
         })
         .withPaginationType('full_numbers') // for get full pagination options // first / last / prev / next and page numbers
         .withDisplayLength($scope.session_pglen) // Page size
-        .withOption('aaSorting', [0, 'asc']) // for default sorting column // here 0 means first column
+        .withOption('aaSorting', [1, 'asc']) // for default sorting column // here 0 means first column
         //You will only need $compile if the returned html contain directives that should be invoked, like ng - click and so on.Do that in the initComplete callback:
         //.withOption('initComplete', function () {
-        //    //if ($scope.toggleInit === undefined) 
-        //    //{
-        //    //    $compile(angular.element('#entry-grid'))($scope);
-        //    //}
-        //    //$scope.toggleInit = true;
-        //    // $apply(angular.element('#entry-grid'));
+        //    if ($scope.toggleInit === undefined) 
+        //    {
+        //        $compile(angular.element('#entry-grid'))($scope);
+        //    }
+        //    $scope.toggleInit = true;
+        //     $apply(angular.element('#entry-grid'));
         //})
         .withOption('drawCallback', function () {
             var table = this.DataTable();
@@ -3755,9 +3750,9 @@ function SetCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compile, $t
             //    // Enable/disable buttons here...
             //});
 
-            table.on('page.dt', function () {
-                console.log('Page');
-            });
+            //table.on('page.dt', function () {
+            //    console.log('Page');
+            //});
         })
         .withDOM('<"html5buttons"B>lTfgitp')
         .withButtons([
@@ -3803,6 +3798,8 @@ function SetCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compile, $t
         // $state.go('app.sets');
         //$compile(part.currentTarget.previousSibling)($scope);
     };
+
+    
 
 }
 
@@ -3938,9 +3935,6 @@ angular
     .controller('datamapsCtrl', datamapsCtrl)
     .controller('pdfCtrl', pdfCtrl)
     .controller('passwordMeterCtrl', passwordMeterCtrl)
-    .controller('getOrdersCtrl', getOrdersCtrl)
-    .controller('getProductsCtrl', getProductsCtrl)
-    .controller('getCustomersCtrl', getCustomersCtrl)
     .controller('SetCtrl', SetCtrl)
     .controller('SetEditCtrl', SetEditCtrl)
     .controller("HelpDeskCtrl", HelpDeskCtrl);

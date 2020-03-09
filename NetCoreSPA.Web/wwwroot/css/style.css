@@ -8591,7 +8591,7 @@ form .progress {
     height: 120px;*/
     float: left;
     //vertical-align:bottom;
-    margin-right: 10px;
+    margin-right: -10px;
 }
 
 .iColcheckbox {
