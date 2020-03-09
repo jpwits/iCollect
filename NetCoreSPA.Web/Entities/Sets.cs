@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace iCollect.NW.NW_Entities
+namespace iCollect.Entities
 {
     public partial class Sets
     {

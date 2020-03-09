@@ -6,11 +6,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Cors;
-using iCollect.NW.NW_Entities;
+using iCollect.Entities;
 using System.IO;
 using System.Drawing;
 using System.Text;
 using Newtonsoft.Json;
+using System.Drawing.Imaging;
 
 namespace iCollect.ControllersAPI
 {
@@ -48,28 +49,12 @@ namespace iCollect.ControllersAPI
             using (NorthwindContext dc = new NorthwindContext())
             {
                 recordsTotal = dc.Sets.Count();
-                allSets = dc.Sets.Include(a => a.SetImages).Skip(skip).Take(pageSize).ToList();
-
-                foreach (var set in allSets)
-                {
-                    if (set.SetImages.Count > 0)
-                    {
-                        foreach (var setImg in set.SetImages)
-                        {
-                            if (setImg.Path != "NULL")
-                            {
-                                //Image image = Image.FromFile(setImg.Path);
-                                Image image = Image.FromStream(new MemoryStream(setImg.Image));
-                                Image thumb = image.GetThumbnailImage(120, 120, () => false, IntPtr.Zero);
-                                setImg.Thumbnail = ImageToByteArray(thumb);
-                            }
-                        }
-                    }
-                }
+                allSets = dc.Sets.Include(a => a.SetImages).OrderByDescending(a => a.Description).Skip(skip).Take(pageSize).ToList();
             }
             return Json(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = allSets });
         }
 
+        
         //public byte[] ImageToByteArray(System.Drawing.Image imageIn)
         //{
         //    using (var ms = new MemoryStream())
@@ -79,9 +64,9 @@ namespace iCollect.ControllersAPI
         //    }
         //}
 
-        // GET: Sets
+            // GET: Sets
         [HttpGet, Route("GetSets/{start}/{length}")]
-        public List<Sets> Index(int start, int length)
+        public List<Sets> GetSets(int start, int length)
         {
             var qry = _context.Sets
                 .Include(a=>a.SetImages)
@@ -99,7 +84,7 @@ namespace iCollect.ControllersAPI
                         {
                             Image image = Image.FromFile(setImg.Path);
                             Image thumb = image.GetThumbnailImage(120, 120, () => false, IntPtr.Zero);
-                            setImg.Thumbnail = ImageToByteArray(thumb);
+                            setImg.Thumbnail = ImageToByteArray(thumb,"image/unk");
                         }
                     }
                 }
@@ -124,12 +109,18 @@ namespace iCollect.ControllersAPI
             return new JsonResult(new SetImages());
         }
 
-        public byte[] ImageToByteArray(System.Drawing.Image imageIn)
+        public byte[] ImageToByteArray(System.Drawing.Image imageIn, string type)
         {
-
             using (var ms = new MemoryStream())
             {
-                imageIn.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
+                if (type == "image/gif")
+                {
+                    imageIn.Save(ms, System.Drawing.Imaging.ImageFormat.Gif);
+                }
+                else
+                {
+                    imageIn.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
+                }
                 return ms.ToArray();
             }
         }
@@ -156,37 +147,12 @@ namespace iCollect.ControllersAPI
         }
 
         [HttpGet, Route("GetSet/{id}")]
-        //[HttpGet("GetSet/{id}")]
-        //[HttpGet("Details/{id}")]
-        //[HttpGet("{id}"), Route("Details")]
-        public async Task<IActionResult> Details(int id)
+        public async Task<IActionResult> GetSet(int id)
         {
-            if (id == 0)
-            {
-                var newset = _context.Sets.FirstOrDefault();
-                return new JsonResult(newset);
-            }
-
             var set = await _context.Sets
                 .Include(a => a.SetImages)
                 .FirstOrDefaultAsync(m => m.SetId == id);
-            //if (set == null)
-            //{
-            //    return NotFound();
-            //}
-            //else
-            //{
-            //    if (set.SetImages.Count > 0)
-            //    {
-            //        foreach (var setImg in set.SetImages)
-            //        {
-            //            if (setImg.Path != "NULL")
-            //            {
-            //                setImg.Image = ImageToByteArray(Image.FromFile(setImg.Path));
-            //            }
-            //        }
-            //    }
-            //}
+
             return new JsonResult(set);
         }
 
@@ -219,45 +185,27 @@ namespace iCollect.ControllersAPI
        // public async Task<int> Edit(int id)//, [FromBody] Sets sets)
         public async Task<int> Edit([FromBody] Sets data)
         {
+            if (data.SetImages.Count > 0)
+            {
+                foreach (var setImg in data.SetImages)
+                {
+                    if (setImg.Path != "NULL")
+                    {
+                        Image image = Image.FromStream(new MemoryStream(setImg.Image));
+
+                        double aspect = (double)image.Width / image.Height;
+                        var height = Convert.ToInt32(120 / aspect);
+
+                        Image thumb = image.GetThumbnailImage(120, height, () => false, IntPtr.Zero);
+                        setImg.Thumbnail = ImageToByteArray(thumb, setImg.Type);
+                    }
+                }
+            }
+
             _context.Update(data);
             int rc = await _context.SaveChangesAsync();
             return rc;
         }
-
-        // POST: Sets/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPut]
-        // [ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Edit(int id, /*[Bind("setId")]*/ [FromBody] Sets sets)
-        //{
-        //    if (id != ((Sets)sets).SetId)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    if (ModelState.IsValid)
-        //    {
-        //        try
-        //        {
-        //            _context.Update((Sets)sets);
-        //            await _context.SaveChangesAsync();
-        //        }
-        //        catch (DbUpdateConcurrencyException)
-        //        {
-        //            if (!SetsExists(((Sets)sets).SetId))
-        //            {
-        //                return NotFound();
-        //            }
-        //            else
-        //            {
-        //                throw;
-        //            }
-        //        }
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    return View(sets);
-        //}
 
         // GET: Sets/Delete/5
         [HttpPost, Route("Delete/{id}")]
@@ -292,27 +240,6 @@ namespace iCollect.ControllersAPI
         {
             return _context.Sets.Any(e => e.SetId == id);
         }
-
-        //public static byte[] GetBytesFromFile(string fullFilePath)
-        //{
-        //    // this method is limited to 2^32 byte files (4.2 GB)
-
-        //    FileStream fs = File.OpenRead(fullFilePath);
-        //    try
-        //    {
-        //        byte[] bytes = new byte[fs.Length];
-        //        fs.Read(bytes, 0, Convert.ToInt32(fs.Length));
-        //        fs.Close();
-        //        return bytes;
-        //    }
-        //    finally
-        //    {
-        //        fs.Close();
-        //    }
-
-        //}
-
-        // GET: Sets/Details/5
-
     }
 }
+

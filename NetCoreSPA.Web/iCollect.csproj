@@ -249,6 +249,10 @@
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.1" />
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.8">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -277,6 +281,7 @@
     <None Include="wwwroot\js\controllers.js" />
     <None Include="wwwroot\js\directives.js" />
     <None Include="wwwroot\js\inspinia.js" />
+    <None Include="wwwroot\js\junk.js" />
     <None Include="wwwroot\js\plugins\angular-bootstrap-tour\angular-bootstrap-tour.min.js" />
     <None Include="wwwroot\js\plugins\angular-datamaps\angular-datamaps.min.js" />
     <None Include="wwwroot\js\plugins\angular-diff-match-patch\angular-diff-match-patch.js" />

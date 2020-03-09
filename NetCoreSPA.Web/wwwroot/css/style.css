@@ -8584,3 +8584,18 @@ form .progress {
     background: blue;
     width: 0;
 }
+
+.iColcontainer {
+    position: relative;
+    /*width: 120px;
+    height: 120px;*/
+    float: left;
+    //vertical-align:bottom;
+    margin-right: -10px;
+}
+
+.iColcheckbox {
+    position: absolute;
+    bottom: 0px;
+    right: 25px;
+}

@@ -1,18 +1,4 @@
-﻿function getOrdersSrv($resource) {
-    return $resource('api/Orders/GetOrders/:id', { id: '@id' }
-    );
-}
-
-function getProductsSrv($resource) {
-    return $resource('api/Products/GetProducts/:id', { id: '@id' }
-    );
-}
-
-function getCustomersSrv($resource) {
-    return $resource('api/Customers/GetCustomers/:id', { id: '@id' }
-    );
-}
-
+﻿
 function getSetSrv($resource) {
     return $resource('api/Sets/GetSet/:id', { id: '@id' }
     );
@@ -33,6 +19,11 @@ function updateImage($resource) {
         ,{
         'update': { method: 'PUT' }
         }
+    );
+}
+
+function getUser($resource) {
+    return $resource('api/Account/getUser/:username', { username: '@username' }
     );
 }
 
@@ -63,12 +54,10 @@ function passData() {
 
 angular
     .module('inspinia')
-    .service('getProductsSrv', getProductsSrv)
-    .service('getOrdersSrv', getOrdersSrv)
-    .service('getCustomersSrv', getCustomersSrv)
     .service('getSetSrv', getSetSrv)
     .service('getImage', getImage)
     .service('delImage', delImage)
     .service('updateImage', updateImage)
     .service('passData', passData)
+    .service('getUser', getUser)
     .service('getSetsSrv', getSetsSrv);

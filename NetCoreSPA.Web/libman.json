@@ -74,6 +74,10 @@
     {
       "library": "jquery-validation-unobtrusive@3.2.11",
       "destination": "wwwroot/lib/jquery-validation-unobtrusive/"
+    },
+    {
+      "library": "danialfarid-angular-file-upload@12.2.13",
+      "destination": "wwwroot/lib/danialfarid-angular-file-upload/"
     }
   ]
 }
