@@ -279,6 +279,10 @@
     <None Include="wwwroot\js\app.js" />
     <None Include="wwwroot\js\config.js" />
     <None Include="wwwroot\js\controllers.js" />
+    <None Include="wwwroot\js\controllers\account.js" />
+    <None Include="wwwroot\js\controllers\main.js" />
+    <None Include="wwwroot\js\controllers\set.js" />
+    <None Include="wwwroot\js\controllers\sets.js" />
     <None Include="wwwroot\js\directives.js" />
     <None Include="wwwroot\js\inspinia.js" />
     <None Include="wwwroot\js\junk.js" />
