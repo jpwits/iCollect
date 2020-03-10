@@ -3,36 +3,32 @@ function SetsCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compile, $
     $scope.session_pglen = passData.get("Session_PgLen");
     if ($scope.session_pglen === undefined) { $scope.session_pglen = 50; }
 
-    $scope.loadSet = function (id) {
-        if (id === undefined) {
-            var iCol = new getSetSrv();
-            iCol.items = [];
-            iCol.delImages = [];
-            passData.set("Selected", iCol);
-            $state.go('app.set', {});
-        }
-        else {
-            getSetSrv.get({ id: id }).$promise.then(function (response) {
-                var iCol = JSON.parse(JSON.stringify(response));
-                iCol.delImages = iCol.items.filter(img => img.isActive === false);
-                iCol.items = iCol.items.sort(function (a, b) {
-                    return a.position - b.position;
-                }).filter(img => img.isActive === true);
-                passData.set("Selected", iCol);
-                $state.go('app.set', {});
-            },
-                function (error) {
-                    alert("Error getting orders from back-end : " + error);
-                });
-        }
+    $scope.createSet = function () {
+        passData.set("CurSet", { items: [], delItems: [] });
+        $state.go('app.set');
     };
 
-    $scope.dtColumns1 = [
+    $scope.loadSet = function (id) {
+        getSetSrv.get({ id: id }).$promise.then(function (response) {
+            var curSet = JSON.parse(JSON.stringify(response));
+            curSet.delItems = curSet.items.filter(img => img.isActive === false);
+            curSet.items = curSet.items.sort(function (a, b) {
+                return a.position - b.position;
+            }).filter(img => img.isActive === true);
+            passData.set("CurSet", curSet);
+            $state.go('app.set', {});
+        },
+            function (error) {
+                alert("Error getting orders from back-end : " + error);
+            });
+    };
+
+    $scope.dtColumnsSets = [
         //here We will add .withOption('name','column_name') for send column name to the server to filter and sort
         DTColumnBuilder.newColumn(null).withTitle('Image').notSortable().withOption('width', '50%')//.withClass('td-large')
             .renderWith(function (data, type, full, meta) {
                 if (data.items.length > 0) {
-                    data.delImages = data.items.filter(img => img.isActive === false);
+                    data.delItems = data.items.filter(img => img.isActive === false);
 
                     data.items = data.items.sort(function (a, b) {
                         return a.position - b.position;
@@ -41,14 +37,14 @@ function SetsCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compile, $
                     html = '';
                     data.items.forEach(function (img, index) {
                         if (img.isActive === true) {
-                            html += '<div class="iColcontainer">';
+                            html += '<div class="SetContainer">';
                             if (index === 0) {
                                 html += '<img ng-click="loadSet(' + data.setId + ')" style="margin-right : 25px;border:2px solid grey" id="ImgId' + img.id + img.setId + '" ng-src="data:' + img.type + ';base64,' + img.thumbnail + '"/>';
-                                html += '<input ng-click= "SelectPart($event)" type="checkbox" class="iColcheckbox"/>';
+                                html += '<input ng-click= "SelectItem($event)" type="checkbox" class="ItemCheckbox"/>';
                             }
                             else {
                                 html += '<img style="width:80%;height:80%;border:2px solid grey " id="ImgId' + img.id + img.setId + '" ng-src="data:' + img.type + ';base64,' + img.thumbnail + '"/>';
-                                html += '<input ng-click= "SelectPart($event)" type="checkbox" class="iColcheckbox"/>';
+                                html += '<input ng-click= "SelectItem($event)" type="checkbox" class="ItemCheckbox"/>';
                             }
                             html += '</div>';
                         }
@@ -59,19 +55,17 @@ function SetsCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compile, $
                     return null;
                 }
             }),
-
-        //DTColumnBuilder.newColumn("setId", "Set Id").withOption('name', 'setId').
-        //    renderWith(function (data, type, full, meta) {
-        //        return '<a ng-click="loadSet(' + data + ')">' + data + '</a>';
-        //    }),
+        DTColumnBuilder.newColumn("description", "Description").withOption('name', 'description')
+            .renderWith(function (data, type, full, meta) {
+                return '<a ng-click="loadSet(' + full.setId + ')">' + data + '</a>';
+        }),
         DTColumnBuilder.newColumn("year", "Year").withOption('name', 'year'),
-        DTColumnBuilder.newColumn("description", "Description").withOption('name', 'description'),
         DTColumnBuilder.newColumn("date", "Date").withOption('name', 'date'),
         DTColumnBuilder.newColumn("range", "Range").withOption('name', 'range'),
         DTColumnBuilder.newColumn("catCode", "CatCode").withOption('name', 'catCode')
     ];
 
-    $scope.dtOptions1 = DTOptionsBuilder.newOptions()
+    $scope.dtOptionsSets = DTOptionsBuilder.newOptions()
         .withOption('ajax', {
             dataSrc: "data",
             //url: "/home/getData",
@@ -80,7 +74,7 @@ function SetsCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compile, $
         })
         //.withOption('ajax', function (data, callback, settings) {
         //    var test = getData().$promise.then(function (response) {
-        //        var iCol = JSON.parse(JSON.stringify(response));
+        //        var sets = JSON.parse(JSON.stringify(response));
         //        return test;
         //    });
         //})
@@ -91,7 +85,6 @@ function SetsCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compile, $
         .withOption('createdRow', function (row, data, dataIndex) {
             // Recompiling so we can bind Angular directive to the DT
             $compile(angular.element(row).contents())($scope);
-            //console.log("test");
         })
         .withPaginationType('full_numbers') // for get full pagination options // first / last / prev / next and page numbers
         .withDisplayLength($scope.session_pglen) // Page size
@@ -108,22 +101,13 @@ function SetsCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compile, $
         .withOption('drawCallback', function () {
             var table = this.DataTable();
             passData.set("Session_PgLen", table.page.len());
-
-            //table.on('select', function () {
-            //    alert('Selected!');
-            //    // Enable/disable buttons here...
-            //});
-
-            //table.on('page.dt', function () {
-            //    console.log('Page');
-            //});
         })
         .withDOM('<"html5buttons"B>lTfgitp')
         .withButtons([
             {
                 text: 'New',
                 action: function (e, dt, node, config) {
-                    $scope.loadSet(undefined);
+                    $scope.createSet();
                 }
             },
             { extend: 'copy' },
@@ -143,29 +127,22 @@ function SetsCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compile, $
             }
         ]);
 
-    $scope.dtInstanceCallback = (dtInstance) => {
+    $scope.dtInstanceCallbackSets = (dtInstance) => {
         dtInstance.DataTable.on('draw.dt', () => {
             let elements = angular.element("#" + dtInstance.id + " .ng-scope");
             angular.forEach(elements, (element) => {
                 $compile(element)($scope);
             });
         });
-
-        //dtInstance.DataTable.on('page.dt', () => {
-        //    console.log('Page');
-        //});
     };
 
-    $scope.SelectPart = (part) => {
-        if (part.currentTarget.checked === true) {
-            part.currentTarget.previousSibling.style.border = "2px solid lime";
+    $scope.SelectItem = (event) => {
+        if (event.currentTarget.checked === true) {
+            event.currentTarget.previousSibling.style.border = "2px solid lime";
         }
         else {
-            part.currentTarget.previousSibling.style.border = "2px solid grey";
+            event.currentTarget.previousSibling.style.border = "2px solid grey";
         }
-        // element = angular.element("#" + part.id + " .ng-scope");
-        // $state.go('app.sets');
-        //$compile(part.currentTarget.previousSibling)($scope);
     };
 }
 
@@ -182,7 +159,7 @@ angular
     //            "Sortable": "false",
     //            "render": function (data) {
     //                if (data.items.length > 0) {
-    //                    data.delImages = data.items.filter(img => img.isActive === false);
+    //                    data.delItems = data.items.filter(img => img.isActive === false);
 
     //                    data.items = data.items.sort(function (a, b) {
     //                        return a.position - b.position;
@@ -191,14 +168,14 @@ angular
     //                    html = '';
     //                    data.items.forEach(function (img, index) {
     //                        if (img.isActive === true) {
-    //                            html += '<div class="iColcontainer">';
+    //                            html += '<div class="SetContainer">';
     //                            if (index === 0) {
     //                                html += '<img style="margin-right : 25px;border:2px solid grey" id="ImgId' + img.id + img.setId + '" ng-src="data:' + img.type + ';base64,' + img.thumbnail + '"/>';
-    //                                html += '<input ng-click= "SelectPart($event)" type="checkbox" class="iColcheckbox"/>';
+    //                                html += '<input ng-click= "SelectItem($event)" type="checkbox" class="ItemCheckbox"/>';
     //                            }
     //                            else {
     //                                html += '<img style="width:80%;height:80%;border:2px solid grey " id="ImgId' + img.id + img.setId + '" ng-src="data:' + img.type + ';base64,' + img.thumbnail + '"/>';
-    //                                html += '<input ng-click= "SelectPart($event)" type="checkbox" class="iColcheckbox"/>';
+    //                                html += '<input ng-click= "SelectItem($event)" type="checkbox" class="ItemCheckbox"/>';
     //                            }
     //                            html += '</div>';
     //                        }

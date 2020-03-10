@@ -64,23 +64,8 @@ namespace iCollect.ControllersAPI
             return qry;
         }
 
-        [HttpGet, Route("GetImage/{id}")]
-        public async Task<IActionResult> GetImage(int id)
-        {
-            if (id == 0)
-            {
-                return new JsonResult(new Items());
-            }
-            else
-            {
-                var current = _context.Items.FirstOrDefault(a => a.ImageId == id);
-            }
-
-            return new JsonResult(new Items());
-        }
-
-        [HttpGet, Route("GetSet/{id}")]
-        public async Task<IActionResult> GetSet(int id)
+        [HttpGet, Route("GetCollection/{id}")]
+        public async Task<IActionResult> GetCollection(int id)
         {
             var set = await _context.Collections
                 .FirstOrDefaultAsync(m => m.CollectionId == id);
@@ -88,49 +73,13 @@ namespace iCollect.ControllersAPI
             return new JsonResult(set);
         }
 
-      
-
         [HttpPut("Edit")]
-        //[ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken]
         public async Task<int> Edit([FromBody] Collections data)
         {
             _context.Update(data);
             int rc = await _context.SaveChangesAsync();
             return rc;
-        }
-
-        // GET: Collections/Delete/5
-        [HttpPost, Route("Delete/{id}")]
-        public async Task<IActionResult> Delete(int id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var Collections = await _context.Collections
-                .FirstOrDefaultAsync(m => m.CollectionId == id);
-            if (Collections == null)
-            {
-                return NotFound();
-            }
-
-            return View(Collections);
-        }
-        // POST: Collections/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var Collections = await _context.Collections.FindAsync(id);
-            _context.Collections.Remove(Collections);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        private bool CollectionsExists(int id)
-        {
-            return _context.Collections.Any(e => e.CollectionId == id);
         }
     }
 }

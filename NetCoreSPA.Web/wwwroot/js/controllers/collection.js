@@ -1,23 +1,23 @@
 ﻿
-function CollectionsCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compile, $templateCache, getCollectionsSrv, passData, $timeout) {
+function CollectionsCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compile, $templateCache, getCollectionSrv, passData, $timeout) {
     $scope.collection_pglen = passData.get("collection_pglen");
     if ($scope.collection_pglen === undefined) { $scope.collection_pglen = 10; }
 
     $scope.createCollection = function () {
         if (id === undefined) {
-            passData.set("CurCollection", { items: [], delImages: [] });
+            passData.set("CurCollection", { items: [], delItems: [] });
             $state.go('app.collection');
         }
     };
 
     $scope.loadCollection = function (id) {
-        getCollectionsSrv.get({ id: id }).$promise.then(function (response) {
-            var collection = JSON.parse(JSON.stringify(response));
-            collection.delImages = collection.items.filter(img => img.isActive === false);
-            collection.items = collection.items.sort(function (a, b) {
-                return a.position - b.position;
-            }).filter(img => img.isActive === true);
-            passData.set("CurCollection", collection);
+        getCollectionSrv.get({ id: id }).$promise.then(function (response) {
+            var curCollection = JSON.parse(JSON.stringify(response));
+            //curCollection.delItems = curCollection.items.filter(img => img.isActive === false);
+            //curCollection.items = curCollection.items.sort(function (a, b) {
+            //    return a.position - b.position;
+            //}).filter(img => img.isActive === true);
+            passData.set("CurCollection", curCollection);
             $state.go('app.collection');
         },
         function (error) {
@@ -26,37 +26,12 @@ function CollectionsCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $com
     };
 
     $scope.dtColumnsColls = [
-        DTColumnBuilder.newColumn("name","Name").withTitle('Name')
-            //.renderWith(function (data, type, full, meta) {
-            //    if (data.items.length > 0) {
-            //        data.delImages = data.items.filter(img => img.isActive === false);
-
-            //        data.items = data.items.sort(function (a, b) {
-            //            return a.position - b.position;
-            //        }).filter(img => img.isActive === true);
-
-            //        html = '';
-            //        data.items.forEach(function (img, index) {
-            //            if (img.isActive === true) {
-            //                html += '<div class="iColcontainer">';
-            //                if (index === 0) {
-            //                    html += '<img ng-click="loadCollection(' + data.setId + ')" style="margin-right : 25px;border:2px solid grey" id="ImgId' + img.id + img.setId + '" ng-src="data:' + img.type + ';base64,' + img.thumbnail + '"/>';
-            //                    html += '<input ng-click= "SelectPart($event)" type="checkbox" class="iColcheckbox"/>';
-            //                }
-            //                else {
-            //                    html += '<img style="width:80%;height:80%;border:2px solid grey " id="ImgId' + img.id + img.setId + '" ng-src="data:' + img.type + ';base64,' + img.thumbnail + '"/>';
-            //                    html += '<input ng-click= "SelectPart($event)" type="checkbox" class="iColcheckbox"/>';
-            //                }
-            //                html += '</div>';
-            //            }
-            //        });
-            //        return html;
-            //    }
-            //    else {
-            //        return null;
-            //    }
-        //})
-        ,DTColumnBuilder.newColumn("description", "Description").withOption('name', 'Description')
+        DTColumnBuilder.newColumn("name", "Description").withOption('name', 'description')
+            .renderWith(function (data, type, full, meta) {
+                html = '<a ng-click="loadCollection(' + full.collectionId + ')">' + data + '</a>';
+                return html;
+            }),
+        DTColumnBuilder.newColumn("description", "Description").withOption('name', 'Description')
     ];
 
     $scope.dtOptionsColls = DTOptionsBuilder.newOptions()
@@ -70,9 +45,7 @@ function CollectionsCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $com
         .withOption('responsive', true)
         .withOption('stateSave', true)
         .withOption('createdRow', function (row, data, dataIndex) {
-            // Recompiling so we can bind Angular directive to the DT
-            $compile(angular.element(row).contents())($scope);
-            //console.log("test");
+            $compile(angular.element(row).contents())($scope);      // Recompiling so we can bind Angular directive to the DT
         })
         .withPaginationType('full_numbers') // for get full pagination options // first / last / prev / next and page numbers
         .withDisplayLength($scope.collection_pglen) // Page size
@@ -115,7 +88,7 @@ function CollectionsCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $com
         });
     };
 
-    $scope.SelectPart = (part) => {
+    $scope.SelectSet = (event) => {
         
     };
 }

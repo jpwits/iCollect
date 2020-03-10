@@ -102,7 +102,7 @@ namespace iCollect.ControllersAPI
             }
             else
             {
-                var current = _context.Items.FirstOrDefault(a => a.ImageId == id);
+                var current = _context.Items.FirstOrDefault(a => a.ItemId == id);
             }
 
             return new JsonResult(new Items());

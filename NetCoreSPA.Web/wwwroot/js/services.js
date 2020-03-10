@@ -10,12 +10,12 @@ function getSetsSrv($resource) {
 }
 
 function getCollectionSrv($resource) {
-    return $resource('api/Collections/GetSet/:id', { id: '@id' }
+    return $resource('api/Collections/GetCollection/:id', { id: '@id' }
     );
 }
 
 function getCollectionsSrv($resource) {
-    return $resource('api/Collections/GetSets/:start/:length', { start: '@start', length: '@length' }
+    return $resource('api/Collections/GetCollection/:start/:length', { start: '@start', length: '@length' }
     );
 }
         

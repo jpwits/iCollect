@@ -8585,7 +8585,7 @@ form .progress {
     width: 0;
 }
 
-.iColcontainer {
+.SetContainer {
     position: relative;
     /*width: 120px;
     height: 120px;*/
@@ -8594,7 +8594,7 @@ form .progress {
     margin-right: -10px;
 }
 
-.iColcheckbox {
+.ItemCheckbox {
     position: absolute;
     bottom: 0px;
     right: 25px;

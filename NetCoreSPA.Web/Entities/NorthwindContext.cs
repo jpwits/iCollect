@@ -18,7 +18,7 @@ namespace iCollect.Entities
         public virtual DbSet<Collections> Collections { get; set; }
         public virtual DbSet<Items> Items { get; set; }
         public virtual DbSet<Sets> Sets { get; set; }
-        public virtual DbSet<UserParts> UserParts { get; set; }
+        public virtual DbSet<UserItems> UserItems { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -46,7 +46,7 @@ namespace iCollect.Entities
 
             modelBuilder.Entity<Items>(entity =>
             {
-                entity.HasKey(e => e.ImageId)
+                entity.HasKey(e => e.ItemId)
                     .HasName("PK_SetImages");
 
                 entity.HasIndex(e => e.SetId)
@@ -74,7 +74,7 @@ namespace iCollect.Entities
                     .WithMany(p => p.Items)
                     .HasForeignKey(d => d.SetId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_SetImages_Sets");
+                    .HasConstraintName("FK_Items_Sets");
             });
 
             modelBuilder.Entity<Sets>(entity =>
@@ -103,14 +103,18 @@ namespace iCollect.Entities
                     .HasConstraintName("FK_Sets_Collections");
             });
 
-            modelBuilder.Entity<UserParts>(entity =>
+            modelBuilder.Entity<UserItems>(entity =>
             {
-                entity.HasNoKey();
+                entity.HasKey(e => e.UserId);
 
                 entity.Property(e => e.UserId)
-                    .IsRequired()
                     .HasMaxLength(255)
                     .IsUnicode(false);
+
+                entity.HasOne(d => d.Item)
+                    .WithMany(p => p.UserItems)
+                    .HasForeignKey(d => d.ItemId)
+                    .HasConstraintName("FK_UserItems_Items");
             });
 
             OnModelCreatingPartial(modelBuilder);

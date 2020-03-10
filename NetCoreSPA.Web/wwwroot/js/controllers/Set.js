@@ -1,10 +1,10 @@
 ﻿
 function SetCtrl($scope, $state, $compile, $templateCache, getImage, updateImage, passData, $timeout) {
-    $scope.iCol = passData.get("Selected");
+    $scope.iCol = passData.get("CurSet");
 
     $scope.UpdateSet = function (sets) {
         var clone = Object.assign({}, sets);
-        clone.items = clone.items.concat(clone.delImages);
+        clone.items = clone.items.concat(clone.delItems);
         $scope.entry = new updateImage(clone);
         $scope.entry.$update(function (response) {
 
