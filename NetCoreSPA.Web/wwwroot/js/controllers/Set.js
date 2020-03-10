@@ -1,5 +1,5 @@
 ﻿
-function SetEditCtrl($scope, $state, $compile, $templateCache, getImage, updateImage, passData, $timeout) {
+function SetCtrl($scope, $state, $compile, $templateCache, getImage, updateImage, passData, $timeout) {
     $scope.iCol = passData.get("Selected");
 
     $scope.UpdateSet = function (sets) {
@@ -86,4 +86,4 @@ function SetEditCtrl($scope, $state, $compile, $templateCache, getImage, updateI
 
 angular
     .module('inspinia')
-    .controller('SetEditCtrl', SetEditCtrl);
+    .controller('SetCtrl', SetCtrl);
