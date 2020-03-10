@@ -16,6 +16,7 @@ namespace iCollect.Entities
         }
 
         public virtual DbSet<Collections> Collections { get; set; }
+        public virtual DbSet<Images> Images { get; set; }
         public virtual DbSet<Items> Items { get; set; }
         public virtual DbSet<Sets> Sets { get; set; }
         public virtual DbSet<UserItems> UserItems { get; set; }
@@ -42,6 +43,21 @@ namespace iCollect.Entities
                 entity.Property(e => e.Name)
                     .HasMaxLength(255)
                     .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<Images>(entity =>
+            {
+                entity.HasKey(e => e.ImageId);
+
+                entity.Property(e => e.Image)
+                    .IsRequired()
+                    .HasColumnType("image");
+
+                entity.HasOne(d => d.Item)
+                    .WithMany(p => p.Images)
+                    .HasForeignKey(d => d.ItemId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Images_Items");
             });
 
             modelBuilder.Entity<Items>(entity =>

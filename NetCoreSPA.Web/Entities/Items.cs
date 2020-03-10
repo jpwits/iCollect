@@ -7,6 +7,7 @@ namespace iCollect.Entities
     {
         public Items()
         {
+            Images = new HashSet<Images>();
             UserItems = new HashSet<UserItems>();
         }
 
@@ -23,6 +24,7 @@ namespace iCollect.Entities
         public string Type { get; set; }
 
         public virtual Sets Set { get; set; }
+        public virtual ICollection<Images> Images { get; set; }
         public virtual ICollection<UserItems> UserItems { get; set; }
     }
 }

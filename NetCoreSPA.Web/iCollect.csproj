@@ -61,7 +61,6 @@
     <Compile Remove="Entities\Customers.cs" />
     <Compile Remove="Entities\Employees.cs" />
     <Compile Remove="Entities\EmployeeTerritories.cs" />
-    <Compile Remove="Entities\Images.cs" />
     <Compile Remove="Entities\Images2.cs" />
     <Compile Remove="Entities\Links.cs" />
     <Compile Remove="Entities\Links1.cs" />

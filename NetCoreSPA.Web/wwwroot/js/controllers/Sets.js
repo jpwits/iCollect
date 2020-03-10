@@ -1,5 +1,8 @@
 ﻿
 function SetsCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compile, $templateCache, getSetSrv, passData, $timeout) {
+
+    //$scope.SetsPgLen = sessionStorage.getItem('SetsPgLen');
+    //if ($scope.SetsPgLen == undefined) sessionStorage.setItem("SetsPgLen", "10");
     $scope.session_pglen = passData.get("Session_PgLen");
     if ($scope.session_pglen === undefined) { $scope.session_pglen = 50; }
 
@@ -40,11 +43,11 @@ function SetsCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compile, $
                             html += '<div class="SetContainer">';
                             if (index === 0) {
                                 html += '<img ng-click="loadSet(' + data.setId + ')" style="margin-right : 25px;border:2px solid grey" id="ImgId' + img.id + img.setId + '" ng-src="data:' + img.type + ';base64,' + img.thumbnail + '"/>';
-                                html += '<input ng-click= "SelectItem($event)" type="checkbox" class="ItemCheckbox"/>';
+                                html += '<input ng-click= "SelectItem($event, ' + index + ',' + img.setId + ')" type="checkbox" class="ItemCheckbox"/>';
                             }
                             else {
                                 html += '<img style="width:80%;height:80%;border:2px solid grey " id="ImgId' + img.id + img.setId + '" ng-src="data:' + img.type + ';base64,' + img.thumbnail + '"/>';
-                                html += '<input ng-click= "SelectItem($event)" type="checkbox" class="ItemCheckbox"/>';
+                                html += '<input ng-click= "SelectItem($event, ' + index + ',' + img.setId + ')" type="checkbox" class="ItemCheckbox"/>';
                             }
                             html += '</div>';
                         }
@@ -88,6 +91,7 @@ function SetsCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compile, $
         })
         .withPaginationType('full_numbers') // for get full pagination options // first / last / prev / next and page numbers
         .withDisplayLength($scope.session_pglen) // Page size
+        //.withDisplayLength($scope.SetsPgLen) // Page size
         .withOption('aaSorting', [1, 'asc']) // for default sorting column // here 0 means first column
         //You will only need $compile if the returned html contain directives that should be invoked, like ng - click and so on.Do that in the initComplete callback:
         //.withOption('initComplete', function () {
@@ -100,6 +104,7 @@ function SetsCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compile, $
         //})
         .withOption('drawCallback', function () {
             var table = this.DataTable();
+            //sessionStorage.setItem("SetsPgLen", table.page.len());
             passData.set("Session_PgLen", table.page.len());
         })
         .withDOM('<"html5buttons"B>lTfgitp')
@@ -136,9 +141,14 @@ function SetsCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compile, $
         });
     };
 
-    $scope.SelectItem = (event) => {
+    $scope.SelectItem = (event, index, setId) => {
+
+        var test = $('#sets_grid').DataTable().rows().filter(a => a.setId = setId);
         if (event.currentTarget.checked === true) {
             event.currentTarget.previousSibling.style.border = "2px solid lime";
+            if (index == 0) {
+                event.currentTarget.others.checked = true;
+            }
         }
         else {
             event.currentTarget.previousSibling.style.border = "2px solid grey";
