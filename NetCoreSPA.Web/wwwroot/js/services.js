@@ -8,6 +8,16 @@ function getSetsSrv($resource) {
     return $resource('api/Sets/GetSets/:start/:length', { start: '@start', length:'@length' }
     );
 }
+
+function getCollectionSrv($resource) {
+    return $resource('api/Collections/GetSet/:id', { id: '@id' }
+    );
+}
+
+function getCollectionsSrv($resource) {
+    return $resource('api/Collections/GetSets/:start/:length', { start: '@start', length: '@length' }
+    );
+}
         
 function getImage($resource) {
     return $resource('api/Sets/GetImage/:id', { filename: '@id' }
@@ -54,10 +64,14 @@ function passData() {
 
 angular
     .module('inspinia')
-    .service('getSetSrv', getSetSrv)
     .service('getImage', getImage)
     .service('delImage', delImage)
     .service('updateImage', updateImage)
     .service('passData', passData)
     .service('getUser', getUser)
+    .service('getCollectionSrv', getSetSrv)
+    .service('getCollectionsSrv', getSetsSrv)
+    .service('getSetSrv', getSetSrv)
     .service('getSetsSrv', getSetsSrv);
+
+

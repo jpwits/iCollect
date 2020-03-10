@@ -4,7 +4,7 @@ function SetCtrl($scope, $state, $compile, $templateCache, getImage, updateImage
 
     $scope.UpdateSet = function (sets) {
         var clone = Object.assign({}, sets);
-        clone.setImages = clone.setImages.concat(clone.delImages);
+        clone.items = clone.items.concat(clone.delImages);
         $scope.entry = new updateImage(clone);
         $scope.entry.$update(function (response) {
 
@@ -12,7 +12,6 @@ function SetCtrl($scope, $state, $compile, $templateCache, getImage, updateImage
         }, function (error) {
             alert("Error getting orders from back-end : " + error);
         });
-        //sets.setImages.splice($scope.noOfImages);
     };
 
     $scope.uploadFiles = function (files, iCol) {
@@ -26,56 +25,53 @@ function SetCtrl($scope, $state, $compile, $templateCache, getImage, updateImage
                 newImage.thumbnail = null;
                 newImage.isActive = true;
 
-                if ($scope.iCol.setImages.length === 0) {
+                if ($scope.iCol.items.length === 0) {
                     newImage.position = 0;
                 }
                 else {
-                    newImage.position = $scope.iCol.setImages[$scope.iCol.setImages.length - 1].position + 1;
+                    newImage.position = $scope.iCol.items[$scope.iCol.items.length - 1].position + 1;
                 }
-                $scope.iCol.setImages.push(newImage);
+                $scope.iCol.items.push(newImage);
 
                 if (newImage.position === files.length - 1) {
-                    $state.go("app.sets_edit");
+                    $state.go("app.set");
                 }
             };
         });
     };
 
     $scope.ImageOrderUp = function (pos) {
-        if (pos > 0 && pos <= $scope.iCol.setImages.length - 1) {
-            $scope.iCol.setImages[pos].position--;
-            $scope.iCol.setImages[pos - 1].position++;
+        if (pos > 0 && pos <= $scope.iCol.items.length - 1) {
+            $scope.iCol.items[pos].position--;
+            $scope.iCol.items[pos - 1].position++;
         }
-        $scope.iCol.setImages = $scope.iCol.setImages.sort(function (a, b) {
+        $scope.iCol.items = $scope.iCol.items.sort(function (a, b) {
             return a.position - b.position;
         }).filter(img => img.isActive === true);
-        // $state.go("app.sets_edit");
     };
 
     $scope.ImageOrderDown = function (pos) {
-        if (pos >= 0 && pos < $scope.iCol.setImages.length - 1) {
-            $scope.iCol.setImages[pos].position++;
-            $scope.iCol.setImages[pos + 1].position--;
+        if (pos >= 0 && pos < $scope.iCol.items.length - 1) {
+            $scope.iCol.items[pos].position++;
+            $scope.iCol.items[pos + 1].position--;
         }
-        $scope.iCol.setImages = $scope.iCol.setImages.sort(function (a, b) {
+        $scope.iCol.items = $scope.iCol.items.sort(function (a, b) {
             return a.position - b.position;
         }).filter(img => img.isActive === true);
-
-        // $state.go("app.sets_edit");
     };
 
     $scope.Delete = function (pos) {
-        $scope.iCol.setImages[pos].isActive = false;
-        $scope.iCol.delImages.push($scope.iCol.setImages[pos]);
-        $scope.iCol.setImages.splice(pos, 1);
+        $scope.iCol.items[pos].isActive = false;
+        $scope.iCol.items.push($scope.iCol.items[pos]);
+        $scope.iCol.items.splice(pos, 1);
 
-        //$scope.iCol.setImages[pos].isActive = false;
-        // $scope.iCol.setImages = $scope.iCol.setImages.sort(function (a, b) {
+        //$scope.iCol.items[pos].isActive = false;
+        // $scope.iCol.items = $scope.iCol.items.sort(function (a, b) {
         //     return a.position - b.position;
         // }).filter(img => img.isActive === true);
 
-        $scope.iCol.setImages.forEach(function (image, index) {
-            $scope.iCol.setImages[index].position = index;
+        $scope.iCol.items.forEach(function (image, index) {
+            $scope.iCol.items[index].position = index;
         });
 
         //Jos : replace these #state.go's with single $compile

@@ -3,14 +3,14 @@ using System.Collections.Generic;
 
 namespace iCollect.Entities
 {
-    public partial class SetImages
+    public partial class Items
     {
-        public int Id { get; set; }
-        public string Heading { get; set; }
-        public short? PageNo { get; set; }
-        public string Path { get; set; }
-        public int SetId { get; set; }
         public int ImageId { get; set; }
+        public string Description { get; set; }
+        public short? DelPageNo { get; set; }
+        public string DelPath { get; set; }
+        public int SetId { get; set; }
+        public int DelImageId { get; set; }
         public byte[] Thumbnail { get; set; }
         public byte[] Image { get; set; }
         public bool? IsActive { get; set; }

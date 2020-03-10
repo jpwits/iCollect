@@ -6,20 +6,20 @@ function SetsCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compile, $
     $scope.loadSet = function (id) {
         if (id === undefined) {
             var iCol = new getSetSrv();
-            iCol.setImages = [];
+            iCol.items = [];
             iCol.delImages = [];
             passData.set("Selected", iCol);
-            $state.go('app.sets_edit', {});
+            $state.go('app.set', {});
         }
         else {
             getSetSrv.get({ id: id }).$promise.then(function (response) {
                 var iCol = JSON.parse(JSON.stringify(response));
-                iCol.delImages = iCol.setImages.filter(img => img.isActive === false);
-                iCol.setImages = iCol.setImages.sort(function (a, b) {
+                iCol.delImages = iCol.items.filter(img => img.isActive === false);
+                iCol.items = iCol.items.sort(function (a, b) {
                     return a.position - b.position;
                 }).filter(img => img.isActive === true);
                 passData.set("Selected", iCol);
-                $state.go('app.sets_edit', {});
+                $state.go('app.set', {});
             },
                 function (error) {
                     alert("Error getting orders from back-end : " + error);
@@ -31,15 +31,15 @@ function SetsCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compile, $
         //here We will add .withOption('name','column_name') for send column name to the server to filter and sort
         DTColumnBuilder.newColumn(null).withTitle('Image').notSortable().withOption('width', '50%')//.withClass('td-large')
             .renderWith(function (data, type, full, meta) {
-                if (data.setImages.length > 0) {
-                    data.delImages = data.setImages.filter(img => img.isActive === false);
+                if (data.items.length > 0) {
+                    data.delImages = data.items.filter(img => img.isActive === false);
 
-                    data.setImages = data.setImages.sort(function (a, b) {
+                    data.items = data.items.sort(function (a, b) {
                         return a.position - b.position;
                     }).filter(img => img.isActive === true);
 
                     html = '';
-                    data.setImages.forEach(function (img, index) {
+                    data.items.forEach(function (img, index) {
                         if (img.isActive === true) {
                             html += '<div class="iColcontainer">';
                             if (index === 0) {
@@ -181,15 +181,15 @@ angular
     //            "width": "50%",
     //            "Sortable": "false",
     //            "render": function (data) {
-    //                if (data.setImages.length > 0) {
-    //                    data.delImages = data.setImages.filter(img => img.isActive === false);
+    //                if (data.items.length > 0) {
+    //                    data.delImages = data.items.filter(img => img.isActive === false);
 
-    //                    data.setImages = data.setImages.sort(function (a, b) {
+    //                    data.items = data.items.sort(function (a, b) {
     //                        return a.position - b.position;
     //                    }).filter(img => img.isActive === true);
 
     //                    html = '';
-    //                    data.setImages.forEach(function (img, index) {
+    //                    data.items.forEach(function (img, index) {
     //                        if (img.isActive === true) {
     //                            html += '<div class="iColcontainer">';
     //                            if (index === 0) {
