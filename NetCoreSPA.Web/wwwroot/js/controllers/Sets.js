@@ -147,18 +147,10 @@ function SetsCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compile, $
             cboxes.forEach(function (cbox) {
                 cbox.checked = event.currentTarget.checked;
             });
-            //var oTable = document.getElementById('sets-grid');
-            //var oCells = oTable.rows.item(index).cells; //gets cells of current row
-            //var cellLength = oCells.length; //gets amount of cells of current row
-            //for (var j = 0; j < cellLength; j++) { //loops through each cell in current row
-            //    var cellVal = oCells.item(j).innerHTML; // get your cell info here
-            //    alert(cellVal);
-            //}
         }
 
         if (event.currentTarget.checked === true) {
             event.currentTarget.previousSibling.style.border = "2px solid lime";
-            
         }
         else {
             event.currentTarget.previousSibling.style.border = "2px solid grey";
