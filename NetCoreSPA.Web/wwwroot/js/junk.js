@@ -1,4 +1,9 @@
-﻿ //var set1 = fromCamel(sets);
+﻿//Get Id in DOM:
+var oTable = document.getElementById('sets_grid');
+$('#sets_grid')
+
+
+ //var set1 = fromCamel(sets);
         //var setStr = JSON.stringify(set1);
         //var setParse = JSON.parse(setStr);
 

@@ -1,5 +1,5 @@
 ﻿
-function SetsCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compile, $templateCache, getSetSrv, passData, $timeout) {
+function SetsCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compile, $templateCache, getSetSrv, passData, $timeout, updateImage) {
 
     //$scope.SetsPgLen = sessionStorage.getItem('SetsPgLen');
     //if ($scope.SetsPgLen == undefined) sessionStorage.setItem("SetsPgLen", "10");
@@ -47,7 +47,7 @@ function SetsCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compile, $
                             }
                             else {
                                 html += '<img style="width:80%;height:80%;border:2px solid grey " id="ImgId' + img.id + img.setId + '" ng-src="data:' + img.type + ';base64,' + img.thumbnail + '"/>';
-                                html += '<input ng-click= "SelectItem($event, ' + index + ',' + img.setId + ')" type="checkbox" class="ItemCheckbox"/>';
+                                html += '<input name="cb_'+ data.setId + '" ng-click= "SelectItem($event, ' + index + ',' + img.setId + ')" type="checkbox" class="ItemCheckbox"/>';
                             }
                             html += '</div>';
                         }
@@ -61,7 +61,7 @@ function SetsCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compile, $
         DTColumnBuilder.newColumn("description", "Description").withOption('name', 'description')
             .renderWith(function (data, type, full, meta) {
                 return '<a ng-click="loadSet(' + full.setId + ')">' + data + '</a>';
-        }),
+            }),
         DTColumnBuilder.newColumn("year", "Year").withOption('name', 'year'),
         DTColumnBuilder.newColumn("date", "Date").withOption('name', 'date'),
         DTColumnBuilder.newColumn("range", "Range").withOption('name', 'range'),
@@ -142,17 +142,29 @@ function SetsCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compile, $
     };
 
     $scope.SelectItem = (event, index, setId) => {
+        if (index == 0) {
+            var cboxes = document.getElementsByName('cb_' + setId);
+            cboxes.forEach(function (cbox) {
+                cbox.checked = event.currentTarget.checked;
+            });
+            //var oTable = document.getElementById('sets-grid');
+            //var oCells = oTable.rows.item(index).cells; //gets cells of current row
+            //var cellLength = oCells.length; //gets amount of cells of current row
+            //for (var j = 0; j < cellLength; j++) { //loops through each cell in current row
+            //    var cellVal = oCells.item(j).innerHTML; // get your cell info here
+            //    alert(cellVal);
+            //}
+        }
 
-        var test = $('#sets_grid').DataTable().rows().filter(a => a.setId = setId);
         if (event.currentTarget.checked === true) {
             event.currentTarget.previousSibling.style.border = "2px solid lime";
-            if (index == 0) {
-                event.currentTarget.others.checked = true;
-            }
+            
         }
         else {
             event.currentTarget.previousSibling.style.border = "2px solid grey";
         }
+
+        //update db
     };
 }
 

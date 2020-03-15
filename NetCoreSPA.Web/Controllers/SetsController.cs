@@ -124,6 +124,8 @@ namespace iCollect.ControllersAPI
             }
         }
 
+
+
         byte[] FileToImage(string path)
         {
             // Load file meta data with FileInfo
