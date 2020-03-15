@@ -1,4 +1,4 @@
-﻿<div ng-controller="SetEditCtrl">
+﻿<div ng-controller="SetCtrl">
     <div class="row wrapper border-bottom white-bg page-heading">
         <div class="col-sm-4">
             <h2>Set detail</h2>
@@ -67,7 +67,7 @@
                                         </td>
                                     </tr>
                                     <div>
-                                    <tr ng-repeat="(key, setImg) in iCol.setImages">
+                                    <tr ng-repeat="(key, setImg) in iCol.items">
                                         <td>Images</td>
                                         <td>
                                             <div>
@@ -99,7 +99,7 @@
                                     <tr>
                                         <td>Image Id:</td>
                                         <td colspan="2">
-                                            <input type="text" name="input" ng-model="iCol.imageId">
+                                            <input type="text" name="input" ng-model="iCol.itemId">
                                         </td>
                                     </tr>
                                     <tr>

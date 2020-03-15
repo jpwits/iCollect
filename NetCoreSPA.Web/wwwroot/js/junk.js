@@ -1,4 +1,16 @@
-﻿ //var set1 = fromCamel(sets);
+﻿//Get Id in DOM:
+var oTable = document.getElementById('sets_grid');
+$('#sets_grid')
+
+   //var oTable = document.getElementById('sets-grid');
+            //var oCells = oTable.rows.item(index).cells; //gets cells of current row
+            //var cellLength = oCells.length; //gets amount of cells of current row
+            //for (var j = 0; j < cellLength; j++) { //loops through each cell in current row
+            //    var cellVal = oCells.item(j).innerHTML; // get your cell info here
+            //    alert(cellVal);
+            //}
+
+ //var set1 = fromCamel(sets);
         //var setStr = JSON.stringify(set1);
         //var setParse = JSON.parse(setStr);
 

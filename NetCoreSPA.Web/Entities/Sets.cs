@@ -7,17 +7,18 @@ namespace iCollect.Entities
     {
         public Sets()
         {
-            SetImages = new HashSet<SetImages>();
+            Items = new HashSet<Items>();
         }
 
         public int SetId { get; set; }
-        public int? ImageId { get; set; }
+        public int? CollectionId { get; set; }
         public string Year { get; set; }
         public string Description { get; set; }
         public DateTime? Date { get; set; }
         public string Range { get; set; }
         public string CatCode { get; set; }
 
-        public virtual ICollection<SetImages> SetImages { get; set; }
+        public virtual Collections Collection { get; set; }
+        public virtual ICollection<Items> Items { get; set; }
     }
 }

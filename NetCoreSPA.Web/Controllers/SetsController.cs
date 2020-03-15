@@ -30,9 +30,8 @@ namespace iCollect.ControllersAPI
         {
             //Datatable parameter
             var draw = Request.Form.Where(a => a.Key == "draw").Select(b => b.Value).FirstOrDefault()[0];
-
+         
             //paging parameter
-
             var start = Request.Form.Where(a => a.Key == "start").Select(b => b.Value).FirstOrDefault()[0];
             var length = Request.Form.Where(a => a.Key == "length").Select(b => b.Value).FirstOrDefault()[0];
 
@@ -49,7 +48,7 @@ namespace iCollect.ControllersAPI
             using (NorthwindContext dc = new NorthwindContext())
             {
                 recordsTotal = dc.Sets.Count();
-                allSets = dc.Sets.Include(a => a.SetImages).OrderByDescending(a => a.Description).Skip(skip).Take(pageSize).ToList();
+                allSets = dc.Sets.Include(a => a.Items).OrderByDescending(a => a.Description).Skip(skip).Take(pageSize).ToList();
             }
             return Json(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = allSets });
         }
@@ -69,27 +68,27 @@ namespace iCollect.ControllersAPI
         public List<Sets> GetSets(int start, int length)
         {
             var qry = _context.Sets
-                .Include(a=>a.SetImages)
+                .Include(a=>a.Items)
                 .Skip(start)
                 .Take(length)
                 .ToList();
             var idx = 0;
-            foreach (var set in qry)
-            {
-                if (set.SetImages.Count > 0)
-                {
-                    foreach (var setImg in set.SetImages)
-                    {
-                        if (setImg.Path != "NULL")
-                        {
-                            Image image = Image.FromFile(setImg.Path);
-                            Image thumb = image.GetThumbnailImage(120, 120, () => false, IntPtr.Zero);
-                            setImg.Thumbnail = ImageToByteArray(thumb,"image/unk");
-                        }
-                    }
-                }
-                idx++;
-            }
+            //foreach (var set in qry)
+            //{
+            //    if (set.items.Count > 0)
+            //    {
+            //        foreach (var setImg in set.items)
+            //        {
+            //            if (setImg.Path != "NULL")
+            //            {
+            //                Image image = Image.FromFile(setImg.Path);
+            //                Image thumb = image.GetThumbnailImage(120, 120, () => false, IntPtr.Zero);
+            //                setImg.Thumbnail = ImageToByteArray(thumb,"image/unk");
+            //            }
+            //        }
+            //    }
+            //    idx++;
+            //}
 
             return qry;
         }
@@ -99,14 +98,14 @@ namespace iCollect.ControllersAPI
         {
             if (id == 0)
             {
-                return new JsonResult(new SetImages());
+                return new JsonResult(new Items());
             }
             else
             {
-                var current = _context.SetImages.FirstOrDefault(a => a.ImageId == id);
+                var current = _context.Items.Include(a=>a.Images).FirstOrDefault(a => a.ItemId == id);
             }
 
-            return new JsonResult(new SetImages());
+            return new JsonResult(new Items());
         }
 
         public byte[] ImageToByteArray(System.Drawing.Image imageIn, string type)
@@ -124,6 +123,8 @@ namespace iCollect.ControllersAPI
                 return ms.ToArray();
             }
         }
+
+
 
         byte[] FileToImage(string path)
         {
@@ -150,7 +151,7 @@ namespace iCollect.ControllersAPI
         public async Task<IActionResult> GetSet(int id)
         {
             var set = await _context.Sets
-                .Include(a => a.SetImages)
+                .Include(a => a.Items)
                 .FirstOrDefaultAsync(m => m.SetId == id);
 
             return new JsonResult(set);
@@ -185,11 +186,11 @@ namespace iCollect.ControllersAPI
        // public async Task<int> Edit(int id)//, [FromBody] Sets sets)
         public async Task<int> Edit([FromBody] Sets data)
         {
-            if (data.SetImages.Count > 0)
+            if (data.Items.Count > 0)
             {
-                foreach (var setImg in data.SetImages)
+                foreach (var setImg in data.Items)
                 {
-                    if (setImg.Path != "NULL")
+                    if (setImg.Thumbnail != null)
                     {
                         Image image = Image.FromStream(new MemoryStream(setImg.Image));
 

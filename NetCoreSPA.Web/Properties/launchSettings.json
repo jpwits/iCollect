@@ -21,11 +21,12 @@
       }
     },
     "TGIS.Web": {
-      "commandName": "Project",
+      "commandName": "IISExpress",
       "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
+      "ancmHostingModel": "OutOfProcess",
       "applicationUrl": "http://localhost:2671/"
     }
   }
