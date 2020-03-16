@@ -42,11 +42,12 @@
                             html += '<div class="SetContainer">';
                             if (index === 0) {
                                 html += '<img ng-click="loadSet(' + set.setId + ')" style="margin-right : 25px;border:2px solid grey" id="ImgId' + item.id + item.setId + '" ng-src="data:' + item.type + ';base64,' + item.thumbnail + '"/>';
-                                html += '<a ng-click= "SelectItem($event, ' + index + ',' + item.setId + ',' + true + ')" type="button" class="ItemCheckbox"><i class="fa fa-caret-up" style="padding-bottom:13px;font-size:24px;color:lime"></i></a>';
-                                html += '<a ng-click= "SelectItem($event, ' + index + ',' + item.setId + ',' + false + ')" type="button" class="ItemCheckbox"><i class="fa fa-caret-down" style="font-size:24px;color:red"></i></a>';
                                 if (item.userItems.length !== 0) {
-                                    html += '<span class="ItemCheckbox" style="margin-right: -15px;">' + item.userItems[index].quantity + '</span>';
+                                    html += '<span class="ItemCheckbox" style="padding-bottom : 15px;">' + item.userItems[index].quantity + '</span>';
                                 }
+                                html += '<a ng-click= "SelectItem($event, ' + index + ',' + item.setId + ',' + true + ')" type="button" class="ItemCheckbox"><i class="fa fa-plus" style="padding-bottom:30px;font-size:16px;color:green"></i></a>';
+                                html += '<a ng-click= "SelectItem($event, ' + index + ',' + item.setId + ',' + false + ')" type="button" class="ItemCheckbox"><i class="fa fa-minus" style="font-size:16px;color:red"></i></a>';
+                               
                             }
                             else {
                                 html += '<img style="width:80%;height:80%;border:2px solid grey " id="ImgId' + item.id + item.setId + '" ng-src="data:' + item.type + ';base64,' + item.thumbnail + '"/>';
@@ -179,13 +180,13 @@
                 else {
                     if (direction === true) {
                         curUserItems.userItems[index].quantity++;
-                        event.currentTarget.nextSibling.nextSibling.innerText = curUserItems.userItems[index].quantity;
+                        event.currentTarget.previousSibling.innerText = curUserItems.userItems[index].quantity;
 
                     }
                     else
                     {
                         curUserItems.userItems[index].quantity--;
-                        event.currentTarget.nextSibling.innerText = curUserItems.userItems[index].quantity;
+                        event.currentTarget.previousSibling.previousSibling.innerText = curUserItems.userItems[index].quantity;
 
                     }
                 }
