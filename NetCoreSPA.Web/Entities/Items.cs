@@ -13,10 +13,7 @@ namespace iCollect.Entities
 
         public int ItemId { get; set; }
         public string Description { get; set; }
-        public short? DelPageNo { get; set; }
-        public string DelPath { get; set; }
         public int SetId { get; set; }
-        public int DelImageId { get; set; }
         public byte[] Thumbnail { get; set; }
         public byte[] Image { get; set; }
         public bool? IsActive { get; set; }

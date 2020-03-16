@@ -1,5 +1,4 @@
-﻿
-function SetsCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compile, $templateCache, getSetSrv, passData, $timeout, updateImage) {
+﻿function SetsCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compile, $templateCache, getSetSrv, passData, $timeout, updateImage, updateUserItem) {
 
     //$scope.SetsPgLen = sessionStorage.getItem('SetsPgLen');
     //if ($scope.SetsPgLen == undefined) sessionStorage.setItem("SetsPgLen", "10");
@@ -14,10 +13,10 @@ function SetsCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compile, $
     $scope.loadSet = function (id) {
         getSetSrv.get({ id: id }).$promise.then(function (response) {
             var curSet = JSON.parse(JSON.stringify(response));
-            curSet.delItems = curSet.items.filter(img => img.isActive === false);
+            curSet.delItems = curSet.items.filter(item => item.isActive === false);
             curSet.items = curSet.items.sort(function (a, b) {
                 return a.position - b.position;
-            }).filter(img => img.isActive === true);
+            }).filter(item => item.isActive === true);
             passData.set("CurSet", curSet);
             $state.go('app.set', {});
         },
@@ -29,25 +28,30 @@ function SetsCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compile, $
     $scope.dtColumnsSets = [
         //here We will add .withOption('name','column_name') for send column name to the server to filter and sort
         DTColumnBuilder.newColumn(null).withTitle('Image').notSortable().withOption('width', '50%')//.withClass('td-large')
-            .renderWith(function (data, type, full, meta) {
-                if (data.items.length > 0) {
-                    data.delItems = data.items.filter(img => img.isActive === false);
+            .renderWith(function (set, type, full, meta) {
+                if (set.items.length > 0) {
+                    set.delItems = set.items.filter(img => img.isActive === false);
 
-                    data.items = data.items.sort(function (a, b) {
+                    set.items = set.items.sort(function (a, b) {
                         return a.position - b.position;
                     }).filter(img => img.isActive === true);
 
                     html = '';
-                    data.items.forEach(function (img, index) {
-                        if (img.isActive === true) {
+                    set.items.forEach(function (item, index) {
+                        if (item.isActive === true) {
                             html += '<div class="SetContainer">';
                             if (index === 0) {
-                                html += '<img ng-click="loadSet(' + data.setId + ')" style="margin-right : 25px;border:2px solid grey" id="ImgId' + img.id + img.setId + '" ng-src="data:' + img.type + ';base64,' + img.thumbnail + '"/>';
-                                html += '<input ng-click= "SelectItem($event, ' + index + ',' + img.setId + ')" type="checkbox" class="ItemCheckbox"/>';
+                                html += '<img ng-click="loadSet(' + set.setId + ')" style="margin-right : 25px;border:2px solid grey" id="ImgId' + item.id + item.setId + '" ng-src="data:' + item.type + ';base64,' + item.thumbnail + '"/>';
+                                html += '<a ng-click= "SelectItem($event, ' + index + ',' + item.setId + ',' + true + ')" type="button" class="ItemCheckbox"><i class="fa fa-caret-up" style="padding-bottom:13px;font-size:24px;color:lime"></i></a>';
+                                html += '<a ng-click= "SelectItem($event, ' + index + ',' + item.setId + ',' + false + ')" type="button" class="ItemCheckbox"><i class="fa fa-caret-down" style="font-size:24px;color:red"></i></a>';
+                                if (item.userItems.length !== 0) {
+                                    html += '<span class="ItemCheckbox" style="margin-right: -15px;">' + item.userItems[index].quantity + '</span>';
+                                }
                             }
                             else {
-                                html += '<img style="width:80%;height:80%;border:2px solid grey " id="ImgId' + img.id + img.setId + '" ng-src="data:' + img.type + ';base64,' + img.thumbnail + '"/>';
-                                html += '<input name="cb_'+ data.setId + '" ng-click= "SelectItem($event, ' + index + ',' + img.setId + ')" type="checkbox" class="ItemCheckbox"/>';
+                                html += '<img style="width:80%;height:80%;border:2px solid grey " id="ImgId' + item.id + item.setId + '" ng-src="data:' + item.type + ';base64,' + item.thumbnail + '"/>';
+                                html += '<a name="Up_' + set.setId + '" ng-click= "SelectItem($event, ' + index + ',' + item.setId + ',' + true + ')" type="button" class="ItemCheckbox"><i class="fa fa-caret-up" style="padding-bottom:13px;font-size:24px;color:lime"></i></a>';
+                                html += '<a name="Down_' + set.setId + '" ng-click= "SelectItem($event, ' + index + ',' + item.setId + ',' + false + ')" type="button" class="ItemCheckbox"><i class="fa fa-caret-down" style="font-size:24px;color:red"></i></a>';
                             }
                             html += '</div>';
                         }
@@ -133,21 +137,70 @@ function SetsCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compile, $
         ]);
 
     $scope.dtInstanceCallbackSets = (dtInstance) => {
-        dtInstance.DataTable.on('draw.dt', () => {
-            let elements = angular.element("#" + dtInstance.id + " .ng-scope");
-            angular.forEach(elements, (element) => {
-                $compile(element)($scope);
-            });
+        //dtInstance.DataTable.on('draw.dt', () => {
+        //    let elements = angular.element("#" + dtInstance.id + " .ng-scope");
+        //    angular.forEach(elements, (element) => {
+        //        $compile(element)($scope);
+        //    });
+        //});
+    };
+
+    $scope.updateUserItem = function (item) {
+        var clone = Object.assign({}, item);
+        //clone.items = clone.items.concat(clone.delItems);
+        $scope.entry = new updateUserItem(clone);
+        $scope.entry.$update(function (response) {
+
+            alert("Saved successfully...");
+        }, function (error) {
+            alert("Error getting orders from back-end : " + error);
         });
     };
 
-    $scope.SelectItem = (event, index, setId) => {
-        if (index == 0) {
-            var cboxes = document.getElementsByName('cb_' + setId);
-            cboxes.forEach(function (cbox) {
-                cbox.checked = event.currentTarget.checked;
+    $scope.SelectItem = (event,index, setId, direction) => {
+        getSetSrv.get({ id: setId }).$promise.then(function (response) {
+            var curSet = JSON.parse(JSON.stringify(response));
+            curSet.delItems = curSet.items.filter(item => item.isActive === false);
+            curSet.items = curSet.items.sort(function (a, b) {
+                return a.position - b.position;
+            }).filter(item => item.isActive === true);
+
+            $scope.User = passData.get("User");
+            if ($scope.User.name === null) {
+                alert('Login Id10t');
+                return;
+            }
+
+            curUserItems = curSet.items[index];
+            if (index === 0) {
+                if (curUserItems.userItems.length === 0) {
+                    curUserItems.userItems.push({ userId: $scope.User.name, itemId: curUserItems.itemId, quantity: 1 });
+                }
+                else {
+                    curUserItems.userItems[index].quantity++;
+                    event.currentTarget.nextSibling.nextSibling.innerText = curUserItems.userItems[index].quantity;
+                }
+            }
+
+           // var clone = Object.assign({}, curSet);
+            //clone.items = clone.items.concat(clone.delItems);
+            $scope.entry = new updateImage(curSet);
+            $scope.entry.$update(function (response) {
+                
+                //alert("Saved successfully...");
+            }, function (error) {
+                alert("Error getting orders from back-end : " + error);
             });
-        }
+        }, function (error) {
+            alert("Error getting orders from back-end : " + error);
+        });
+
+
+
+        //var cboxes = document.getElementsByName('cb_' + setId);
+        //cboxes.forEach(function (cbox) {
+        //    cbox.checked = event.currentTarget.checked;
+        //});
 
         if (event.currentTarget.checked === true) {
             event.currentTarget.previousSibling.style.border = "2px solid lime";

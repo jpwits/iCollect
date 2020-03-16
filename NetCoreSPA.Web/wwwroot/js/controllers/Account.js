@@ -14,6 +14,7 @@ function AccountCtrl($http, $scope, passData, getUser) {
             headers: headers
         }).done(function (data) {
             self.result(data);
+
         }).fail(showError);
     };
     /*

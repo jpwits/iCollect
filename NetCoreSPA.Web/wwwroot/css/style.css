@@ -8596,6 +8596,13 @@ form .progress {
 
 .ItemCheckbox {
     position: absolute;
-    bottom: 0px;
-    right: 25px;
+    bottom:-3px;
+    right: 28px;
 }
+
+.ItemQuantity {
+    position: absolute;
+    bottom: -3px;
+    right: 0px;
+}
+

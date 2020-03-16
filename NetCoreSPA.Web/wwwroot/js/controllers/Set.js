@@ -13,7 +13,7 @@ function SetCtrl($scope, $state, $compile, $templateCache, getImage, updateImage
             alert("Error getting orders from back-end : " + error);
         });
     };
-
+  
     $scope.uploadFiles = function (files, iCol) {
         files.forEach(function (file, index) {
             var fReader = new FileReader();

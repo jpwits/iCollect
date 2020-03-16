@@ -32,6 +32,14 @@ function updateImage($resource) {
     );
 }
 
+function updateUserItem($resource) {
+    return $resource('api/Sets/updateUserItem/:id', { id: '@id' }
+        , {
+            'update': { method: 'PUT' }
+        }
+    );
+}
+
 function getUser($resource) {
     return $resource('api/Account/getUser/:username', { username: '@username' }
     );
@@ -71,6 +79,7 @@ angular
     .service('getUser', getUser)
     .service('getCollectionSrv', getSetSrv)
     .service('getCollectionsSrv', getSetsSrv)
+    .service('updateUserItem', updateUserItem)
     .service('getSetSrv', getSetSrv)
     .service('getSetsSrv', getSetsSrv);
 

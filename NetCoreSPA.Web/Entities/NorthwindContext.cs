@@ -49,14 +49,13 @@ namespace iCollect.Entities
             {
                 entity.HasKey(e => e.ImageId);
 
-                entity.Property(e => e.Image)
-                    .IsRequired()
-                    .HasColumnType("image");
+                entity.Property(e => e.ImageId).ValueGeneratedNever();
+
+                entity.Property(e => e.Image).HasColumnType("image");
 
                 entity.HasOne(d => d.Item)
                     .WithMany(p => p.Images)
                     .HasForeignKey(d => d.ItemId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Images_Items");
             });
 
@@ -67,14 +66,6 @@ namespace iCollect.Entities
 
                 entity.HasIndex(e => e.SetId)
                     .HasName("IX_SetImages_setId");
-
-                entity.Property(e => e.DelImageId).HasColumnName("del_imageId");
-
-                entity.Property(e => e.DelPageNo).HasColumnName("del_pageNo");
-
-                entity.Property(e => e.DelPath)
-                    .HasColumnName("del_path")
-                    .HasMaxLength(250);
 
                 entity.Property(e => e.Description).HasMaxLength(100);
 
@@ -121,15 +112,15 @@ namespace iCollect.Entities
 
             modelBuilder.Entity<UserItems>(entity =>
             {
-                entity.HasKey(e => e.UserId);
-
                 entity.Property(e => e.UserId)
+                    .IsRequired()
                     .HasMaxLength(255)
                     .IsUnicode(false);
 
                 entity.HasOne(d => d.Item)
                     .WithMany(p => p.UserItems)
                     .HasForeignKey(d => d.ItemId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_UserItems_Items");
             });
 
