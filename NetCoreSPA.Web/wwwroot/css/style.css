@@ -8592,6 +8592,7 @@ form .progress {
     float: left;
     //vertical-align:bottom;
     margin-right: -10px;
+    padding-right :20px;
 }
 
 .ItemCheckbox {

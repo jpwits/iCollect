@@ -177,8 +177,17 @@
                     curUserItems.userItems.push({ userId: $scope.User.name, itemId: curUserItems.itemId, quantity: 1 });
                 }
                 else {
-                    curUserItems.userItems[index].quantity++;
-                    event.currentTarget.nextSibling.nextSibling.innerText = curUserItems.userItems[index].quantity;
+                    if (direction === true) {
+                        curUserItems.userItems[index].quantity++;
+                        event.currentTarget.nextSibling.nextSibling.innerText = curUserItems.userItems[index].quantity;
+
+                    }
+                    else
+                    {
+                        curUserItems.userItems[index].quantity--;
+                        event.currentTarget.nextSibling.innerText = curUserItems.userItems[index].quantity;
+
+                    }
                 }
             }
 
