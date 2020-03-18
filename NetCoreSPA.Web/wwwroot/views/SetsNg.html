@@ -30,7 +30,7 @@
     </div>
 
     <form name="myForm" ng-submit="">
-        <table id="entry-grid" class="table table-striped table-bSeted table-hover">
+        <table id="ng-grid" class="table table-striped table-bSeted table-hover">
             <thead>
                 <tr>
                     <th>Images</th>
@@ -39,15 +39,49 @@
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="(idx,set) in iColSets.data">
+                <tr ng-repeat="(setidx,set) in iColSets.data">
                     <td width="50%">
-                        <div ng-repeat="item  in set.items" ng-if="item.isActive == true">
-                            <div class="iColcontainer">
-                                <img ng-click="selectSet($event, idx)" style="margin-right : 25px;border:2px solid grey" ng-src="data:{{item.type}};base64,{{item.thumbnail}}" />
-                                <input ng-click="selectPart($event)" type="checkbox" class="iColcheckbox" />
+                        <div ng-repeat="(itemidx, item)  in set.items" ng-if="item.isActive == true">
+                            <div class="SetContainer">
+                                <img ng-click="selectSet($event, setidx)" style="margin-right : 25px;border:2px solid grey" ng-src="data:{{item.type}};base64,{{item.thumbnail}}" />
+                                <input ng-if="item.userItems.length !== 0" type="text" class="ItemCheckbox" ng-model="item.userItems[0].quantity" /> <!--style="padding-bottom : 18px;"-->
+                                <a href="" ng-click="SelectItem($event, itemidx , item.setId , true)" type="button" class="ItemCheckbox"><i class="fa fa-plus" style="padding-bottom:35px;font-size:16px;color:green"></i></a>
+                                <a href="" ng-click="SelectItem($event, itemidx , item.setId,false)" type="button" class="ItemCheckbox"><i class="fa fa-minus" style="font-size:16px;color:red"></i></a>
                             </div>
                         </div>
                     </td>
+
+                    <!--if (item.isActive === true) {
+                    html += '
+                    <div class="SetContainer">
+                        ';
+                        if (index === 0) {
+                        html += '<img ng-click="loadSet(' + set.setId + ')" style="margin-right : 25px;border:2px solid grey" id="ImgId' + item.id + item.setId + '" ng-src="data:' + item.type + ';base64,' + item.thumbnail + '" />';
+                        if (item.userItems.length !== 0) {
+                        html += '<span class="ItemCheckbox" style="padding-bottom : 18px;">' + item.userItems[index].quantity + '</span>';
+                        }
+                        else {
+                        html += '<span class="ItemCheckbox" style="padding-bottom : 18px;">' + 0 + '</span>';
+                        }
+                        html += '<a ng-click="SelectItem($event, ' + index + ',' + item.setId + ',' + true + ')" type="button" class="ItemCheckbox"><i class="fa fa-plus" style="padding-bottom:35px;font-size:16px;color:green"></i></a>';
+                        html += '<a ng-click="SelectItem($event, ' + index + ',' + item.setId + ',' + false + ')" type="button" class="ItemCheckbox"><i class="fa fa-minus" style="font-size:16px;color:red"></i></a>';
+                        }
+                        else {
+                        if (item.userItems.length !== 0) {
+                        html += '<span class="ItemCheckbox" style="padding-bottom : 18px;">' + item.userItems[0].quantity + '</span>';
+                        }
+                        else {
+                        html += '<span class="ItemCheckbox" style="padding-bottom : 18px;">' + 0 + '</span>';
+                        }
+                        html += '<img style="width:80%;height:80%;border:2px solid grey " id="ImgId' + item.id + item.setId + '" ng-src="data:' + item.type + ';base64,' + item.thumbnail + '" />';
+                        html += '<a name="Up_' + set.setId + '" ng-click="SelectItem($event, ' + index + ',' + item.setId + ',' + true + ')" type="button" class="ItemCheckbox"><i class="fa fa-caret-up" style="padding-bottom:30px;font-size:24px;color:green"></i></a>';
+                        html += '<a name="Down_' + set.setId + '" ng-click="SelectItem($event, ' + index + ',' + item.setId + ',' + false + ')" type="button" class="ItemCheckbox"><i class="fa fa-caret-down" style="font-size:24px;color:red"></i></a>';
+                        }
+                        html += '
+                    </div>';
+                    }-->
+
+
                     <!--<td>{{set.setId}}</td>-->
                     <td>{{set.description}}</td>
                 </tr>
