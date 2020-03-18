@@ -4,8 +4,8 @@ function getSetSrv($resource) {
     );
 }
 
-function getSetsSrv($resource) {
-    return $resource('api/Sets/GetSets/:start/:length', { start: '@start', length:'@length' }
+function getSetsSrvNg($resource) {
+    return $resource('api/SetsNg/GetSets/:start/:length', { start: '@start', length:'@length' }
     );
 }
 
@@ -77,10 +77,10 @@ angular
     .service('updateImage', updateImage)
     .service('passData', passData)
     .service('getUser', getUser)
-    .service('getCollectionSrv', getSetSrv)
-    .service('getCollectionsSrv', getSetsSrv)
+    .service('getCollectionSrv', getCollectionSrv)
+    .service('getCollectionsSrv', getCollectionsSrv)
     .service('updateUserItem', updateUserItem)
     .service('getSetSrv', getSetSrv)
-    .service('getSetsSrv', getSetsSrv);
+    .service('getSetsSrvNg', getSetsSrvNg);
 
 
