@@ -1,6 +1,6 @@
-﻿function SetsNgCtrl($scope, $state, updateImage, $compile, $templateCache, getSetSrv, getSetsSrvNg, passData, $timeout, $q) {
+﻿function SetsNgCtrl($scope, $state, updateImage, $compile, $templateCache, getSetsSrvNg, passData, getSetSrv, $timeout, $q) {
     $scope.session_pglen = passData.get("Session_PgLen");
-    $scope.iColSets = passData.get("CurSet");   
+    $scope.iColSets = passData.get("$scope.iColSets");
 
     if ($scope.session_pglen === undefined) { $scope.session_pglen = 50; }
     if ($scope.iColSets === undefined) {
@@ -41,52 +41,36 @@
         });
     };
 
-    $scope.SelectItem = (event, index, setId, direction) => {
-        getSetSrv.get({ id: setId }).$promise.then(function (response) {
-            var curSet = JSON.parse(JSON.stringify(response));
-            curSet.delItems = curSet.items.filter(item => item.isActive === false);
-            curSet.items = curSet.items.sort(function (a, b) {
-                return a.position - b.position;
-            }).filter(item => item.isActive === true);
+    $scope.SelectItem = (event, setidx, itemidx, direction) => {
+        var items = $scope.iColSets.data[setidx].items;
+        var item = items[itemidx];
 
-            $scope.User = passData.get("User");
-            if ($scope.User.name === null) {
-                alert('Login Id10t');
-                return;
-            }
+        $scope.User = passData.get("User");
+        if ($scope.User.name === null) {
+            alert('Login Id10t');
+            return;
+        }
 
-            //iColSets
-
-            curUserItems = curSet.items[index];
-            if (curUserItems.userItems.length === 0) {
-                curUserItems.userItems.push({ userId: $scope.User.name, itemId: curUserItems.itemId, quantity: 0 });
-            }
-            
-            if (direction === true) {
-                curUserItems.userItems[0].quantity++;  //0 here should be user find, do user filtering on api []->{}
-                //event.currentTarget.previousSibling.innerText = curUserItems.userItems[0].quantity;
-            }
-            else {
-                curUserItems.userItems[0].quantity--;
-                //event.currentTarget.previousSibling.previousSibling.innerText = curUserItems.userItems[0].quantity;
-            }
-
-            // var clone = Object.assign({}, curSet);
-            //clone.items = clone.items.concat(clone.delItems);
-            $scope.entry = new updateImage(curSet);
-            $scope.entry.$update(function (response) {
-
-             //$compile(angular.element('#ng-grid'))($scope);
-
-                //alert("Saved successfully...");
-            }, function (error) {
-                alert("Error getting orders from back-end : " + error);
+        if (itemidx === 0) {
+            items.forEach(function (item) {
+                if (item.userItems.length === 0) {
+                    item.userItems.push({ userId: $scope.User.name, itemId: item.itemId, quantity: 0 });
+                }
+                item.userItems[0].quantity = item.userItems[0].quantity + direction;
             });
+        } else {
+            if (item.userItems.length === 0) {
+                item.userItems.push({ userId: $scope.User.name, itemId: item.itemId, quantity: 0 });
+            }
+            item.userItems[0].quantity = item.userItems[0].quantity + direction;
+        }  //0 here should be user find, do user filtering on api change entity []->{}
+
+        $scope.entry = new updateImage($scope.iColSets.data[setidx]);
+        $scope.entry.$update(function (response) {
+
         }, function (error) {
             alert("Error getting orders from back-end : " + error);
         });
-
-
 
         //var cboxes = document.getElementsByName('cb_' + setId);
         //cboxes.forEach(function (cbox) {

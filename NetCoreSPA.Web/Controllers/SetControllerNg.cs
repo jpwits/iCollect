@@ -42,6 +42,19 @@ namespace iCollect.ControllersAPI
 
             return Json(new { recordsTotal = recordsTotal, data = qry });
         }
+
+        [HttpGet, Route("GetUserItem/{id}")]
+        public async Task<IActionResult> GetUserItem(int id)
+        {
+            var set = await _context.Sets
+                .Include(a => a.Items)
+                .ThenInclude(c => c.Images)
+                .Include(a => a.Items)
+                .ThenInclude(b => b.UserItems)
+                .FirstOrDefaultAsync(m => m.SetId == id);
+
+            return new JsonResult(set);
+        }
     }
 }
 

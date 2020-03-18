@@ -9,6 +9,11 @@ function getSetsSrvNg($resource) {
     );
 }
 
+function getItemSrvNg($resource) {
+    return $resource('api/SetsNg/GetUserItem/:id', { id: '@id' }
+    );
+}
+
 function getCollectionSrv($resource) {
     return $resource('api/Collections/GetCollection/:id', { id: '@id' }
     );
@@ -81,6 +86,8 @@ angular
     .service('getCollectionsSrv', getCollectionsSrv)
     .service('updateUserItem', updateUserItem)
     .service('getSetSrv', getSetSrv)
+    .service('getItemSrvNg', getItemSrvNg)
     .service('getSetsSrvNg', getSetsSrvNg);
+
 
 
