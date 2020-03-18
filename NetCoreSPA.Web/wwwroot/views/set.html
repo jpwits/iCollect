@@ -67,19 +67,19 @@
                                         </td>
                                     </tr>
                                     <div>
-                                    <tr ng-repeat="(key, setImg) in iCol.items">
+                                    <tr ng-repeat="(key, item) in iCol.items">
                                         <td>Images</td>
                                         <td>
                                             <div>
-                                                <img style="max-height:500px; max-width:500px" ng-src="data:{{setImg.type}};base64,{{setImg.image}}">
+                                                <img style="max-height:500px; max-width:500px" ng-src="data:{{item.images[0].type}};base64,{{item.images[0].image}}">
                                             </div>
                                         </td>
                                         <td>
                                             <div>
-                                                {{setImg.position}}
-                                                <button ng-click="ImageOrderUp(setImg.position)" class="btn btn-primary dim btn-default pull-right" type="button"><i class="fa fa-chevron-up"></i>Up </button>
-                                                <button ng-click="ImageOrderDown(setImg.position)" class="btn btn-primary dim btn-default pull-right" type="button"><i class="fa fa-chevron-down"></i>Down </button>
-                                                <button ng-click="Delete(setImg.position)" class="btn btn-primary dim btn-default pull-right" type="button"><i class="fa fa-trash"></i>Remove</button>
+                                                {{item.position}}
+                                                <button ng-click="ImageOrderUp(item.position)" class="btn btn-primary dim btn-default pull-right" type="button"><i class="fa fa-chevron-up"></i>Up </button>
+                                                <button ng-click="ImageOrderDown(item.position)" class="btn btn-primary dim btn-default pull-right" type="button"><i class="fa fa-chevron-down"></i>Down </button>
+                                                <button ng-click="Delete(item.position)" class="btn btn-primary dim btn-default pull-right" type="button"><i class="fa fa-trash"></i>Remove</button>
                                             </div>
                                         </td>
                                     </tr>

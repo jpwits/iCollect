@@ -8,6 +8,7 @@ namespace iCollect.Entities
         public int ImageId { get; set; }
         public int? ItemId { get; set; }
         public byte[] Image { get; set; }
+        public string Type { get; set; }
 
         public virtual Items Item { get; set; }
     }

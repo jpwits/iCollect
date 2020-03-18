@@ -31,7 +31,6 @@
             .renderWith(function (set, type, full, meta) {
                 if (set.items.length > 0) {
                     set.delItems = set.items.filter(img => img.isActive === false);
-
                     set.items = set.items.sort(function (a, b) {
                         return a.position - b.position;
                     }).filter(img => img.isActive === true);
@@ -43,15 +42,23 @@
                             if (index === 0) {
                                 html += '<img ng-click="loadSet(' + set.setId + ')" style="margin-right : 25px;border:2px solid grey" id="ImgId' + item.id + item.setId + '" ng-src="data:' + item.type + ';base64,' + item.thumbnail + '"/>';
                                 if (item.userItems.length !== 0) {
-                                    html += '<span class="ItemCheckbox" style="padding-bottom : 15px;">' + item.userItems[index].quantity + '</span>';
+                                    html += '<span class="ItemCheckbox" style="padding-bottom : 18px;">' + item.userItems[index].quantity + '</span>';
                                 }
-                                html += '<a ng-click= "SelectItem($event, ' + index + ',' + item.setId + ',' + true + ')" type="button" class="ItemCheckbox"><i class="fa fa-plus" style="padding-bottom:30px;font-size:16px;color:green"></i></a>';
+                                else {
+                                    html += '<span class="ItemCheckbox" style="padding-bottom : 18px;">' + 0 + '</span>';
+                                }
+                                html += '<a ng-click= "SelectItem($event, ' + index + ',' + item.setId + ',' + true + ')" type="button" class="ItemCheckbox"><i class="fa fa-plus" style="padding-bottom:35px;font-size:16px;color:green"></i></a>';
                                 html += '<a ng-click= "SelectItem($event, ' + index + ',' + item.setId + ',' + false + ')" type="button" class="ItemCheckbox"><i class="fa fa-minus" style="font-size:16px;color:red"></i></a>';
-                               
                             }
                             else {
+                                if (item.userItems.length !== 0) {
+                                    html += '<span class="ItemCheckbox" style="padding-bottom : 18px;">' + item.userItems[0].quantity + '</span>';
+                                }
+                                else {
+                                    html += '<span class="ItemCheckbox" style="padding-bottom : 18px;">' + 0 + '</span>';
+                                }
                                 html += '<img style="width:80%;height:80%;border:2px solid grey " id="ImgId' + item.id + item.setId + '" ng-src="data:' + item.type + ';base64,' + item.thumbnail + '"/>';
-                                html += '<a name="Up_' + set.setId + '" ng-click= "SelectItem($event, ' + index + ',' + item.setId + ',' + true + ')" type="button" class="ItemCheckbox"><i class="fa fa-caret-up" style="padding-bottom:13px;font-size:24px;color:lime"></i></a>';
+                                html += '<a name="Up_' + set.setId + '" ng-click= "SelectItem($event, ' + index + ',' + item.setId + ',' + true + ')" type="button" class="ItemCheckbox"><i class="fa fa-caret-up" style="padding-bottom:30px;font-size:24px;color:green"></i></a>';
                                 html += '<a name="Down_' + set.setId + '" ng-click= "SelectItem($event, ' + index + ',' + item.setId + ',' + false + ')" type="button" class="ItemCheckbox"><i class="fa fa-caret-down" style="font-size:24px;color:red"></i></a>';
                             }
                             html += '</div>';
@@ -158,7 +165,7 @@
         });
     };
 
-    $scope.SelectItem = (event,index, setId, direction) => {
+    $scope.SelectItem = (event, index, setId, direction) => {
         getSetSrv.get({ id: setId }).$promise.then(function (response) {
             var curSet = JSON.parse(JSON.stringify(response));
             curSet.delItems = curSet.items.filter(item => item.isActive === false);
@@ -173,30 +180,36 @@
             }
 
             curUserItems = curSet.items[index];
+            if (curUserItems.userItems.length === 0) {
+                curUserItems.userItems.push({ userId: $scope.User.name, itemId: curUserItems.itemId, quantity: 0 });
+            }
+
             if (index === 0) {
-                if (curUserItems.userItems.length === 0) {
-                    curUserItems.userItems.push({ userId: $scope.User.name, itemId: curUserItems.itemId, quantity: 1 });
+                if (direction === true) {
+                    curUserItems.userItems[0].quantity++;  //0 here should be user find, do user filtering on api []->{}
+                    event.currentTarget.previousSibling.innerText = curUserItems.userItems[0].quantity;
                 }
                 else {
-                    if (direction === true) {
-                        curUserItems.userItems[index].quantity++;
-                        event.currentTarget.previousSibling.innerText = curUserItems.userItems[index].quantity;
-
-                    }
-                    else
-                    {
-                        curUserItems.userItems[index].quantity--;
-                        event.currentTarget.previousSibling.previousSibling.innerText = curUserItems.userItems[index].quantity;
-
-                    }
+                    curUserItems.userItems[0].quantity--;
+                    event.currentTarget.previousSibling.previousSibling.innerText = curUserItems.userItems[0].quantity;
+                }
+            }
+            else {
+                if (direction === true) {
+                    curUserItems.userItems[0].quantity++;  //0 here should be user find, do user filtering on api []->{}
+                    event.currentTarget.previousSibling.previousSibling.innerText = curUserItems.userItems[0].quantity;
+                }
+                else {
+                    curUserItems.userItems[0].quantity--;
+                    event.currentTarget.previousSibling.previousSibling.previousSibling.innerText = curUserItems.userItems[0].quantity;
                 }
             }
 
-           // var clone = Object.assign({}, curSet);
+            // var clone = Object.assign({}, curSet);
             //clone.items = clone.items.concat(clone.delItems);
             $scope.entry = new updateImage(curSet);
             $scope.entry.$update(function (response) {
-                
+
                 //alert("Saved successfully...");
             }, function (error) {
                 alert("Error getting orders from back-end : " + error);
@@ -212,12 +225,12 @@
         //    cbox.checked = event.currentTarget.checked;
         //});
 
-        if (event.currentTarget.checked === true) {
-            event.currentTarget.previousSibling.style.border = "2px solid lime";
-        }
-        else {
-            event.currentTarget.previousSibling.style.border = "2px solid grey";
-        }
+        //if (event.currentTarget.checked === true) {
+        //    event.currentTarget.previousSibling.style.border = "2px solid lime";
+        //}
+        //else {
+        //    event.currentTarget.previousSibling.style.border = "2px solid grey";
+        //}
 
         //update db
     };

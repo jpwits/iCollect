@@ -49,9 +49,9 @@ namespace iCollect.Entities
             {
                 entity.HasKey(e => e.ImageId);
 
-                entity.Property(e => e.ImageId).ValueGeneratedNever();
-
                 entity.Property(e => e.Image).HasColumnType("image");
+
+                entity.Property(e => e.Type).HasMaxLength(50);
 
                 entity.HasOne(d => d.Item)
                     .WithMany(p => p.Images)

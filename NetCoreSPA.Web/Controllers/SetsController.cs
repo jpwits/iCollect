@@ -52,6 +52,8 @@ namespace iCollect.ControllersAPI
             {
                 recordsTotal = dc.Sets.Count();
                 allSets = dc.Sets
+                    //.Include(a => a.Items)
+                    //.ThenInclude(c=>c.Images)
                     .Include(a => a.Items)
                     .ThenInclude(b => b.UserItems)
                     .OrderByDescending(a => a.Description)
@@ -86,6 +88,8 @@ namespace iCollect.ControllersAPI
         {
             var set = await _context.Sets
                 .Include(a => a.Items)
+                .ThenInclude(c => c.Images)
+                .Include(a => a.Items)
                 .ThenInclude(b=>b.UserItems)
                 .FirstOrDefaultAsync(m => m.SetId == id);
 
@@ -100,20 +104,30 @@ namespace iCollect.ControllersAPI
             {
                 if (data.Items.Count > 0)
                 {
-                    foreach (var setImg in data.Items)
+                    foreach (var item in data.Items)
                     {
-                        if (setImg.Thumbnail == null)
+                        //if (item.Thumbnail == null)
                         {
-                            Image image = Image.FromStream(new MemoryStream(setImg.Image));
+                            //Image image = Image.FromStream(new MemoryStream(item.Image));
+                            //if (!item.Images.Any(a => a.ItemId == item.ItemId))
+                            //    {
+                            //    item.Images.Add(new Images()
+                            //    {
+                            //        ItemId = item.ItemId,
+                            //        Image = item.Image,
+                            //        Item = item,
+                            //        Type = item.Type
+                            //    });
+                            //}
+                            //double aspect = (double)image.Width / image.Height;
+                            //var height = Convert.ToInt32(120 / aspect);
 
-                            double aspect = (double)image.Width / image.Height;
-                            var height = Convert.ToInt32(120 / aspect);
-
-                            Image thumb = image.GetThumbnailImage(120, height, () => false, IntPtr.Zero);
-                            setImg.Thumbnail = ImageToByteArray(thumb, setImg.Type);
+                            //Image thumb = image.GetThumbnailImage(120, height, () => false, IntPtr.Zero);
+                            //item.Thumbnail = ImageToByteArray(thumb, item.Type);
                         }
                     }
                 }
+
                 _context.Update(data);
                 int rc = await _context.SaveChangesAsync();
                 return rc;
