@@ -79,5 +79,11 @@
       "library": "font-awesome@5.12.1",
       "destination": "wwwroot/font-awesome/"
     }
-  ]
+  ,
+{
+  "provider": "jsdelivr",
+  "library": "bootstrap@4.4.1",
+  "destination": "wwwroot/js/bootstrap/"
+}
+]
 }
