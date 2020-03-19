@@ -21,33 +21,41 @@
     };
 
     $scope.pageChanged = function () {
-        console.log('Page changed to: ' + $scope.currentPage);
+        $scope.getsets();
+        //console.log('Page changed to: ' + $scope.currentPage);
     };
 
     $scope.setItemsPerPage = function (num) {
         $scope.itemsPerPage = num;
+        passData.set("$scope.iColSets", undefined); //serious, dispose , incremental...l8r!
+        $scope.getsets();
        // $scope.currentPage = 1; //reset to first page
     };
-
-    $scope.iColSets = passData.get("$scope.iColSets");
-    if ($scope.iColSets !== undefined) {
-        $scope.totalItems = $scope.iColSets.totalItems;//$scope.data.length;
-    } else {
-        getSetsSrvNg.get({ start: '0', length: '10' }).$promise.then(function (response) {
-            $scope.iColSets = JSON.parse(JSON.stringify(response));
-            angular.forEach($scope.iColSets.data, function (set) {
-                if (set.items.length > 0) {
-                    set.delItems = set.items.filter(item => item.isActive === false);
-                    set.items = set.items.sort(function (a, b) {
-                        return a.position - b.position;
-                    }).filter(item => item.isActive === true);
-                }
+    $scope.getsets = () => {
+        $scope.iColSets = passData.get("$scope.iColSets");
+        if ($scope.iColSets !== undefined) {
+            $scope.totalItems = $scope.iColSets.totalItems;//$scope.data.length;
+        } else {
+            getSetsSrvNg.get({
+                start: ($scope.currentPage - 1) * $scope.itemsPerPage,
+                length: $scope.currentPage * $scope.itemsPerPage
+            }).$promise.then(function (response) {
+                $scope.iColSets = JSON.parse(JSON.stringify(response));
+                angular.forEach($scope.iColSets.data, function (set) {
+                    if (set.items.length > 0) {
+                        set.delItems = set.items.filter(item => item.isActive === false);
+                        set.items = set.items.sort(function (a, b) {
+                            return a.position - b.position;
+                        }).filter(item => item.isActive === true);
+                    }
+                });
+                $scope.totalItems = $scope.iColSets.recordsTotal;//$scope.data.length;
+            }, function (error) {
+                alert("Error getting orders from back-end : " + error);
             });
-            $scope.totalItems = $scope.iColSets.recordsTotal;//$scope.data.length;
-        }, function (error) {
-            alert("Error getting orders from back-end : " + error);
-        });
-    }
+        }
+    };
+    $scope.getsets();
 
     $scope.selectPart = (event) => {
         if (event.currentTarget.checked === true) {
