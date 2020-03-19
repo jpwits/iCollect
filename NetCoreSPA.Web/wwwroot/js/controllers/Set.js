@@ -1,6 +1,7 @@
 ﻿
 function SetCtrl($scope, $state, $compile, $templateCache, getImage, updateImage, passData, $timeout) {
-    $scope.iCol = passData.get("CurSet");
+   // $scope.iCol = passData.get("CurSet");
+    $scope.iCol = passData.get("$scope.iColSets").data[passData.get("$scope.curSetIdx")];
 
     $scope.UpdateSet = function (sets) {
         var clone = Object.assign({}, sets);
