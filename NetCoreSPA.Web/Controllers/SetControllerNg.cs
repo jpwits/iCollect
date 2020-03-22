@@ -12,9 +12,9 @@ using System.Drawing;
 using System.Text;
 using Newtonsoft.Json;
 using System.Drawing.Imaging;
+using Microsoft.AspNetCore.Authorization;
 
-
-namespace iCollect.ControllersAPI
+namespace iCollect.Controllers
 {
     [Route("api/SetsNg"), Produces("application/json"), EnableCors("AppPolicy")]
     public class SetsNgController : Controller
@@ -26,8 +26,9 @@ namespace iCollect.ControllersAPI
             _context = context;
         }
 
-     
+
         // GET: SetsNg
+        //[HttpGet, Authorize]
         [HttpGet, Route("GetSets/{start}/{length}")]
         public ActionResult GetSets(int start, int length)
         {

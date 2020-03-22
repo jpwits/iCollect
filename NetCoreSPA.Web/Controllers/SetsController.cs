@@ -14,7 +14,7 @@ using Newtonsoft.Json;
 using System.Drawing.Imaging;
 using Microsoft.Extensions.Logging;
 
-namespace iCollect.ControllersAPI
+namespace iCollect.Controllers
 {
     [Route("api/Sets"), Produces("application/json"), EnableCors("AppPolicy")]
     public class SetsController : Controller
