@@ -1,5 +1,30 @@
 ﻿function SetsNgCtrl($scope, $state, updateImage, DTOptionsBuilder, $compile, $templateCache, getSetsSrvNg, passData, getSetSrv, $timeout, $q) {
     $scope.session_pglen = passData.get("Session_PgLen");
+    $scope.sortby = [{
+        "Column": "Description",
+        "Direction": "Descending"
+    }, {
+        "Column": "Year",
+        "Direction": "Descending"
+    }, {
+        "Column": "Range",
+        "Direction": "Descending"
+    }];
+    $scope.groupby = [{
+        "Column": "Range",
+        "Ranges": ["Protea"]
+    }, {
+        "Column": "Type",
+        "Types": ["Prestige", "Launch", "Special"]
+    }];
+    $scope.filterby = [{
+        "Column": "Year",
+        "Start": "1987",
+        "End": "2015"
+    }, {
+        "Column": "Range",
+        "Ranges": ["Protea"]
+    }];
 
     if ($scope.session_pglen === undefined) { $scope.session_pglen = 50; }
 
@@ -10,7 +35,7 @@
     };
 
     $scope.viewby = $scope.session_pglen;//10;
-   
+
     $scope.currentPage = 1;
     $scope.itemsPerPage = $scope.viewby;
     $scope.maxSize = 5; //Number of pager buttons to show
@@ -29,7 +54,7 @@
         $scope.itemsPerPage = num;
         passData.set("$scope.iColSets", undefined); //serious, dispose , incremental...l8r!
         $scope.getsets();
-       // $scope.currentPage = 1; //reset to first page
+        // $scope.currentPage = 1; //reset to first page
     };
     $scope.getsets = () => {
         $scope.iColSets = passData.get("$scope.iColSets");
@@ -38,7 +63,9 @@
         } else {
             getSetsSrvNg.get({
                 start: ($scope.currentPage - 1) * $scope.itemsPerPage,
-                length: $scope.currentPage * $scope.itemsPerPage
+                length: $scope.currentPage * $scope.itemsPerPage,
+                sortby: JSON.stringify($scope.sortby),
+                groupby: JSON.stringify($scope.groupby)
             }).$promise.then(function (response) {
                 $scope.iColSets = JSON.parse(JSON.stringify(response));
                 angular.forEach($scope.iColSets.data, function (set) {
@@ -144,7 +171,29 @@
         }
     };
 
+    $scope.sortBy = function (column) {
+        switch (column) {
+            case "Description":
+                if ($scope.sortby.Direction === "Ascending") {
+                    $scope.sortby.Direction = "Descending";
+                }
+                else {
+                    $scope.sortby.Direction = "Ascending";
+                }
+                break;
 
+            case "Year":
+                if ($scope.sortby.Direction === "Ascending") {
+                    $scope.sortby.Direction = "Descending";
+                }
+                else {
+                    $scope.sortby.Direction = "Ascending";
+                }
+                break;
+        }
+        
+        $scope.getsets();
+    };
 }
 
 //var PaginationDemoCtrl = function ($scope) {

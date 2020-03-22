@@ -37,7 +37,26 @@
                 <tr>
                     <th>Images</th>
                     <!--<th>Id</th>-->
-                    <th>Description</th>
+                    <th ng-click="sortBy('Description')">
+                        Description
+                        <span ng-if="sortby.Direction === 'Ascending'"><i class="fa fa-caret-down"></i></span>
+                        <span ng-if="sortby.Direction === 'Descending'"><i class="fa fa-caret-up"></i></span>
+                    </th>
+                    <th ng-click="sortBy('Year')">
+                        Year
+                        <!--<span ng-if="sortby.Direction === 'Ascending'"><i class="fa fa-caret-down"></i></span>
+        <span ng-if="sortby.Direction === 'Descending'"><i class="fa fa-caret-up"></i></span>-->
+                    </th>
+                    <th ng-click="sortBy('Range')">
+                        Range
+                        <!--<span ng-if="sortby.Direction === 'Ascending'"><i class="fa fa-caret-down"></i></span>
+        <span ng-if="sortby.Direction === 'Descending'"><i class="fa fa-caret-up"></i></span>-->
+                    </th>
+                    <th ng-click="sortBy('setType')">
+                        SetType
+                        <!--<span ng-if="sortby.Direction === 'Ascending'"><i class="fa fa-caret-down"></i></span>
+    <span ng-if="sortby.Direction === 'Descending'"><i class="fa fa-caret-up"></i></span>-->
+                    </th>
                 </tr>
             </thead>
             <tbody>
@@ -60,6 +79,15 @@
                     </td>
                     <td>
                         <a href="" ng-click="selectSet($event,setidx)">{{set.description}}</a>
+                    </td>
+                    <td>
+                        <a>{{set.year}}</a>
+                    </td>
+                    <td>
+                        <a>{{set.range}}</a>
+                    </td>
+                    <td>
+                        <a>{{set.setType}}</a>
                     </td>
                 </tr>
             </tbody>

@@ -100,6 +100,10 @@ namespace iCollect.Entities
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
+                entity.Property(e => e.SetType)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.Year)
                     .HasMaxLength(50)
                     .IsUnicode(false);
