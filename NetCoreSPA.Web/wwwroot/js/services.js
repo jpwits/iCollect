@@ -5,7 +5,7 @@ function getSetSrv($resource) {
 }
 
 function getSetsSrvNg($resource) {
-    return $resource('api/SetsNg/GetSets/:start/:length/:sortby/:groupby', { start: '@start', length:'@length', sortby:'@sortby', groupby:'@groupby' }
+    return $resource('api/SetsNg/GetSets/:start/:length/:sortby/:filterby/:groupby', { start: '@start', length: '@length', sortby: '@sortby', filterby: '@filterby', groupby: '@groupby' }
     );
 }
 

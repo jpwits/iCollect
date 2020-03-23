@@ -29,32 +29,75 @@ namespace iCollect.Controllers
 
         // GET: SetsNg
         //[HttpGet, Authorize]
-        [HttpGet, Route("GetSets/{start}/{length}/{sortby}/{groupby}")]
-        public ActionResult GetSets(int start, int length, string sortby, string groupby)
+        [HttpGet, Route("GetSets/{start}/{length}/{sortby}/{filterby}/{groupby}")]
+        public ActionResult GetSets(int start, int length, string sortby, string filterby, string groupby)
         {
             // dynamic sortbyObj = Json.Decode(sortby);
             var sortbyObj = JsonConvert.DeserializeObject<dynamic>(sortby);
+            var filterbyObj = JsonConvert.DeserializeObject<dynamic>(filterby);
             var groupbyObj = JsonConvert.DeserializeObject<dynamic>(groupby);
-            var recordsTotal = _context.Sets.Count();
+            var _sets = _context.Sets.AsEnumerable();
+            var yrGroup = _sets.GroupBy(a => a.Year);
+            var rangeGroup = _sets.GroupBy(a => a.Range).Select(a=> new { a.Key }).ToArray();
+            string yrStartMin = yrGroup.FirstOrDefault().Key;
+            string yrEndMax = yrGroup.OrderByDescending(a=>a.Key).FirstOrDefault().Key;
+            var sortCol = sortbyObj.Columns;//.Select(a => a.Column.Value == sortbyObj.Active);
             var qry = _context.Sets.AsQueryable();
-            foreach (var col in sortbyObj)
+            
+            foreach (var col in filterbyObj)
             {
-                if (col.Column.Value == "Description")
+                if (col.Column.Value == "Year") // Do for one column only 4 (the famous Jos) now.
                 {
-                    if (col.Direction.Value == "Descending")
-                    {
-                        qry = qry.OrderByDescending(a => a.Description);
-                    }
-                    else
-                    {
-                        qry = qry.OrderBy(a => a.Description);
-                    }
-                };
+                    int yrStartSel = Convert.ToInt32(col.Start);
+                    int yrEndSel = Convert.ToInt32(col.End);
+
+                    qry = qry.Where(y => Convert.ToInt32(y.Year) >= yrStartSel && Convert.ToInt32(y.Year) <= yrEndSel);
+                }
             }
-            //if (groupbyObj.Year > 0)
-            //{
-            // qry = qry.OrderByDescending(a => a.Description);
-            //};
+
+
+
+            var recordsTotal = qry.Count();
+
+            foreach (var col in sortbyObj.Columns)
+            {
+                if (sortbyObj.Active.Value == col.Column.Value) // Do for one column only 4 (the famous Jos) now.
+                {
+                    if (col.Column.Value == "Description")
+                    {
+                        if (col.Direction.Value == "Descending")
+                        {
+                            qry = qry.OrderByDescending(a => a.Description);
+                        }
+                        else
+                        {
+                            qry = qry.OrderBy(a => a.Description);
+                        }
+                    };
+                    if (col.Column.Value == "Year")
+                    {
+                        if (col.Direction.Value == "Descending")
+                        {
+                            qry = qry.OrderByDescending(a => a.Year);
+                        }
+                        else
+                        {
+                            qry = qry.OrderBy(a => a.Year);
+                        }
+                    };
+                    if (col.Column.Value == "Range")
+                    {
+                        if (col.Direction.Value == "Descending")
+                        {
+                            qry = qry.OrderByDescending(a => a.Range);
+                        }
+                        else
+                        {
+                            qry = qry.OrderBy(a => a.Range);
+                        }
+                    };
+                }
+            }
             qry = qry.Skip(start)
                 .Take(length);
             qry = qry
@@ -64,6 +107,7 @@ namespace iCollect.Controllers
             var sets = qry
                 .ToList();
 
+            #region _temp
             // OneTime Updates
             //foreach (var set in sets)
             //{
@@ -204,11 +248,9 @@ namespace iCollect.Controllers
             //        }
             //    }
             //}
-            _context.UpdateRange(sets);
-            _context.SaveChangesAsync();
+            #endregion
 
-
-            return Json(new { recordsTotal = recordsTotal, data = sets });
+            return Json(new { recordsTotal = recordsTotal, yrstartmin = yrStartMin, yrendmax = yrEndMax, rangeGroup = rangeGroup, data = sets });
         }
 
         [HttpGet, Route("GetUserItem/{id}")]

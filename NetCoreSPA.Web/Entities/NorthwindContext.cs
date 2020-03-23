@@ -67,13 +67,29 @@ namespace iCollect.Entities
                 entity.HasIndex(e => e.SetId)
                     .HasName("IX_SetImages_setId");
 
+                entity.Property(e => e.Denominator)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.Description).HasMaxLength(100);
 
+                entity.Property(e => e.Dimention).HasColumnType("decimal(18, 3)");
+
                 entity.Property(e => e.Image).HasColumnType("image");
+
+                entity.Property(e => e.Mass).HasColumnType("decimal(18, 3)");
+
+                entity.Property(e => e.MetalContent)
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.Thumbnail).HasColumnType("image");
 
                 entity.Property(e => e.Type)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Weight)
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
