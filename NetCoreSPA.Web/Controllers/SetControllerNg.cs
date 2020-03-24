@@ -39,6 +39,7 @@ namespace iCollect.Controllers
             var _sets = _context.Sets.AsEnumerable();
             var yrGroup = _sets.GroupBy(a => a.Year);
             var rangeGroup = _sets.GroupBy(a => a.Range).Select(a=> new { a.Key }).ToArray();
+            var typeGroup = _sets.GroupBy(a => a.SetType).Select(a => new { a.Key }).ToArray();
             string yrStartMin = yrGroup.FirstOrDefault().Key;
             string yrEndMax = yrGroup.OrderByDescending(a=>a.Key).FirstOrDefault().Key;
             var sortCol = sortbyObj.Columns;//.Select(a => a.Column.Value == sortbyObj.Active);
@@ -54,8 +55,6 @@ namespace iCollect.Controllers
                     qry = qry.Where(y => Convert.ToInt32(y.Year) >= yrStartSel && Convert.ToInt32(y.Year) <= yrEndSel);
                 }
             }
-
-
 
             var recordsTotal = qry.Count();
 
@@ -94,6 +93,17 @@ namespace iCollect.Controllers
                         else
                         {
                             qry = qry.OrderBy(a => a.Range);
+                        }
+                    };
+                    if (col.Column.Value == "SetType")
+                    {
+                        if (col.Direction.Value == "Descending")
+                        {
+                            qry = qry.OrderByDescending(a => a.SetType);
+                        }
+                        else
+                        {
+                            qry = qry.OrderBy(a => a.SetType);
                         }
                     };
                 }
@@ -250,7 +260,12 @@ namespace iCollect.Controllers
             //}
             #endregion
 
-            return Json(new { recordsTotal = recordsTotal, yrstartmin = yrStartMin, yrendmax = yrEndMax, rangeGroup = rangeGroup, data = sets });
+            return Json(new { recordsTotal = recordsTotal,
+                yrstartmin = yrStartMin,
+                yrendmax = yrEndMax,
+                rangeGroup,
+                typeGroup,
+                data = sets });
         }
 
         [HttpGet, Route("GetUserItem/{id}")]

@@ -12,6 +12,9 @@
             }, {
                 "Column": "Range",
                 "Direction": "Descending"
+            }, {
+                "Column": "SetType",
+                "Direction": "Descending"
             }]
     };
     $scope.groupby = [{
@@ -82,6 +85,7 @@
                 $scope.yrStartMin = $scope.iColSets.yrstartmin;
                 $scope.yrEndMax = $scope.iColSets.yrendmax;
                 $scope.rangeGroup = $scope.iColSets.rangeGroup;
+                $scope.typeGroup = $scope.iColSets.typeGroup;
                 angular.forEach($scope.iColSets.data, function (set) {
                     if (set.items.length > 0) {
                         set.delItems = set.items.filter(item => item.isActive === false);

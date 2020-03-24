@@ -88,23 +88,23 @@
                     </span>
                 </div>
                 <div class="div-table-col">
-                    SetType
+                    <div class="dropdown">
+                        <button class="dropbtn">Type</button>
+                        <div class="dropdown-content">
+                            <div ng-repeat="type in typeGroup">
+                                <input style="text-align:left" class="ngColListCheckbox" type="checkbox" ng-checked="filterRange($event)" />{{type.key}}
+                            </div>
+                        </div>
+                    </div>
                     <span ng-if="sortby.Columns[3].Direction === 'Ascending'">
-                        <i ng-click="sortBy('setType')" class="fa fa-caret-down"></i>
+                        <i ng-click="sortBy('SetType')" class="fa fa-caret-down"></i>
                     </span>
                     <span ng-if="sortby.Columns[3].Direction === 'Descending'">
-                        <i ng-click="sortBy('setType')" class="fa fa-caret-up"></i>
+                        <i ng-click="sortBy('SetType')" class="fa fa-caret-up"></i>
                     </span>
                 </div>
                 <div class="div-table-col">
-                    <div class="dropdown">
-                        <button class="dropbtn">Description</button>
-                        <div class="dropdown-content">
-                            <a href="#">Link 1</a>
-                            <a href="#">Link 2</a>
-                            <a href="#">Link 3</a>
-                        </div>
-                    </div>
+                    Description
                     <span ng-if="sortby.Columns[0].Direction === 'Ascending'">
                         <i ng-click="sortBy('Description')" class="fa fa-caret-down"></i>
                     </span>
