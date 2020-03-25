@@ -90,6 +90,29 @@ namespace iCollect.Controllers
                         qry = qry.Where(y => rangefilter.Contains(y.Range));
                     }
                 }
+                else if (col.Column.Value == "SetType")
+                {
+                    var setTypefilter = new List<string>();
+
+                    foreach (var setType in col.SetType)
+                    {
+                        if (setType.isChecked.Value && setType.Name != "All")
+                        {
+                            setTypefilter.Add(setType.Name.Value);
+                        }
+                    }
+                    if (col.SetType.Count > 0)
+                    {
+                        if (!(col.SetType[0].isChecked.Value && col.SetType[0].Name.Value == "All"))
+                        {
+                            qry = qry.Where(y => setTypefilter.Contains(y.SetType));
+                        }
+                    }
+                    else
+                    {
+                        qry = qry.Where(y => setTypefilter.Contains(y.SetType));
+                    }
+                }
             }
 
             var recordsTotal = qry.Count();

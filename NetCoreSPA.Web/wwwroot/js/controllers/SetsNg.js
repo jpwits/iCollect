@@ -179,7 +179,7 @@
             type.isChecked = event.isChecked;
         }
         else {
-            ftrType.SetTypes.push({ "Name": event.key, "isChecked": true });
+            ftrType.SetType.push({ "Name": event.key, "isChecked": true });
         }
 
         $scope.getsets();
