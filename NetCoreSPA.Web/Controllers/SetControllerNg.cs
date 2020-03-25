@@ -31,8 +31,10 @@ namespace iCollect.Controllers
         {
             var _sets = _context.Sets.AsEnumerable();
             var yrGroup = _sets.GroupBy(a => a.Year);
-            var rangeGroup = _sets.GroupBy(a => a.Range).Select(a => new { a.Key }).ToArray();
-            var typeGroup = _sets.GroupBy(a => a.SetType).Select(a => new { a.Key }).ToArray();
+            var rangeGroup = _sets.GroupBy(a => a.Range).Select(a => new { a.Key }).ToList();
+            rangeGroup.Insert(0, new { Key = "All" });
+            var typeGroup = _sets.GroupBy(a => a.SetType).Select(a => new { a.Key }).ToList();
+            typeGroup.Insert(0, new { Key = "All" });
             return Json(new
             {
                 rangeGroup,
@@ -52,7 +54,7 @@ namespace iCollect.Controllers
             var _sets = _context.Sets.AsEnumerable();
             var yrGroup = _sets.GroupBy(a => a.Year);
             string yrStartMin = yrGroup.FirstOrDefault().Key;
-            string yrEndMax = yrGroup.OrderByDescending(a=>a.Key).FirstOrDefault().Key;
+            string yrEndMax = yrGroup.OrderByDescending(a => a.Key).FirstOrDefault().Key;
             var sortCol = sortbyObj.Columns;//.Select(a => a.Column.Value == sortbyObj.Active);
             var qry = _context.Sets.AsQueryable();
 
@@ -71,12 +73,22 @@ namespace iCollect.Controllers
 
                     foreach (var range in col.Ranges)
                     {
-                        if (range.isChecked.Value)
+                        if (range.isChecked.Value && range.Name != "All")
                         {
                             rangefilter.Add(range.Name.Value);
                         }
                     }
-                    qry = qry.Where(y => rangefilter.Contains(y.Range));
+                    if (col.Ranges.Count > 0)
+                    {
+                        if (!(col.Ranges[0].isChecked.Value && col.Ranges[0].Name.Value == "All"))
+                        {
+                            qry = qry.Where(y => rangefilter.Contains(y.Range));
+                        }
+                    }
+                    else
+                    {
+                        qry = qry.Where(y => rangefilter.Contains(y.Range));
+                    }
                 }
             }
 
@@ -284,10 +296,13 @@ namespace iCollect.Controllers
             //}
             #endregion
 
-            return Json(new { recordsTotal = recordsTotal,
+            return Json(new
+            {
+                recordsTotal = recordsTotal,
                 yrstartmin = yrStartMin,
                 yrendmax = yrEndMax,
-                data = sets });
+                data = sets
+            });
         }
 
         [HttpGet, Route("GetUserItem/{id}")]

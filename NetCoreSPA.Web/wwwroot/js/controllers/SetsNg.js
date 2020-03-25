@@ -30,8 +30,9 @@
     };
     $scope.groupby = [{
         "Column": "Range",
-        "Ranges": [{ "Name": "Protea", "isChecked": true },
-            { "Name": "Kruggerrand", "isChecked": true }]   
+        "Ranges": []
+            //[{ "Name": "Protea", "isChecked": true },
+            //{ "Name": "Kruggerrand", "isChecked": true }]   
     }, {
         "Column": "Type",
         "Types": ["Prestige", "Launch", "Special"]
@@ -48,13 +49,16 @@
         },
         {
             "Column": "Range",
-            "Ranges": [{ "Name": "Protea", "isChecked": true },
-            { "Name": "Kruggerrand", "isChecked": true }] 
+            "Ranges": []
+            //    [{ "Name": "Protea", "isChecked": true },
+            //{ "Name": "Kruggerrand", "isChecked": true }] 
         },
         {
             "Column": "SetType",
-            "SetType": [{ "Name": "GRC", "isChecked": true }]
-        }];
+            "SetType": []
+                //[{ "Name": "GRC", "isChecked": true }]
+        }
+    ];
 
     if ($scope.session_pglen === undefined) { $scope.session_pglen = 50; }
 

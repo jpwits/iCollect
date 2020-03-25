@@ -74,7 +74,6 @@
                         <button class="dropbtn">Range</button>
                         <div class="dropdown-content">
                             <div ng-repeat="range in rangeGroup">
-                                <!--<input style="text-align:left" class="ngColListCheckbox" type="checkbox" ng-model="range.isChecked"  ng-change ="filterRangeChange(range)" ng-checked="filterRange(range.key)"/>{{range.key}}-->
                                 <input style="text-align:left" class="ngColListCheckbox" type="checkbox" ng-model="range.isChecked" ng-change="filterRangeChange(range)" ng-checked="filterRange(range.key)" />{{range.key}}
                             </div>
                         </div>
