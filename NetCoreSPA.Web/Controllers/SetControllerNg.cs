@@ -317,6 +317,8 @@ namespace iCollect.Controllers
             //        }
             //    }
             //}
+            //_context.UpdateRange(sets);
+            //_context.SaveChangesAsync();
             #endregion
 
             return Json(new
