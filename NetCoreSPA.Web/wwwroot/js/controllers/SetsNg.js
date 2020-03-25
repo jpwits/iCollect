@@ -1,4 +1,15 @@
-﻿function SetsNgCtrl($scope, $state, updateImage, DTOptionsBuilder, $compile, $templateCache, getSetsSrvNg, passData, getSetSrv, $timeout, $q) {
+﻿function SetsNgCtrl($scope, $state, updateImage, DTOptionsBuilder, $compile, $templateCache, getSetsSrvNg, passData, getSetSrv, getPopups, $timeout, $q) {
+    $scope.fillPopups = () => {
+        getPopups.get().$promise.then(function (response) {
+            var Popups = JSON.parse(JSON.stringify(response));
+            $scope.rangeGroup = Popups.rangeGroup;
+            $scope.typeGroup = Popups.typeGroup;
+        }, function (error) {
+            alert("Error getting orders from back-end : " + error);
+        });
+    };
+    $scope.fillPopups();
+
     $scope.session_pglen = passData.get("Session_PgLen");
     $scope.sortby = {
         "Active": "Year",
@@ -19,7 +30,8 @@
     };
     $scope.groupby = [{
         "Column": "Range",
-        "Ranges": ["Protea"]
+        "Ranges": [{ "Name": "Protea", "isChecked": true },
+            { "Name": "Kruggerrand", "isChecked": true }]   
     }, {
         "Column": "Type",
         "Types": ["Prestige", "Launch", "Special"]
@@ -36,7 +48,12 @@
         },
         {
             "Column": "Range",
-            "Ranges": ["Protea"]
+            "Ranges": [{ "Name": "Protea", "isChecked": true },
+            { "Name": "Kruggerrand", "isChecked": true }] 
+        },
+        {
+            "Column": "SetType",
+            "SetType": [{ "Name": "GRC", "isChecked": true }]
         }];
 
     if ($scope.session_pglen === undefined) { $scope.session_pglen = 50; }
@@ -48,19 +65,16 @@
     };
 
     $scope.viewby = $scope.session_pglen;//10;
-
     $scope.currentPage = 1;
     $scope.itemsPerPage = $scope.viewby;
     $scope.maxSize = 5; //Number of pager buttons to show
 
-    ///data.slice(((currentPage-1)*itemsPerPage), ((currentPage)*itemsPerPage))
     $scope.setPage = function (pageNo) {
         $scope.currentPage = pageNo;
     };
 
     $scope.pageChanged = function () {
         $scope.getsets();
-        //console.log('Page changed to: ' + $scope.currentPage);
     };
 
     $scope.setItemsPerPage = function (num) {
@@ -69,6 +83,7 @@
         $scope.getsets();
         // $scope.currentPage = 1; //reset to first page
     };
+
     $scope.getsets = () => {
         $scope.iColSets = passData.get("$scope.iColSets");
         if ($scope.iColSets !== undefined) {
@@ -84,8 +99,6 @@
                 $scope.iColSets = JSON.parse(JSON.stringify(response));
                 $scope.yrStartMin = $scope.iColSets.yrstartmin;
                 $scope.yrEndMax = $scope.iColSets.yrendmax;
-                $scope.rangeGroup = $scope.iColSets.rangeGroup;
-                $scope.typeGroup = $scope.iColSets.typeGroup;
                 angular.forEach($scope.iColSets.data, function (set) {
                     if (set.items.length > 0) {
                         set.delItems = set.items.filter(item => item.isActive === false);
@@ -94,7 +107,7 @@
                         }).filter(item => item.isActive === true);
                     }
                 });
-                $scope.totalItems = $scope.iColSets.recordsTotal;//$scope.data.length;
+                $scope.totalItems = $scope.iColSets.recordsTotal;
             }, function (error) {
                 alert("Error getting orders from back-end : " + error);
             });
@@ -123,6 +136,51 @@
             event.currentTarget.previousSibling.style.border = "2px solid grey";
         }
     };
+
+    $scope.filterRange = (range) => {
+        var ftrType = $scope.filterby.find(a => a.Column === "Range");
+        var curRange = ftrType.Ranges.find(a => a.Name === range);
+        if (curRange !== undefined) {
+            return curRange.isChecked;
+        }
+        return false;
+    };
+
+    $scope.filterSetType = (type) => {
+        var ftrType = $scope.filterby.find(a => a.Column === "SetType");
+        var curType = ftrType.SetType.find(a => a.Name === type);
+        if (curType !== undefined) {
+            return curType.isChecked;
+        }
+        return false;
+    };
+
+    $scope.filterRangeChange = (event) => {
+        var ftrType = $scope.filterby.find(a => a.Column === "Range");
+        var range = ftrType.Ranges.find(a => a.Name === event.key);
+        if (range !== undefined) {
+            range.isChecked = event.isChecked;
+        }
+        else {
+            ftrType.Ranges.push({ "Name": event.key, "isChecked": true });
+        }
+
+        $scope.getsets();
+    };
+
+    $scope.filterSetTypeChange = (event) => {
+        var ftrType = $scope.filterby.find(a => a.Column === "SetType");
+        var type = ftrType.SetType.find(a => a.Name === event.key);
+        if (type !== undefined) {
+            type.isChecked = event.isChecked;
+        }
+        else {
+            ftrType.SetTypes.push({ "Name": event.key, "isChecked": true });
+        }
+
+        $scope.getsets();
+    };
+
 
     $scope.filterDate = () => {
         var ftrYear = $scope.filterby.find(a => a.Column === "Year");

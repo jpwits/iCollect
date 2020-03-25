@@ -9,6 +9,11 @@ function getSetsSrvNg($resource) {
     );
 }
 
+function getPopups($resource) {
+    return $resource('api/SetsNg/GetPopups'
+    );
+}
+
 function getItemSrvNg($resource) {
     return $resource('api/SetsNg/GetUserItem/:id', { id: '@id' }
     );
@@ -86,8 +91,8 @@ angular
     .service('getCollectionsSrv', getCollectionsSrv)
     .service('updateUserItem', updateUserItem)
     .service('getSetSrv', getSetSrv)
+    .service('getPopups', getPopups)
     .service('getItemSrvNg', getItemSrvNg)
     .service('getSetsSrvNg', getSetsSrvNg);
-
 
 

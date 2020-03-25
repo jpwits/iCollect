@@ -74,7 +74,8 @@
                         <button class="dropbtn">Range</button>
                         <div class="dropdown-content">
                             <div ng-repeat="range in rangeGroup">
-                                <input style="text-align:left" class="ngColListCheckbox" type="checkbox" ng-checked="filterRange($event)" />{{range.key}}
+                                <!--<input style="text-align:left" class="ngColListCheckbox" type="checkbox" ng-model="range.isChecked"  ng-change ="filterRangeChange(range)" ng-checked="filterRange(range.key)"/>{{range.key}}-->
+                                <input style="text-align:left" class="ngColListCheckbox" type="checkbox" ng-model="range.isChecked" ng-change="filterRangeChange(range)" ng-checked="filterRange(range.key)" />{{range.key}}
                             </div>
                         </div>
                     </div>
@@ -92,7 +93,7 @@
                         <button class="dropbtn">Type</button>
                         <div class="dropdown-content">
                             <div ng-repeat="type in typeGroup">
-                                <input style="text-align:left" class="ngColListCheckbox" type="checkbox" ng-checked="filterRange($event)" />{{type.key}}
+                                <input style="text-align:left" class="ngColListCheckbox" type="checkbox" ng-model="type.isChecked" ng-change="filterSetTypeChange(type)" ng-checked="filterSetType(type.key)"  />{{type.key}}
                             </div>
                         </div>
                     </div>
@@ -117,7 +118,7 @@
             <div class="div-table-row" ng-repeat="(setidx,set) in iColSets.data">
                 <div style="min-width:450px" class="div-table-col">
                     <div ng-if="set.items.length === 0">
-                        <bold>No Images Available</bold>
+                        <i>(No Image Available)</i>
                     </div>
                     <div ng-repeat="(itemidx, item)  in set.items" ng-if="item.isActive == true">
                         <div ng-if="itemidx === 0" class="SetContainer">
@@ -141,6 +142,9 @@
                     <a>{{set.range}}</a>
                 </div>
                 <div class="div-table-col">
+                    <div ng-if="set.setType === null">
+                        <i>(No Type)</i>
+                    </div>
                     <a>{{set.setType}}</a>
                 </div>
                 <div class="div-table-col">

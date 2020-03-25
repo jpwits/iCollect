@@ -26,6 +26,19 @@ namespace iCollect.Controllers
             _context = context;
         }
 
+        [HttpGet, Route("GetPopups")]
+        public ActionResult GetPopups()
+        {
+            var _sets = _context.Sets.AsEnumerable();
+            var yrGroup = _sets.GroupBy(a => a.Year);
+            var rangeGroup = _sets.GroupBy(a => a.Range).Select(a => new { a.Key }).ToArray();
+            var typeGroup = _sets.GroupBy(a => a.SetType).Select(a => new { a.Key }).ToArray();
+            return Json(new
+            {
+                rangeGroup,
+                typeGroup,
+            });
+        }
 
         // GET: SetsNg
         //[HttpGet, Authorize]
@@ -38,13 +51,11 @@ namespace iCollect.Controllers
             var groupbyObj = JsonConvert.DeserializeObject<dynamic>(groupby);
             var _sets = _context.Sets.AsEnumerable();
             var yrGroup = _sets.GroupBy(a => a.Year);
-            var rangeGroup = _sets.GroupBy(a => a.Range).Select(a=> new { a.Key }).ToArray();
-            var typeGroup = _sets.GroupBy(a => a.SetType).Select(a => new { a.Key }).ToArray();
             string yrStartMin = yrGroup.FirstOrDefault().Key;
             string yrEndMax = yrGroup.OrderByDescending(a=>a.Key).FirstOrDefault().Key;
             var sortCol = sortbyObj.Columns;//.Select(a => a.Column.Value == sortbyObj.Active);
             var qry = _context.Sets.AsQueryable();
-            
+
             foreach (var col in filterbyObj)
             {
                 if (col.Column.Value == "Year") // Do for one column only 4 (the famous Jos) now.
@@ -53,6 +64,19 @@ namespace iCollect.Controllers
                     int yrEndSel = Convert.ToInt32(col.End);
 
                     qry = qry.Where(y => Convert.ToInt32(y.Year) >= yrStartSel && Convert.ToInt32(y.Year) <= yrEndSel);
+                }
+                else if (col.Column.Value == "Range")
+                {
+                    var rangefilter = new List<string>();
+
+                    foreach (var range in col.Ranges)
+                    {
+                        if (range.isChecked.Value)
+                        {
+                            rangefilter.Add(range.Name.Value);
+                        }
+                    }
+                    qry = qry.Where(y => rangefilter.Contains(y.Range));
                 }
             }
 
@@ -263,8 +287,6 @@ namespace iCollect.Controllers
             return Json(new { recordsTotal = recordsTotal,
                 yrstartmin = yrStartMin,
                 yrendmax = yrEndMax,
-                rangeGroup,
-                typeGroup,
                 data = sets });
         }
 
