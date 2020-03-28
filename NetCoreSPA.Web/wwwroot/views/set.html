@@ -74,13 +74,10 @@
                                     <tr ng-repeat="(key, item) in iCol.items">
                                         <td>Images</td>
                                         <td>
-                                            <div>
-                                                <img style="max-height:500px; max-width:500px" ng-src="data:{{item.images[0].type}};base64,{{item.images[0].image}}">
-                                                <div class="container">
-                                                    <img src="img_avatar.png" alt="Avatar" class="image">
-                                                    <div class="overlay">
-                                                        <div class="text">Hello World</div>
-                                                    </div>
+                                            <div  class="container">
+                                                <img  class="image" style="max-height:500px; max-width:500px" ng-src="data:{{item.images[0].type}};base64,{{item.images[0].image}}">
+                                                <div class="overlay">
+                                                    <img class="image" style="max-height:500px; max-width:500px" ng-src="data:{{item.images[0].type}};base64,{{item.images[0].image}}">
                                                 </div>
                                             </div>
                                         <td>

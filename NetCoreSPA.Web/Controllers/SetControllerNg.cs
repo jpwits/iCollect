@@ -339,7 +339,7 @@ namespace iCollect.Controllers
             //        }
             //        else if (set.Description.Contains("Launch"))
             //        {
-            //            set.SetType = "SetType";
+            //            set.SetType = "Launch";
             //        }
             //        else if (set.Description.Contains("Certified"))
             //        {
@@ -370,15 +370,13 @@ namespace iCollect.Controllers
             //        {
             //            set.SetType = "Special";
             //        }
-
             //        else
             //        {
-
             //        }
             //    }
             //}
-            _context.UpdateRange(sets);
-            _context.SaveChangesAsync();
+            //_context.UpdateRange(sets);
+            //_context.SaveChangesAsync();
             #endregion
 
             return Json(new

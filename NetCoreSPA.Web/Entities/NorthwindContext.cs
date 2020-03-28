@@ -67,6 +67,10 @@ namespace iCollect.Entities
                 entity.HasIndex(e => e.SetId)
                     .HasName("IX_SetImages_setId");
 
+                entity.Property(e => e.DelImage)
+                    .HasColumnName("del_Image")
+                    .HasColumnType("image");
+
                 entity.Property(e => e.Denominator)
                     .HasMaxLength(50)
                     .IsUnicode(false);
@@ -74,8 +78,6 @@ namespace iCollect.Entities
                 entity.Property(e => e.Description).HasMaxLength(100);
 
                 entity.Property(e => e.Dimention).HasColumnType("decimal(18, 3)");
-
-                entity.Property(e => e.Image).HasColumnType("image");
 
                 entity.Property(e => e.Mass).HasColumnType("decimal(18, 3)");
 
@@ -92,6 +94,16 @@ namespace iCollect.Entities
                 entity.Property(e => e.Weight)
                     .HasMaxLength(50)
                     .IsUnicode(false);
+
+                entity.HasOne(d => d.ImageIdANavigation)
+                    .WithMany(p => p.ItemsImageIdANavigation)
+                    .HasForeignKey(d => d.ImageIdA)
+                    .HasConstraintName("FK_Items_Images");
+
+                entity.HasOne(d => d.ImageIdBNavigation)
+                    .WithMany(p => p.ItemsImageIdBNavigation)
+                    .HasForeignKey(d => d.ImageIdB)
+                    .HasConstraintName("FK_Items_Images1");
 
                 entity.HasOne(d => d.Set)
                     .WithMany(p => p.Items)
