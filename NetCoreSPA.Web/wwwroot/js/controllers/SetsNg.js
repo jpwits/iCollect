@@ -60,7 +60,9 @@
         }
     ];
 
-    if ($scope.session_pglen === undefined) { $scope.session_pglen = 50; }
+    if ($scope.session_pglen === undefined) {
+        $scope.session_pglen = 50;
+    }
 
     $scope.currentPage = 0;
     $scope.pageSize = $scope.session_pglen;

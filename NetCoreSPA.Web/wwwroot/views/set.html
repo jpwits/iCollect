@@ -32,7 +32,12 @@
                                             ng-click="UpdateSet(iCol)">
                                         Save Set
                                     </button>
-                                    <h2><strong>{{iCol.description}}</strong></h2>
+                                    <h2>
+                                        <strong>
+                                            {{iCol.year}} {{iCol.range}} {{iCol.setType}}
+                                        <!--    {{iCol.description}}-->
+                                        </strong>
+                                    </h2>
                                 </div>
                             </div>
                         </div>
@@ -45,7 +50,7 @@
                                             <input ng-if="$stateParams.EditSet == true" type="text" name="input"
                                                    ng-model="iCol.description">
                                             <span ng-if="$stateParams.EditSet == false">
-                                                {{iCol.description}}
+                                                 {{iCol.description}}
                                             </span>
                                         </td>
                                     </tr>
@@ -66,24 +71,54 @@
                                             {{errorMsg}}
                                         </td>
                                     </tr>
-                                    <div>
                                     <tr ng-repeat="(key, item) in iCol.items">
                                         <td>Images</td>
                                         <td>
                                             <div>
                                                 <img style="max-height:500px; max-width:500px" ng-src="data:{{item.images[0].type}};base64,{{item.images[0].image}}">
+                                                <div class="container">
+                                                    <img src="img_avatar.png" alt="Avatar" class="image">
+                                                    <div class="overlay">
+                                                        <div class="text">Hello World</div>
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </td>
                                         <td>
                                             <div>
-                                                {{item.position}}
-                                                <button ng-click="ImageOrderUp(item.position)" class="btn btn-primary dim btn-default pull-right" type="button"><i class="fa fa-chevron-up"></i>Up </button>
-                                                <button ng-click="ImageOrderDown(item.position)" class="btn btn-primary dim btn-default pull-right" type="button"><i class="fa fa-chevron-down"></i>Down </button>
-                                                <button ng-click="Delete(item.position)" class="btn btn-primary dim btn-default pull-right" type="button"><i class="fa fa-trash"></i>Remove</button>
+                                                <span>Item Type:</span>
+                                                <select ng-model="item.type">
+                                                    <option>Set</option>
+                                                    <option>Box</option>
+                                                    <option>Coin</option>
+                                                    <option>Certificate</option>
+                                                    <option>Mintmark Coin</option>
+                                                    <option>Extra</option>
+                                                </select>
                                             </div>
+                                            <div ng-if="item.type == 'Coin'">
+                                                Denominator:
+                                                <select ng-model="item.denominator">
+                                                    <option>2½c</option>
+                                                    <option>5c</option>
+                                                    <option>10c</option>
+                                                    <option>20c</option>
+                                                    <option>50c</option>
+                                                    <option>R1</option>
+                                                    <option>R2</option>
+                                                    <option>R5</option>
+                                                    <option>R10</option>
+                                                    <option>R20</option>
+                                                    <option>R50</option>
+                                                    <option>R100</option>
+                                                    <option>R200</option>
+                                                </select>
+                                            </div>
+                                            pos: {{item.position}}
+                                            <button ng-click="ImageOrderUp(item.position)" class="btn btn-primary dim btn-default pull-right" type="button"><i class="fa fa-chevron-up"></i>Up </button>
+                                            <button ng-click="ImageOrderDown(item.position)" class="btn btn-primary dim btn-default pull-right" type="button"><i class="fa fa-chevron-down"></i>Down </button>
+                                            <button ng-click="Delete(item.position)" class="btn btn-primary dim btn-default pull-right" type="button"><i class="fa fa-trash"></i>Remove</button>
                                         </td>
                                     </tr>
-
                                     <tr>
                                         <td>Set Id:</td>
                                         <td colspan="2">
@@ -452,7 +487,11 @@
                       <pre>{{$stateParams | json}}</pre>
                       <h5>state</h5>
                       <pre>{{$state.current | json}}</pre>-->
-                <h5>scope</h5>
+                >
+                <h5>
+scope
+                >                </h5>
+                >
                 <pre>{{$scope | json}}</pre>
             </div>
         </div>

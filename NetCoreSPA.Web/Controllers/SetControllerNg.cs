@@ -269,19 +269,71 @@ namespace iCollect.Controllers
 
             //        }
 
-            //        if (set.Description.Contains("1 Oz") ||
-            //            set.Description.Contains("H Oz") || 
-            //            set.Description.Contains("Q Oz") || 
-            //            set.Description.Contains("T Oz") ||
-            //            set.Description.Contains("5c") ||
-            //            set.Description.Contains("10c") ||
-            //            set.Description.Contains("20c") ||
-            //            set.Description.Contains("50c") ||
-            //            set.Description.Contains("R1") ||
-            //            set.Description.Contains("R2") ||
-            //            set.Description.Contains("R5") ||
-            //            set.Description.Contains("R10") ||
-            //            set.Description.Contains("R25"))
+            //        if (set.Description.Contains("1 Oz"))
+            //        {
+            //            set.SetType = "Coin";
+            //        }
+            //        if (set.Description.Contains("H Oz"))
+            //        {
+            //            set.SetType = "Coin";
+            //        }
+            //        if (set.Description.Contains("Q Oz"))
+            //        {
+            //            set.SetType = "Coin";
+            //        }
+            //        if (set.Description.Contains("T Oz"))
+            //        {
+            //            set.SetType = "Coin";
+            //        }
+            //        if (set.Description.Contains("5c"))
+            //        {
+            //            set.SetType = "Coin";
+            //        }
+            //        if (set.Description.Contains("10c"))
+            //        {
+            //            set.SetType = "Coin";
+            //        }
+            //        if (set.Description.Contains("20c"))
+            //        {
+            //            set.SetType = "Coin";
+            //        }
+            //        if (set.Description.Contains("50"))
+            //        {
+            //            set.SetType = "Coin";
+            //        }
+            //        if (set.Description.Contains("R1") || set.Description.Contains("1R"))
+            //        {
+            //            set.SetType = "Coin";
+            //        }
+            //        if (set.Description.Contains("R2"))
+            //        {
+            //            set.SetType = "Coin";
+            //        }
+            //        if (set.Description.Contains("R5"))
+            //        {
+            //            set.SetType = "Coin";
+            //        }
+            //        if (set.Description.Contains("R10"))
+            //        {
+            //            set.SetType = "Coin";
+            //        }
+            //        if (set.Description.Contains("R20"))
+            //        {
+            //            set.SetType = "Coin";
+            //        }
+            //        if (set.Description.Contains("R20"))
+            //        {
+            //            set.SetType = "Coin";
+            //        }
+            //        if (set.Description.Contains("R50"))
+            //        {
+            //            set.SetType = "Coin";
+            //        }
+            //        if (set.Description.Contains("R100"))
+            //        {
+            //            set.SetType = "Coin";
+            //        }
+            //        if (set.Description.Contains("R200"))
             //        {
             //            set.SetType = "Coin";
             //        }
@@ -310,6 +362,14 @@ namespace iCollect.Controllers
             //        {
             //            set.SetType = "ProofSet";
             //        }
+            //        else if (set.Description.Contains("Collectors"))
+            //        {
+            //            set.SetType = "Collectors";
+            //        }
+            //        else if (set.Description.Contains("Special"))
+            //        {
+            //            set.SetType = "Special";
+            //        }
 
             //        else
             //        {
@@ -317,8 +377,8 @@ namespace iCollect.Controllers
             //        }
             //    }
             //}
-            //_context.UpdateRange(sets);
-            //_context.SaveChangesAsync();
+            _context.UpdateRange(sets);
+            _context.SaveChangesAsync();
             #endregion
 
             return Json(new
