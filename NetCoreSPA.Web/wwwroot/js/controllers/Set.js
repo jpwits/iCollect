@@ -8,7 +8,6 @@ function SetCtrl($scope, $state, $compile, $templateCache, getImage, updateImage
         clone.items = clone.items.concat(clone.delItems);
         $scope.entry = new updateImage(clone);
         $scope.entry.$update(function (response) {
-
             alert("Saved successfully...");
         }, function (error) {
             alert("Error getting orders from back-end : " + error);
