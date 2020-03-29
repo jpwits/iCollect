@@ -393,7 +393,7 @@ namespace iCollect.Controllers
         {
             var set = await _context.Sets
                 .Include(a => a.Items)
-                .ThenInclude(c => c.Images)
+                .ThenInclude(c => c.ImageIdANavigation)
                 .Include(a => a.Items)
                 .ThenInclude(b => b.UserItems)
                 .FirstOrDefaultAsync(m => m.SetId == id);

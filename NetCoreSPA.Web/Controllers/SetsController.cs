@@ -76,7 +76,7 @@ namespace iCollect.Controllers
             }
             else
             {
-                var current = _context.Items.Include(a=>a.Images).FirstOrDefault(a => a.ItemId == id);
+               // var current = _context.Items.Include(a=>a.Images).FirstOrDefault(a => a.ItemId == id);
             }
 
             return new JsonResult(new Items());
@@ -88,7 +88,9 @@ namespace iCollect.Controllers
         {
             var set = await _context.Sets
                 .Include(a => a.Items)
-                .ThenInclude(c => c.Images)
+                .ThenInclude(c => c.ImageIdANavigation)
+                .Include(a => a.Items)
+                .ThenInclude(c => c.ImageIdBNavigation)
                 .Include(a => a.Items)
                 .ThenInclude(b=>b.UserItems)
                 .FirstOrDefaultAsync(m => m.SetId == id);
@@ -106,24 +108,21 @@ namespace iCollect.Controllers
                 {
                     foreach (var item in data.Items)
                     {
-                        //if (item.Thumbnail == null)
+                        if (item.ThumbnailA == null && item.ImageIdANavigation != null)
                         {
-                            //Image image = Image.FromStream(new MemoryStream(item.Image));
-                            //if (!item.Images.Any(a => a.ItemId == item.ItemId))
-                            //    {
-                            //    item.Images.Add(new Images()
-                            //    {
-                            //        ItemId = item.ItemId,
-                            //        Image = item.Image,
-                            //        Item = item,
-                            //        Type = item.Type
-                            //    });
-                            //}
-                            //double aspect = (double)image.Width / image.Height;
-                            //var height = Convert.ToInt32(120 / aspect);
-
-                            //Image thumb = image.GetThumbnailImage(120, height, () => false, IntPtr.Zero);
-                            //item.Thumbnail = ImageToByteArray(thumb, item.Type);
+                            Image imageA = Image.FromStream(new MemoryStream(item.ImageIdANavigation.Image));
+                            double aspectA = (double)imageA.Width / imageA.Height;
+                            var heightA = Convert.ToInt32(120 / aspectA);
+                            Image thumbA = imageA.GetThumbnailImage(120, heightA, () => false, IntPtr.Zero);
+                            item.ThumbnailA = ImageToByteArray(thumbA, item.Type);
+                        }
+                        if (item.ThumbnailB == null && item.ImageIdBNavigation != null)
+                        {
+                            Image imageB = Image.FromStream(new MemoryStream(item.ImageIdBNavigation.Image));
+                            double aspectB = (double)imageB.Width / imageB.Height;
+                            var heightB = Convert.ToInt32(120 / aspectB);
+                            Image thumbB = imageB.GetThumbnailImage(120, heightB, () => false, IntPtr.Zero);
+                            item.ThumbnailB = ImageToByteArray(thumbB, item.Type);
                         }
                     }
                 }

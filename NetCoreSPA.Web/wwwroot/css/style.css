@@ -10406,7 +10406,7 @@ thead input {
     overflow: hidden;
     width: 100%;
     height: 0;
-    transition: .5s ease;
+    transition: .5s ease-in;
 }
 
 .container:hover .overlay {

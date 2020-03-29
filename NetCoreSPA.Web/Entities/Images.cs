@@ -12,11 +12,10 @@ namespace iCollect.Entities
         }
 
         public int ImageId { get; set; }
-        public int? ItemId { get; set; }
+        public int? DelItemId { get; set; }
         public byte[] Image { get; set; }
         public string Type { get; set; }
 
-        public virtual Items Item { get; set; }
         public virtual ICollection<Items> ItemsImageIdANavigation { get; set; }
         public virtual ICollection<Items> ItemsImageIdBNavigation { get; set; }
     }

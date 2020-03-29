@@ -7,7 +7,6 @@ namespace iCollect.Entities
     {
         public Items()
         {
-            Images = new HashSet<Images>();
             UserItems = new HashSet<UserItems>();
         }
 
@@ -26,11 +25,12 @@ namespace iCollect.Entities
         public string Weight { get; set; }
         public int? ImageIdA { get; set; }
         public int? ImageIdB { get; set; }
+        public byte[] ThumbnailA { get; set; }
+        public byte[] ThumbnailB { get; set; }
 
         public virtual Images ImageIdANavigation { get; set; }
         public virtual Images ImageIdBNavigation { get; set; }
         public virtual Sets Set { get; set; }
-        public virtual ICollection<Images> Images { get; set; }
         public virtual ICollection<UserItems> UserItems { get; set; }
     }
 }

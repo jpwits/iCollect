@@ -11,6 +11,10 @@
     $scope.fillPopups();
 
     $scope.session_pglen = passData.get("Session_PgLen");
+    if ($scope.session_pglen === undefined) {
+        $scope.session_pglen = 50;
+    }
+
     $scope.sortby = {
         "Active": "Year",
         "Columns": [
@@ -59,10 +63,6 @@
                 //[{ "Name": "GRC", "isChecked": true }]
         }
     ];
-
-    if ($scope.session_pglen === undefined) {
-        $scope.session_pglen = 50;
-    }
 
     $scope.currentPage = 0;
     $scope.pageSize = $scope.session_pglen;

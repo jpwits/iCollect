@@ -49,14 +49,11 @@ namespace iCollect.Entities
             {
                 entity.HasKey(e => e.ImageId);
 
+                entity.Property(e => e.DelItemId).HasColumnName("del_ItemId");
+
                 entity.Property(e => e.Image).HasColumnType("image");
 
                 entity.Property(e => e.Type).HasMaxLength(50);
-
-                entity.HasOne(d => d.Item)
-                    .WithMany(p => p.Images)
-                    .HasForeignKey(d => d.ItemId)
-                    .HasConstraintName("FK_Images_Items");
             });
 
             modelBuilder.Entity<Items>(entity =>
@@ -86,6 +83,10 @@ namespace iCollect.Entities
                     .IsUnicode(false);
 
                 entity.Property(e => e.Thumbnail).HasColumnType("image");
+
+                entity.Property(e => e.ThumbnailA).HasColumnType("image");
+
+                entity.Property(e => e.ThumbnailB).HasColumnType("image");
 
                 entity.Property(e => e.Type)
                     .HasMaxLength(50)
