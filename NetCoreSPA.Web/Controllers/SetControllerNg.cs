@@ -26,8 +26,8 @@ namespace iCollect.Controllers
             _context = context;
         }
 
-        [HttpGet, Route("GetPopups")]
-        public ActionResult GetPopups()
+        [HttpGet, Route("GetLookups")]
+        public ActionResult GetLookups()
         {
             var _sets = _context.Sets.AsEnumerable();
             var yrGroup = _sets.GroupBy(a => a.Year);

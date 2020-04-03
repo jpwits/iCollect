@@ -49,13 +49,13 @@
                         <a href="#">Sort Descending</a>-->
                     <!--<label for="yrStart">Date Range:</label>-->
                     <select ng-change="filterDate()" ng-model="yrStartSel" id="yrStart" name="yrStart">
-                        <option ng-repeat="n in []|range:yrEndMax-yrStartMin+1" value="{{$index*1 + yrStartMin*1}}">
-                            {{$index*1 + yrStartMin*1}}
+                        <option ng-repeat="n in []|range:iColSets.yrendmax-iColSets.yrstartmin +1" value="{{$index*1 + iColSets.yrstartmin*1}}">
+                            {{$index*1 + iColSets.yrstartmin*1}}
                         </option>
                     </select>
                     :<!--{{yrStartSel}}-->
                     <select ng-change="filterDate()" ng-model="yrEndSel" id="yrEnd" name="yrEnd">
-                        <option ng-repeat="n in []|range:yrEndMax-yrStartSel+1" value="{{$index*1 + yrStartSel*1}}">
+                        <option ng-repeat="n in []|range:iColSets.yrendmax-yrStartSel+1" value="{{$index*1 + yrStartSel*1}}">
 
                             {{$index*1 + yrStartSel*1}}
                         </option>

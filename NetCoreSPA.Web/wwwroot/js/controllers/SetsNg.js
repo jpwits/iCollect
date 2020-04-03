@@ -1,14 +1,25 @@
-﻿function SetsNgCtrl($scope, $state, updateImage, DTOptionsBuilder, $compile, $templateCache, getSetsSrvNg, passData, getSetSrv, getPopups, $timeout, $q) {
-    $scope.fillPopups = () => {
-        getPopups.get().$promise.then(function (response) {
-            var Popups = JSON.parse(JSON.stringify(response));
-            $scope.rangeGroup = Popups.rangeGroup;
-            $scope.typeGroup = Popups.typeGroup;
+﻿function SetsNgCtrl($scope, $state, updateImage, DTOptionsBuilder, $compile, $templateCache, getSetsSrvNg, passData, getSetSrv, getLookups, $timeout, $q) {
+
+    $scope.rangeGroup = passData.get("$scope.rangeGroup");
+    $scope.typeGroup = passData.get("$scope.typeGroup");
+
+    $scope.fillLookups = () => {
+        getLookups.get().$promise.then(function (response) {
+            var Lookups = JSON.parse(JSON.stringify(response));
+            $scope.rangeGroup = Lookups.rangeGroup;
+            $scope.typeGroup = Lookups.typeGroup;
         }, function (error) {
             alert("Error getting orders from back-end : " + error);
         });
     };
-    $scope.fillPopups();
+
+    if ($scope.rangeGroup === undefined || $scope.typeGroup === undefined) {
+        $scope.fillLookups();
+    }
+
+    if ($scope.yrStartMin === undefined) {
+        $scope.yrStartMin = passData.get("$scope.yrStartMin");
+    }
 
     $scope.session_pglen = passData.get("Session_PgLen");
     if ($scope.session_pglen === undefined) {
@@ -35,15 +46,22 @@
     $scope.groupby = [{
         "Column": "Range",
         "Ranges": []
-            //[{ "Name": "Protea", "isChecked": true },
-            //{ "Name": "Kruggerrand", "isChecked": true }]   
+        //[{ "Name": "Protea", "isChecked": true },
+        //{ "Name": "Kruggerrand", "isChecked": true }]   
     }, {
         "Column": "Type",
         "Types": ["Prestige", "Launch", "Special"]
     }];
+    $scope.yrStartSel = passData.get("$scope.yrStartSel");
+    $scope.yrEndSel = passData.get("$scope.yrEndSel");
 
-    $scope.yrStartSel = "1987";
-    $scope.yrEndSel = "2013";
+    if ($scope.yrStartSel === undefined) {
+        $scope.yrStartSel = "1987";
+    }
+
+    if ($scope.yrEndSel === undefined) {
+        $scope.yrEndSel = "2013";
+    }
 
     $scope.filterby = [
         {
@@ -53,14 +71,11 @@
         },
         {
             "Column": "Range",
-            "Ranges": []
-            //    [{ "Name": "Protea", "isChecked": true },
-            //{ "Name": "Kruggerrand", "isChecked": true }] 
+            "Ranges": [{ "Name": "All", "isChecked": true }]
         },
         {
             "Column": "SetType",
-            "SetType": []
-                //[{ "Name": "GRC", "isChecked": true }]
+            "SetType": [{ "Name": "All", "isChecked": true }]
         }
     ];
 
@@ -192,6 +207,7 @@
         var ftrYear = $scope.filterby.find(a => a.Column === "Year");
         ftrYear.Start = $scope.yrStartSel;
         ftrYear.End = $scope.yrEndSel;
+
         $scope.getsets();
     };
 
@@ -208,7 +224,8 @@
             passData.set("$scope.curSetIdx", $scope.curSetIdx = setidx);
             $scope.iColSets.data[$scope.curSetIdx] = set;
             passData.set("$scope.iColSets", $scope.iColSets);
-            //passData.set("CurSet", set);
+            passData.set("$scope.yrStartSel", $scope.yrStartSel);
+            passData.set("$scope.yrEndSel", $scope.yrEndSel);
 
             $state.go('app.set');
         }, function (error) {

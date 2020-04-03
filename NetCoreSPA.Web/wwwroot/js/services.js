@@ -9,8 +9,8 @@ function getSetsSrvNg($resource) {
     );
 }
 
-function getPopups($resource) {
-    return $resource('api/SetsNg/GetPopups'
+function getLookups($resource) {
+    return $resource('api/SetsNg/GetLookups'
     );
 }
 
@@ -91,7 +91,7 @@ angular
     .service('getCollectionsSrv', getCollectionsSrv)
     .service('updateUserItem', updateUserItem)
     .service('getSetSrv', getSetSrv)
-    .service('getPopups', getPopups)
+    .service('getLookups', getLookups)
     .service('getItemSrvNg', getItemSrvNg)
     .service('getSetsSrvNg', getSetsSrvNg);
 
