@@ -23,7 +23,7 @@
 
     $scope.session_pglen = passData.get("Session_PgLen");
     if ($scope.session_pglen === undefined) {
-        $scope.session_pglen = 50;
+        $scope.session_pglen = "50";
     }
 
     $scope.sortby = {
@@ -81,10 +81,6 @@
 
     $scope.currentPage = 0;
     $scope.pageSize = $scope.session_pglen;
-    $scope.numberOfPages = function () {
-        return Math.ceil($scope.data.length / $scope.session_pglen);
-    };
-
     $scope.viewby = $scope.session_pglen;//10;
     $scope.currentPage = 1;
     $scope.itemsPerPage = $scope.viewby;
@@ -129,6 +125,7 @@
                     }
                 });
                 $scope.totalItems = $scope.iColSets.recordsTotal;
+                $scope.numberOfPages = Math.ceil($scope.totalItems / $scope.session_pglen);
             }, function (error) {
                 alert("Error getting orders from back-end : " + error);
             });
@@ -148,15 +145,6 @@
     };
 
     $scope.sortBy("Year");
-
-    $scope.selectPart = (event) => {
-        if (event.currentTarget.checked === true) {
-            event.currentTarget.previousSibling.style.border = "2px solid green";
-        }
-        else {
-            event.currentTarget.previousSibling.style.border = "2px solid grey";
-        }
-    };
 
     $scope.filterRange = (range) => {
         var ftrType = $scope.filterby.find(a => a.Column === "Range");

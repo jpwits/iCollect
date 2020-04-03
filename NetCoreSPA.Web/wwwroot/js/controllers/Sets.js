@@ -3,7 +3,7 @@
     //$scope.SetsPgLen = sessionStorage.getItem('SetsPgLen');
     //if ($scope.SetsPgLen == undefined) sessionStorage.setItem("SetsPgLen", "10");
     $scope.session_pglen = passData.get("Session_PgLen");
-    if ($scope.session_pglen === undefined) { $scope.session_pglen = 50; }
+    if ($scope.session_pglen === undefined) { $scope.session_pglen = "50"; }
 
     $scope.createSet = function () {
         passData.set("CurSet", { items: [], delItems: [] });

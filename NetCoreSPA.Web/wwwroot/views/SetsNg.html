@@ -12,7 +12,7 @@
             </ol>
         </div>
     </div>
-    <div class="wrapper wrapper-content animated fadeInRight">
+    <div class="animated fadeInRight">
         <div class="row">
             <div class="col-lg-12">
                 <div class="wrapper wrapper-content animated fadeInUp">
@@ -30,11 +30,11 @@
     </div>
 
     <div>
-        View <select ng-model="viewby" ng-change="setItemsPerPage(viewby)"><option>3</option><option>5</option><option>10</option><option>20</option><option>30</option><option>40</option><option>50</option></select> records at a time.
-        Page: {{currentPage}} / {{totalItems}}
+        View <select ng-model="session_pglen" ng-change="setItemsPerPage(session_pglen)"><option>3</option><option>5</option><option>10</option><option>20</option><option>30</option><option>40</option><option>50</option></select> records at a time.
+             <div>Page: {{currentPage}} / {{numberOfPages}}</div>
         <br />
 
-        <div class="div-table">
+        <div class="div-table fadeInRight">
             <div class="div-table-row">
                 <div style="min-width:450px" class="div-table-col" align="center">
                     <strong>Images</strong>
