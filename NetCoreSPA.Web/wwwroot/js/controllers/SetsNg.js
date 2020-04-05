@@ -79,12 +79,21 @@
         }
     ];
 
-    $scope.currentPage = 0;
     $scope.pageSize = $scope.session_pglen;
     $scope.viewby = $scope.session_pglen;//10;
-    $scope.currentPage = 1;
+    
     $scope.itemsPerPage = $scope.viewby;
     $scope.maxSize = 5; //Number of pager buttons to show
+
+    $scope.currentPage = passData.get("$scope.currentPage");
+    if ($scope.currentPage === undefined) {
+        $scope.currentPage = 1;
+    }
+
+    $scope.numberOfPages = passData.get("$scope.numberOfPages");
+    if ($scope.numberOfPages === undefined) {
+        $scope.numberOfPages = 1;
+    }
 
     $scope.setPage = function (pageNo) {
         $scope.currentPage = pageNo;
@@ -104,7 +113,7 @@
     $scope.getsets = () => {
         $scope.iColSets = passData.get("$scope.iColSets");
         if ($scope.iColSets !== undefined) {
-            $scope.totalItems = $scope.iColSets.totalItems;//$scope.data.length;
+            //$scope.totalItems = $scope.iColSets.totalItems;
         } else {
             getSetsSrvNg.get({
                 start: ($scope.currentPage - 1) * $scope.itemsPerPage,
@@ -124,8 +133,8 @@
                         }).filter(item => item.isActive === true);
                     }
                 });
-                $scope.totalItems = $scope.iColSets.recordsTotal;
-                $scope.numberOfPages = Math.ceil($scope.totalItems / $scope.session_pglen);
+                //$scope.totalItems = $scope.iColSets.recordsTotal;
+                $scope.numberOfPages = Math.ceil($scope.iColSets.recordsTotal / $scope.session_pglen);
             }, function (error) {
                 alert("Error getting orders from back-end : " + error);
             });
@@ -209,6 +218,8 @@
                     return a.position - b.position;
                 }).filter(item => item.isActive === true);
             }
+            passData.set("$scope.currentPage", $scope.currentPage);
+            passData.set("$scope.numberOfPages", $scope.numberOfPages);
             passData.set("$scope.curSetIdx", $scope.curSetIdx = setidx);
             $scope.iColSets.data[$scope.curSetIdx] = set;
             passData.set("$scope.iColSets", $scope.iColSets);
