@@ -64,13 +64,11 @@ namespace iCollect.Controllers
                 {
                     int yrStartSel = Convert.ToInt32(col.Start);
                     int yrEndSel = Convert.ToInt32(col.End);
-
                     qry = qry.Where(y => Convert.ToInt32(y.Year) >= yrStartSel && Convert.ToInt32(y.Year) <= yrEndSel);
                 }
                 else if (col.Column.Value == "Range")
                 {
                     var rangefilter = new List<string>();
-
                     foreach (var range in col.Ranges)
                     {
                         if (range.isChecked.Value && range.Name != "All")
@@ -116,7 +114,6 @@ namespace iCollect.Controllers
             }
 
             var recordsTotal = qry.Count();
-
             foreach (var col in sortbyObj.Columns)
             {
                 if (sortbyObj.Active.Value == col.Column.Value) // Do for one column only 4 (the famous Jos) now.

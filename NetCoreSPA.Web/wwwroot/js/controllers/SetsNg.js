@@ -17,8 +17,14 @@
         $scope.fillLookups();
     }
 
+    $scope.yrStartMin = passData.get("$scope.yrStartMin");
     if ($scope.yrStartMin === undefined) {
-        $scope.yrStartMin = passData.get("$scope.yrStartMin");
+        $scope.yrStartMin = "1987";
+    }
+
+    $scope.yrStartMax = passData.get("$scope.yrStartMin");
+    if ($scope.yrStartMax === undefined) {
+        $scope.yrStartMax = "2015";
     }
 
     $scope.session_pglen = passData.get("Session_PgLen");
@@ -152,7 +158,6 @@
         $scope.sortby.Active = column;
         $scope.getsets();
     };
-
     $scope.sortBy("Year");
 
     $scope.filterRange = (range) => {
@@ -182,7 +187,6 @@
         else {
             ftrType.Ranges.push({ "Name": event.key, "isChecked": true });
         }
-
         $scope.getsets();
     };
 
@@ -195,7 +199,6 @@
         else {
             ftrType.SetType.push({ "Name": event.key, "isChecked": true });
         }
-
         $scope.getsets();
     };
 
