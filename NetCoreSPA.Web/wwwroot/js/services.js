@@ -1,6 +1,6 @@
 ﻿
 function getSetSrv($resource) {
-    return $resource('api/Sets/GetSet/:id', { id: '@id' }
+    return $resource('api/SetsNg/GetSet/:id', { id: '@id' }
     );
 }
 
@@ -35,7 +35,7 @@ function getImage($resource) {
 }
 
 function updateImage($resource) {
-    return $resource('api/Sets/Edit/:id', {id: '@id' }
+    return $resource('api/SetsNg/Edit/:id', {id: '@id' }
         ,{
         'update': { method: 'PUT' }
         }
@@ -43,7 +43,7 @@ function updateImage($resource) {
 }
 
 function updateUserItem($resource) {
-    return $resource('api/Sets/updateUserItem/:id', { id: '@id' }
+    return $resource('api/SetsNg/updateUserItem/:id', { id: '@id' }
         , {
             'update': { method: 'PUT' }
         }
@@ -52,14 +52,6 @@ function updateUserItem($resource) {
 
 function getUser($resource) {
     return $resource('api/Account/getUser/:username', { username: '@username' }
-    );
-}
-
-function delImage($resource) {
-    return $resource('api/Sets/Delete/:id', { filename: '@id' }
-        , {
-            'update': { method: 'POST' }
-        }
     );
 }
 
@@ -83,7 +75,6 @@ function passData() {
 angular
     .module('inspinia')
     .service('getImage', getImage)
-    .service('delImage', delImage)
     .service('updateImage', updateImage)
     .service('passData', passData)
     .service('getUser', getUser)

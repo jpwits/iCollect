@@ -1,13 +1,24 @@
 ﻿
 function SetCtrl($scope, $state, $compile, $templateCache, getImage, updateImage, passData, $timeout) {
-   // $scope.iCol = passData.get("CurSet");
-    $scope.iCol = passData.get("$scope.iColSets").data[passData.get("$scope.curSetIdx")];
+    $scope.iCols = passData.get("$scope.iColSets");
+    $scope.iCol = $scope.iCols.data[passData.get("$scope.curSetIdx")];
 
     $scope.UpdateSet = function (sets) {
         var clone = Object.assign({}, sets);
-        clone.items = clone.items.concat(clone.delItems);
+        if (clone.delItems !== undefined) {
+            clone.items = clone.items.concat(clone.delItems);
+        }
         $scope.entry = new updateImage(clone);
         $scope.entry.$update(function (response) {
+            sets = response;
+            if (sets.items.length > 0) {
+                sets.delItems = sets.items.filter(item => item.isActive === false);
+                sets.items = sets.items.sort(function (a, b) {
+                    return a.position - b.position;
+                }).filter(item => item.isActive === true);
+            }
+            $scope.iCols.data[passData.get("$scope.curSetIdx")] = set;
+            passData.set("$scope.iColSets", $scope.iCols);
             alert("Saved successfully...");
         }, function (error) {
             alert("Error getting orders from back-end : " + error);
@@ -19,10 +30,12 @@ function SetCtrl($scope, $state, $compile, $templateCache, getImage, updateImage
             var fReader = new FileReader();
             fReader.readAsDataURL(file);
             fReader.onloadend = function (event) {
-                newImage = new getImage();
+                newImage = {};
                 newImage.type = event.target.result.split(';')[0].split(':')[1];
-                newImage.image = event.target.result.replace('data:' + newImage.type + ';base64,', '');
-                newImage.thumbnail = null;
+                newImage.imageIdANavigation = {};
+                newImage.imageIdANavigation.image = event.target.result.replace('data:' + newImage.type + ';base64,', '');
+                newImage.imageIdANavigation.type = event.target.result.split(';')[0].split(':')[1];
+                newImage.thumbnailA = null;
                 newImage.isActive = true;
 
                 if ($scope.iCol.items.length === 0) {

@@ -82,87 +82,8 @@ namespace iCollect.Controllers
             return new JsonResult(new Items());
         }
 
+
       
-        [HttpGet, Route("GetSet/{id}")]
-        public async Task<IActionResult> GetSet(int id)
-        {
-            var set = await _context.Sets
-                .Include(a => a.Items)
-                .ThenInclude(c => c.ImageIdANavigation)
-                .Include(a => a.Items)
-                .ThenInclude(c => c.ImageIdBNavigation)
-                .Include(a => a.Items)
-                .ThenInclude(b=>b.UserItems)
-                .FirstOrDefaultAsync(m => m.SetId == id);
-
-            return new JsonResult(set);
-        }
-      
-        [HttpPut("Edit")]
-        //[ValidateAntiForgeryToken]
-        public async Task<int> Edit([FromBody] Sets data)
-        {
-            try
-            {
-                if (data.Items.Count > 0)
-                {
-                    foreach (var item in data.Items)
-                    {
-                        if (item.ThumbnailA == null && item.ImageIdANavigation != null)
-                        {
-                            Image imageA = Image.FromStream(new MemoryStream(item.ImageIdANavigation.Image));
-                            double aspectA = (double)imageA.Width / imageA.Height;
-                            var heightA = Convert.ToInt32(120 / aspectA);
-                            Image thumbA = imageA.GetThumbnailImage(120, heightA, () => false, IntPtr.Zero);
-                            item.ThumbnailA = ImageToByteArray(thumbA, item.Type);
-                        }
-                        if (item.ThumbnailB == null && item.ImageIdBNavigation != null)
-                        {
-                            Image imageB = Image.FromStream(new MemoryStream(item.ImageIdBNavigation.Image));
-                            double aspectB = (double)imageB.Width / imageB.Height;
-                            var heightB = Convert.ToInt32(120 / aspectB);
-                            Image thumbB = imageB.GetThumbnailImage(120, heightB, () => false, IntPtr.Zero);
-                            item.ThumbnailB = ImageToByteArray(thumbB, item.Type);
-                        }
-                    }
-                }
-
-                _context.Update(data);
-                int rc = await _context.SaveChangesAsync();
-                return rc;
-            }
-            catch (Exception ex)
-            {
-               // _logger.LogError(ex, "Error occured on update set");
-                throw new NotImplementedException(ex.Message);
-            }
-        }
-
-        [HttpPut("updateUserItem")]
-        //[ValidateAntiForgeryToken]
-        public async Task<int> updateUserItem([FromBody] UserItems data)
-        {
-
-            _context.Update(data);
-            int rc = await _context.SaveChangesAsync();
-            return rc;
-        }
-
-        public byte[] ImageToByteArray(System.Drawing.Image imageIn, string type)
-        {
-            using (var ms = new MemoryStream())
-            {
-                if (type == "image/gif")
-                {
-                    imageIn.Save(ms, System.Drawing.Imaging.ImageFormat.Gif);
-                }
-                else
-                {
-                    imageIn.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
-                }
-                return ms.ToArray();
-            }
-        }
 
     }
 }

@@ -139,7 +139,6 @@
                         }).filter(item => item.isActive === true);
                     }
                 });
-                //$scope.totalItems = $scope.iColSets.recordsTotal;
                 $scope.numberOfPages = Math.ceil($scope.iColSets.recordsTotal / $scope.session_pglen);
             }, function (error) {
                 alert("Error getting orders from back-end : " + error);
@@ -240,8 +239,8 @@
         var item = items[itemidx];
 
         $scope.User = passData.get("User");
-        if ($scope.User.name === null) {
-            alert('Login Id10t');
+        if ($scope.User.name === undefined) {
+            alert('Login Please.');
             return;
         }
 
