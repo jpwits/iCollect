@@ -62,7 +62,7 @@ function SetCtrl($scope, $state, $compile, $templateCache, getImage, updateImage
 
     $scope.Delete = function (pos) {
         $scope.iCol.items[pos].isActive = false;
-        $scope.iCol.items.push($scope.iCol.items[pos]);
+        $scope.iCol.delItems.push($scope.iCol.items[pos]);
         $scope.iCol.items.splice(pos, 1);
 
         //$scope.iCol.items[pos].isActive = false;
