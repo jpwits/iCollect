@@ -75,9 +75,9 @@
                                         <td>Images</td>
                                         <td>
                                             <div class="container">
-                                                <img class="image" style="max-height:500px; max-width:500px" ng-src="data:{{item.imageIdANavigation.type}};base64,{{item.imageIdANavigation.image}}">
+                                                <img class="image" style="max-height:700px; max-width:700px" ng-src="data:{{item.imageIdANavigation.type}};base64,{{item.imageIdANavigation.image}}">
                                                 <div class="overlay" ng-if="item.imageIdBNavigation != undefined">
-                                                    <img class="image" style="max-height:500px; max-width:500px" ng-src="data:{{item.imageIdANavigation.type}};base64,{{item.imageIdBNavigation.image}}">
+                                                    <img class="image" style="max-height:700px; max-width:700px" ng-src="data:{{item.imageIdANavigation.type}};base64,{{item.imageIdBNavigation.image}}">
                                                 </div>
                                             </div>
                                         <td>
@@ -110,10 +110,11 @@
                                                     <option>R200</option>
                                                 </select>
                                             </div>
-                                            pos: {{item.position}}
+                                            <div>pos: {{item.position}}</div>
                                             <button ng-click="ImageOrderUp(item.position)" class="btn btn-primary dim btn-default pull-right" type="button"><i class="fa fa-chevron-up"></i>Up </button>
                                             <button ng-click="ImageOrderDown(item.position)" class="btn btn-primary dim btn-default pull-right" type="button"><i class="fa fa-chevron-down"></i>Down </button>
                                             <button ng-click="Delete(item.position)" class="btn btn-primary dim btn-default pull-right" type="button"><i class="fa fa-trash"></i>Remove</button>
+                                            <button ng-click="UploadReverse(item.position)" class="btn btn-primary dim btn-default pull-right" type="button"><i class="fa fa-trash"></i>Upload Reverse</button>
                                         </td>
                                     </tr>
                                     <tr>

@@ -17,7 +17,7 @@ function SetCtrl($scope, $state, $compile, $templateCache, getImage, updateImage
                     return a.position - b.position;
                 }).filter(item => item.isActive === true);
             }
-            $scope.iCols.data[passData.get("$scope.curSetIdx")] = set;
+            $scope.iCols.data[passData.get("$scope.curSetIdx")] = sets;
             passData.set("$scope.iColSets", $scope.iCols);
             alert("Saved successfully...");
         }, function (error) {
