@@ -122,7 +122,7 @@
                         <div ng-if="itemidx === 0" class="SetContainer">
                             <div class="container">
                                 <img ng-click="selectSet($event, setidx)" style="margin-right : 25px;border:2px solid grey" ng-src="data:{{item.type}};base64,{{item.thumbnailA}}" />
-                                <div class="overlay">
+                                <div class="overlay" ng-if="item.thumbnailB != undefined">
                                     <img ng-click="selectSet($event, setidx)" style="margin-right : 25px;border:2px solid grey" ng-src="data:{{item.type}};base64,{{item.thumbnailB}}" />
                                 </div>
                             </div>
@@ -133,7 +133,7 @@
                         <div ng-if="itemidx !== 0" class="SetContainer">
                             <div class="container">
                                 <img style="width:80%;height:80%;margin-right : 25px;border:2px solid grey" ng-src="data:{{item.type}};base64,{{item.thumbnailA}}" />
-                                <div class="overlay">
+                                <div class="overlay" ng-if="item.thumbnailB != undefined">
                                     <img style="width:80%;height:80%;margin-right : 25px;border:2px solid grey" ng-src="data:{{item.type}};base64,{{item.thumbnailB}}" />
                                 </div>
                             </div>

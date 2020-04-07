@@ -65,19 +65,10 @@ function SetCtrl($scope, $state, $compile, $templateCache, getImage, updateImage
         $scope.iCol.delItems.push($scope.iCol.items[pos]);
         $scope.iCol.items.splice(pos, 1);
 
-        //$scope.iCol.items[pos].isActive = false;
-        // $scope.iCol.items = $scope.iCol.items.sort(function (a, b) {
-        //     return a.position - b.position;
-        // }).filter(img => img.isActive === true);
-
         $scope.iCol.items.forEach(function (image, index) {
             $scope.iCol.items[index].position = index;
         });
-
-        //Jos : replace these #state.go's with single $compile
     };
-
-
 }
 
 angular
