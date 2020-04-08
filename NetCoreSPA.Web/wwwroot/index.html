@@ -35,7 +35,7 @@
 <body ng-controller="MainCtrl as main" class="{{$state.current.data.specialClass}}" landing-scrollspy id="page-top">
 
     <!-- Main view  -->
-    <div ui-view></div>
+    <div ng-controller="AccountCtrl" ui-view></div>
 
     <!-- jQuery and Bootstrap -->
 

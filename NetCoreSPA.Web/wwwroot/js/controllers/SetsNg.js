@@ -1,5 +1,7 @@
 ﻿function SetsNgCtrl($scope, $state, updateImage, DTOptionsBuilder, $compile, $templateCache, getSetsSrvNg, passData, getSetSrv, getLookups, $timeout, $q) {
 
+    $scope.User = passData.get("User")
+
     $scope.rangeGroup = passData.get("$scope.rangeGroup");
     $scope.typeGroup = passData.get("$scope.typeGroup");
 

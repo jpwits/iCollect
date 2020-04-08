@@ -10,6 +10,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <IsTransformWebConfigDisabled>false</IsTransformWebConfigDisabled>
+    <AssemblyName>iCollect</AssemblyName>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
