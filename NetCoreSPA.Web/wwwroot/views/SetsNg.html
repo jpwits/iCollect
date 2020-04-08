@@ -31,7 +31,7 @@
 
     <div>
         View <select ng-model="session_pglen" ng-change="setItemsPerPage(session_pglen)"><option>3</option><option>5</option><option>10</option><option>20</option><option>30</option><option>40</option><option>50</option></select> records at a time.
-             <div>Page: {{currentPage}} / {{numberOfPages}}</div>
+        <div>Page: {{currentPage}} / {{numberOfPages}}</div>
         <br />
 
         <div class="div-table fadeInRight">
@@ -79,11 +79,11 @@
                     </div>
 
                     <span ng-if="sortby.Columns[2].Direction === 'Ascending'">
-                        <i  ng-click="sortBy('Range')" class="fa fa-caret-down"></i>
+                        <i ng-click="sortBy('Range')" class="fa fa-caret-down"></i>
                     </span>
 
                     <span ng-if="sortby.Columns[2].Direction === 'Descending'">
-                        <i  ng-click="sortBy('Range')" class="fa fa-caret-up"></i>
+                        <i ng-click="sortBy('Range')" class="fa fa-caret-up"></i>
                     </span>
                 </div>
                 <div class="div-table-col">
@@ -91,7 +91,7 @@
                         <button class="dropbtn">Type</button>
                         <div class="dropdown-content">
                             <div ng-repeat="type in typeGroup">
-                                <input style="text-align:left" class="ngColListCheckbox" type="checkbox" ng-model="type.isChecked" ng-change="filterSetTypeChange(type)" ng-checked="filterSetType(type.key)"  />{{type.key}}
+                                <input style="text-align:left" class="ngColListCheckbox" type="checkbox" ng-model="type.isChecked" ng-change="filterSetTypeChange(type)" ng-checked="filterSetType(type.key)" />{{type.key}}
                             </div>
                         </div>
                     </div>
@@ -122,14 +122,12 @@
                         <div class="SetContainer">
                             <div class="container">
                                 <img ng-click="selectSet($event, setidx)" style="margin-right : 25px;border:2px solid grey" ng-src="data:{{item.type}};base64,{{item.thumbnailA}}" />
-                                <div ng-if="item.thumbnailB != undefined">
-                                    <img class="overlay" ng-click="selectSet($event, setidx)" style="margin-right : 25px;border:2px solid grey" ng-src="data:{{item.type}};base64,{{item.thumbnailB}}" />
-                                </div>
+                                <img ng-if="item.thumbnailB != undefined" class="overlay" ng-click="selectSet($event, setidx)" style="margin-right : 25px;border:2px solid grey" ng-src="data:{{item.type}};base64,{{item.thumbnailB}}" />
                             </div>
                             <span class="ItemCheckbox" style="padding-bottom : 18px;">{{item.userItems[0].quantity}}</span>
                             <a ng-if="itemidx === 0" href="" ng-click="SelectItem($event, setidx, itemidx , 1)" type="button" class="ItemCheckbox"><i class="fa fa-plus" style="padding-bottom:35px;font-size:16px;color:green"></i></a>
                             <a ng-if="itemidx === 0" href="" ng-click="SelectItem($event, setidx, itemidx , -1)" type="button" class="ItemCheckbox"><i class="fa fa-minus" style="font-size:16px;color:red"></i></a>
-                            <a ng-if="itemidx !== 0"  href="" ng-click="SelectItem($event, setidx, itemidx , 1)" type="button" class="ItemCheckbox"><i class="fa fa-caret-up" style="padding-bottom:30px;font-size:24px;color:green"></i></a>
+                            <a ng-if="itemidx !== 0" href="" ng-click="SelectItem($event, setidx, itemidx , 1)" type="button" class="ItemCheckbox"><i class="fa fa-caret-up" style="padding-bottom:30px;font-size:24px;color:green"></i></a>
                             <a ng-if="itemidx !== 0" href="" ng-click="SelectItem($event, setidx, itemidx , -1)" type="button" class="ItemCheckbox"><i class="fa fa-caret-down" style="font-size:24px;color:red"></i></a>
                         </div>
                         <!--<div ng-if="itemidx !== 0" class="SetContainer">
