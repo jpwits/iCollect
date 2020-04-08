@@ -1,6 +1,6 @@
 ﻿//Get Id in DOM:
-var oTable = document.getElementById('sets_grid');
-$('#sets_grid')
+//var oTable = document.getElementById('sets_grid');
+//$('#sets_grid')
 
    //var oTable = document.getElementById('sets-grid');
             //var oCells = oTable.rows.item(index).cells; //gets cells of current row

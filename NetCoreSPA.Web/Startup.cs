@@ -14,6 +14,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using Newtonsoft.Json.Serialization;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace TGIS.Web
 {
@@ -58,8 +61,11 @@ namespace TGIS.Web
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDbContext<NorthwindContext>(options => options.UseSqlServer(connection));
 
-             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+               .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            services.AddAuthentication();
+
             services.AddControllersWithViews();
             services.AddRazorPages();
         }
@@ -72,7 +78,7 @@ namespace TGIS.Web
                 //app.UseBrowserLink();
                 app.UseDeveloperExceptionPage();
             }
-         
+
             // Middleware to handle all request
             app.Use(async (context, next) =>
                {
@@ -84,7 +90,7 @@ namespace TGIS.Web
                        await next();
                    }
                });
-         
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();

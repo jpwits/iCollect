@@ -64,10 +64,6 @@
       "destination": "wwwroot/lib/pace/"
     },
     {
-      "library": "font-awesome@4.7.0",
-      "destination": "wwwroot/font-awesome/"
-    },
-    {
       "library": "jquery-validate@1.19.1",
       "destination": "wwwroot/lib/jquery-validate/"
     },
@@ -78,6 +74,16 @@
     {
       "library": "danialfarid-angular-file-upload@12.2.13",
       "destination": "wwwroot/lib/danialfarid-angular-file-upload/"
+    },
+    {
+      "library": "font-awesome@5.12.1",
+      "destination": "wwwroot/font-awesome/"
     }
-  ]
+  ,
+{
+  "provider": "jsdelivr",
+  "library": "bootstrap@4.4.1",
+  "destination": "wwwroot/js/bootstrap/"
+}
+]
 }

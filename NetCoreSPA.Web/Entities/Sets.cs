@@ -17,6 +17,7 @@ namespace iCollect.Entities
         public DateTime? Date { get; set; }
         public string Range { get; set; }
         public string CatCode { get; set; }
+        public string SetType { get; set; }
 
         public virtual Collections Collection { get; set; }
         public virtual ICollection<Items> Items { get; set; }

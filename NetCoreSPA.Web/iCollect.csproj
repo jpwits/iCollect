@@ -23,28 +23,24 @@
     <Compile Remove="ControllersAPI\**" />
     <Compile Remove="obj\**" />
     <Compile Remove="wwwroot\css\plugins\**" />
-    <Compile Remove="wwwroot\font-awesome\**" />
     <Compile Remove="wwwroot\js\**" />
     <Compile Remove="wwwroot\lib\**" />
     <Content Remove="Agile\**" />
     <Content Remove="ControllersAPI\**" />
     <Content Remove="obj\**" />
     <Content Remove="wwwroot\css\plugins\**" />
-    <Content Remove="wwwroot\font-awesome\**" />
     <Content Remove="wwwroot\js\**" />
     <Content Remove="wwwroot\lib\**" />
     <EmbeddedResource Remove="Agile\**" />
     <EmbeddedResource Remove="ControllersAPI\**" />
     <EmbeddedResource Remove="obj\**" />
     <EmbeddedResource Remove="wwwroot\css\plugins\**" />
-    <EmbeddedResource Remove="wwwroot\font-awesome\**" />
     <EmbeddedResource Remove="wwwroot\js\**" />
     <EmbeddedResource Remove="wwwroot\lib\**" />
     <None Remove="Agile\**" />
     <None Remove="ControllersAPI\**" />
     <None Remove="obj\**" />
     <None Remove="wwwroot\css\plugins\**" />
-    <None Remove="wwwroot\font-awesome\**" />
     <None Remove="wwwroot\js\**" />
     <None Remove="wwwroot\lib\**" />
   </ItemGroup>
@@ -244,6 +240,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.2" />
@@ -275,6 +272,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\font-awesome\css\font-awesome.css.map" />
+    <None Include="wwwroot\font-awesome\fonts\fontawesome-webfont.svg" />
+    <None Include="wwwroot\font-awesome\fonts\fontawesome-webfont.woff2" />
     <None Include="wwwroot\js\app.js" />
     <None Include="wwwroot\js\config.js" />
     <None Include="wwwroot\js\controllers.js" />
@@ -282,6 +282,7 @@
     <None Include="wwwroot\js\controllers\main.js" />
     <None Include="wwwroot\js\controllers\set.js" />
     <None Include="wwwroot\js\controllers\collection.js" />
+    <None Include="wwwroot\js\controllers\SetsNg.js" />
     <None Include="wwwroot\js\controllers\sets.js" />
     <None Include="wwwroot\js\directives.js" />
     <None Include="wwwroot\js\inspinia.js" />
@@ -661,7 +662,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\" />
     <Folder Include="wwwroot\js\bootstrap\" />
   </ItemGroup>
 

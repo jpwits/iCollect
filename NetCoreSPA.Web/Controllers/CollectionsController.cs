@@ -13,7 +13,7 @@ using System.Text;
 using Newtonsoft.Json;
 using System.Drawing.Imaging;
 
-namespace iCollect.ControllersAPI
+namespace iCollect.Controllers
 {
     [Route("api/Collections"), Produces("application/json"), EnableCors("AppPolicy")]
     public class CollectionsController : Controller

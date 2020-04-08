@@ -49,15 +49,11 @@ namespace iCollect.Entities
             {
                 entity.HasKey(e => e.ImageId);
 
-                entity.Property(e => e.Image)
-                    .IsRequired()
-                    .HasColumnType("image");
+                entity.Property(e => e.DelItemId).HasColumnName("del_ItemId");
 
-                entity.HasOne(d => d.Item)
-                    .WithMany(p => p.Images)
-                    .HasForeignKey(d => d.ItemId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Images_Items");
+                entity.Property(e => e.Image).HasColumnType("image");
+
+                entity.Property(e => e.Type).HasMaxLength(50);
             });
 
             modelBuilder.Entity<Items>(entity =>
@@ -68,23 +64,47 @@ namespace iCollect.Entities
                 entity.HasIndex(e => e.SetId)
                     .HasName("IX_SetImages_setId");
 
-                entity.Property(e => e.DelImageId).HasColumnName("del_imageId");
+                entity.Property(e => e.DelImage)
+                    .HasColumnName("del_Image")
+                    .HasColumnType("image");
 
-                entity.Property(e => e.DelPageNo).HasColumnName("del_pageNo");
-
-                entity.Property(e => e.DelPath)
-                    .HasColumnName("del_path")
-                    .HasMaxLength(250);
+                entity.Property(e => e.Denominator)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.Description).HasMaxLength(100);
 
-                entity.Property(e => e.Image).HasColumnType("image");
+                entity.Property(e => e.Dimention).HasColumnType("decimal(18, 3)");
+
+                entity.Property(e => e.Mass).HasColumnType("decimal(18, 3)");
+
+                entity.Property(e => e.MetalContent)
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.Thumbnail).HasColumnType("image");
+
+                entity.Property(e => e.ThumbnailA).HasColumnType("image");
+
+                entity.Property(e => e.ThumbnailB).HasColumnType("image");
 
                 entity.Property(e => e.Type)
                     .HasMaxLength(50)
                     .IsUnicode(false);
+
+                entity.Property(e => e.Weight)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.HasOne(d => d.ImageIdANavigation)
+                    .WithMany(p => p.ItemsImageIdANavigation)
+                    .HasForeignKey(d => d.ImageIdA)
+                    .HasConstraintName("FK_Items_Images");
+
+                entity.HasOne(d => d.ImageIdBNavigation)
+                    .WithMany(p => p.ItemsImageIdBNavigation)
+                    .HasForeignKey(d => d.ImageIdB)
+                    .HasConstraintName("FK_Items_Images1");
 
                 entity.HasOne(d => d.Set)
                     .WithMany(p => p.Items)
@@ -109,6 +129,10 @@ namespace iCollect.Entities
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
+                entity.Property(e => e.SetType)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.Year)
                     .HasMaxLength(50)
                     .IsUnicode(false);
@@ -121,15 +145,15 @@ namespace iCollect.Entities
 
             modelBuilder.Entity<UserItems>(entity =>
             {
-                entity.HasKey(e => e.UserId);
-
                 entity.Property(e => e.UserId)
+                    .IsRequired()
                     .HasMaxLength(255)
                     .IsUnicode(false);
 
                 entity.HasOne(d => d.Item)
                     .WithMany(p => p.UserItems)
                     .HasForeignKey(d => d.ItemId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_UserItems_Items");
             });
 

@@ -1,11 +1,21 @@
 ﻿
 function getSetSrv($resource) {
-    return $resource('api/Sets/GetSet/:id', { id: '@id' }
+    return $resource('api/SetsNg/GetSet/:id', { id: '@id' }
     );
 }
 
-function getSetsSrv($resource) {
-    return $resource('api/Sets/GetSets/:start/:length', { start: '@start', length:'@length' }
+function getSetsSrvNg($resource) {
+    return $resource('api/SetsNg/GetSets/:start/:length/:sortby/:filterby/:groupby', { start: '@start', length: '@length', sortby: '@sortby', filterby: '@filterby', groupby: '@groupby' }
+    );
+}
+
+function getLookups($resource) {
+    return $resource('api/SetsNg/GetLookups'
+    );
+}
+
+function getItemSrvNg($resource) {
+    return $resource('api/SetsNg/GetUserItem/:id', { id: '@id' }
     );
 }
 
@@ -25,23 +35,23 @@ function getImage($resource) {
 }
 
 function updateImage($resource) {
-    return $resource('api/Sets/Edit/:id', {id: '@id' }
+    return $resource('api/SetsNg/Edit/:id', {id: '@id' }
         ,{
         'update': { method: 'PUT' }
         }
     );
 }
 
-function getUser($resource) {
-    return $resource('api/Account/getUser/:username', { username: '@username' }
+function updateUserItem($resource) {
+    return $resource('api/SetsNg/updateUserItem/:id', { id: '@id' }
+        , {
+            'update': { method: 'PUT' }
+        }
     );
 }
 
-function delImage($resource) {
-    return $resource('api/Sets/Delete/:id', { filename: '@id' }
-        , {
-            'update': { method: 'POST' }
-        }
+function getUser($resource) {
+    return $resource('api/Account/getUser/:username', { username: '@username' }
     );
 }
 
@@ -65,13 +75,15 @@ function passData() {
 angular
     .module('inspinia')
     .service('getImage', getImage)
-    .service('delImage', delImage)
     .service('updateImage', updateImage)
     .service('passData', passData)
     .service('getUser', getUser)
-    .service('getCollectionSrv', getSetSrv)
-    .service('getCollectionsSrv', getSetsSrv)
+    .service('getCollectionSrv', getCollectionSrv)
+    .service('getCollectionsSrv', getCollectionsSrv)
+    .service('updateUserItem', updateUserItem)
     .service('getSetSrv', getSetSrv)
-    .service('getSetsSrv', getSetsSrv);
+    .service('getLookups', getLookups)
+    .service('getItemSrvNg', getItemSrvNg)
+    .service('getSetsSrvNg', getSetsSrvNg);
 
 
