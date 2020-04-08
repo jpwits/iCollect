@@ -10379,6 +10379,10 @@ thead input {
     clear: both;
 }
 
+.div-table-row:nth-child(even) {
+    background-color: #F9F9F9;
+}
+
 .div-table-col {
     float: left; /* fix for  buggy browsers */
     display: table-column;
@@ -10425,3 +10429,7 @@ thead input {
     transform: translate(-50%, -50%);
     text-align: center;
 }
+
+/*td {
+    border:dotted;
+}*/

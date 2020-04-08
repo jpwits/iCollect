@@ -14,7 +14,7 @@
     </div>
 
     <div class="row">
-        <div class="col-lg-9">
+        <div>
             <div class="wrapper wrapper-content animated fadeInRight">
                 <div class="ibox">
                     <div class="ibox-content">
@@ -42,13 +42,15 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-lg-8">
+                            <div class="col-lg-12">
                                 <table class="table body-wrap">
                                     <tr>
-                                        <td>Description Name:</td>
-                                        <td colspan="2">
-                                            <input ng-if="$stateParams.EditSet == true" type="text" name="input"
+                                        <td>Description:</td>
+                                        <td>
+                                            <input class="input-sm form-control" style="width:100%" ng-if="$stateParams.EditSet == true" type="text" name="input"
                                                    ng-model="iCol.description">
+                                        </td>
+                                        <td>
                                             <span ng-if="$stateParams.EditSet == false">
                                                 {{iCol.description}}
                                             </span>
@@ -57,7 +59,7 @@
                                     <tr>
                                         <td>Upload Images:</td>
                                         <td>
-                                            <input class="btn btn-primary dim btn-default pull-right" type="file" multiple="multiple" ngf-select="uploadFiles($files, iCol)" /> <!--accept="image/*"-->
+                                            <input class="btn btn-primary dim btn-default" type="file" multiple="multiple" ngf-select="uploadFiles($files, iCol)" /> <!--accept="image/*"-->
                                             <!--
                                                 ngf-multiple="true"
                                                 <br>
@@ -67,22 +69,27 @@
                                                     {{file.name}}
                                                 </li>
                                             </ul>-->
-                                                                                    <!--<span class="progress" ng-show="progress >= 0">
+                                            <!--<span class="progress" ng-show="progress >= 0">
                                                 <div style="width:{{progress}}%" ng-bind="progress + '%'"></div>
                                             </span>-->
                                             {{errorMsg}}
                                         </td>
+                                        <td>
+                                        </td>
                                     </tr>
                                     <tr ng-repeat="(key, item) in iCol.items">
-                                        <td>Images</td>
-                                        <td>
+                                        <!--<td>Images:</td>-->
+                                        <td colspan="2">
                                             <div class="container">
-                                                <img class="image" style="max-height:700px; max-width:700px" ng-src="data:{{item.imageIdANavigation.type}};base64,{{item.imageIdANavigation.image}}">
-                                                <div class="overlay" ng-if="item.imageIdBNavigation != undefined">
-                                                    <img class="image" style="max-height:700px; max-width:700px" ng-src="data:{{item.imageIdBNavigation.type}};base64,{{item.imageIdBNavigation.image}}">
+                                                <img class="image" style="max-height:500px; max-width:500px" ng-src="data:{{item.imageIdANavigation.type}};base64,{{item.imageIdANavigation.image}}">
+                                                <div ng-if="item.imageIdBNavigation != undefined">
+                                                    <img class="image overlay" style="max-height:500px; max-width:500px" ng-src="data:{{item.imageIdBNavigation.type}};base64,{{item.imageIdBNavigation.image}}">
                                                 </div>
+                                               
                                             </div>
+                                        </td>
                                         <td>
+                                            <div>pos: {{item.position}}</div>
                                             <div>
                                                 <span>Item Type:</span>
                                                 <select ng-model="item.type">
@@ -112,45 +119,60 @@
                                                     <option>R200</option>
                                                 </select>
                                             </div>
-                                            <div>pos: {{item.position}}</div>
-                                            <button ng-click="ImageOrderUp(item.position)" class="btn btn-primary dim btn-default pull-right" type="button"><i class="fa fa-chevron-up"></i>Up </button>
-                                            <button ng-click="ImageOrderDown(item.position)" class="btn btn-primary dim btn-default pull-right" type="button"><i class="fa fa-chevron-down"></i>Down </button>
-                                            <button ng-click="Delete(item.position)" class="btn btn-primary dim btn-default pull-right" type="button"><i class="fa fa-trash"></i>Remove</button>
-                                            Upload Reverse :
-                                            <input type="file" ngf-select="uploadReverse($file, item)" class="btn btn-primary dim btn-default pull-right" /> <!--accept="image/*"-->
-                                            <!--<button ng-click="uploadReverse(item.position)" class="btn btn-primary dim btn-default pull-right" type="button"><i class="fa fa-trash"></i>Upload Reverse</button>-->
+                                            <br />
+                                            <div>
+                                                <button ng-click="ImageOrderUp(item.position)" class="btn btn-primary dim btn-default" type="button"><i class="fa fa-chevron-up"></i>Up </button>
+                                            </div>
+                                            <div>
+                                                <button ng-click="ImageOrderDown(item.position)" class="btn btn-primary dim btn-default" type="button"><i class="fa fa-chevron-down"></i>Down </button>
+                                            </div>
+                                            <div>
+                                                <button ng-click="Delete(item.position)" class="btn btn-primary dim btn-default" type="button"><i class="fa fa-trash"></i>Remove</button>
+                                            </div>
+                                            <br />
+                                            <div ng-if="item.imageIdBNavigation == undefined">
+                                                Upload Reverse :
+                                                <input type="file" ngf-select="uploadReverse($file, item)" class="btn btn-primary dim btn-default" />
+                                            </div>
+
                                         </td>
+
                                     </tr>
-                                    <tr>
+                                    <!--<tr>
                                         <td>Set Id:</td>
                                         <td colspan="2">
                                             <input type="text" name="input" ng-model="iCol.setId">
                                         </td>
-                                    </tr>
-                                    <tr>
+                                    </tr>-->
+                                    <!--<tr>
                                         <td>Coin Id:</td>
                                         <td colspan="2">
                                             <input type="checkbox" name="input" ng-model="iCol.coinId">
                                         </td>
-                                    </tr>
-                                    <tr>
+                                    </tr>-->
+                                    <!--<tr>
                                         <td>Image Id:</td>
                                         <td colspan="2">
                                             <input type="text" name="input" ng-model="iCol.itemId">
                                         </td>
-                                    </tr>
+                                    </tr>-->
                                     <tr>
                                         <td>Year:</td>
                                         <td colspan="2">
-                                            <input type="text" name="input" ng-model="iCol.year">
+                                            <!--<input type="text" name="input" ng-model="iCol.year">-->
+                                            <select ng-change="filterDate()" ng-model="iCol.year" id="yrStart" name="yrStart">
+                                                <option ng-repeat="n in []|range:yrStartMax-yrStartMin +1" value="{{$index*1 + yrStartMin*1}}">
+                                                    {{$index*1 + yrStartMin*1}}
+                                                </option>
+                                            </select>
                                         </td>
                                     </tr>
-                                    <tr>
+                                    <!--<tr>
                                         <td>Description:</td>
                                         <td colspan="2">
                                             <input type="text" name="input" ng-model="iCol.description">
                                         </td>
-                                    </tr>
+                                    </tr>-->
                                     <tr>
                                         <td>Date:</td>
                                         <td colspan="2">
@@ -163,12 +185,12 @@
                                             <input type="text" name="input" ng-model="iCol.range">
                                         </td>
                                     </tr>
-                                    <tr>
+                                    <!--<tr>
                                         <td>CatCode:</td>
                                         <td colspan="2">
                                             <input type="text" name="input" ng-model="iCol.catCode">
                                         </td>
-                                    </tr>
+                                    </tr>-->
                                 </table>
                             </div>
                         </div>
