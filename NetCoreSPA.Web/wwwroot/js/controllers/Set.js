@@ -24,7 +24,7 @@ function SetCtrl($scope, $state, $compile, $templateCache, getImage, updateImage
             alert("Error getting orders from back-end : " + error);
         });
     };
-  
+
     $scope.uploadFiles = function (files, iCol) {
         files.forEach(function (file, index) {
             var fReader = new FileReader();
@@ -53,6 +53,20 @@ function SetCtrl($scope, $state, $compile, $templateCache, getImage, updateImage
         });
     };
 
+    $scope.uploadReverse = function (file, item) {
+        fReader = new FileReader();
+        fReader.readAsDataURL(file);
+
+        fReader.onloadend = function (event) {
+            item.type = event.target.result.split(';')[0].split(':')[1];
+            item.imageIdBNavigation = {};
+            item.imageIdBNavigation.image = event.target.result.replace('data:' + item.type + ';base64,', '');
+            item.imageIdBNavigation.type = event.target.result.split(';')[0].split(':')[1];
+            item.thumbnailB = null;
+            item.isActive = true;
+            $state.go("app.set");
+        };
+    };
     $scope.ImageOrderUp = function (pos) {
         if (pos > 0 && pos <= $scope.iCol.items.length - 1) {
             $scope.iCol.items[pos].position--;

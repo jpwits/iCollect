@@ -57,15 +57,17 @@
                                     <tr>
                                         <td>Upload Images:</td>
                                         <td>
-                                            <input type="file" multiple="multiple" ngf-select="uploadFiles($files, iCol)" /> <!--accept="image/*"-->
-                                            <!--<br>
+                                            <input class="btn btn-primary dim btn-default pull-right" type="file" multiple="multiple" ngf-select="uploadFiles($files, iCol)" /> <!--accept="image/*"-->
+                                            <!--
+                                                ngf-multiple="true"
+                                                <br>
                                             <br>Files:
                                             <ul>
                                                 <li ng-repeat="file in files" style="font:smaller">
                                                     {{file.name}}
                                                 </li>
                                             </ul>-->
-                                            <!--<span class="progress" ng-show="progress >= 0">
+                                                                                    <!--<span class="progress" ng-show="progress >= 0">
                                                 <div style="width:{{progress}}%" ng-bind="progress + '%'"></div>
                                             </span>-->
                                             {{errorMsg}}
@@ -77,7 +79,7 @@
                                             <div class="container">
                                                 <img class="image" style="max-height:700px; max-width:700px" ng-src="data:{{item.imageIdANavigation.type}};base64,{{item.imageIdANavigation.image}}">
                                                 <div class="overlay" ng-if="item.imageIdBNavigation != undefined">
-                                                    <img class="image" style="max-height:700px; max-width:700px" ng-src="data:{{item.imageIdANavigation.type}};base64,{{item.imageIdBNavigation.image}}">
+                                                    <img class="image" style="max-height:700px; max-width:700px" ng-src="data:{{item.imageIdBNavigation.type}};base64,{{item.imageIdBNavigation.image}}">
                                                 </div>
                                             </div>
                                         <td>
@@ -114,7 +116,9 @@
                                             <button ng-click="ImageOrderUp(item.position)" class="btn btn-primary dim btn-default pull-right" type="button"><i class="fa fa-chevron-up"></i>Up </button>
                                             <button ng-click="ImageOrderDown(item.position)" class="btn btn-primary dim btn-default pull-right" type="button"><i class="fa fa-chevron-down"></i>Down </button>
                                             <button ng-click="Delete(item.position)" class="btn btn-primary dim btn-default pull-right" type="button"><i class="fa fa-trash"></i>Remove</button>
-                                            <button ng-click="UploadReverse(item.position)" class="btn btn-primary dim btn-default pull-right" type="button"><i class="fa fa-trash"></i>Upload Reverse</button>
+                                            Upload Reverse :
+                                            <input type="file" ngf-select="uploadReverse($file, item)" class="btn btn-primary dim btn-default pull-right" /> <!--accept="image/*"-->
+                                            <!--<button ng-click="uploadReverse(item.position)" class="btn btn-primary dim btn-default pull-right" type="button"><i class="fa fa-trash"></i>Upload Reverse</button>-->
                                         </td>
                                     </tr>
                                     <tr>
