@@ -80,16 +80,16 @@ namespace TGIS.Web
             }
 
             // Middleware to handle all request
-            app.Use(async (context, next) =>
-               {
-                   await next();
-                   if (context.Response.StatusCode == 404 && !Path.HasExtension(context.Request.Path.Value))
-                   {
-                       context.Request.Path = "/index.html";
-                       context.Response.StatusCode = 200;
-                       await next();
-                   }
-               });
+            //app.Use(async (context, next) =>
+            //   {
+            //       await next();
+            //       if (context.Response.StatusCode == 404 && !Path.HasExtension(context.Request.Path.Value))
+            //       {
+            //           context.Request.Path = "/index.html";
+            //           context.Response.StatusCode = 200;
+            //           await next();
+            //       }
+            //   });
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
