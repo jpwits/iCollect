@@ -82,10 +82,7 @@
                                         <td colspan="2">
                                             <div class="container">
                                                 <img class="image" style="max-height:500px; max-width:500px" ng-src="data:{{item.imageIdANavigation.type}};base64,{{item.imageIdANavigation.image}}">
-                                                <div ng-if="item.imageIdBNavigation != undefined">
-                                                    <img class="image overlay" style="max-height:500px; max-width:500px" ng-src="data:{{item.imageIdBNavigation.type}};base64,{{item.imageIdBNavigation.image}}">
-                                                </div>
-                                               
+                                                <img ng-if="item.imageIdBNavigation != undefined" class="image overlay" style="max-height:500px; max-width:500px" ng-src="data:{{item.imageIdBNavigation.type}};base64,{{item.imageIdBNavigation.image}}">
                                             </div>
                                         </td>
                                         <td>
