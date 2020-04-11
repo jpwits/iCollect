@@ -52,8 +52,8 @@ namespace iCollect.Controllers
             var groupbyObj = JsonConvert.DeserializeObject<dynamic>(groupby);
             var _sets = _context.Sets.AsEnumerable();
             var yrGroup = _sets.GroupBy(a => a.Year);
-            string yrStartMin = yrGroup.FirstOrDefault().Key;
-            string yrEndMax = yrGroup.OrderByDescending(a => a.Key).FirstOrDefault().Key;
+            int yrStartMin = yrGroup.FirstOrDefault().Key??1987;
+            int yrEndMax = yrGroup.OrderByDescending(a => a.Key).FirstOrDefault().Key??2015;
             var sortCol = sortbyObj.Columns;//.Select(a => a.Column.Value == sortbyObj.Active);
             var qry = _context.Sets.AsQueryable();
 
@@ -61,9 +61,9 @@ namespace iCollect.Controllers
             {
                 if (col.Column.Value == "Year") // Do for one column only 4 (the famous Jos) now.
                 {
-                    int yrStartSel = Convert.ToInt32(col.Start);
-                    int yrEndSel = Convert.ToInt32(col.End);
-                    qry = qry.Where(y => Convert.ToInt32(y.Year) >= yrStartSel && Convert.ToInt32(y.Year) <= yrEndSel);
+                    int yrStartSel = col.Start;
+                    int yrEndSel = col.End;
+                    qry = qry.Where(y => y.Year >= yrStartSel && y.Year < yrEndSel +1);
                 }
                 else if (col.Column.Value == "Range")
                 {

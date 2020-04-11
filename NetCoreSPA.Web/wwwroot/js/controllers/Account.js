@@ -10,7 +10,7 @@ function AccountCtrl($http, $state, $scope, passData, loginUser) {
             $scope.User = JSON.parse(JSON.stringify(response));
             $scope.User.name = username;
             passData.set("User", $scope.User);
-            $state.go("app.sets");
+            $state.go("app.setsng");
         }, function (error) {
             alert("Error getting orders from back-end : " + error);
         });

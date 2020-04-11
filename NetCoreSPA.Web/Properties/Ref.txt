@@ -1,5 +1,14 @@
-﻿dotnet ef dbcontext scaffold "Data Source=DESKTOP-7DQTMIU\SQLEXPRESS;Initial Catalog=Northwind;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -o Entities -f
+﻿EF
+==
+dotnet ef dbcontext scaffold "Data Source=DESKTOP-7DQTMIU\SQLEXPRESS;Initial Catalog=Northwind;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -o Entities -f
+dotnet ef dbcontext scaffold "DataSource=app.db" Microsoft.EntityFrameworkCore.SqlLite -o Entities -f
+dotnet ef migrations add InitialCreate --context NorthwindContext
+dotnet ef database update --context NorthwindContext
 
+Dsn=Collect;database=D:\user\ITS\iCollect\NetCoreSPA.Web\Data\Collect.db;stepapi=0;notxn=0;shortnames=0;longnames=0;nocreat=0;nowchar=0;fksupport=0;oemcp=0;bigint=0;jdconv=0
+
+API
+===
 [HttpGet("Details/{id}")]				-->		Use api/Sets/Details/1
 [HttpGet("{id}"), Route("Details")]		-->		Use api/Sets/Details?id=1
 

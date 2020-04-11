@@ -36,13 +36,9 @@ namespace iCollect.Entities
             {
                 entity.HasKey(e => e.CollectionId);
 
-                entity.Property(e => e.Description)
-                    .HasMaxLength(255)
-                    .IsUnicode(false);
+                entity.Property(e => e.Description).HasMaxLength(255);
 
-                entity.Property(e => e.Name)
-                    .HasMaxLength(255)
-                    .IsUnicode(false);
+                entity.Property(e => e.Name).HasMaxLength(255);
             });
 
             modelBuilder.Entity<Images>(entity =>
@@ -68,9 +64,7 @@ namespace iCollect.Entities
                     .HasColumnName("del_Image")
                     .HasColumnType("image");
 
-                entity.Property(e => e.Denominator)
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
+                entity.Property(e => e.Denominator).HasMaxLength(50);
 
                 entity.Property(e => e.Description).HasMaxLength(100);
 
@@ -78,9 +72,7 @@ namespace iCollect.Entities
 
                 entity.Property(e => e.Mass).HasColumnType("decimal(18, 3)");
 
-                entity.Property(e => e.MetalContent)
-                    .HasMaxLength(255)
-                    .IsUnicode(false);
+                entity.Property(e => e.MetalContent).HasMaxLength(255);
 
                 entity.Property(e => e.Thumbnail).HasColumnType("image");
 
@@ -88,13 +80,9 @@ namespace iCollect.Entities
 
                 entity.Property(e => e.ThumbnailB).HasColumnType("image");
 
-                entity.Property(e => e.Type)
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
+                entity.Property(e => e.Type).HasMaxLength(50);
 
-                entity.Property(e => e.Weight)
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
+                entity.Property(e => e.Weight).HasMaxLength(50);
 
                 entity.HasOne(d => d.ImageIdANavigation)
                     .WithMany(p => p.ItemsImageIdANavigation)
@@ -117,25 +105,15 @@ namespace iCollect.Entities
             {
                 entity.HasKey(e => e.SetId);
 
-                entity.Property(e => e.CatCode)
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
+                entity.Property(e => e.CatCode).HasMaxLength(50);
 
                 entity.Property(e => e.Date).HasColumnType("date");
 
                 entity.Property(e => e.Description).HasMaxLength(100);
 
-                entity.Property(e => e.Range)
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
+                entity.Property(e => e.Range).HasMaxLength(50);
 
-                entity.Property(e => e.SetType)
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Year)
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
+                entity.Property(e => e.SetType).HasMaxLength(50);
 
                 entity.HasOne(d => d.Collection)
                     .WithMany(p => p.Sets)
@@ -147,8 +125,7 @@ namespace iCollect.Entities
             {
                 entity.Property(e => e.UserId)
                     .IsRequired()
-                    .HasMaxLength(255)
-                    .IsUnicode(false);
+                    .HasMaxLength(255);
 
                 entity.HasOne(d => d.Item)
                     .WithMany(p => p.UserItems)
