@@ -80,6 +80,7 @@
 
   <ItemGroup>
     <None Remove=".bowerrc" />
+    <None Remove="Data\app.db" />
   </ItemGroup>
 
   <ItemGroup>
