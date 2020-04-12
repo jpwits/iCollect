@@ -24,21 +24,25 @@
     <Compile Remove="ControllersAPI\**" />
     <Compile Remove="obj\**" />
     <Compile Remove="wwwroot\css\plugins\**" />
+    <Compile Remove="wwwroot\font-awesome\**" />
     <Compile Remove="wwwroot\js\**" />
     <Content Remove="Agile\**" />
     <Content Remove="ControllersAPI\**" />
     <Content Remove="obj\**" />
     <Content Remove="wwwroot\css\plugins\**" />
+    <Content Remove="wwwroot\font-awesome\**" />
     <Content Remove="wwwroot\js\**" />
     <EmbeddedResource Remove="Agile\**" />
     <EmbeddedResource Remove="ControllersAPI\**" />
     <EmbeddedResource Remove="obj\**" />
     <EmbeddedResource Remove="wwwroot\css\plugins\**" />
+    <EmbeddedResource Remove="wwwroot\font-awesome\**" />
     <EmbeddedResource Remove="wwwroot\js\**" />
     <None Remove="Agile\**" />
     <None Remove="ControllersAPI\**" />
     <None Remove="obj\**" />
     <None Remove="wwwroot\css\plugins\**" />
+    <None Remove="wwwroot\font-awesome\**" />
     <None Remove="wwwroot\js\**" />
   </ItemGroup>
 
@@ -295,9 +299,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="wwwroot\font-awesome\css\font-awesome.css.map" />
-    <None Include="wwwroot\font-awesome\fonts\fontawesome-webfont.svg" />
-    <None Include="wwwroot\font-awesome\fonts\fontawesome-webfont.woff2" />
     <None Include="wwwroot\js\app.js" />
     <None Include="wwwroot\js\config.js" />
     <None Include="wwwroot\js\controllers.js" />

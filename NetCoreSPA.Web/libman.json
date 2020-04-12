@@ -83,6 +83,10 @@
       "provider": "jsdelivr",
       "library": "bootstrap@4.4.1",
       "destination": "wwwroot/js/bootstrap/"
+    },
+    {
+      "library": "ng-idle@1.0.2",
+      "destination": "wwwroot/lib/ng-idle/"
     }
   ]
 }
