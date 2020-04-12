@@ -76,8 +76,8 @@
       "destination": "wwwroot/lib/danialfarid-angular-file-upload/"
     },
     {
-      "library": "font-awesome@5.12.1",
-      "destination": "wwwroot/font-awesome/"
+      "library": "font-awesome@4.7.0",
+      "destination": "wwwroot/lib/font-awesome/"
     },
     {
       "provider": "jsdelivr",
