@@ -1,6 +1,6 @@
 /*** Directives and services for responding to idle users in AngularJS
 * @author Mike Grabski <me@mikegrabski.com>
-* @version v1.3.2
+* @version v1.0.2
 * @link https://github.com/HackedByChinese/ng-idle.git
 * @license MIT
 */
@@ -42,8 +42,9 @@ angular.module('ngIdle.keepalive', [])
           ping: null
         };
 
-        function handleResponse(response) {
-          $rootScope.$broadcast('KeepaliveResponse', response.data, response.status);
+
+        function handleResponse(data, status) {
+          $rootScope.$broadcast('KeepaliveResponse', data, status);
         }
 
         function ping() {
@@ -51,8 +52,8 @@ angular.module('ngIdle.keepalive', [])
 
           if (angular.isObject(options.http)) {
             $http(options.http)
-              .then(handleResponse)
-              .catch(handleResponse);
+              .success(handleResponse)
+              .error(handleResponse);
           }
         }
 
@@ -85,7 +86,6 @@ angular.module('ngIdle.idle', ['ngIdle.keepalive', 'ngIdle.localStorage'])
       timeout: 30, // in seconds (default is 30sec)
       autoResume: 'idle', // lets events automatically resume (unsets idle state/resets warning)
       interrupt: 'mousemove keydown DOMMouseScroll mousewheel mousedown touchstart touchmove scroll',
-      windowInterrupt: null,
       keepalive: true
     };
 
@@ -101,10 +101,6 @@ angular.module('ngIdle.idle', ['ngIdle.keepalive', 'ngIdle.localStorage'])
 
     this.interrupt = function(events) {
       options.interrupt = events;
-    };
-
-    this.windowInterrupt = function(events) {
-      options.windowInterrupt = events;
     };
 
     var setIdle = this.idle = function(seconds) {
@@ -151,10 +147,11 @@ angular.module('ngIdle.idle', ['ngIdle.keepalive', 'ngIdle.localStorage'])
 
         function toggleState() {
           state.idling = !state.idling;
-          var name = state.idling ? 'IdleStart' : 'IdleEnd';
+          var name = state.idling ? 'Start' : 'End';
+
+          $rootScope.$broadcast('Idle' + name);
 
           if (state.idling) {
-            $rootScope.$broadcast(name);
             stopKeepalive();
             if (options.timeout) {
               state.countdown = options.timeout;
@@ -163,20 +160,12 @@ angular.module('ngIdle.idle', ['ngIdle.keepalive', 'ngIdle.localStorage'])
             }
           } else {
             startKeepalive();
-            $rootScope.$broadcast(name);
           }
 
           $interval.cancel(state.idle);
         }
 
         function countdown() {
-
-          // check not called when no longer idling
-          // possible with multiple tabs
-          if(!state.idling){
-            return;
-          }
-
           // countdown has expired, so signal timeout
           if (state.countdown <= 0) {
             timeout();
@@ -186,10 +175,6 @@ angular.module('ngIdle.idle', ['ngIdle.keepalive', 'ngIdle.localStorage'])
           // countdown hasn't reached zero, so warn and decrement
           $rootScope.$broadcast('IdleWarn', state.countdown);
           state.countdown--;
-        }
-
-        function interrupted(anotherTab) {
-          $rootScope.$broadcast('IdleInterrupt', anotherTab);
         }
 
         function timeout() {
@@ -215,7 +200,7 @@ angular.module('ngIdle.idle', ['ngIdle.keepalive', 'ngIdle.localStorage'])
         function getExpiry() {
           var obj = LocalStorage.get('expiry');
 
-          return obj && obj.time ? new Date(obj.time) : null;
+          return obj.time;
         }
 
         function setExpiry(date) {
@@ -230,12 +215,6 @@ angular.module('ngIdle.idle', ['ngIdle.keepalive', 'ngIdle.localStorage'])
           _getNow: function() {
             return new Date();
           },
-          getIdle: function(){
-            return options.idle;
-          },
-          getTimeout: function(){
-            return options.timeout;
-          },
           setIdle: function(seconds) {
             changeOption(this, setIdle, seconds);
           },
@@ -244,7 +223,7 @@ angular.module('ngIdle.idle', ['ngIdle.keepalive', 'ngIdle.localStorage'])
           },
           isExpired: function() {
             var expiry = getExpiry();
-            return expiry !== null && expiry <= this._getNow();
+            return expiry && expiry <= this._getNow();
           },
           running: function() {
             return state.running;
@@ -278,182 +257,125 @@ angular.module('ngIdle.idle', ['ngIdle.keepalive', 'ngIdle.localStorage'])
 
             stopKeepalive();
           },
-          interrupt: function(anotherTab) {
+          interrupt: function(noExpiryUpdate) {
             if (!state.running) return;
 
             if (options.timeout && this.isExpired()) {
               timeout();
               return;
-            } else {
-              interrupted(anotherTab);
             }
 
             // note: you can no longer auto resume once we exceed the expiry; you will reset state by calling watch() manually
-            if (anotherTab || options.autoResume === 'idle' || (options.autoResume === 'notIdle' && !state.idling)) this.watch(anotherTab);
+            if (options.autoResume === 'idle' || (options.autoResume === 'notIdle' && !state.idling)) this.watch(noExpiryUpdate);
           }
         };
 
-        var lastMove = {
-          clientX: null,
-          clientY: null,
-          swap: function(event) {
-            var last = {clientX: this.clientX, clientY: this.clientY};
-            this.clientX = event.clientX;
-            this.clientY = event.clientY;
-            return last;
-          },
-          hasMoved: function(event) {
-            var last = this.swap(event);
-            if (this.clientX === null || event.movementX || event.movementY) return true;
-            else if (last.clientX != event.clientX || last.clientY != event.clientY) return true;
-            else return false;
-          }
-        };
-
-        $document.find('html').on(options.interrupt, function(event) {
-          if (event.type === 'mousemove' && event.originalEvent && event.originalEvent.movementX === 0 && event.originalEvent.movementY === 0) {
-            return; // Fix for Chrome desktop notifications, triggering mousemove event.
-          }
-
-          if (event.type !== 'mousemove' || lastMove.hasMoved(event)) {
-            svc.interrupt();
-          }
+        $document.find('body').on(options.interrupt, function() {
+          svc.interrupt();
         });
 
-        if(options.windowInterrupt) {
-          var eventList = options.windowInterrupt.split(' ');
-          var fn = function() {
-            svc.interrupt();
-          };
-
-          for(var i=0; i<eventList.length; i++) {
-            if ($window.addEventListener) $window.addEventListener(eventList[i], fn, false);
-            else $window.attachEvent(eventList[i], fn)
-          }
-        }
-
         var wrap = function(event) {
-          if (event.key === 'ngIdle.expiry' && event.newValue && event.newValue !== event.oldValue) {
-            var val = angular.fromJson(event.newValue);
+          if (event.key === 'ngIdle.expiry' && event.newValue !== event.oldValue) {
+            var val = LocalStorage.parseJson(event.newValue);
             if (val.id === id) return;
             svc.interrupt(true);
           }
         };
 
         if ($window.addEventListener) $window.addEventListener('storage', wrap, false);
-        else if ($window.attachEvent) $window.attachEvent('onstorage', wrap);
+        else $window.attachEvent('onstorage', wrap);
 
         return svc;
       }
     ];
   });
 
-angular.module('ngIdle.countdown', ['ngIdle.idle'])
-  .directive('idleCountdown', ['Idle', function(Idle) {
+angular.module('ngIdle.countdown', [])
+  .directive('idleCountdown', function() {
     return {
       restrict: 'A',
       scope: {
         value: '=idleCountdown'
       },
       link: function($scope) {
-        // Initialize the scope's value to the configured timeout.
-        $scope.value = Idle.getTimeout();
-
         $scope.$on('IdleWarn', function(e, countdown) {
-          $scope.$evalAsync(function() {
+          $scope.$apply(function() {
             $scope.value = countdown;
           });
         });
 
         $scope.$on('IdleTimeout', function() {
-          $scope.$evalAsync(function() {
+          $scope.$apply(function() {
             $scope.value = 0;
           });
         });
       }
     };
-  }]);
+  });
 
 angular.module('ngIdle.title', [])
-  .provider('Title', function() {
-    var options = {
-      enabled: true
-    };
-
-    var setEnabled = this.enabled = function(enabled) {
-      options.enabled = enabled === true;
-    };
+  .factory('Title', ['$document', '$interpolate', function($document, $interpolate) {
 
     function padLeft(nr, n, str){
-      return new Array(n-String(nr).length+1).join(str||'0')+nr;
+      return Array(n-String(nr).length+1).join(str||'0')+nr;
     }
 
-    this.$get = ['$document', '$interpolate', function($document, $interpolate) {
-      var state = {
-        original: null,
-        idle: '{{minutes}}:{{seconds}} until your session times out!',
-        timedout: 'Your session has expired.'
-      };
+    var state = {
+      original: null,
+      idle: '{{minutes}}:{{seconds}} until your session times out!',
+      timedout: 'Your session has expired.'
+    };
 
-      return {
-        setEnabled: setEnabled,
-        isEnabled: function() {
-          return options.enabled;
-        },
-        original: function(val) {
-          if (angular.isUndefined(val)) return state.original;
+    return {
+      original: function(val) {
+        if (angular.isUndefined(val)) return state.original;
 
-          state.original = val;
-        },
-        store: function(overwrite) {
-          if (overwrite || !state.original) state.original = this.value();
-        },
-        value: function(val) {
-          if (angular.isUndefined(val)) return $document[0].title;
+        state.original = val;
+      },
+      store: function(overwrite) {
+        if (overwrite || !state.original) state.original = this.value();
+      },
+      value: function(val) {
+        if (angular.isUndefined(val)) return $document[0].title;
 
-          $document[0].title = val;
-        },
-        idleMessage: function(val) {
-          if (angular.isUndefined(val)) return state.idle;
+        $document[0].title = val;
+      },
+      idleMessage: function(val) {
+        if (angular.isUndefined(val)) return state.idle;
 
-          state.idle = val;
-        },
-        timedOutMessage: function(val) {
-          if (angular.isUndefined(val)) return state.timedout;
+        state.idle = val;
+      },
+      timedOutMessage: function(val) {
+        if (angular.isUndefined(val)) return state.timedout;
 
-          state.timedout = val;
-        },
-        setAsIdle: function(countdown) {
-          this.store();
+        state.timedout = val;
+      },
+      setAsIdle: function(countdown) {
+        this.store();
 
-          var remaining = { totalSeconds: countdown };
-          remaining.minutes = Math.floor(countdown/60);
-          remaining.seconds = padLeft(countdown - remaining.minutes * 60, 2);
+        var remaining = { totalSeconds: countdown };
+        remaining.minutes = Math.floor(countdown/60);
+        remaining.seconds = padLeft(countdown - remaining.minutes * 60, 2);
 
-          this.value($interpolate(this.idleMessage())(remaining));
-        },
-        setAsTimedOut: function() {
-          this.store();
+        this.value($interpolate(this.idleMessage())(remaining));
+      },
+      setAsTimedOut: function() {
+        this.store();
 
-          this.value(this.timedOutMessage());
-        },
-        restore: function() {
-          if (this.original()) this.value(this.original());
-        }
-      };
-    }];
-  })
+        this.value(this.timedOutMessage());
+      },
+      restore: function() {
+        if (this.original()) this.value(this.original());
+      }
+    };
+  }])
   .directive('title', ['Title', function(Title) {
       return {
         restrict: 'E',
         link: function($scope, $element, $attr) {
-          if (!Title.isEnabled() || $attr.idleDisabled) return;
+          if ($attr.idleDisabled) return;
 
           Title.store(true);
-
-          $scope.$on('IdleStart', function() {
-            Title.original($element[0].innerText);
-          });
 
           $scope.$on('IdleWarn', function(e, countdown) {
             Title.setAsIdle(countdown);
@@ -471,64 +393,38 @@ angular.module('ngIdle.title', [])
   }]);
 
 angular.module('ngIdle.localStorage', [])
-  .service('IdleStorageAccessor', ['$window', function($window) {
-    return {
-      get: function() {
-        return $window.localStorage;
+  .factory('IdleLocalStorage', ['$window', function($window) {
+    var storage = $window.localStorage;
+
+    function tryParseJson(value) {
+      try {
+        return JSON.parse(value, function(key, value) {
+          var match = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}(?:\.\d*)?)Z$/.exec(value);
+          if (match) return new Date(value);
+
+          return value;
+        });
+      }
+      catch(e) {
+        return value;
       }
     }
-  }])
-  .service('IdleLocalStorage', ['IdleStorageAccessor', function(IdleStorageAccessor) {
-    function AlternativeStorage() {
-      var storageMap = {};
-
-      this.setItem = function (key, value) {
-          storageMap[key] = value;
-      };
-
-      this.getItem = function (key) {
-          if(typeof storageMap[key] !== 'undefined' ) {
-              return storageMap[key];
-          }
-          return null;
-      };
-
-      this.removeItem = function (key) {
-          storageMap[key] = undefined;
-      };
-    }
-
-    function getStorage() {
-       try {
-          var s = IdleStorageAccessor.get();
-          s.setItem('ngIdleStorage', '');
-          s.removeItem('ngIdleStorage');
-
-          return s;
-       } catch(err) {
-          return new AlternativeStorage();
-       }
-    }
-
-    // Safari, in Private Browsing Mode, looks like it supports localStorage but all calls to setItem
-    // throw QuotaExceededError. We're going to detect this and just silently drop any calls to setItem
-    // to avoid the entire page breaking, without having to do a check at each usage of Storage.
-    var storage = getStorage();
 
     return {
       set: function(key, value) {
-        storage.setItem('ngIdle.'+key, angular.toJson(value));
+        storage.setItem('ngIdle.'+key, JSON.stringify(value));
       },
       get: function(key) {
-        return angular.fromJson(storage.getItem('ngIdle.'+key));
+        var raw = storage.getItem('ngIdle.'+key);
+        return tryParseJson(raw);
       },
       remove: function(key) {
         storage.removeItem('ngIdle.'+key);
       },
-      _wrapped: function() {
-        return storage;
+      parseJson: function(raw) {
+        return tryParseJson(raw);
       }
     };
-}]);
+  }]);
 
 })(window, window.angular);
