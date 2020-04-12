@@ -12,7 +12,7 @@ namespace iCollect.Entities
 
         public int SetId { get; set; }
         public int? CollectionId { get; set; }
-        public string Year { get; set; }
+        public int? Year { get; set; }
         public string Description { get; set; }
         public DateTime? Date { get; set; }
         public string Range { get; set; }

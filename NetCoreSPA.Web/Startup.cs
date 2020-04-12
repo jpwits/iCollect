@@ -55,11 +55,14 @@ namespace TGIS.Web
             }));
 
             //Database Connection
-            var connection = @"Data Source=DESKTOP-7DQTMIU\SQLEXPRESS;Initial Catalog=Northwind;Trusted_Connection=True;";
+            //var connection = @"Data Source=DESKTOP-7DQTMIU\SQLEXPRESS;Initial Catalog=Northwind;Trusted_Connection=True;";
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDbContext<NorthwindContext>(options => options.UseSqlServer(connection));
+                options.UseSqlite(
+                    Configuration.GetConnectionString("AuthConnection")));
+           
+            //services.AddDbContext<NorthwindContext>(options => options.UseSqlServer(
+            services.AddDbContext<NorthwindContext>(options => options.UseSqlite(
+                Configuration.GetConnectionString("CollectConnection")));
 
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                .AddEntityFrameworkStores<ApplicationDbContext>();
@@ -80,16 +83,16 @@ namespace TGIS.Web
             }
 
             // Middleware to handle all request
-            app.Use(async (context, next) =>
-               {
-                   await next();
-                   if (context.Response.StatusCode == 404 && !Path.HasExtension(context.Request.Path.Value))
-                   {
-                       context.Request.Path = "/index.html";
-                       context.Response.StatusCode = 200;
-                       await next();
-                   }
-               });
+            //app.Use(async (context, next) =>
+            //   {
+            //       await next();
+            //       if (context.Response.StatusCode == 404 && !Path.HasExtension(context.Request.Path.Value))
+            //       {
+            //           context.Request.Path = "/index.html";
+            //           context.Response.StatusCode = 200;
+            //           await next();
+            //       }
+            //   });
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();

@@ -2,7 +2,7 @@
 
     getUser.get({ username: " " }).$promise.then(function (response) {
         passData.set("User", JSON.parse(JSON.stringify(response)));
-        $scope.User = passData.get("User");
+        //$scope.User = passData.get("User");
     },
         function (error) {
             alert("Error getting user from back-end : " + error);

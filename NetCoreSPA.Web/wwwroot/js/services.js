@@ -28,16 +28,16 @@ function getCollectionsSrv($resource) {
     return $resource('api/Collections/GetCollection/:start/:length', { start: '@start', length: '@length' }
     );
 }
-        
+
 function getImage($resource) {
     return $resource('api/Sets/GetImage/:id', { filename: '@id' }
     );
 }
 
 function updateImage($resource) {
-    return $resource('api/SetsNg/Edit/:id', {id: '@id' }
-        ,{
-        'update': { method: 'PUT' }
+    return $resource('api/SetsNg/Edit/:id', { id: '@id' }
+        , {
+            'update': { method: 'PUT' }
         }
     );
 }
@@ -52,6 +52,11 @@ function updateUserItem($resource) {
 
 function getUser($resource) {
     return $resource('api/Account/getUser/:username', { username: '@username' }
+    );
+}
+
+function loginUser($resource) {
+    return $resource('api/Account/login/:username/:password', { username: '@username', password: '@password' }   
     );
 }
 
@@ -83,6 +88,7 @@ angular
     .service('updateUserItem', updateUserItem)
     .service('getSetSrv', getSetSrv)
     .service('getLookups', getLookups)
+    .service('loginUser', loginUser)
     .service('getItemSrvNg', getItemSrvNg)
     .service('getSetsSrvNg', getSetsSrvNg);
 
