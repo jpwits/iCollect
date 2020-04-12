@@ -88,5 +88,10 @@
       "library": "ng-idle@1.0.2",
       "destination": "wwwroot/lib/ng-idle/"
     }
-  ]
+  ,
+{
+  "library": "metisMenu@2.0.2",
+  "destination": "wwwroot/lib/metisMenu/"
+}
+]
 }
