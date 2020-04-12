@@ -659,16 +659,38 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, IdlePro
             params: { CustomerDetail: null, EditCustomer: true },
             data: { pageTitle: 'Customers Edit' }
         })
+        .state('app.set', {
+            url: "/set",
+            templateUrl: "views/set.html",
+            params: { SetDetail: null, EditSet: true },
+            data: { pageTitle: 'Set' }
+        })
         .state('app.sets', {
             url: "/sets",
             templateUrl: "views/sets.html",
             data: { pageTitle: 'Sets' }
         })
-        .state('app.sets_edit', {
-            url: "/sets_edit",
-            templateUrl: "views/sets_edit.html",
+        //.state('app.setng', {
+        //    url: "/setng",
+        //    templateUrl: "views/setng.html",
+        //    params: { SetDetail: null, EditSet: true },
+        //    data: { pageTitle: 'Setng' }
+        //})
+        .state('app.setsng', {
+            url: "/setsng",
+            templateUrl: "views/setsng.html",
+            data: { pageTitle: 'Setsng' }
+        })
+        .state('app.collection', {
+            url: "/collection",
+            templateUrl: "views/collection.html",
             params: { SetDetail: null, EditSet: true },
-            data: { pageTitle: 'Sets Edit' }
+            data: { pageTitle: 'Colection' }
+        })
+        .state('app.collections', {
+            url: "/collections",
+            templateUrl: "views/collections.html",
+            data: { pageTitle: 'Collections' }
         })
         .state('app.activity_stream', {
             url: "/activity_stream",

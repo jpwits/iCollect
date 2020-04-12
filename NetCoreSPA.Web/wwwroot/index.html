@@ -21,7 +21,7 @@
     <link href="css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Font awesome -->
-    <link href="font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="/font-awesome/css/font-awesome.css" rel="stylesheet">
 
     <!-- Main Inspinia CSS files -->
     <link href="css/animate.css" rel="stylesheet">
@@ -35,9 +35,10 @@
 <body ng-controller="MainCtrl as main" class="{{$state.current.data.specialClass}}" landing-scrollspy id="page-top">
 
     <!-- Main view  -->
-    <div ui-view></div>
+    <div ng-controller="AccountCtrl" ui-view></div>
 
     <!-- jQuery and Bootstrap -->
+
     <script src="/lib/jquery/jquery.min.js"></script>
     <script src="/lib/jqueryui/jquery-ui.min.js"></script>
     <script src="js/bootstrap/bootstrap.min.js"></script>
@@ -67,21 +68,22 @@
     <script src="js/plugins/dataTables/datatables.min.js"></script>
     <script src="js/plugins/dataTables/angular-datatables.min.js"></script>
     <script src="js/plugins/dataTables/angular-datatables.buttons.min.js"></script>
-    <script src="/js/plugins/ng-file-upload-bower-12.2.13/ng-file-upload-all.min.js"></script>
+    <script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script type="text/javascript" src="/lib/danialfarid-angular-file-upload/ng-file-upload.min.js"></script>
 
-    <!--
-     You need to include this script on any page that has a Google Map.
-     When using Google Maps on your own site you MUST signup for your own API key at:
-     https://developers.google.com/maps/documentation/javascript/tutorial#api_key
-     After your sign up replace the key in the URL below..
-    -->
-    <!--<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDQTpXj82d8UpCi97wzo_nKXL7nYrd4G70"></script>-->
     <!-- Anglar App Script -->
     <script src="js/app.js"></script>
     <script src="js/config.js"></script>
     <script src="js/translations.js"></script>
     <script src="js/directives.js"></script>
     <script src="js/services.js"></script>
+    <script src="js/controllers/Main.js"></script>
+    <script src="js/controllers/Account.js"></script>
+    <script src="js/controllers/Set.js"></script>
+    <script src="js/controllers/Sets.js"></script>
+    <script src="js/controllers/SetsNg.js"></script>
+    <script src="js/controllers/collection.js"></script>
     <script src="js/controllers.js"></script>
+
 </body>
 </html>

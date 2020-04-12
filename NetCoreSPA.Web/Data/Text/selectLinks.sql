@@ -1,5 +1,5 @@
 
---Drop table SetImages
+--Drop table items
 --Go
 
 SELECT  Links.Heading, Links.PageNo, Images2.Path, Sets.SetId, Images2.Id as ImageId INTO SetImages

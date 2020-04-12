@@ -10,6 +10,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <IsTransformWebConfigDisabled>false</IsTransformWebConfigDisabled>
+    <AssemblyName>iCollect</AssemblyName>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -23,28 +24,24 @@
     <Compile Remove="ControllersAPI\**" />
     <Compile Remove="obj\**" />
     <Compile Remove="wwwroot\css\plugins\**" />
-    <Compile Remove="wwwroot\font-awesome\**" />
     <Compile Remove="wwwroot\js\**" />
     <Compile Remove="wwwroot\lib\**" />
     <Content Remove="Agile\**" />
     <Content Remove="ControllersAPI\**" />
     <Content Remove="obj\**" />
     <Content Remove="wwwroot\css\plugins\**" />
-    <Content Remove="wwwroot\font-awesome\**" />
     <Content Remove="wwwroot\js\**" />
     <Content Remove="wwwroot\lib\**" />
     <EmbeddedResource Remove="Agile\**" />
     <EmbeddedResource Remove="ControllersAPI\**" />
     <EmbeddedResource Remove="obj\**" />
     <EmbeddedResource Remove="wwwroot\css\plugins\**" />
-    <EmbeddedResource Remove="wwwroot\font-awesome\**" />
     <EmbeddedResource Remove="wwwroot\js\**" />
     <EmbeddedResource Remove="wwwroot\lib\**" />
     <None Remove="Agile\**" />
     <None Remove="ControllersAPI\**" />
     <None Remove="obj\**" />
     <None Remove="wwwroot\css\plugins\**" />
-    <None Remove="wwwroot\font-awesome\**" />
     <None Remove="wwwroot\js\**" />
     <None Remove="wwwroot\lib\**" />
   </ItemGroup>
@@ -61,7 +58,6 @@
     <Compile Remove="Entities\Customers.cs" />
     <Compile Remove="Entities\Employees.cs" />
     <Compile Remove="Entities\EmployeeTerritories.cs" />
-    <Compile Remove="Entities\Images.cs" />
     <Compile Remove="Entities\Images2.cs" />
     <Compile Remove="Entities\Links.cs" />
     <Compile Remove="Entities\Links1.cs" />
@@ -84,6 +80,7 @@
 
   <ItemGroup>
     <None Remove=".bowerrc" />
+    <None Remove="Data\app.db" />
   </ItemGroup>
 
   <ItemGroup>
@@ -245,24 +242,31 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="1.1.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.1">
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.3" />
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.3" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.3" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.3" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.3" />
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.8">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.1">
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.3">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="3.1.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.3">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.9.10" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.1" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.2" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="System.Drawing.Common" Version="4.7.0" />
-    <PackageReference Include="System.Text.Json" Version="4.7.0" />
+    <PackageReference Include="System.Text.Json" Version="4.7.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -272,11 +276,21 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\font-awesome\css\font-awesome.css.map" />
+    <None Include="wwwroot\font-awesome\fonts\fontawesome-webfont.svg" />
+    <None Include="wwwroot\font-awesome\fonts\fontawesome-webfont.woff2" />
     <None Include="wwwroot\js\app.js" />
     <None Include="wwwroot\js\config.js" />
     <None Include="wwwroot\js\controllers.js" />
+    <None Include="wwwroot\js\controllers\account.js" />
+    <None Include="wwwroot\js\controllers\main.js" />
+    <None Include="wwwroot\js\controllers\set.js" />
+    <None Include="wwwroot\js\controllers\collection.js" />
+    <None Include="wwwroot\js\controllers\SetsNg.js" />
+    <None Include="wwwroot\js\controllers\sets.js" />
     <None Include="wwwroot\js\directives.js" />
     <None Include="wwwroot\js\inspinia.js" />
+    <None Include="wwwroot\js\junk.js" />
     <None Include="wwwroot\js\plugins\angular-bootstrap-tour\angular-bootstrap-tour.min.js" />
     <None Include="wwwroot\js\plugins\angular-datamaps\angular-datamaps.min.js" />
     <None Include="wwwroot\js\plugins\angular-diff-match-patch\angular-diff-match-patch.js" />
@@ -652,7 +666,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\" />
     <Folder Include="wwwroot\js\bootstrap\" />
   </ItemGroup>
 

@@ -1,46 +1,62 @@
-﻿function getOrdersSrv($resource) {
-    return $resource('api/Orders/GetOrders/:id', { id: '@id' }
-    );
-}
-
-function getProductsSrv($resource) {
-    return $resource('api/Products/GetProducts/:id', { id: '@id' }
-    );
-}
-
-function getCustomersSrv($resource) {
-    return $resource('api/Customers/GetCustomers/:id', { id: '@id' }
-    );
-}
-
+﻿
 function getSetSrv($resource) {
-    return $resource('api/Sets/GetSet/:id', { id: '@id' }
+    return $resource('api/SetsNg/GetSet/:id', { id: '@id' }
     );
 }
 
-function getSetsSrv($resource) {
-    return $resource('api/Sets/GetSets/:start/:length', { start: '@start', length:'@length' }
+function getSetsSrvNg($resource) {
+    return $resource('api/SetsNg/GetSets/:start/:length/:sortby/:filterby/:groupby', { start: '@start', length: '@length', sortby: '@sortby', filterby: '@filterby', groupby: '@groupby' }
     );
 }
-        
+
+function getLookups($resource) {
+    return $resource('api/SetsNg/GetLookups'
+    );
+}
+
+function getItemSrvNg($resource) {
+    return $resource('api/SetsNg/GetUserItem/:id', { id: '@id' }
+    );
+}
+
+function getCollectionSrv($resource) {
+    return $resource('api/Collections/GetCollection/:id', { id: '@id' }
+    );
+}
+
+function getCollectionsSrv($resource) {
+    return $resource('api/Collections/GetCollection/:start/:length', { start: '@start', length: '@length' }
+    );
+}
+
 function getImage($resource) {
     return $resource('api/Sets/GetImage/:id', { filename: '@id' }
     );
 }
 
 function updateImage($resource) {
-    return $resource('api/Sets/Edit/:id', {id: '@id' }
-        ,{
-        'update': { method: 'PUT' }
+    return $resource('api/SetsNg/Edit/:id', { id: '@id' }
+        , {
+            'update': { method: 'PUT' }
         }
     );
 }
 
-function delImage($resource) {
-    return $resource('api/Sets/Delete/:id', { filename: '@id' }
+function updateUserItem($resource) {
+    return $resource('api/SetsNg/updateUserItem/:id', { id: '@id' }
         , {
-            'update': { method: 'POST' }
+            'update': { method: 'PUT' }
         }
+    );
+}
+
+function getUser($resource) {
+    return $resource('api/Account/getUser/:username', { username: '@username' }
+    );
+}
+
+function loginUser($resource) {
+    return $resource('api/Account/login/:username/:password', { username: '@username', password: '@password' }   
     );
 }
 
@@ -63,12 +79,17 @@ function passData() {
 
 angular
     .module('inspinia')
-    .service('getProductsSrv', getProductsSrv)
-    .service('getOrdersSrv', getOrdersSrv)
-    .service('getCustomersSrv', getCustomersSrv)
-    .service('getSetSrv', getSetSrv)
     .service('getImage', getImage)
-    .service('delImage', delImage)
     .service('updateImage', updateImage)
     .service('passData', passData)
-    .service('getSetsSrv', getSetsSrv);
+    .service('getUser', getUser)
+    .service('getCollectionSrv', getCollectionSrv)
+    .service('getCollectionsSrv', getCollectionsSrv)
+    .service('updateUserItem', updateUserItem)
+    .service('getSetSrv', getSetSrv)
+    .service('getLookups', getLookups)
+    .service('loginUser', loginUser)
+    .service('getItemSrvNg', getItemSrvNg)
+    .service('getSetsSrvNg', getSetsSrvNg);
+
+

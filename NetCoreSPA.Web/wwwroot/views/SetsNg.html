@@ -1,0 +1,174 @@
+﻿<div ng-controller="SetsNgCtrl">
+    <div class="row wrapper bSet-bottom white-bg page-heading">
+        <div class="col-sm-4">
+            <h2>Set list</h2>
+            <ol class="breadcrumb">
+                <li>
+                    <a href="index.html">Home</a>
+                </li>
+                <li class="active">
+                    <strong>Sets list</strong>
+                </li>
+            </ol>
+        </div>
+    </div>
+    <div class="animated fadeInRight">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="wrapper wrapper-content animated fadeInUp">
+                    <div class="ibox">
+                        <div class="ibox-title">
+                            <h5>All Sets assigned to this account</h5>
+                            <div class="ibox-tools">
+                                <a ng-click="createSet(undefined)" class="btn btn-primary btn-xs">New Set</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div>
+        View <select ng-model="session_pglen" ng-change="setItemsPerPage(session_pglen)"><option>3</option><option>5</option><option>10</option><option>20</option><option>30</option><option>40</option><option>50</option></select> records at a time.
+        <div>Page: {{currentPage}} / {{numberOfPages}}</div>
+        <br />
+
+        <div class="div-table fadeInRight">
+            <div class="div-table-row">
+                <div style="min-width:450px" class="div-table-col" align="center">
+                    <strong>Images</strong>
+                </div>
+
+                <div class="div-table-col">
+                    <!--Year-->
+                    <!--<div class="dropdown">
+                    <button class="dropbtn">Year</button>
+                    <div class="dropdown-content">
+                        <a href="#">Sort Ascending</a>
+                        <a href="#">Sort Descending</a>-->
+                    <!--<label for="yrStart">Date Range:</label>-->
+                    <select ng-change="filterDate()" ng-model="yrStartSel" id="yrStart" name="yrStart">
+                        <option ng-repeat="n in []|range:yrStartMax-yrStartMin +1" value="{{$index*1 + yrStartMin*1}}">
+                            {{$index*1 + yrStartMin*1}}
+                        </option>
+                    </select>
+                    :<!--{{yrStartSel}}-->
+                    <select ng-change="filterDate()" ng-model="yrEndSel" id="yrEnd" name="yrEnd">
+                        <option ng-repeat="n in []|range:yrStartMax-yrStartSel+1" value="{{$index*1 + yrStartSel*1}}">
+                            {{$index*1 + yrStartSel*1}}
+                        </option>
+                    </select>
+                    <!--</div>
+                    </div>-->
+                    <span ng-if="sortby.Columns[1].Direction === 'Ascending'">
+                        <i ng-click="sortBy('Year')" class="fa fa-caret-down"></i>
+                    </span>
+                    <span ng-if="sortby.Columns[1].Direction === 'Descending'">
+                        <i ng-click="sortBy('Year')" class="fa fa-caret-up"></i>
+                    </span>
+                </div>
+                <div class="div-table-col">
+                    <div class="dropdown">
+                        <button class="dropbtn">Range</button>
+                        <div class="dropdown-content">
+                            <div ng-repeat="range in rangeGroup">
+                                <input style="text-align:left" class="ngColListCheckbox" type="checkbox" ng-model="range.isChecked" ng-change="filterRangeChange(range)" ng-checked="filterRange(range.key)" />{{range.key}}
+                            </div>
+                        </div>
+                    </div>
+
+                    <span ng-if="sortby.Columns[2].Direction === 'Ascending'">
+                        <i ng-click="sortBy('Range')" class="fa fa-caret-down"></i>
+                    </span>
+
+                    <span ng-if="sortby.Columns[2].Direction === 'Descending'">
+                        <i ng-click="sortBy('Range')" class="fa fa-caret-up"></i>
+                    </span>
+                </div>
+                <div class="div-table-col">
+                    <div class="dropdown">
+                        <button class="dropbtn">Type</button>
+                        <div class="dropdown-content">
+                            <div ng-repeat="type in typeGroup">
+                                <input style="text-align:left" class="ngColListCheckbox" type="checkbox" ng-model="type.isChecked" ng-change="filterSetTypeChange(type)" ng-checked="filterSetType(type.key)" />{{type.key}}
+                            </div>
+                        </div>
+                    </div>
+                    <span ng-if="sortby.Columns[3].Direction === 'Ascending'">
+                        <i ng-click="sortBy('SetType')" class="fa fa-caret-down"></i>
+                    </span>
+                    <span ng-if="sortby.Columns[3].Direction === 'Descending'">
+                        <i ng-click="sortBy('SetType')" class="fa fa-caret-up"></i>
+                    </span>
+                </div>
+                <div class="div-table-col">
+                    <strong>Description</strong>
+                    <span ng-if="sortby.Columns[0].Direction === 'Ascending'">
+                        <i ng-click="sortBy('Description')" class="fa fa-caret-down"></i>
+                    </span>
+                    <span ng-if="sortby.Columns[0].Direction === 'Descending'">
+                        <i ng-click="sortBy('Description')" class="fa fa-caret-up"></i>
+                    </span>
+                </div>
+            </div>
+
+            <div class="div-table-row" ng-repeat="(setidx,set) in iColSets.data">
+                <div style="min-width:450px" class="div-table-col">
+                    <div ng-if="set.items.length === 0">
+                        <i>(No Image Available)</i>
+                    </div>
+                    <div ng-repeat="(itemidx, item)  in set.items" ng-if="item.isActive == true">
+                        <div class="SetContainer">
+                            <div class="container">
+                                <img ng-click="selectSet($event, setidx)" style="margin-right : 25px;border:2px solid grey" ng-src="data:{{item.type}};base64,{{item.thumbnailA}}" />
+                                <img ng-if="item.thumbnailB != undefined" class="overlay" ng-click="selectSet($event, setidx)" style="margin-right : 25px;border:2px solid grey" ng-src="data:{{item.type}};base64,{{item.thumbnailB}}" />
+                            </div>
+                            <span class="ItemCheckbox" style="padding-bottom : 18px;">{{item.userItems[0].quantity}}</span>
+                            <a ng-if="itemidx === 0" href="" ng-click="SelectItem($event, setidx, itemidx , 1)" type="button" class="ItemCheckbox"><i class="fa fa-plus" style="padding-bottom:35px;font-size:16px;color:green"></i></a>
+                            <a ng-if="itemidx === 0" href="" ng-click="SelectItem($event, setidx, itemidx , -1)" type="button" class="ItemCheckbox"><i class="fa fa-minus" style="font-size:16px;color:red"></i></a>
+                            <a ng-if="itemidx !== 0" href="" ng-click="SelectItem($event, setidx, itemidx , 1)" type="button" class="ItemCheckbox"><i class="fa fa-caret-up" style="padding-bottom:30px;font-size:24px;color:green"></i></a>
+                            <a ng-if="itemidx !== 0" href="" ng-click="SelectItem($event, setidx, itemidx , -1)" type="button" class="ItemCheckbox"><i class="fa fa-caret-down" style="font-size:24px;color:red"></i></a>
+                        </div>
+                        <!--<div ng-if="itemidx !== 0" class="SetContainer">
+                            <div class="container">
+                                <img style="width:80%;height:80%;margin-right : 25px;border:2px solid grey" ng-src="data:{{item.type}};base64,{{item.thumbnailA}}" />
+                                <div ng-if="item.thumbnailB != undefined">
+                                    <img class="overlay" style="width:80%;height:80%;margin-right : 25px;border:2px solid grey" ng-src="data:{{item.type}};base64,{{item.thumbnailB}}" />
+                                </div>
+                            </div>
+                            <span class="ItemCheckbox" style="padding-bottom : 18px;">{{item.userItems[0].quantity}}</span>
+                            <a href="" ng-click="SelectItem($event, setidx, itemidx , 1)" type="button" class="ItemCheckbox"><i class="fa fa-caret-up" style="padding-bottom:30px;font-size:24px;color:green"></i></a>
+                            <a href="" ng-click="SelectItem($event, setidx, itemidx , -1)" type="button" class="ItemCheckbox"><i class="fa fa-caret-down" style="font-size:24px;color:red"></i></a>
+                        </div>-->
+                    </div>
+                </div>
+                <div class="div-table-col">
+                    <span>{{set.year}}</span>
+                </div>
+                <div class="div-table-col">
+                    <span>{{set.range}}</span>
+                </div>
+                <div class="div-table-col">
+                    <div ng-if="set.setType === null">
+                        <i>(No Type)</i>
+                    </div>
+                    <span>{{set.setType}}</span>
+                </div>
+                <div class="div-table-col">
+                    <a href="" ng-click="selectSet($event,setidx)">{{set.description}}</a>
+                </div>
+            </div>
+
+        </div>
+        <ul uib-pagination total-items="iColSets.recordsTotal" ng-model="currentPage" ng-change="pageChanged()" max-size="maxSize" class="pagination-sm" boundary-link-numbers="true"></ul>
+    </div>
+    <br />
+    <br />
+    <!-- <form name="myForm" ng-submit="">-->
+    <!--</form>-->
+    <!--<h5>params</h5>
+    <pre>{{$stateParams | json}}</pre>
+    <h5>state</h5>
+    <pre>{{sortby.Columns.find(a => a.Column === 'Description') | json}}</pre>-->
+</div>

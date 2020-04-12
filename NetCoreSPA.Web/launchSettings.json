@@ -3,7 +3,7 @@
 		"windowsAuthentication": false,
 		"anonymousAuthentication": true,
 		"iis": {
-			"applicationUrl": "http://localhost:2070/TGIS.Web",
+			"applicationUrl": "http://localhost:2070/",
 			"sslPort": 0
 		}
 	},
@@ -11,7 +11,7 @@
 		"IIS": {
 			"commandName": "IIS",
 			"launchBrowser": true,
-			"launchUrl": "http://localhost:2070/TGIS.Web",
+			"launchUrl": "http://localhost:2070/",
 			"environmentVariables": {
 				"ASPNETCORE_ENVIRONMENT": "Development"
 			}

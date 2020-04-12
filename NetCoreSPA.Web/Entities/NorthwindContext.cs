@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace iCollect.NW.NW_Entities
+namespace iCollect.Entities
 {
     public partial class NorthwindContext : DbContext
     {
@@ -15,8 +15,11 @@ namespace iCollect.NW.NW_Entities
         {
         }
 
-        public virtual DbSet<SetImages> SetImages { get; set; }
+        public virtual DbSet<Collections> Collections { get; set; }
+        public virtual DbSet<Images> Images { get; set; }
+        public virtual DbSet<Items> Items { get; set; }
         public virtual DbSet<Sets> Sets { get; set; }
+        public virtual DbSet<UserItems> UserItems { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -29,76 +32,111 @@ namespace iCollect.NW.NW_Entities
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.HasAnnotation("ProductVersion", "2.2.6-servicing-10079");
-
-            modelBuilder.Entity<SetImages>(entity =>
+            modelBuilder.Entity<Collections>(entity =>
             {
-                entity.HasIndex(e => e.SetId);
+                entity.HasKey(e => e.CollectionId);
 
-                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.Description).HasMaxLength(255);
 
-                entity.Property(e => e.Heading)
-                    .HasColumnName("heading")
-                    .HasMaxLength(100);
+                entity.Property(e => e.Name).HasMaxLength(255);
+            });
 
-                entity.Property(e => e.Image)
-                    .HasColumnName("image")
+            modelBuilder.Entity<Images>(entity =>
+            {
+                entity.HasKey(e => e.ImageId);
+
+                entity.Property(e => e.DelItemId).HasColumnName("del_ItemId");
+
+                entity.Property(e => e.Image).HasColumnType("image");
+
+                entity.Property(e => e.Type).HasMaxLength(50);
+            });
+
+            modelBuilder.Entity<Items>(entity =>
+            {
+                entity.HasKey(e => e.ItemId)
+                    .HasName("PK_SetImages");
+
+                entity.HasIndex(e => e.SetId)
+                    .HasName("IX_SetImages_setId");
+
+                entity.Property(e => e.DelImage)
+                    .HasColumnName("del_Image")
                     .HasColumnType("image");
 
-                entity.Property(e => e.ImageId).HasColumnName("imageId");
+                entity.Property(e => e.Denominator).HasMaxLength(50);
 
-                entity.Property(e => e.IsActive).HasColumnName("isActive");
+                entity.Property(e => e.Description).HasMaxLength(100);
 
-                entity.Property(e => e.PageNo).HasColumnName("pageNo");
+                entity.Property(e => e.Dimention).HasColumnType("decimal(18, 3)");
 
-                entity.Property(e => e.Path)
-                    .HasColumnName("path")
-                    .HasMaxLength(250);
+                entity.Property(e => e.Mass).HasColumnType("decimal(18, 3)");
 
-                entity.Property(e => e.SetId).HasColumnName("setId");
+                entity.Property(e => e.MetalContent).HasMaxLength(255);
 
-                entity.Property(e => e.Thumbnail)
-                    .HasColumnName("thumbnail")
-                    .HasColumnType("image");
+                entity.Property(e => e.Thumbnail).HasColumnType("image");
+
+                entity.Property(e => e.ThumbnailA).HasColumnType("image");
+
+                entity.Property(e => e.ThumbnailB).HasColumnType("image");
+
+                entity.Property(e => e.Type).HasMaxLength(50);
+
+                entity.Property(e => e.Weight).HasMaxLength(50);
+
+                entity.HasOne(d => d.ImageIdANavigation)
+                    .WithMany(p => p.ItemsImageIdANavigation)
+                    .HasForeignKey(d => d.ImageIdA)
+                    .HasConstraintName("FK_Items_Images");
+
+                entity.HasOne(d => d.ImageIdBNavigation)
+                    .WithMany(p => p.ItemsImageIdBNavigation)
+                    .HasForeignKey(d => d.ImageIdB)
+                    .HasConstraintName("FK_Items_Images1");
 
                 entity.HasOne(d => d.Set)
-                    .WithMany(p => p.SetImages)
+                    .WithMany(p => p.Items)
                     .HasForeignKey(d => d.SetId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_SetImages_Sets");
+                    .HasConstraintName("FK_Items_Sets");
             });
 
             modelBuilder.Entity<Sets>(entity =>
             {
                 entity.HasKey(e => e.SetId);
 
-                entity.Property(e => e.SetId).HasColumnName("setId");
+                entity.Property(e => e.CatCode).HasMaxLength(50);
 
-                entity.Property(e => e.CatCode)
-                    .HasColumnName("catCode")
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
+                entity.Property(e => e.Date).HasColumnType("date");
 
-                entity.Property(e => e.Date)
-                    .HasColumnName("date")
-                    .HasColumnType("date");
+                entity.Property(e => e.Description).HasMaxLength(100);
 
-                entity.Property(e => e.Description)
-                    .HasColumnName("description")
-                    .HasMaxLength(100);
+                entity.Property(e => e.Range).HasMaxLength(50);
 
-                entity.Property(e => e.ImageId).HasColumnName("imageId");
+                entity.Property(e => e.SetType).HasMaxLength(50);
 
-                entity.Property(e => e.Range)
-                    .HasColumnName("range")
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Year)
-                    .HasColumnName("year")
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
+                entity.HasOne(d => d.Collection)
+                    .WithMany(p => p.Sets)
+                    .HasForeignKey(d => d.CollectionId)
+                    .HasConstraintName("FK_Sets_Collections");
             });
+
+            modelBuilder.Entity<UserItems>(entity =>
+            {
+                entity.Property(e => e.UserId)
+                    .IsRequired()
+                    .HasMaxLength(255);
+
+                entity.HasOne(d => d.Item)
+                    .WithMany(p => p.UserItems)
+                    .HasForeignKey(d => d.ItemId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_UserItems_Items");
+            });
+
+            OnModelCreatingPartial(modelBuilder);
         }
+
+        partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }
 }

@@ -12,7 +12,7 @@ SELECT *
   FROM [Northwind].[dbo].[Images2] 
 
 SELECT *
-  FROM [Northwind].[dbo].SetImages
+  FROM [Northwind].[dbo].items
 
 SELECT *
   FROM [Northwind].[dbo].Sets

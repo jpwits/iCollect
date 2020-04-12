@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using iCollect.NW.NW_Entities;
+using iCollect.Entities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -14,6 +14,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using Newtonsoft.Json.Serialization;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace TGIS.Web
 {
@@ -52,14 +55,20 @@ namespace TGIS.Web
             }));
 
             //Database Connection
-            var connection = @"Data Source=DESKTOP-7DQTMIU\SQLEXPRESS;Initial Catalog=Northwind;Trusted_Connection=True;";
+            //var connection = @"Data Source=DESKTOP-7DQTMIU\SQLEXPRESS;Initial Catalog=Northwind;Trusted_Connection=True;";
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDbContext<NorthwindContext>(options => options.UseSqlServer(connection));
+                options.UseSqlite(
+                    Configuration.GetConnectionString("AuthConnection")));
+           
+            //services.AddDbContext<NorthwindContext>(options => options.UseSqlServer(
+            services.AddDbContext<NorthwindContext>(options => options.UseSqlite(
+                Configuration.GetConnectionString("CollectConnection")));
 
-             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+               .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            services.AddAuthentication();
+
             services.AddControllersWithViews();
             services.AddRazorPages();
         }
@@ -73,19 +82,18 @@ namespace TGIS.Web
                 app.UseDeveloperExceptionPage();
             }
 
-         
             // Middleware to handle all request
-            app.Use(async (context, next) =>
-               {
-                   await next();
-                   if (context.Response.StatusCode == 404 && !Path.HasExtension(context.Request.Path.Value))
-                   {
-                       context.Request.Path = "/index.html";
-                       context.Response.StatusCode = 200;
-                       await next();
-                   }
-               });
-         
+            //app.Use(async (context, next) =>
+            //   {
+            //       await next();
+            //       if (context.Response.StatusCode == 404 && !Path.HasExtension(context.Request.Path.Value))
+            //       {
+            //           context.Request.Path = "/index.html";
+            //           context.Response.StatusCode = 200;
+            //           await next();
+            //       }
+            //   });
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();
