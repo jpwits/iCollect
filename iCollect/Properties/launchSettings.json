@@ -28,6 +28,13 @@
       },
       "ancmHostingModel": "OutOfProcess",
       "applicationUrl": "http://localhost:2671/"
+    },
+    "Docker": {
+      "commandName": "Docker",
+      "launchBrowser": true,
+      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/index.html",
+      "publishAllPorts": true,
+      "useSSL": true
     }
   }
 }

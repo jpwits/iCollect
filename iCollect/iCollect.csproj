@@ -11,6 +11,8 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <IsTransformWebConfigDisabled>false</IsTransformWebConfigDisabled>
     <AssemblyName>iCollect</AssemblyName>
+    <UserSecretsId>a8ad15e8-5295-4e28-8035-2c92e06d2824</UserSecretsId>
+    <DockerDefaultTargetOS>Windows</DockerDefaultTargetOS>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
