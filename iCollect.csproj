@@ -334,6 +334,7 @@
     <None Include="wwwroot\js\plugins\flot\jquery.flot.tooltip.min.js" />
     <None Include="wwwroot\js\plugins\peity\angular-peity.js" />
     <None Include="wwwroot\js\plugins\peity\jquery.peity.min.js" />
+    <None Include="wwwroot\js\site.js" />
     <None Include="wwwroot\lib\dataTables\angular-datatables.buttons.min.js" />
     <None Include="wwwroot\lib\dataTables\angular-datatables.min.js" />
     <None Include="wwwroot\lib\dataTables\datatables.min.js" />
