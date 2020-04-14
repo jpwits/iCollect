@@ -83,6 +83,8 @@
   <ItemGroup>
     <None Remove=".bowerrc" />
     <None Remove="Data\app.db" />
+    <None Remove="Data\Auth.db" />
+    <None Remove="Data\Collect.db" />
   </ItemGroup>
 
   <ItemGroup>
@@ -692,6 +694,11 @@
     <None Include="wwwroot\lib\oclazyload\ocLazyLoad.min.js" />
     <None Include="wwwroot\lib\pace\pace.js" />
     <None Include="wwwroot\lib\pace\pace.min.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Data\Auth.db" />
+    <Resource Include="Data\Collect.db" />
   </ItemGroup>
 
   <ItemGroup>
