@@ -1,0 +1,104 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "library": "jquery@3.3.1",
+      "destination": "wwwroot/lib/jquery/",
+      "files": [
+        "jquery.min.js"
+      ]
+    },
+    {
+      "library": "angular-resource@1.7.8",
+      "destination": "wwwroot/lib/angular-resource/",
+      "files": [
+        "angular-resource.min.js"
+      ]
+    },
+    {
+      "library": "angular.js@1.7.8",
+      "destination": "wwwroot/lib/angular.js/",
+      "files": [
+        "angular.min.js"
+      ]
+    },
+    {
+      "library": "angular-sanitize@1.7.8",
+      "destination": "wwwroot/lib/angular-sanitize/"
+    },
+    {
+      "library": "oclazyload@1.1.0",
+      "destination": "wwwroot/lib/oclazyload/",
+      "files": [
+        "ocLazyLoad.min.js"
+      ]
+    },
+    {
+      "library": "angular-translate@2.18.1",
+      "destination": "wwwroot/lib/angular-translate/",
+      "files": [
+        "angular-translate.min.js"
+      ]
+    },
+    {
+      "library": "angular-ui-router@1.0.22",
+      "destination": "wwwroot/lib/angular-ui-router/",
+      "files": [
+        "angular-ui-router.min.js"
+      ]
+    },
+    {
+      "library": "angular-ui-bootstrap@2.5.0",
+      "destination": "wwwroot/lib/angular-ui-bootstrap/",
+      "files": [
+        "ui-bootstrap-tpls.min.js"
+      ]
+    },
+    {
+      "library": "jqueryui@1.12.1",
+      "destination": "wwwroot/lib/jqueryui/"
+    },
+    {
+      "library": "pace@1.0.2",
+      "destination": "wwwroot/lib/pace/"
+    },
+    {
+      "library": "jquery-validate@1.19.1",
+      "destination": "wwwroot/lib/jquery-validate/"
+    },
+    {
+      "library": "jquery-validation-unobtrusive@3.2.11",
+      "destination": "wwwroot/lib/jquery-validation-unobtrusive/"
+    },
+    {
+      "library": "danialfarid-angular-file-upload@12.2.13",
+      "destination": "wwwroot/lib/danialfarid-angular-file-upload/"
+    },
+    {
+      "library": "font-awesome@4.7.0",
+      "destination": "wwwroot/lib/font-awesome/"
+    },
+    {
+      "provider": "jsdelivr",
+      "library": "bootstrap@3.3.7",
+      "destination": "wwwroot/js/bootstrap/"
+    },
+    {
+      "library": "ng-idle@1.0.2",
+      "destination": "wwwroot/lib/ng-idle/"
+    },
+    {
+      "library": "metisMenu@2.0.2",
+      "destination": "wwwroot/lib/metisMenu/"
+    },
+    {
+      "library": "jQuery-slimScroll@1.3.6",
+      "destination": "wwwroot/lib/jQuery-slimScroll/"
+    },
+    {
+      "library": "angular-datatables@0.5.3",
+      "destination": "wwwroot/lib/angular-datatables/"
+    }
+  ]
+}
