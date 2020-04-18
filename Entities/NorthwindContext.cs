@@ -15,6 +15,8 @@ namespace iCollect.Entities
         {
         }
 
+        public virtual DbSet<AlbumCollections> AlbumCollections { get; set; }
+        public virtual DbSet<Albums> Albums { get; set; }
         public virtual DbSet<Collections> Collections { get; set; }
         public virtual DbSet<Images> Images { get; set; }
         public virtual DbSet<Items> Items { get; set; }
@@ -32,6 +34,42 @@ namespace iCollect.Entities
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<AlbumCollections>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.HasOne(d => d.Album)
+                    .WithMany()
+                    .HasForeignKey(d => d.AlbumId)
+                    .HasConstraintName("FK_AlbumCollections_Albums");
+
+                entity.HasOne(d => d.Collection)
+                    .WithMany()
+                    .HasForeignKey(d => d.CollectionId)
+                    .HasConstraintName("FK_AlbumCollections_Collections");
+            });
+
+            modelBuilder.Entity<Albums>(entity =>
+            {
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.Property(e => e.Description)
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.EndDate).HasColumnType("datetime");
+
+                entity.Property(e => e.Name)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.StartDate).HasColumnType("datetime");
+
+                entity.Property(e => e.UserId)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+            });
+
             modelBuilder.Entity<Collections>(entity =>
             {
                 entity.HasKey(e => e.CollectionId);

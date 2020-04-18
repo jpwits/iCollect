@@ -16,6 +16,52 @@ namespace iCollect.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "3.1.3");
 
+            modelBuilder.Entity("iCollect.Entities.AlbumCollections", b =>
+                {
+                    b.Property<int?>("AlbumId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("CollectionId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasIndex("AlbumId");
+
+                    b.HasIndex("CollectionId");
+
+                    b.ToTable("AlbumCollections");
+                });
+
+            modelBuilder.Entity("iCollect.Entities.Albums", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("TEXT")
+                        .HasMaxLength(255)
+                        .IsUnicode(false);
+
+                    b.Property<DateTime?>("EndDate")
+                        .HasColumnType("datetime");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("TEXT")
+                        .HasMaxLength(50)
+                        .IsUnicode(false);
+
+                    b.Property<DateTime?>("StartDate")
+                        .HasColumnType("datetime");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("TEXT")
+                        .HasMaxLength(50)
+                        .IsUnicode(false);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Albums");
+                });
+
             modelBuilder.Entity("iCollect.Entities.Collections", b =>
                 {
                     b.Property<int>("CollectionId")
@@ -24,13 +70,11 @@ namespace iCollect.Migrations
 
                     b.Property<string>("Description")
                         .HasColumnType("TEXT")
-                        .HasMaxLength(255)
-                        .IsUnicode(false);
+                        .HasMaxLength(255);
 
                     b.Property<string>("Name")
                         .HasColumnType("TEXT")
-                        .HasMaxLength(255)
-                        .IsUnicode(false);
+                        .HasMaxLength(255);
 
                     b.HasKey("CollectionId");
 
@@ -71,8 +115,7 @@ namespace iCollect.Migrations
 
                     b.Property<string>("Denominator")
                         .HasColumnType("TEXT")
-                        .HasMaxLength(50)
-                        .IsUnicode(false);
+                        .HasMaxLength(50);
 
                     b.Property<string>("Description")
                         .HasColumnType("TEXT")
@@ -95,8 +138,7 @@ namespace iCollect.Migrations
 
                     b.Property<string>("MetalContent")
                         .HasColumnType("TEXT")
-                        .HasMaxLength(255)
-                        .IsUnicode(false);
+                        .HasMaxLength(255);
 
                     b.Property<int?>("Position")
                         .HasColumnType("INTEGER");
@@ -115,13 +157,11 @@ namespace iCollect.Migrations
 
                     b.Property<string>("Type")
                         .HasColumnType("TEXT")
-                        .HasMaxLength(50)
-                        .IsUnicode(false);
+                        .HasMaxLength(50);
 
                     b.Property<string>("Weight")
                         .HasColumnType("TEXT")
-                        .HasMaxLength(50)
-                        .IsUnicode(false);
+                        .HasMaxLength(50);
 
                     b.HasKey("ItemId")
                         .HasName("PK_SetImages");
@@ -144,8 +184,7 @@ namespace iCollect.Migrations
 
                     b.Property<string>("CatCode")
                         .HasColumnType("TEXT")
-                        .HasMaxLength(50)
-                        .IsUnicode(false);
+                        .HasMaxLength(50);
 
                     b.Property<int?>("CollectionId")
                         .HasColumnType("INTEGER");
@@ -159,18 +198,14 @@ namespace iCollect.Migrations
 
                     b.Property<string>("Range")
                         .HasColumnType("TEXT")
-                        .HasMaxLength(50)
-                        .IsUnicode(false);
+                        .HasMaxLength(50);
 
                     b.Property<string>("SetType")
                         .HasColumnType("TEXT")
-                        .HasMaxLength(50)
-                        .IsUnicode(false);
+                        .HasMaxLength(50);
 
-                    b.Property<string>("Year")
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(50)
-                        .IsUnicode(false);
+                    b.Property<int?>("Year")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("SetId");
 
@@ -194,14 +229,26 @@ namespace iCollect.Migrations
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("TEXT")
-                        .HasMaxLength(255)
-                        .IsUnicode(false);
+                        .HasMaxLength(255);
 
                     b.HasKey("Id");
 
                     b.HasIndex("ItemId");
 
                     b.ToTable("UserItems");
+                });
+
+            modelBuilder.Entity("iCollect.Entities.AlbumCollections", b =>
+                {
+                    b.HasOne("iCollect.Entities.Albums", "Album")
+                        .WithMany()
+                        .HasForeignKey("AlbumId")
+                        .HasConstraintName("FK_AlbumCollections_Albums");
+
+                    b.HasOne("iCollect.Entities.Collections", "Collection")
+                        .WithMany()
+                        .HasForeignKey("CollectionId")
+                        .HasConstraintName("FK_AlbumCollections_Collections");
                 });
 
             modelBuilder.Entity("iCollect.Entities.Items", b =>

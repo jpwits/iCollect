@@ -1,7 +1,7 @@
 ﻿EF
 ==
-dotnet ef dbcontext scaffold "Data Source=DESKTOP-7DQTMIU\SQLEXPRESS;Initial Catalog=Northwind;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -o Entities -f
-dotnet ef dbcontext scaffold "DataSource=app.db" Microsoft.EntityFrameworkCore.SqlLite -o Entities -f
+1. dotnet ef dbcontext scaffold "Data Source=DESKTOP-7DQTMIU\SQLEXPRESS;Initial Catalog=Northwind;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -o Entities -f
+2. dotnet ef migrations add iCollFirstMigration --context NorthwindContext
 dotnet ef migrations add InitialCreate --context NorthwindContext
 dotnet ef database update --context NorthwindContext
 
