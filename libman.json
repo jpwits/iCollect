@@ -99,6 +99,10 @@
     {
       "library": "angular-datatables@0.5.3",
       "destination": "wwwroot/lib/angular-datatables/"
+    },
+    {
+      "library": "blueimp-gallery@2.11.1",
+      "destination": "wwwroot/lib/blueimp-gallery/"
     }
   ]
 }

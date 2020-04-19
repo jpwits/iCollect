@@ -1,3 +1,5 @@
+/// <reference path="../lib/blueimp-gallery/js/blueimp-gallery.min.js" />
+/// <reference path="../lib/blueimp-gallery/js/blueimp-gallery.min.js" />
 /*
  * INSPINIA - Responsive Admin Theme
  *
@@ -1475,12 +1477,12 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, IdlePro
         .state('gallery.basic_gallery', {
             url: "/basic_gallery",
             templateUrl: "views/basic_gallery.html",
-            data: { pageTitle: 'Lightbox Gallery' },
+            data: { pageTitle: 'Albums' },
             resolve: {
                 loadPlugin: function ($ocLazyLoad) {
                     return $ocLazyLoad.load([
                         {
-                            files: ['js/plugins/blueimp/jquery.blueimp-gallery.min.js','css/plugins/blueimp/css/blueimp-gallery.min.css']
+                            files: ['lib/blueimp-gallery/js/blueimp-gallery.min.js','lib/blueimp-gallery/css/blueimp-gallery.min.css']
                         }
                     ]);
                 }
