@@ -289,11 +289,11 @@
     <None Include="wwwroot\js\config.js" />
     <None Include="wwwroot\js\controllers.js" />
     <None Include="wwwroot\js\controllers\account.js" />
+    <None Include="wwwroot\js\controllers\Album.js" />
     <None Include="wwwroot\js\controllers\main.js" />
     <None Include="wwwroot\js\controllers\set.js" />
     <None Include="wwwroot\js\controllers\collection.js" />
     <None Include="wwwroot\js\controllers\SetsNg.js" />
-    <None Include="wwwroot\js\controllers\sets.js" />
     <None Include="wwwroot\js\directives.js" />
     <None Include="wwwroot\js\font-awesome\js\all.js" />
     <None Include="wwwroot\js\font-awesome\js\all.min.js" />
