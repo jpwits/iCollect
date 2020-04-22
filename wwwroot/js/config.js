@@ -848,6 +848,16 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, IdlePro
             templateUrl: "views/buttons.html",
             data: { pageTitle: 'Buttons' }
         })
+        .state('ui.albums', {
+            url: "/albums",
+            templateUrl: "views/albums.html",
+            data: { pageTitle: 'Albums' }
+        })
+        .state('ui.album', {
+            url: "/album",
+            templateUrl: "views/album.html",
+            data: { pageTitle: 'Album' }
+        })
         .state('ui.tabs_panels', {
             url: "/tabs_panels",
             templateUrl: "views/tabs_panels.html",

@@ -1,0 +1,97 @@
+﻿<div ng-controller="AlbumCtrl">
+    <div class="row wrapper border-bottom white-bg page-heading">
+        <div class="col-sm-4">
+            <h2>Album</h2>
+            <ol class="breadcrumb">
+                <li>
+                    <a href="..\"> Home </a>
+                </li>
+                <li class="active">
+                    <strong>{{$state.$current.data.pageTitle}}</strong>
+                </li>
+            </ol>
+        </div>
+    </div>
+
+    <div class="row">
+        <div>
+            <div class="wrapper wrapper-content animated fadeInRight">
+                <div class="ibox">
+                    <div class="ibox-content">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <table class="table body-wrap">
+                                    <tr>
+                                        <td>Name:</td>
+                                        <td>
+                                            <input class="input-sm form-control" style="width:100%" type="text" name="input"
+                                                   ng-model="iAlbum.name">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Description:</td>
+                                        <td>
+                                            <input class="input-sm form-control" style="width:100%" type="text" name="input"
+                                                   ng-model="iAlbum.description">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Collections:</td>
+                                        <td>
+                                            <select ng-model="item.Collections">
+                                                <option>RSA Republic Coins</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Timespan :
+                                        </td>
+                                        <td>
+                                            <div class="col-md-3">
+                                                <p class="input-group">
+                                                    <input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="dtStart" is-open="popup1.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" />
+                                                    <span class="input-group-btn">
+                                                        <button type="button" class="btn btn-default" ng-click="open1()"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                    </span>
+                                                </p>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <p class="input-group">
+                                                    <input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="dtEnd" is-open="popup2.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" />
+                                                    <span class="input-group-btn">
+                                                        <button type="button" class="btn btn-default" ng-click="open2()"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                    </span>
+                                                </p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Range :
+                                        </td>
+                                        <td>
+                                            <div class="col-lg-6">
+                                                <!-- Multiselect dropdown -->
+                                                <select multiple data-style="bg-black rounded-pill" class="form-control input-sm selectpicker" data-container="body">
+                                                    <option ng-repeat="range in rangeGroup">{{range.key}}</option>
+                                                </select><!-- End -->
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+

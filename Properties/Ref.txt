@@ -18,3 +18,7 @@ MVC
 public async Task<IActionResult> Details(int id)
 return View(Set);
 
+
+Optimize
+========
+PassData -> $state, $etc

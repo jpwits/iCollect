@@ -103,6 +103,14 @@
     {
       "library": "blueimp-gallery@2.11.1",
       "destination": "wwwroot/lib/blueimp-gallery/"
+    },
+    {
+      "library": "bootstrap-datepicker@1.9.0",
+      "destination": "wwwroot/lib/bootstrap-datepicker/"
+    },
+    {
+      "library": "bootstrap-select@1.13.15",
+      "destination": "wwwroot/lib/bootstrap-select/"
     }
   ]
 }
