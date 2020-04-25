@@ -7,15 +7,15 @@ namespace iCollect.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            //migrationBuilder.AlterColumn<int>(
-            //    name: "Year",
-            //    table: "Sets",
-            //    nullable: true,
-            //    oldClrType: typeof(string),
-            //    oldType: "TEXT",
-            //    oldUnicode: false,
-            //    oldMaxLength: 50,
-            //    oldNullable: true);
+            migrationBuilder.AlterColumn<int>(
+                name: "Year",
+                table: "Sets",
+                nullable: true,
+                oldClrType: typeof(string),
+                oldType: "TEXT",
+                oldUnicode: false,
+                oldMaxLength: 50,
+                oldNullable: true);
 
             migrationBuilder.CreateTable(
                 name: "Albums",
@@ -75,15 +75,15 @@ namespace iCollect.Migrations
             migrationBuilder.DropTable(
                 name: "Albums");
 
-            //migrationBuilder.AlterColumn<string>(
-            //    name: "Year",
-            //    table: "Sets",
-            //    type: "TEXT",
-            //    unicode: false,
-            //    maxLength: 50,
-            //    nullable: true,
-            //    oldClrType: typeof(int),
-            //    oldNullable: true);
+            migrationBuilder.AlterColumn<string>(
+                name: "Year",
+                table: "Sets",
+                type: "TEXT",
+                unicode: false,
+                maxLength: 50,
+                nullable: true,
+                oldClrType: typeof(int),
+                oldNullable: true);
         }
     }
 }
