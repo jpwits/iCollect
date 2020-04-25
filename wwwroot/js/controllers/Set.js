@@ -1,5 +1,4 @@
-﻿
-function SetCtrl($scope, $state, $compile, $templateCache, getImage, updateImage, passData, $timeout) {
+﻿function SetCtrl($scope, $state, $compile, $templateCache, getImage, updateImage, passData, $timeout) {
     $scope.iCols = passData.get("$scope.iColSets");
     $scope.iCol = $scope.iCols.data[passData.get("$scope.curSetIdx")];
 

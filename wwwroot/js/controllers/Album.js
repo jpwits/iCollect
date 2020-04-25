@@ -1,5 +1,6 @@
-﻿function AlbumCtrl($scope, $state, passData, getLookups) {
+﻿function AlbumCtrl($scope, $state, passData, getLookups, updateAlbumSrv) {
     $scope.User = passData.get("User");
+    var current = $state.current;
 
     $scope.rangeGroup = passData.get("$scope.rangeGroup");
     $scope.typeGroup = passData.get("$scope.typeGroup");
@@ -19,6 +20,10 @@
 
     if ($scope.rangeGroup === undefined || $scope.typeGroup === undefined) {
         $scope.fillLookups();
+    }
+
+    function UpdateAlbum(data) {
+
     }
 
     $scope.today = function () {
@@ -121,7 +126,15 @@
         return '';
     }
 
-    
+    $scope.updateAlbum = function (album) {
+        $scope.entry = new updateAlbumSrv(album);
+        $scope.entry.$update(function (response) {
+            sets = response;
+            alert("Album Saved successfully...");
+        }, function (error) {
+            alert("Error getting orders from back-end : " + error);
+        });
+    };
 }
 angular
     .module('inspinia')

@@ -1,23 +1,26 @@
-﻿function AlbumsCtrl($scope, $state, passData, $timeout, $q) {
+﻿function AlbumsCtrl($scope, $state, getAlbums, passData, $timeout, $q) {
     $scope.User = passData.get("User");
 
-    //$scope.rangeGroup = passData.get("$scope.rangeGroup");
-    //$scope.typeGroup = passData.get("$scope.typeGroup");
-
-    $scope.UpdateAlbum = (album) => {
+    $scope.SelectAlbum = (album) => {
         if (album === undefined) {
             $state.go('ui.album');
         }
     };
-    //$scope.fillLookups = () => {
-    //    getLookups.get().$promise.then(function (response) {
-    //        var Lookups = JSON.parse(JSON.stringify(response));
-    //        $scope.rangeGroup = Lookups.rangeGroup;
-    //        $scope.typeGroup = Lookups.typeGroup;
-    //    }, function (error) {
-    //        alert("Error getting orders from back-end : " + error);
-    //    });
-    //};
+
+    $scope.getAlbums = () => {
+        $scope.iColAlbums = passData.get("$scope.albums");
+        if ($scope.iColAlbums !== undefined) {
+            //$scope.totalItems = $scope.iColSets.totalItems;
+        } else {
+            getAlbums.get().$promise.then(function (response) {
+                $scope.iColAlbums = JSON.parse(JSON.stringify(response));
+            }, function (error) {
+                alert("Error getting orders from back-end : " + error);
+            });
+        }
+    };
+
+    $scope.getAlbums();
 }
 angular
     .module('inspinia')

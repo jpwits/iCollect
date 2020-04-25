@@ -4,6 +4,11 @@ function getSetSrv($resource) {
     );
 }
 
+
+function getAlbums($resource) {
+    return $resource('api/albums/GetAlbums');
+}
+
 function getSetsSrvNg($resource) {
     return $resource('api/SetsNg/GetSets/:start/:length/:sortby/:filterby/:groupby', { start: '@start', length: '@length', sortby: '@sortby', filterby: '@filterby', groupby: '@groupby' }
     );
@@ -50,6 +55,14 @@ function updateUserItem($resource) {
     );
 }
 
+function updateAlbumSrv($resource) {
+    return $resource('api/albums/updateAlbum/:id', { id: '@id' }
+        , {
+            'update': { method: 'PUT' }
+        }
+    );
+}
+
 function getUser($resource) {
     return $resource('api/Account/getUser/:username', { username: '@username' }
     );
@@ -89,6 +102,8 @@ angular
     .service('getSetSrv', getSetSrv)
     .service('getLookups', getLookups)
     .service('loginUser', loginUser)
+    .service('getAlbums', getAlbums)
+    .service('updateAlbumSrv', updateAlbumSrv)
     .service('getItemSrvNg', getItemSrvNg)
     .service('getSetsSrvNg', getSetsSrvNg);
 

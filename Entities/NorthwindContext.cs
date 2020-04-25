@@ -51,7 +51,7 @@ namespace iCollect.Entities
 
             modelBuilder.Entity<Albums>(entity =>
             {
-                entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.HasKey(e => e.AlbumId);
 
                 entity.Property(e => e.Description)
                     .HasMaxLength(255)

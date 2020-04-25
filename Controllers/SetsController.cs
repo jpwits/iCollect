@@ -20,12 +20,10 @@ namespace iCollect.Controllers
     public class SetsController : Controller
     {
         private readonly NorthwindContext _context;
-       // private readonly ILogger _logger;
 
-        public SetsController(NorthwindContext context/*, ILogger logger*/)
+        public SetsController(NorthwindContext context)
         {
             _context = context;
-  //          _logger = logger;
         }
 
         [HttpPost, Route("getData")]
