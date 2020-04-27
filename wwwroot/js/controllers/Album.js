@@ -1,6 +1,6 @@
-﻿function AlbumCtrl($scope, $state, passData, getLookups, updateAlbumSrv) {
+﻿function AlbumCtrl($scope, $state, $stateParams, passData, getLookups, updateAlbumSrv) {
     $scope.User = passData.get("User");
-    var current = $state.current;
+    
 
     $scope.rangeGroup = passData.get("$scope.rangeGroup");
     $scope.typeGroup = passData.get("$scope.typeGroup");
@@ -20,10 +20,6 @@
 
     if ($scope.rangeGroup === undefined || $scope.typeGroup === undefined) {
         $scope.fillLookups();
-    }
-
-    function UpdateAlbum(data) {
-
     }
 
     $scope.today = function () {

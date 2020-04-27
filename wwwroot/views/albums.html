@@ -26,7 +26,7 @@
                         <img width="100%" src="../img/plus.png" />
                     </button>
                     <span ng-repeat="album in iColAlbums.albums">
-                        <button style="width:200px;height:200px" class="btn btn-danger dim btn-large-dim" type="button">
+                        <button ng-click="SelectAlbum(album);" style="width:200px;height:200px" class="btn btn-danger dim btn-large-dim" type="button">
                             <div style="font-size:small">{{album.name}}</div>
                             <img width="100%" src="../img/Coins/krugerrand-2000-proof (3).jpg" />
                         </button>

@@ -30,7 +30,7 @@
 
     $scope.session_pglen = passData.get("Session_PgLen");
     if ($scope.session_pglen === undefined) {
-        $scope.session_pglen = "50";
+        $scope.session_pglen = "10";
     }
 
     $scope.sortby = {

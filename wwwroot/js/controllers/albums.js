@@ -1,10 +1,8 @@
-﻿function AlbumsCtrl($scope, $state, getAlbums, passData, $timeout, $q) {
+﻿function AlbumsCtrl($scope, $state, $stateParams, getAlbums, passData, $timeout, $q) {
     $scope.User = passData.get("User");
 
     $scope.SelectAlbum = (album) => {
-        if (album === undefined) {
-            $state.go('ui.album');
-        }
+        $state.go('app.setsng', { album: album });
     };
 
     $scope.getAlbums = () => {

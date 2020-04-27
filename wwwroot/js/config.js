@@ -672,12 +672,6 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, IdlePro
             templateUrl: "views/sets.html",
             data: { pageTitle: 'Sets' }
         })
-        //.state('app.setng', {
-        //    url: "/setng",
-        //    templateUrl: "views/setng.html",
-        //    params: { SetDetail: null, EditSet: true },
-        //    data: { pageTitle: 'Setng' }
-        //})
         .state('app.setsng', {
             url: "/setsng",
             templateUrl: "views/setsng.html",
@@ -855,6 +849,7 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, IdlePro
         })
         .state('ui.album', {
             url: "/album",
+            params: { album: null },
             templateUrl: "views/album.html",
             data: { pageTitle: 'Album' }
         })

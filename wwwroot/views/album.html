@@ -26,7 +26,7 @@
                                         <td>
                                             <div class="col-lg-6">
                                                 <input class="input-sm form-control" style="width:100%" type="text" name="input"
-                                                       ng-model="album.name">
+                                                       ng-model="$state.params.album.name">
                                             </div>
                                         </td>
                                     </tr>
@@ -35,7 +35,7 @@
                                         <td>
                                             <div class="col-lg-6">
                                                 <input class="input-sm form-control" style="width:100%" type="text" name="input"
-                                                       ng-model="album.description">
+                                                       ng-model="$state.params.album.description">
                                             </div>
                                         </td>
                                     </tr>
@@ -54,7 +54,7 @@
                                                         <td>
                                                             <div class="col-md-4">
                                                                 <p class="input-group">
-                                                                    <input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="album.startDate" is-open="popup1.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" />
+                                                                    <input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="$state.params.album.startDate" is-open="popup1.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" />
                                                                     <span class="input-group-btn">
                                                                         <button type="button" class="btn btn-default" ng-click="open1()"><i class="glyphicon glyphicon-calendar"></i></button>
                                                                     </span>
@@ -62,7 +62,7 @@
                                                             </div>
                                                             <div class="col-md-4">
                                                                 <p class="input-group">
-                                                                    <input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="album.endDate" is-open="popup2.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" />
+                                                                    <input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="$state.params.album.endDate" is-open="popup2.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" />
                                                                     <span class="input-group-btn">
                                                                         <button type="button" class="btn btn-default" ng-click="open2()"><i class="glyphicon glyphicon-calendar"></i></button>
                                                                     </span>
@@ -104,7 +104,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <button ng-click="updateAlbum(album)" class="btn btn-primary dim" type="button"><i class="fa fa-save"></i> Add</button>
+                            <button ng-click="updateAlbum($state.params.album)" class="btn btn-primary dim" type="button"><i class="fa fa-save"></i> Add</button>
                         </div>
                     </div>
                 </div>
