@@ -13,6 +13,7 @@ using System.Text;
 using Newtonsoft.Json;
 using System.Drawing.Imaging;
 using Microsoft.AspNetCore.Authorization;
+using Z.EntityFramework.Plus;
 
 namespace iCollect.Controllers
 {
@@ -44,26 +45,62 @@ namespace iCollect.Controllers
 
         //[HttpGet, Authorize]
         [HttpGet, Route("GetSets/{start}/{length}/{sortby}/{filterby}/{groupby}")]
-        public ActionResult GetSets(int start, int length, string sortby, string filterby, string groupby)
+        public ActionResult GetSets(int start, int length, string sortby, string filterby, string groupby, int albumId)
         {
             // dynamic sortbyObj = Json.Decode(sortby);
             var sortbyObj = JsonConvert.DeserializeObject<dynamic>(sortby);
             var filterbyObj = JsonConvert.DeserializeObject<dynamic>(filterby);
             var groupbyObj = JsonConvert.DeserializeObject<dynamic>(groupby);
-            var _sets = _context.Sets.AsEnumerable();
-            var yrGroup = _sets.GroupBy(a => a.Year);
-            int yrStartMin = yrGroup.FirstOrDefault().Key??1987;
-            int yrEndMax = yrGroup.OrderByDescending(a => a.Key).FirstOrDefault().Key??2015;
-            var sortCol = sortbyObj.Columns;//.Select(a => a.Column.Value == sortbyObj.Active);
+            var yrGroup = _context.Sets.AsEnumerable().GroupBy(a => a.Year);
+            int yrStartMin = yrGroup.FirstOrDefault().Key ?? 1987;
+            int yrEndMax = yrGroup.OrderByDescending(a => a.Key).FirstOrDefault().Key ?? 2015;
+            var sortCol = sortbyObj.Columns;
             var qry = _context.Sets.AsQueryable();
+          
+            qry = filterQry(qry, filterbyObj);
 
+            var recordsTotal = qry.Count();
+            qry = sortQry(qry, sortbyObj);
+
+            qry = qry.Skip(start)
+                .Take(length)
+                .Include(a => a.Items);
+
+            //var qryCollection = qry.ToList();
+
+             //   .Include(a => a.Items);
+            //.ThenInclude(b => b.UserItems);
+
+            var qryUser = from sets2 in qry
+                          join items in _context.Items on sets2.SetId equals items.SetId
+                          join userItems in _context.UserItems on items.ItemId equals userItems.ItemId
+                          where (userItems.UserId == User.Identity.Name  && userItems.AlbumId == albumId)
+                          select sets2;
+
+            var qryRes = qry.Union(qryUser).ToList();
+
+            #region _temp
+            oneTimeTemp();
+            #endregion
+
+            return Json(new
+            {
+                recordsTotal = recordsTotal,
+                yrstartmin = yrStartMin,
+                yrendmax = yrEndMax,
+                data = qryRes
+            });
+        }
+
+        public IQueryable filterQry(IQueryable<Sets> qry, dynamic filterbyObj)
+        {
             foreach (var col in filterbyObj)
             {
-                if (col.Column.Value == "Year") // Do for one column only 4 (the famous Jos) now.
+                if (col.Column.Value == "Year") // Do for one column only (the famous Jos) 4 now.
                 {
                     int yrStartSel = col.Start;
                     int yrEndSel = col.End;
-                    qry = qry.Where(y => y.Year >= yrStartSel && y.Year < yrEndSel +1);
+                    qry = qry.Where(y => y.Year >= yrStartSel && y.Year < yrEndSel + 1);
                 }
                 else if (col.Column.Value == "Range")
                 {
@@ -111,8 +148,10 @@ namespace iCollect.Controllers
                     }
                 }
             }
-
-            var recordsTotal = qry.Count();
+            return qry;
+        }
+        public IQueryable sortQry(IQueryable<Sets> qry, dynamic sortbyObj)
+        {
             foreach (var col in sortbyObj.Columns)
             {
                 if (sortbyObj.Active.Value == col.Column.Value) // Do for one column only 4 (the famous Jos) now.
@@ -163,16 +202,12 @@ namespace iCollect.Controllers
                     };
                 }
             }
-            qry = qry.Skip(start)
-                .Take(length);
-            qry = qry
-                .Include(a => a.Items)
-                .ThenInclude(b => b.UserItems);
+            return qry;
+        }
 
-            var sets = qry
-                .ToList();
 
-            #region _temp
+            public void oneTimeTemp()
+        {
             // OneTime Updates
             //foreach (var set in sets)
             //{
@@ -373,15 +408,6 @@ namespace iCollect.Controllers
             //}
             //_context.UpdateRange(sets);
             //_context.SaveChangesAsync();
-            #endregion
-
-            return Json(new
-            {
-                recordsTotal = recordsTotal,
-                yrstartmin = yrStartMin,
-                yrendmax = yrEndMax,
-                data = sets
-            });
         }
 
         [HttpGet, Route("GetSet/{id}")]

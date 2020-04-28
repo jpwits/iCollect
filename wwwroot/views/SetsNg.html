@@ -26,33 +26,7 @@
                     </div>
                     <div class="ibox">
                         <div class="ibox-content">
-                            <h2>Lightbox image gallery</h2>
-                            <p>
-                                <strong>{{album.name}}</strong> contains .... 
-                            </p>
 
-                            <div class="lightBoxGallery">
-                                <a href="img/gallery/1.jpg" title="Image from Unsplash" data-gallery=""><img src="img/gallery/1s.jpg"></a>
-                                <a href="img/gallery/2.jpg" title="Image from Unsplash" data-gallery=""><img src="img/gallery/2s.jpg"></a>
-                                <a href="img/gallery/3.jpg" title="Image from Unsplash" data-gallery=""><img src="img/gallery/3s.jpg"></a>
-                                <a href="img/gallery/4.jpg" title="Image from Unsplash" data-gallery=""><img src="img/gallery/4s.jpg"></a>
-                                <a href="img/gallery/5.jpg" title="Image from Unsplash" data-gallery=""><img src="img/gallery/5s.jpg"></a>
-                                <a href="img/gallery/6.jpg" title="Image from Unsplash" data-gallery=""><img src="img/gallery/6s.jpg"></a>
-                                <a href="img/gallery/7.jpg" title="Image from Unsplash" data-gallery=""><img src="img/gallery/7s.jpg"></a>
-                                <a href="img/gallery/8.jpg" title="Image from Unsplash" data-gallery=""><img src="img/gallery/8s.jpg"></a>
-                                <a href="img/gallery/9.jpg" title="Image from Unsplash" data-gallery=""><img src="img/gallery/9s.jpg"></a>
-                                <a href="img/gallery/10.jpg" title="Image from Unsplash" data-gallery=""><img src="img/gallery/10s.jpg"></a>
-                                <!-- The Gallery as lightbox dialog, should be a child element of the document body -->
-                                <div id="blueimp-gallery" class="blueimp-gallery">
-                                    <div class="slides"></div>
-                                    <h3 class="title"></h3>
-                                    <a class="prev">‹</a>
-                                    <a class="next">›</a>
-                                    <a class="close">×</a>
-                                    <a class="play-pause"></a>
-                                    <ol class="indicator"></ol>
-                                </div>
-                            </div>
                             View <select ng-model="session_pglen" ng-change="setItemsPerPage(session_pglen)"><option>3</option><option>5</option><option>10</option><option>20</option><option>30</option><option>40</option><option>50</option></select> records at a time.
                             <div>Page: {{currentPage}} / {{numberOfPages}}</div>
                             <br />
@@ -66,10 +40,10 @@
                                     <div class="div-table-col">
                                         <!--Year-->
                                         <!--<div class="dropdown">
-                                        <button class="dropbtn">Year</button>
-                                        <div class="dropdown-content">
-                                            <a href="#">Sort Ascending</a>
-                                            <a href="#">Sort Descending</a>-->
+                                            <button class="dropbtn">Year</button>
+                                            <div class="dropdown-content">
+                                                <a href="#">Sort Ascending</a>
+                                                <a href="#">Sort Descending</a>-->
                                         <!--<label for="yrStart">Date Range:</label>-->
                                         <select ng-change="filterDate()" ng-model="yrStartSel" id="yrStart" name="yrStart">
                                             <option ng-repeat="n in []|range:yrStartMax-yrStartMin +1" value="{{$index*1 + yrStartMin*1}}">
@@ -85,7 +59,7 @@
                                             </option>
                                         </select>
                                         <!--</div>
-                                        </div>-->
+            </div>-->
                                         <span ng-if="sortby.Columns[1].Direction === 'Ascending'">
                                             <i ng-click="sortBy('Year')" class="fa fa-caret-down"></i>
                                         </span>
@@ -138,7 +112,33 @@
                                     </div>
                                 </div>
 
-                                <div class="div-table-row" ng-repeat="(setidx,set) in iColSets.data">
+                                {{$stateParams.viewLayout}}
+                                <div ng-if="$stateParams.viewLayout == 'Tiles'" class="div-table-row">
+                                    <h2>Lightbox image gallery</h2>
+                                    <p>
+                                        <strong>{{album.name}}</strong> contains ....
+                                    </p>
+
+                                    <div class="lightBoxGallery">
+                                        <a ng-repeat="(setidx,set) in iColSets.data" href="#" title="Image from Unsplash" data-gallery="">
+                                            <img ng-click="selectSet($event, setidx)" style="margin-right : 25px;border:2px solid grey" ng-src="data:{{set.items[0].type}};base64,{{set.items[0].thumbnailA}}" />
+                                            <img ng-if="item.thumbnailB != undefined" class="overlay" ng-click="selectSet($event, setidx)" style="margin-right : 25px;border:2px solid grey" ng-src="data:{{set.items[0].type}};base64,{{set.items[0].thumbnailB}}" />
+                                        </a>
+
+                                        <!-- The Gallery as lightbox dialog, should be a child element of the document body -->
+                                        <div id="blueimp-gallery" class="blueimp-gallery">
+                                            <div class="slides"></div>
+                                            <h3 class="title"></h3>
+                                            <a class="prev">‹</a>
+                                            <a class="next">›</a>
+                                            <a class="close">×</a>
+                                            <a class="play-pause"></a>
+                                            <ol class="indicator"></ol>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div ng-if="$stateParams.viewLayout == 'Details'" class="div-table-row" ng-repeat="(setidx,set) in iColSets.data">
                                     <div style="min-width:450px" class="div-table-col">
                                         <div ng-if="set.items.length === 0">
                                             <i>(No Image Available)</i>
@@ -156,16 +156,16 @@
                                                 <a ng-if="itemidx !== 0" href="" ng-click="SelectItem($event, setidx, itemidx , -1)" type="button" class="ItemCheckbox"><i class="fa fa-caret-down" style="font-size:24px;color:red"></i></a>
                                             </div>
                                             <!--<div ng-if="itemidx !== 0" class="SetContainer">
-                                                <div class="container">
-                                                    <img style="width:80%;height:80%;margin-right : 25px;border:2px solid grey" ng-src="data:{{item.type}};base64,{{item.thumbnailA}}" />
-                                                    <div ng-if="item.thumbnailB != undefined">
-                                                        <img class="overlay" style="width:80%;height:80%;margin-right : 25px;border:2px solid grey" ng-src="data:{{item.type}};base64,{{item.thumbnailB}}" />
-                                                    </div>
-                                                </div>
-                                                <span class="ItemCheckbox" style="padding-bottom : 18px;">{{item.userItems[0].quantity}}</span>
-                                                <a href="" ng-click="SelectItem($event, setidx, itemidx , 1)" type="button" class="ItemCheckbox"><i class="fa fa-caret-up" style="padding-bottom:30px;font-size:24px;color:green"></i></a>
-                                                <a href="" ng-click="SelectItem($event, setidx, itemidx , -1)" type="button" class="ItemCheckbox"><i class="fa fa-caret-down" style="font-size:24px;color:red"></i></a>
-                                            </div>-->
+                    <div class="container">
+                        <img style="width:80%;height:80%;margin-right : 25px;border:2px solid grey" ng-src="data:{{item.type}};base64,{{item.thumbnailA}}" />
+                        <div ng-if="item.thumbnailB != undefined">
+                            <img class="overlay" style="width:80%;height:80%;margin-right : 25px;border:2px solid grey" ng-src="data:{{item.type}};base64,{{item.thumbnailB}}" />
+                        </div>
+                    </div>
+                    <span class="ItemCheckbox" style="padding-bottom : 18px;">{{item.userItems[0].quantity}}</span>
+                    <a href="" ng-click="SelectItem($event, setidx, itemidx , 1)" type="button" class="ItemCheckbox"><i class="fa fa-caret-up" style="padding-bottom:30px;font-size:24px;color:green"></i></a>
+                    <a href="" ng-click="SelectItem($event, setidx, itemidx , -1)" type="button" class="ItemCheckbox"><i class="fa fa-caret-down" style="font-size:24px;color:red"></i></a>
+                </div>-->
                                         </div>
                                     </div>
                                     <div class="div-table-col">
@@ -184,31 +184,20 @@
                                         <a href="" ng-click="selectSet($event,setidx)">{{set.description}}</a>
                                     </div>
                                 </div>
-
+                                <ul uib-pagination total-items="iColSets.recordsTotal" ng-model="currentPage" ng-change="pageChanged()" max-size="maxSize" class="pagination-sm" boundary-link-numbers="true"></ul>
                             </div>
-
-
-
-                            <ul uib-pagination total-items="iColSets.recordsTotal" ng-model="currentPage" ng-change="pageChanged()" max-size="maxSize" class="pagination-sm" boundary-link-numbers="true"></ul>
+                           
+                            <!--<div class="div-table-row">
+                                <h5>params</h5>
+                                <pre>{{$stateParams | json}}</pre>
+                            </div>-->
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
-
     <br />
-    <br />
-
-
-    <!-- <form name="myForm" ng-submit="">-->
-    <!--</form>-->
-    <!--<h5>params</h5>
-    <pre>{{$stateParams | json}}</pre>
-    <h5>state</h5>
-    <pre>{{sortby.Columns.find(a => a.Column === 'Description') | json}}</pre>-->
-</div>
 
 <style>
 

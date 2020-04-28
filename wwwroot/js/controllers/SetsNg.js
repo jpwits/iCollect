@@ -4,6 +4,8 @@
     $scope.rangeGroup = passData.get("$scope.rangeGroup");
     $scope.typeGroup = passData.get("$scope.typeGroup");
 
+    $scope.album = $state.params.album;
+
     $scope.fillLookups = () => {
         getLookups.get().$promise.then(function (response) {
             var Lookups = JSON.parse(JSON.stringify(response));
@@ -30,7 +32,7 @@
 
     $scope.session_pglen = passData.get("Session_PgLen");
     if ($scope.session_pglen === undefined) {
-        $scope.session_pglen = "10";
+        $scope.session_pglen = "200";
     }
 
     $scope.sortby = {
@@ -87,7 +89,7 @@
     ];
 
     $scope.pageSize = $scope.session_pglen;
-    $scope.viewby = $scope.session_pglen;//10;
+    $scope.viewby = $scope.session_pglen;
     
     $scope.itemsPerPage = $scope.viewby;
     $scope.maxSize = 5; //Number of pager buttons to show
@@ -127,7 +129,8 @@
                 length: $scope.currentPage * $scope.itemsPerPage,
                 sortby: JSON.stringify($scope.sortby),
                 filterby: JSON.stringify($scope.filterby),
-                groupby: JSON.stringify($scope.groupby)
+                groupby: JSON.stringify($scope.groupby),
+                album: $scope.album
             }).$promise.then(function (response) {
                 $scope.iColSets = JSON.parse(JSON.stringify(response));
                 $scope.yrStartMin = $scope.iColSets.yrstartmin;

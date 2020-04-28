@@ -57,7 +57,7 @@ namespace TGIS.Web
             //Database Connection
             //var connection = @"Data Source=DESKTOP-7DQTMIU\SQLEXPRESS;Initial Catalog=Northwind;Trusted_Connection=True;";
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(
+                options.UseSqlite(
                     Configuration.GetConnectionString("AuthConnection")));
 
             services.AddDbContext<NorthwindContext>(options =>

@@ -165,6 +165,11 @@ namespace iCollect.Entities
                     .IsRequired()
                     .HasMaxLength(255);
 
+                entity.HasOne(d => d.Album)
+                    .WithMany(p => p.UserItems)
+                    .HasForeignKey(d => d.AlbumId)
+                    .HasConstraintName("FK_UserItems_Albums");
+
                 entity.HasOne(d => d.Item)
                     .WithMany(p => p.UserItems)
                     .HasForeignKey(d => d.ItemId)

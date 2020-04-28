@@ -675,6 +675,7 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, IdlePro
         .state('app.setsng', {
             url: "/setsng",
             templateUrl: "views/setsng.html",
+            params: { album : null, viewLayout : null },
             data: { pageTitle: 'Setsng' }
         })
         .state('app.collection', {

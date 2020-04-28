@@ -2,7 +2,11 @@
     $scope.User = passData.get("User");
 
     $scope.SelectAlbum = (album) => {
-        $state.go('app.setsng', { album: album });
+        $state.go('app.setsng', { album: album, viewLayout: 'Tiles' });
+    };
+
+    $scope.NewAlbum = () => {
+        $state.go('uid.album', { album: null });
     };
 
     $scope.getAlbums = () => {
