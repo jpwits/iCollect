@@ -10,14 +10,14 @@ function AccountCtrl($http, $state, $scope, passData, loginUser) {
             $scope.User = JSON.parse(JSON.stringify(response));
             $scope.User.name = username;
             passData.set("User", $scope.User);
-            $state.go("app.setsng({ album : null, viewLayout : 'Tiles' })");
+            $state.go("app.setsng({ album : null, viewLayout : 'Tiles'})");
         }, function (error) {
             alert("Error getting orders from back-end : " + error);
         });
     };
-/*
- * countries - Used as duallistbox in form advanced view
- */
+    /*
+     * countries - Used as duallistbox in form advanced view
+     */
 }
 angular
     .module('inspinia')

@@ -5,7 +5,7 @@
     $scope.typeGroup = passData.get("$scope.typeGroup");
 
     $scope.album = $state.params.album;
-
+    if ($scope.album == null) $scope.album = 0;
     $scope.fillLookups = () => {
         getLookups.get().$promise.then(function (response) {
             var Lookups = JSON.parse(JSON.stringify(response));
@@ -130,7 +130,7 @@
                 sortby: JSON.stringify($scope.sortby),
                 filterby: JSON.stringify($scope.filterby),
                 groupby: JSON.stringify($scope.groupby),
-                album: $scope.album
+                albumId: $scope.album.albumId
             }).$promise.then(function (response) {
                 $scope.iColSets = JSON.parse(JSON.stringify(response));
                 $scope.yrStartMin = $scope.iColSets.yrstartmin;

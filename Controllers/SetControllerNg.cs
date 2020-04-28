@@ -58,30 +58,25 @@ namespace iCollect.Controllers
             var qry = _context.Sets.AsQueryable();
           
             qry = filterQry(qry, filterbyObj);
-
             var recordsTotal = qry.Count();
+            
             qry = sortQry(qry, sortbyObj);
 
             qry = qry.Skip(start)
                 .Take(length)
                 .Include(a => a.Items);
 
-            //var qryCollection = qry.ToList();
-
-             //   .Include(a => a.Items);
-            //.ThenInclude(b => b.UserItems);
-
             var qryUser = from sets2 in qry
                           join items in _context.Items on sets2.SetId equals items.SetId
                           join userItems in _context.UserItems on items.ItemId equals userItems.ItemId
                           where (userItems.UserId == User.Identity.Name  && userItems.AlbumId == albumId)
                           select sets2;
+            
+            var qryComb = qry.Union(qryUser);
+            qryComb = sortQry(qryComb, sortbyObj);
+            var qryRes = qryComb.ToList();
 
-            var qryRes = qry.Union(qryUser).ToList();
-
-            #region _temp
-            oneTimeTemp();
-            #endregion
+            //oneTimeTemp();
 
             return Json(new
             {
