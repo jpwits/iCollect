@@ -33,9 +33,7 @@ namespace iCollect.Controllers
             var _sets = _context.Sets.AsEnumerable();
             var yrGroup = _sets.GroupBy(a => a.Year);
             var rangeGroup = _sets.GroupBy(a => a.Range).Select(a => new { a.Key }).ToList();
-            rangeGroup.Insert(0, new { Key = "All" });
             var typeGroup = _sets.GroupBy(a => a.SetType).Select(a => new { a.Key }).ToList();
-            typeGroup.Insert(0, new { Key = "All" });
             return Json(new
             {
                 rangeGroup,

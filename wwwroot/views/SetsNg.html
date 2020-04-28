@@ -12,6 +12,7 @@
             </ol>
         </div>
     </div>
+
     <div class="animated fadeInRight">
         <div class="row">
             <div class="col-lg-12">
@@ -33,48 +34,36 @@
 
                             <div class="div-table fadeInRight">
                                 <div class="div-table-row">
-                                    <div style="min-width:450px" class="div-table-col" align="center">
+                                    <div style="min-width:200px" class="div-table-col" align="center">
                                         <strong>Images</strong>
                                     </div>
 
                                     <div class="div-table-col">
-                                        <!--Year-->
-                                        <!--<div class="dropdown">
-                                            <button class="dropbtn">Year</button>
-                                            <div class="dropdown-content">
-                                                <a href="#">Sort Ascending</a>
-                                                <a href="#">Sort Descending</a>-->
-                                        <!--<label for="yrStart">Date Range:</label>-->
-                                        <select ng-change="filterDate()" ng-model="yrStartSel" id="yrStart" name="yrStart">
-                                            <option ng-repeat="n in []|range:yrStartMax-yrStartMin +1" value="{{$index*1 + yrStartMin*1}}">
-                                                {{$index*1 + yrStartMin*1}}
-                                            </option>
-                                        </select>
-                                        t>
-                                        :<!--{{yrStartSel}}-->
-                                        t
-                                        <select ng-change="filterDate()" ng-model="yrEndSel" id="yrEnd" name="yrEnd">
-                                            <option ng-repeat="n in []|range:yrStartMax-yrStartSel+1" value="{{$index*1 + yrStartSel*1}}">
-                                                {{$index*1 + yrStartSel*1}}
-                                            </option>
-                                        </select>
-                                        <!--</div>
-            </div>-->
-                                        <span ng-if="sortby.Columns[1].Direction === 'Ascending'">
-                                            <i ng-click="sortBy('Year')" class="fa fa-caret-down"></i>
-                                        </span>
-                                        <span ng-if="sortby.Columns[1].Direction === 'Descending'">
-                                            <i ng-click="sortBy('Year')" class="fa fa-caret-up"></i>
-                                        </span>
+                                        <div class="input-group">
+                                            <input ng-change="filterDate()" type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="$state.params.album.startDate" is-open="popup1.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" />
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default" ng-click="open1()"><i class="glyphicon glyphicon-calendar"></i></button>
+                                            </span>
+                                        </div>
+                                        <div class="input-group">
+                                            <input ng-change="filterDate()" type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="$state.params.album.endDate" is-open="popup2.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" />
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default" ng-click="open2()"><i class="glyphicon glyphicon-calendar"></i></button>
+                                            </span>
+                                            <span ng-if="sortby.Columns[1].Direction === 'Ascending'">
+                                                <i ng-click="sortBy('Year')" class="fa fa-caret-down"></i>
+                                            </span>
+                                            <span ng-if="sortby.Columns[1].Direction === 'Descending'">
+                                                <i ng-click="sortBy('Year')" class="fa fa-caret-up"></i>
+                                            </span>
+                                        </div>
                                     </div>
                                     <div class="div-table-col">
-                                        <div class="dropdown">
-                                            <button class="dropbtn">Range</button>
-                                            <div class="dropdown-content">
-                                                <div ng-repeat="range in rangeGroup">
-                                                    <input style="text-align:left" class="ngColListCheckbox" type="checkbox" ng-model="range.isChecked" ng-change="filterRangeChange(range)" ng-checked="filterRange(range.key)" />{{range.key}}
-                                                </div>
-                                            </div>
+                                        <div class="col-lg-8">
+                                            <!-- Multiselect dropdown -->
+                                            <select  multiple title="Range" data-style="bg-black rounded-pill" class="form-control input-sm selectpicker" ng-model="range.isChecked" ng-change="filterRangeChange(range)" ng-checked="filterRange(range.key)" data-container="body" data-size="6" data-selected-text-format="count>2" data-actions-box="true">
+                                                <option ng-repeat="range in rangeGroup">{{range.key}}</option>
+                                            </select><!-- End -->
                                         </div>
 
                                         <span ng-if="sortby.Columns[2].Direction === 'Ascending'">
@@ -86,14 +75,13 @@
                                         </span>
                                     </div>
                                     <div class="div-table-col">
-                                        <div class="dropdown">
-                                            <button class="dropbtn">Type</button>
-                                            <div class="dropdown-content">
-                                                <div ng-repeat="type in typeGroup">
-                                                    <input style="text-align:left" class="ngColListCheckbox" type="checkbox" ng-model="type.isChecked" ng-change="filterSetTypeChange(type)" ng-checked="filterSetType(type.key)" />{{type.key}}
-                                                </div>
-                                            </div>
+                                        <div class="col-lg-6">
+                                            <!-- Multiselect dropdown -->
+                                            <select multiple title="Type" data-style="bg-black rounded-pill" class="form-control input-sm selectpicker" ng-model="type.isChecked" ng-change="filterTypeChange(type)" ng-checked="filterType(type.key)" data-container="body" data-size="6" data-selected-text-format="count>2" data-actions-box="true">
+                                                <option ng-repeat="type in typeGroup">{{type.key}}</option>
+                                            </select><!-- End -->
                                         </div>
+                                        
                                         <span ng-if="sortby.Columns[3].Direction === 'Ascending'">
                                             <i ng-click="sortBy('SetType')" class="fa fa-caret-down"></i>
                                         </span>
@@ -112,16 +100,10 @@
                                     </div>
                                 </div>
 
-                                {{$stateParams.viewLayout}}
                                 <div ng-if="$stateParams.viewLayout == 'Tiles'" class="div-table-row">
-                                    <!--<h2>Lightbox image gallery</h2>
-                                    <p>
-                                        <strong>{{album.name}}</strong> contains ....
-                                    </p>-->
-
                                     <div class="lightBoxGallery">
-                                        <a ng-repeat="(setidx,set) in iColSets.data" href="#" title="Image from Unsplash" data-gallery="">
-                                            <img ng-click="selectSet($event, setidx)" style="margin-right : 25px;border:2px solid grey" ng-src="data:{{set.items[0].type}};base64,{{set.items[0].thumbnailA}}" />
+                                        <a ng-repeat="(setidx,set) in iColSets.data" href="#" title="{{set.description}}" data-gallery="">
+                                            <img ng-click="selectSet($event, setidx)" style="opacity: 0.4;margin-right : 25px;border:2px solid grey" ng-src="data:{{set.items[0].type}};base64,{{set.items[0].thumbnailA}}" />
                                             <img ng-if="item.thumbnailB != undefined" class="overlay" ng-click="selectSet($event, setidx)" style="margin-right : 25px;border:2px solid grey" ng-src="data:{{set.items[0].type}};base64,{{set.items[0].thumbnailB}}" />
                                         </a>
 
@@ -156,16 +138,16 @@
                                                 <a ng-if="itemidx !== 0" href="" ng-click="SelectItem($event, setidx, itemidx , -1)" type="button" class="ItemCheckbox"><i class="fa fa-caret-down" style="font-size:24px;color:red"></i></a>
                                             </div>
                                             <!--<div ng-if="itemidx !== 0" class="SetContainer">
-                    <div class="container">
-                        <img style="width:80%;height:80%;margin-right : 25px;border:2px solid grey" ng-src="data:{{item.type}};base64,{{item.thumbnailA}}" />
-                        <div ng-if="item.thumbnailB != undefined">
-                            <img class="overlay" style="width:80%;height:80%;margin-right : 25px;border:2px solid grey" ng-src="data:{{item.type}};base64,{{item.thumbnailB}}" />
-                        </div>
-                    </div>
-                    <span class="ItemCheckbox" style="padding-bottom : 18px;">{{item.userItems[0].quantity}}</span>
-                    <a href="" ng-click="SelectItem($event, setidx, itemidx , 1)" type="button" class="ItemCheckbox"><i class="fa fa-caret-up" style="padding-bottom:30px;font-size:24px;color:green"></i></a>
-                    <a href="" ng-click="SelectItem($event, setidx, itemidx , -1)" type="button" class="ItemCheckbox"><i class="fa fa-caret-down" style="font-size:24px;color:red"></i></a>
-                </div>-->
+                                                <div class="container">
+                                                    <img style="width:80%;height:80%;margin-right : 25px;border:2px solid grey" ng-src="data:{{item.type}};base64,{{item.thumbnailA}}" />
+                                                    <div ng-if="item.thumbnailB != undefined">
+                                                        <img class="overlay" style="width:80%;height:80%;margin-right : 25px;border:2px solid grey" ng-src="data:{{item.type}};base64,{{item.thumbnailB}}" />
+                                                    </div>
+                                                </div>
+                                                <span class="ItemCheckbox" style="padding-bottom : 18px;">{{item.userItems[0].quantity}}</span>
+                                                <a href="" ng-click="SelectItem($event, setidx, itemidx , 1)" type="button" class="ItemCheckbox"><i class="fa fa-caret-up" style="padding-bottom:30px;font-size:24px;color:green"></i></a>
+                                                <a href="" ng-click="SelectItem($event, setidx, itemidx , -1)" type="button" class="ItemCheckbox"><i class="fa fa-caret-down" style="font-size:24px;color:red"></i></a>
+                                            </div>-->
                                         </div>
                                     </div>
                                     <div class="div-table-col">
@@ -186,7 +168,7 @@
                                 </div>
                                 <ul uib-pagination total-items="iColSets.recordsTotal" ng-model="currentPage" ng-change="pageChanged()" max-size="maxSize" class="pagination-sm" boundary-link-numbers="true"></ul>
                             </div>
-                           
+
                             <!--<div class="div-table-row">
                                 <h5>params</h5>
                                 <pre>{{$stateParams | json}}</pre>
@@ -199,15 +181,15 @@
     </div>
     <br />
 
-<style>
+    <style>
 
-    /* Local style for demo purpose */
+        /* Local style for demo purpose */
 
-    .lightBoxGallery {
-        text-align: center;
-    }
-
-        .lightBoxGallery img {
-            margin: 5px;
+        .lightBoxGallery {
+            text-align: center;
         }
-</style>
+
+            .lightBoxGallery img {
+                margin: 5px;
+            }
+    </style>

@@ -6,7 +6,7 @@
     };
 
     $scope.NewAlbum = () => {
-        $state.go('uid.album', { album: null });
+        $state.go('ui.album', { album: null });
     };
 
     $scope.getAlbums = () => {
