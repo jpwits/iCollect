@@ -10263,19 +10263,17 @@ form .progress {
     line-height: 15px;
 }
 
-}
-
 .progress {
     display: inline-block;
     width: 100px;
     border: 3px groove #CCC;
 }
 
-    .progress div {
-        font-size: smaller;
-        background: blue;
-        width: 0;
-    }
+.progress div {
+    font-size: smaller;
+    background: blue;
+    width: 0;
+}
 
 .SetContainer {
     position: relative;
@@ -10381,6 +10379,10 @@ thead input {
 
 .div-table-row:nth-child(even) {
     background-color: #F9F9F9;
+}
+
+.div-table-row:nth-child(odd) {
+    background-color: rgba(0, 0, 0, 0.14);
 }
 
 .div-table-col {
