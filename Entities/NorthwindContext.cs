@@ -17,6 +17,7 @@ namespace iCollect.Entities
 
         public virtual DbSet<AlbumCollections> AlbumCollections { get; set; }
         public virtual DbSet<Albums> Albums { get; set; }
+        public virtual DbSet<CollectionTypes> CollectionTypes { get; set; }
         public virtual DbSet<Collections> Collections { get; set; }
         public virtual DbSet<Images> Images { get; set; }
         public virtual DbSet<Items> Items { get; set; }
@@ -70,6 +71,15 @@ namespace iCollect.Entities
                     .IsUnicode(false);
             });
 
+            modelBuilder.Entity<CollectionTypes>(entity =>
+            {
+                entity.HasKey(e => e.CollectionTypeId);
+
+                entity.Property(e => e.Type)
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+            });
+
             modelBuilder.Entity<Collections>(entity =>
             {
                 entity.HasKey(e => e.CollectionId);
@@ -77,6 +87,11 @@ namespace iCollect.Entities
                 entity.Property(e => e.Description).HasMaxLength(255);
 
                 entity.Property(e => e.Name).HasMaxLength(255);
+
+                entity.HasOne(d => d.CollectionType)
+                    .WithMany(p => p.Collections)
+                    .HasForeignKey(d => d.CollectionTypeId)
+                    .HasConstraintName("FK_Collections_CollectionTypes");
             });
 
             modelBuilder.Entity<Images>(entity =>

@@ -1,21 +1,26 @@
-﻿function AlbumsCtrl($scope, $state, $stateParams, getAlbums, passData, $timeout, $q) {
+﻿function AlbumsCtrl($scope, $state, $sessionStorage, $localStorage, $stateParams, getAlbums, passData, $timeout, $q) {
     $scope.User = passData.get("User");
 
-    $scope.SelectAlbum = (album) => {
-        $state.go('app.setsng', { album: album, viewLayout: 'Tiles' });
+    $scope.GotoAlbum = (album) => {
+        $sessionStorage.album = album;
+        $state.go('app.setsng', { viewLayout: 'Tiles' });
+    };
+
+    $scope.EditAlbum = (album) => {
+        $sessionStorage.album = album;
+        $state.go('ui.album');
     };
 
     $scope.NewAlbum = () => {
-        $state.go('ui.album', { album: null });
+        $sessionStorage.album = {};
+        $state.go('ui.album');
     };
 
     $scope.getAlbums = () => {
-        $scope.iColAlbums = passData.get("$scope.albums");
-        if ($scope.iColAlbums !== undefined) {
-            //$scope.totalItems = $scope.iColSets.totalItems;
-        } else {
+        if ($sessionStorage.albums === undefined) {
             getAlbums.get().$promise.then(function (response) {
-                $scope.iColAlbums = JSON.parse(JSON.stringify(response));
+                var jsonResp = JSON.parse(JSON.stringify(response));
+                $sessionStorage.albums = jsonResp.albums;
             }, function (error) {
                 alert("Error getting orders from back-end : " + error);
             });

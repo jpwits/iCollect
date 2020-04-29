@@ -50,7 +50,7 @@ namespace iCollect.Controllers
             var filterbyObj = JsonConvert.DeserializeObject<dynamic>(filterby);
             var groupbyObj = JsonConvert.DeserializeObject<dynamic>(groupby);
             var yrGroup = _context.Sets.AsEnumerable().GroupBy(a => a.Year);
-            int yrStartMin = yrGroup.FirstOrDefault().Key ?? 1987;
+            int dtMin = yrGroup.FirstOrDefault().Key ?? 1987;
             int yrEndMax = yrGroup.OrderByDescending(a => a.Key).FirstOrDefault().Key ?? 2015;
             var sortCol = sortbyObj.Columns;
             var qry = _context.Sets.AsQueryable();
@@ -79,7 +79,7 @@ namespace iCollect.Controllers
             return Json(new
             {
                 recordsTotal = recordsTotal,
-                yrstartmin = yrStartMin,
+                yrstartmin = dtMin,
                 yrendmax = yrEndMax,
                 data = qryRes
             });
@@ -91,8 +91,8 @@ namespace iCollect.Controllers
             {
                 if (col.Column.Value == "Year") // Do for one column only (the famous Jos) 4 now.
                 {
-                    int yrStartSel = col.Start;
-                    int yrEndSel = col.End;
+                    int yrStartSel = ((DateTime)col.Start).Year;
+                    int yrEndSel = ((DateTime)col.End).Year;
                     qry = qry.Where(y => y.Year >= yrStartSel && y.Year < yrEndSel + 1);
                 }
                 else if (col.Column.Value == "Range")

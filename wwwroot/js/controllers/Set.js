@@ -1,6 +1,5 @@
-﻿function SetCtrl($scope, $state, $compile, $templateCache, getImage, updateImage, passData, $timeout) {
-    $scope.iCols = passData.get("$scope.iColSets");
-    $scope.iCol = $scope.iCols.data[passData.get("$scope.curSetIdx")];
+﻿function SetCtrl($scope, $state, $sessionStorage, updateImage) {
+    $scope.iCol = $sessionStorage.iColSets.data[$sessionStorage.curSetIdx];
 
     $scope.UpdateSet = function (sets) {
         var clone = Object.assign({}, sets);
@@ -9,15 +8,14 @@
         }
         $scope.entry = new updateImage(clone);
         $scope.entry.$update(function (response) {
-            sets = response;
-            if (sets.items.length > 0) {
-                sets.delItems = sets.items.filter(item => item.isActive === false);
-                sets.items = sets.items.sort(function (a, b) {
+            iCol = response;
+            if (iCol.items.length > 0) {
+                iCol.delItems = iCol.items.filter(item => item.isActive === false);
+                iCol.items = iCol.items.sort(function (a, b) {
                     return a.position - b.position;
                 }).filter(item => item.isActive === true);
             }
-            $scope.iCols.data[passData.get("$scope.curSetIdx")] = sets;
-            passData.set("$scope.iColSets", $scope.iCols);
+            //iCol = iCol;
             alert("Saved successfully...");
         }, function (error) {
             alert("Error getting orders from back-end : " + error);

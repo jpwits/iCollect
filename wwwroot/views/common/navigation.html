@@ -8,7 +8,7 @@
                     <a uib-dropdown-toggle href>
                         <span class="clear">
                             <span class="block m-t-xs">
-                                <strong class="font-bold">{{User.name}}</strong>
+                                <strong class="font-bold">{{$sessionStorage.User.name}}</strong>
                             </span>
                             <span class="text-muted text-xs block">Developer <b class="caret"></b></span>
                         </span>
@@ -41,7 +41,7 @@
                     <span class="fa arrow"></span>
                 </a>
                 <ul class="nav nav-second-level collapse" ng-class="{in: $state.includes('app')}">
-                    <li ui-sref-active="active"><a ui-sref="app.setsng({ album : null, viewLayout : 'Details' })">{{ 'SA MINT-RSA-NG' | translate }}</a></li>
+                    <li ui-sref-active="active"><a ui-sref="app.setsng({viewLayout : 'Details' })">{{ 'SA MINT-RSA-NG' | translate }}</a></li>
                 </ul>
             </li>
 

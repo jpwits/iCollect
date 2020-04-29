@@ -11,8 +11,7 @@
                 </li>
             </ol>
         </div>
-    </div>
-
+   
     <div class="row">
         <div>
             <div class="wrapper wrapper-content animated fadeInRight">
@@ -26,7 +25,7 @@
                                         <td>
                                             <div class="col-lg-6">
                                                 <input class="input-sm form-control" style="width:100%" type="text" name="input"
-                                                       ng-model="$state.params.album.name">
+                                                       ng-model="$sessionStorage.album.name">
                                             </div>
                                         </td>
                                     </tr>
@@ -35,7 +34,7 @@
                                         <td>
                                             <div class="col-lg-6">
                                                 <input class="input-sm form-control" style="width:100%" type="text" name="input"
-                                                       ng-model="$state.params.album.description">
+                                                       ng-model="$sessionStorage.album.description">
                                             </div>
                                         </td>
                                     </tr>
@@ -54,7 +53,7 @@
                                                         <td>
                                                             <div class="col-md-4">
                                                                 <p class="input-group">
-                                                                    <input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="$state.params.album.startDate" is-open="popup1.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" />
+                                                                    <input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="$sessionStorage.album.startDate" is-open="popup1.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" />
                                                                     <span class="input-group-btn">
                                                                         <button type="button" class="btn btn-default" ng-click="open1()"><i class="glyphicon glyphicon-calendar"></i></button>
                                                                     </span>
@@ -62,7 +61,7 @@
                                                             </div>
                                                             <div class="col-md-4">
                                                                 <p class="input-group">
-                                                                    <input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="$state.params.album.endDate" is-open="popup2.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" />
+                                                                    <input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="$sessionStorage.album.endDate" is-open="popup2.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" />
                                                                     <span class="input-group-btn">
                                                                         <button type="button" class="btn btn-default" ng-click="open2()"><i class="glyphicon glyphicon-calendar"></i></button>
                                                                     </span>
@@ -78,7 +77,7 @@
                                                             <div class="col-lg-6">
                                                                 <!-- Multiselect dropdown -->
                                                                 <select multiple data-style="bg-black rounded-pill" class="form-control input-sm selectpicker" data-container="body" data-size="6" data-selected-text-format="count>2" data-actions-box="true">
-                                                                    <option ng-repeat="range in rangeGroup">{{range.key}}</option>
+                                                                    <option ng-repeat="range in $localStorage.lookups.rangeGroup">{{range.key}}</option>
                                                                 </select><!-- End -->
                                                             </div>
                                                         </td>
@@ -91,7 +90,7 @@
                                                             <div class="col-lg-6">
                                                                 <!-- Multiselect dropdown -->
                                                                 <select multiple data-style="bg-black rounded-pill" class="form-control input-sm selectpicker" data-container="body" data-size="6" data-selected-text-format="count>2" data-actions-box="true">
-                                                                    <option ng-repeat="type in typeGroup">{{type.key}}</option>
+                                                                    <option ng-repeat="type in $localStorage.lookups.typeGroup">{{type.key}}</option>
                                                                 </select><!-- End -->
                                                             </div>
                                                         </td>
@@ -104,13 +103,19 @@
                             </div>
                         </div>
                         <div class="row">
-                            <button ng-click="updateAlbum($state.params.album)" class="btn btn-primary dim" type="button"><i class="fa fa-save"></i> Add</button>
+                            <button ng-click="updateAlbum($sessionStorage.album)" class="btn btn-primary dim" type="button"><i class="fa fa-save"></i> Add</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <!--<div class="row">
+        <h5>params</h5>
+        <pre>{{$localStorage | json}}</pre>
+        <pre>{{$sessionStorage | json}}</pre>
+    </div>-->
 </div>
 
 

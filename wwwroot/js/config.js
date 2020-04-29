@@ -664,18 +664,17 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, IdlePro
         .state('app.set', {
             url: "/set",
             templateUrl: "views/set.html",
-            params: { SetDetail: null, EditSet: true },
             data: { pageTitle: 'Set' }
         })
-        .state('app.sets', {
-            url: "/sets",
-            templateUrl: "views/sets.html",
-            data: { pageTitle: 'Sets' }
-        })
+        //.state('app.sets', {
+        //    url: "/sets",
+        //    templateUrl: "views/sets.html",
+        //    data: { pageTitle: 'Sets' }
+        //})
         .state('app.setsng', {
             url: "/setsng",
             templateUrl: "views/setsng.html",
-            params: { album : null, viewLayout : null },
+            params: { viewLayout : null },
             data: { pageTitle: 'Setsng' }
         })
         .state('app.collection', {
@@ -850,7 +849,6 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, IdlePro
         })
         .state('ui.album', {
             url: "/album",
-            params: { album: null },
             templateUrl: "views/album.html",
             data: { pageTitle: 'Album' }
         })

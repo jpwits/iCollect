@@ -1,10 +1,12 @@
-﻿function SetsNgCtrl($scope, $state, updateImage, DTOptionsBuilder, $compile, $templateCache, getSetsSrvNg, passData, getSetSrv, getLookups, $timeout, $q) {
-    $scope.User = passData.get("User");
-    
-    $scope.rangeGroup = passData.get("$scope.rangeGroup");
-    $scope.typeGroup = passData.get("$scope.typeGroup");
+﻿function SetsNgCtrl($scope, $state, updateImage, $sessionStorage, $localStorage, getSetsSrvNg, passData, getSetSrv, $timeout, $q) {
+    if ($sessionStorage.User === undefined) {
+        $state.go("logins");
+    }
 
-    $scope.album = $state.params.album;
+    if ($state.params.viewLayout !== null) {
+        $sessionStorage.viewLayout = $state.params.viewLayout;
+    }
+
     $scope.today = function () {
         $scope.dtStart = new Date(1987, 1, 1);
         $scope.dtEnd = new Date(2020, 1, 1);
@@ -41,8 +43,8 @@
 
     $scope.formats = ['yyyy'];
     $scope.format = $scope.formats[0];
-    $scope.altInputFormats = ['M!/d!/yyyy'];
-
+    //$scope.altInputFormats = ['M!/d!/yyyy'];
+    $scope.altInputFormats = ['yyyy/M!/d!'];
     $scope.popup1 = {
         opened: false
     };
@@ -50,41 +52,26 @@
     $scope.popup2 = {
         opened: false
     };
-
-    if ($scope.album === null) $scope.album = 0;
-    $scope.fillLookups = () => {
-        getLookups.get().$promise.then(function (response) {
-            var Lookups = JSON.parse(JSON.stringify(response));
-            $scope.rangeGroup = Lookups.rangeGroup;
-            $scope.typeGroup = Lookups.typeGroup;
-            $(function () {
-                $('.selectpicker').selectpicker();
-            });
-        }, function (error) {
-            alert("Error getting orders from back-end : " + error);
-        });
-    };
-
-    if ($scope.rangeGroup === undefined || $scope.typeGroup === undefined) {
-        $scope.fillLookups();
+    if ($sessionStorage.album === undefined) {
+        $sessionStorage.album = $state.params.album;
+    }
+    else if ($sessionStorage.album === null) {
+        $sessionStorage.album = 0;
     }
 
-    $scope.yrStartMin = passData.get("$scope.yrStartMin");
-    if ($scope.yrStartMin === undefined) {
-        $scope.yrStartMin = "1987";
+    if ($sessionStorage.dtMin === undefined) {
+        $sessionStorage.dtMin = $sessionStorage.album.startDate;
     }
 
-    $scope.yrStartMax = passData.get("$scope.yrStartMin");
-    if ($scope.yrStartMax === undefined) {
-        $scope.yrStartMax = "2015";
+    if ($sessionStorage.dtMax === undefined) {
+        $sessionStorage.dtMax = $sessionStorage.album.endDate;
     }
 
-    $scope.session_pglen = passData.get("Session_PgLen");
-    if ($scope.session_pglen === undefined) {
-        $scope.session_pglen = "200";
+    if ($localStorage.session_pglen === undefined) {
+        $localStorage.session_pglen = "50";
     }
 
-    $scope.sortby = {
+    $sessionStorage.sortby = {
         "Active": "Year",
         "Columns": [
             {
@@ -101,7 +88,8 @@
                 "Direction": "Descending"
             }]
     };
-    $scope.groupby = [{
+
+    $sessionStorage.groupby = [{
         "Column": "Range",
         "Ranges": []
         //[{ "Name": "Protea", "isChecked": true },
@@ -110,22 +98,20 @@
         "Column": "Type",
         "Types": ["Prestige", "Launch", "Special"]
     }];
-    $scope.yrStartSel = passData.get("$scope.yrStartSel");
-    $scope.yrEndSel = passData.get("$scope.yrEndSel");
 
-    if ($scope.yrStartSel === undefined) {
-        $scope.yrStartSel = "1987";
+    if ($sessionStorage.yrStartSel === undefined) {
+        $sessionStorage.yrStartSel = $sessionStorage.dtMin;
     }
 
-    if ($scope.yrEndSel === undefined) {
-        $scope.yrEndSel = "2013";
+    if ($sessionStorage.yrEndSel === undefined) {
+        $sessionStorage.yrEndSel = $sessionStorage.dtMax;
     }
 
-    $scope.filterby = [
+    $sessionStorage.filterby = [
         {
             "Column": "Year",
-            "Start": $scope.yrStartSel,
-            "End": $scope.yrEndSel
+            "Start": $sessionStorage.yrStartSel,
+            "End": $sessionStorage.yrEndSel
         },
         {
             "Column": "Range",
@@ -137,24 +123,22 @@
         }
     ];
 
-    $scope.pageSize = $scope.session_pglen;
-    $scope.viewby = $scope.session_pglen;
-    
-    $scope.itemsPerPage = $scope.viewby;
+    $scope.pageSize = $localStorage.session_pglen;
+    $scope.viewby = $localStorage.session_pglen;
+
+    //$scope.itemsPerPage = $scope.viewby;
     $scope.maxSize = 5; //Number of pager buttons to show
 
-    $scope.currentPage = passData.get("$scope.currentPage");
-    if ($scope.currentPage === undefined) {
-        $scope.currentPage = 1;
+    if ($sessionStorage.currentPage === undefined) {
+        $sessionStorage.currentPage = 1;
     }
 
-    $scope.numberOfPages = passData.get("$scope.numberOfPages");
-    if ($scope.numberOfPages === undefined) {
-        $scope.numberOfPages = 1;
+    if ($sessionStorage.numberOfPages === undefined) {
+        $sessionStorage.numberOfPages = 1;
     }
 
     $scope.setPage = function (pageNo) {
-        $scope.currentPage = pageNo;
+        $sessionStorage.currentPage = pageNo;
     };
 
     $scope.pageChanged = function () {
@@ -162,29 +146,25 @@
     };
 
     $scope.setItemsPerPage = function (num) {
-        $scope.itemsPerPage = num;
-        passData.set("$scope.iColSets", undefined); //serious, dispose , incremental...l8r!
+        $localStorage.session_pglen = num;
+        $sessionStorage.iColSets = undefined;
         $scope.getsets();
-        // $scope.currentPage = 1; //reset to first page
     };
 
     $scope.getsets = () => {
-        $scope.iColSets = passData.get("$scope.iColSets");
-        if ($scope.iColSets !== undefined) {
-            //$scope.totalItems = $scope.iColSets.totalItems;
-        } else {
+        if ($sessionStorage.iColSets === undefined) {
             getSetsSrvNg.get({
-                start: ($scope.currentPage - 1) * $scope.itemsPerPage,
-                length: $scope.currentPage * $scope.itemsPerPage,
-                sortby: JSON.stringify($scope.sortby),
-                filterby: JSON.stringify($scope.filterby),
-                groupby: JSON.stringify($scope.groupby),
-                albumId: $scope.album.albumId
+                start: ($sessionStorage.currentPage - 1) * $localStorage.session_pglen,
+                length: $sessionStorage.currentPage * $localStorage.session_pglen,
+                sortby: JSON.stringify($sessionStorage.sortby),
+                filterby: JSON.stringify($sessionStorage.filterby),
+                groupby: JSON.stringify($sessionStorage.groupby),
+                albumId: $sessionStorage.album.albumId
             }).$promise.then(function (response) {
-                $scope.iColSets = JSON.parse(JSON.stringify(response));
-                $scope.yrStartMin = $scope.iColSets.yrstartmin;
-                $scope.yrEndMax = $scope.iColSets.yrendmax;
-                angular.forEach($scope.iColSets.data, function (set) {
+                $sessionStorage.iColSets = JSON.parse(JSON.stringify(response));
+                $scope.dtMin = $sessionStorage.iColSets.yrstartmin;
+                $scope.yrEndMax = $sessionStorage.iColSets.yrendmax;
+                angular.forEach($sessionStorage.iColSets.data, function (set) {
                     if (set.items.length > 0) {
                         set.delItems = set.items.filter(item => item.isActive === false);
                         set.items = set.items.sort(function (a, b) {
@@ -192,7 +172,7 @@
                         }).filter(item => item.isActive === true);
                     }
                 });
-                $scope.numberOfPages = Math.ceil($scope.iColSets.recordsTotal / $scope.session_pglen);
+                $sessionStorage.numberOfPages = Math.ceil($sessionStorage.iColSets.recordsTotal / $localStorage.session_pglen);
             }, function (error) {
                 alert("Error getting orders from back-end : " + error);
             });
@@ -200,20 +180,21 @@
     };
 
     $scope.sortBy = function (column) {
-        var sortCol = $scope.sortby.Columns.find(a => a.Column === column);
+        var sortCol = $sessionStorage.sortby.Columns.find(a => a.Column === column);
         if (sortCol.Direction === "Ascending") {
             sortCol.Direction = "Descending";
         }
         else {
             sortCol.Direction = "Ascending";
         }
-        $scope.sortby.Active = column;
+        $sessionStorage.sortby.Active = column;
         $scope.getsets();
     };
+
     $scope.sortBy("Year");
 
     $scope.filterRange = (range) => {
-        var ftrType = $scope.filterby.find(a => a.Column === "Range");
+        var ftrType = $sessionStorage.filterby.find(a => a.Column === "Range");
         var curRange = ftrType.Ranges.find(a => a.Name === range);
         if (curRange !== undefined) {
             return curRange.isChecked;
@@ -222,7 +203,7 @@
     };
 
     $scope.filterSetType = (type) => {
-        var ftrType = $scope.filterby.find(a => a.Column === "SetType");
+        var ftrType = $sessionStorage.filterby.find(a => a.Column === "SetType");
         var curType = ftrType.SetType.find(a => a.Name === type);
         if (curType !== undefined) {
             return curType.isChecked;
@@ -231,7 +212,7 @@
     };
 
     $scope.filterRangeChange = (event) => {
-        var ftrType = $scope.filterby.find(a => a.Column === "Range");
+        var ftrType = $sessionStorage.filterby.find(a => a.Column === "Range");
         var range = ftrType.Ranges.find(a => a.Name === event.key);
         if (range !== undefined) {
             range.isChecked = event.isChecked;
@@ -243,7 +224,7 @@
     };
 
     $scope.filterSetTypeChange = (event) => {
-        var ftrType = $scope.filterby.find(a => a.Column === "SetType");
+        var ftrType = $sessionStorage.filterby.find(a => a.Column === "SetType");
         var type = ftrType.SetType.find(a => a.Name === event.key);
         if (type !== undefined) {
             type.isChecked = event.isChecked;
@@ -256,15 +237,15 @@
 
 
     $scope.filterDate = () => {
-        var ftrYear = $scope.filterby.find(a => a.Column === "Year");
-        ftrYear.Start = $scope.yrStartSel;
-        ftrYear.End = $scope.yrEndSel;
+        var ftrYear = $sessionStorage.filterby.find(a => a.Column === "Year");
+        ftrYear.Start = $sessionStorage.yrStartSel;
+        ftrYear.End = $sessionStorage.yrEndSel;
 
         $scope.getsets();
     };
 
     $scope.selectSet = (event, setidx) => {
-        var set = $scope.iColSets.data[setidx];
+        var set = $sessionStorage.iColSets.data[setidx];
         getSetSrv.get({ id: set.setId }).$promise.then(function (response) { //we need to get full images from server
             set = JSON.parse(JSON.stringify(response));
             if (set.items.length > 0) {
@@ -273,14 +254,8 @@
                     return a.position - b.position;
                 }).filter(item => item.isActive === true);
             }
-            passData.set("$scope.currentPage", $scope.currentPage);
-            passData.set("$scope.numberOfPages", $scope.numberOfPages);
-            passData.set("$scope.curSetIdx", $scope.curSetIdx = setidx);
-            $scope.iColSets.data[$scope.curSetIdx] = set;
-            passData.set("$scope.iColSets", $scope.iColSets);
-            passData.set("$scope.yrStartSel", $scope.yrStartSel);
-            passData.set("$scope.yrEndSel", $scope.yrEndSel);
-
+            $sessionStorage.curSetIdx = setidx;
+            $sessionStorage.iColSets.data[setidx] = set;
             $state.go('app.set');
         }, function (error) {
             alert("Error getting orders from back-end : " + error);
@@ -288,49 +263,29 @@
     };
 
     $scope.SelectItem = (event, setidx, itemidx, direction) => {
-        var items = $scope.iColSets.data[setidx].items;
+        var items = $sessionStorage.iColSets.data[setidx].items;
         var item = items[itemidx];
-
-        $scope.User = passData.get("User");
-        if ($scope.User.name === undefined) {
-            alert('Login Please.');
-            return;
-        }
 
         if (itemidx === 0) {
             items.forEach(function (item) {
                 if (item.userItems.length === 0) {
-                    item.userItems.push({ userId: $scope.User.name, itemId: item.itemId, quantity: 0 });
+                    item.userItems.push({ userId: $sessionStorage.name, itemId: item.itemId, quantity: 0 });
                 }
                 item.userItems[0].quantity = item.userItems[0].quantity + direction;
             });
         } else {
             if (item.userItems.length === 0) {
-                item.userItems.push({ userId: $scope.User.name, itemId: item.itemId, quantity: 0 });
+                item.userItems.push({ userId: $sessionStorage.name, itemId: item.itemId, quantity: 0 });
             }
             item.userItems[0].quantity = item.userItems[0].quantity + direction;
         }  //0 here should be user find, do user filtering on api change entity []->{}
 
-        $scope.entry = new updateImage($scope.iColSets.data[setidx]);
+        $scope.entry = new updateImage($sessionStorage.iColSets.data[setidx]);
         $scope.entry.$update(function (response) {
 
         }, function (error) {
             alert("Error getting orders from back-end : " + error);
         });
-
-        //var cboxes = document.getElementsByName('cb_' + setId);
-        //cboxes.forEach(function (cbox) {
-        //    cbox.checked = event.currentTarget.checked;
-        //});
-
-        //if (event.currentTarget.checked === true) {
-        //    event.currentTarget.previousSibling.style.border = "2px solid lime";
-        //}
-        //else {
-        //    event.currentTarget.previousSibling.style.border = "2px solid grey";
-        //}
-
-        //update db
     };
 
     $scope.createSet = function (id) {
@@ -338,12 +293,15 @@
             var iCol = new getSetSrv();
             iCol.setImages = [];
             iCol.delImages = [];
-            passData.set("Selected", iCol);
-            $state.go('app.sets_edit', {});
+            //passData.set("Selected", iCol);
+            $state.go('app.set');
         }
     };
 
-    
+    $(function () {
+        $('.selectpicker').selectpicker();
+    });
+
 }
 
 angular

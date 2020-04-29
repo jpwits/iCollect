@@ -154,23 +154,6 @@
                                         </td>
                                     </tr>-->
                                     <tr>
-                                        <td>Year:</td>
-                                        <td colspan="2">
-                                            <!--<input type="text" name="input" ng-model="iCol.year">-->
-                                            <select ng-change="filterDate()" ng-model="iCol.year" id="yrStart" name="yrStart">
-                                                <option ng-repeat="n in []|range:yrStartMax-yrStartMin +1" value="{{$index*1 + yrStartMin*1}}">
-                                                    {{$index*1 + yrStartMin*1}}
-                                                </option>
-                                            </select>
-                                        </td>
-                                    </tr>
-                                    <!--<tr>
-                                        <td>Description:</td>
-                                        <td colspan="2">
-                                            <input type="text" name="input" ng-model="iCol.description">
-                                        </td>
-                                    </tr>-->
-                                    <tr>
                                         <td>Date:</td>
                                         <td colspan="2">
                                             <input type="text" name="input" ng-model="iCol.date">

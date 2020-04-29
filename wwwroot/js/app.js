@@ -14,7 +14,8 @@
         'ngResource',                    // ngResource
         'datatables',
         'datatables.buttons',
-        'ngFileUpload'
+        'ngFileUpload',
+        'ngStorage'
     ]);
 })();
 

@@ -1,25 +1,7 @@
-﻿function AlbumCtrl($scope, $state, $stateParams, passData, getLookups, updateAlbumSrv) {
-    $scope.User = passData.get("User");
-
-    $scope.rangeGroup = passData.get("$scope.rangeGroup");
-    $scope.typeGroup = passData.get("$scope.typeGroup");
-
-    $scope.fillLookups = () => {
-        getLookups.get().$promise.then(function (response) {
-            var Lookups = JSON.parse(JSON.stringify(response));
-            $scope.rangeGroup = Lookups.rangeGroup;
-            $scope.typeGroup = Lookups.typeGroup;
-            $(function () {
-                $('.selectpicker').selectpicker();
-            });
-        }, function (error) {
-            alert("Error getting orders from back-end : " + error);
-        });
-    };
-
-    if ($scope.rangeGroup === undefined || $scope.typeGroup === undefined) {
-        $scope.fillLookups();
-    }
+﻿function AlbumCtrl($scope, $state, $stateParams, $sessionStorage, $localStorage,  updateAlbumSrv) {
+    if ($sessionStorage.User === undefined) {
+        $state.go("logins");
+    } //replace with intersect
 
     $scope.today = function () {
         $scope.dtStart = new Date(1987, 1, 1);
@@ -34,7 +16,6 @@
     $scope.dateOptions = {
         datepickerMode: 'year',
         minMode: 'year',
-        //minDate: 'minDate',
         showWeeks: 'false',
         dateDisabled: false,
         formatYear: 'yyyy',
@@ -76,6 +57,10 @@
             alert("Error getting orders from back-end : " + error);
         });
     };
+
+    $(function () {
+        $('.selectpicker').selectpicker();
+    });
 }
 angular
     .module('inspinia')
