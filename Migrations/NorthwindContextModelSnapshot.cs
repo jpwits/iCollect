@@ -49,6 +49,9 @@ namespace iCollect.Migrations
                     b.Property<DateTime?>("EndDate")
                         .HasColumnType("datetime");
 
+                    b.Property<bool?>("IsActive")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .HasColumnType("varchar(50)")
                         .HasMaxLength(50)
@@ -67,6 +70,23 @@ namespace iCollect.Migrations
                     b.ToTable("Albums");
                 });
 
+            modelBuilder.Entity("iCollect.Entities.CollectionTypes", b =>
+                {
+                    b.Property<int>("CollectionTypeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Type")
+                        .HasColumnType("varchar(255)")
+                        .HasMaxLength(255)
+                        .IsUnicode(false);
+
+                    b.HasKey("CollectionTypeId");
+
+                    b.ToTable("CollectionTypes");
+                });
+
             modelBuilder.Entity("iCollect.Entities.Collections", b =>
                 {
                     b.Property<int>("CollectionId")
@@ -74,15 +94,23 @@ namespace iCollect.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int?>("CollectionTypeId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(255)")
                         .HasMaxLength(255);
+
+                    b.Property<bool?>("IsActive")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(255)")
                         .HasMaxLength(255);
 
                     b.HasKey("CollectionId");
+
+                    b.HasIndex("CollectionTypeId");
 
                     b.ToTable("Collections");
                 });
@@ -205,6 +233,9 @@ namespace iCollect.Migrations
                         .HasColumnType("nvarchar(100)")
                         .HasMaxLength(100);
 
+                    b.Property<bool?>("IsActive")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Range")
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
@@ -230,6 +261,9 @@ namespace iCollect.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int?>("AlbumId")
+                        .HasColumnType("int");
+
                     b.Property<int>("ItemId")
                         .HasColumnType("int");
 
@@ -242,6 +276,8 @@ namespace iCollect.Migrations
                         .HasMaxLength(255);
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AlbumId");
 
                     b.HasIndex("ItemId");
 
@@ -259,6 +295,14 @@ namespace iCollect.Migrations
                         .WithMany()
                         .HasForeignKey("CollectionId")
                         .HasConstraintName("FK_AlbumCollections_Collections");
+                });
+
+            modelBuilder.Entity("iCollect.Entities.Collections", b =>
+                {
+                    b.HasOne("iCollect.Entities.CollectionTypes", "CollectionType")
+                        .WithMany("Collections")
+                        .HasForeignKey("CollectionTypeId")
+                        .HasConstraintName("FK_Collections_CollectionTypes");
                 });
 
             modelBuilder.Entity("iCollect.Entities.Items", b =>
@@ -290,6 +334,11 @@ namespace iCollect.Migrations
 
             modelBuilder.Entity("iCollect.Entities.UserItems", b =>
                 {
+                    b.HasOne("iCollect.Entities.Albums", "Album")
+                        .WithMany("UserItems")
+                        .HasForeignKey("AlbumId")
+                        .HasConstraintName("FK_UserItems_Albums");
+
                     b.HasOne("iCollect.Entities.Items", "Item")
                         .WithMany("UserItems")
                         .HasForeignKey("ItemId")

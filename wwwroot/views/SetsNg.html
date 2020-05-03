@@ -60,7 +60,7 @@
                                     <div class="div-table-col">
                                         <div class="col-lg-8">
                                             <!-- Multiselect dropdown -->
-                                            <select multiple title="Range" data-style="bg-white rounded-pill" class="form-control input-sm selectpicker" ng-model="range.isChecked" ng-change="filterRangeChange(range)" ng-checked="filterRange(range.key)" data-container="body" data-size="6" data-selected-text-format="count>2" data-actions-box="true">
+                                            <select multiple title="Range" data-style="bg-white rounded-pill" class="form-control input-sm selectpicker" ng-model="range" ng-change="filterRangeChange(range)" ng-checked="filterRange(range.key)" data-container="body" data-size="6" data-selected-text-format="count>2" data-actions-box="true">
                                                 <option ng-repeat="range in $localStorage.lookups.rangeGroup">{{range.key}}</option>
                                             </select><!-- End -->
                                         </div>
@@ -138,17 +138,6 @@
                                                 <a ng-if="itemidx !== 0" href="" ng-click="SelectItem($event, setidx, itemidx , 1)" type="button" class="ItemCheckbox"><i class="fa fa-caret-up" style="padding-bottom:30px;font-size:24px;color:green"></i></a>
                                                 <a ng-if="itemidx !== 0" href="" ng-click="SelectItem($event, setidx, itemidx , -1)" type="button" class="ItemCheckbox"><i class="fa fa-caret-down" style="font-size:24px;color:red"></i></a>
                                             </div>
-                                            <!--<div ng-if="itemidx !== 0" class="SetContainer">
-                                                <div class="container">
-                                                    <img style="width:80%;height:80%;margin-right : 25px;border:2px solid grey" ng-src="data:{{item.type}};base64,{{item.thumbnailA}}" />
-                                                    <div ng-if="item.thumbnailB != undefined">
-                                                        <img class="overlay" style="width:80%;height:80%;margin-right : 25px;border:2px solid grey" ng-src="data:{{item.type}};base64,{{item.thumbnailB}}" />
-                                                    </div>
-                                                </div>
-                                                <span class="ItemCheckbox" style="padding-bottom : 18px;">{{item.userItems[0].quantity}}</span>
-                                                <a href="" ng-click="SelectItem($event, setidx, itemidx , 1)" type="button" class="ItemCheckbox"><i class="fa fa-caret-up" style="padding-bottom:30px;font-size:24px;color:green"></i></a>
-                                                <a href="" ng-click="SelectItem($event, setidx, itemidx , -1)" type="button" class="ItemCheckbox"><i class="fa fa-caret-down" style="font-size:24px;color:red"></i></a>
-                                            </div>-->
                                         </div>
                                     </div>
                                     <div class="div-table-col">

@@ -4,6 +4,7 @@
 2. dotnet ef migrations add iCollFirstMigration --context NorthwindContext
 dotnet ef migrations add InitialCreate --context NorthwindContext
 dotnet ef database update --context NorthwindContext
+PM> dotnet ef database update Rebuild2Home --context NorthwindContext
 
 Dsn=Collect;database=D:\user\ITS\iCollect\NetCoreSPA.Web\Data\Collect.db;stepapi=0;notxn=0;shortnames=0;longnames=0;nocreat=0;nowchar=0;fksupport=0;oemcp=0;bigint=0;jdconv=0
 

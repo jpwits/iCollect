@@ -14,6 +14,7 @@ using Newtonsoft.Json;
 using System.Drawing.Imaging;
 using Microsoft.AspNetCore.Authorization;
 using Z.EntityFramework.Plus;
+using Newtonsoft.Json.Linq;
 
 namespace iCollect.Controllers
 {
@@ -54,24 +55,27 @@ namespace iCollect.Controllers
             int yrEndMax = yrGroup.OrderByDescending(a => a.Key).FirstOrDefault().Key ?? 2015;
             var sortCol = sortbyObj.Columns;
             var qry = _context.Sets.AsQueryable();
-          
+
             qry = filterQry(qry, filterbyObj);
             var recordsTotal = qry.Count();
-            
+
             qry = sortQry(qry, sortbyObj);
 
             qry = qry.Skip(start)
                 .Take(length)
                 .Include(a => a.Items);
 
-            var qryUser = from sets2 in qry
-                          join items in _context.Items on sets2.SetId equals items.SetId
+            var qryTake = qry.ToList(); 
+
+            var qryUser = from sets in qryTake
+                          join items in _context.Items on sets.SetId equals items.SetId
                           join userItems in _context.UserItems on items.ItemId equals userItems.ItemId
-                          where (userItems.UserId == User.Identity.Name  && userItems.AlbumId == albumId)
-                          select sets2;
-            
-            var qryComb = qry.Union(qryUser);
-            qryComb = sortQry(qryComb, sortbyObj);
+                          where (userItems.UserId == User.Identity.Name && userItems.AlbumId == albumId)
+                          select sets;
+            var qryUserTake = qryUser.ToList();
+
+            var qryComb = qryTake.Union(qryUserTake);
+            //qryComb = sortQry(qryComb, sortbyObj);
             var qryRes = qryComb.ToList();
 
             //oneTimeTemp();
@@ -98,17 +102,15 @@ namespace iCollect.Controllers
                 else if (col.Column.Value == "Range")
                 {
                     var rangefilter = new List<string>();
-                    foreach (var range in col.Ranges)
+                    var count = Enumerable.Count(col.Ranges);
+                    if (count != 0)
                     {
-                        if (range.isChecked.Value && range.Name != "All")
+                        if (col.Ranges[0].Value != "All")
                         {
-                            rangefilter.Add(range.Name.Value);
-                        }
-                    }
-                    if (col.Ranges.Count > 0)
-                    {
-                        if (!(col.Ranges[0].isChecked.Value && col.Ranges[0].Name.Value == "All"))
-                        {
+                            foreach (var range in col.Ranges)
+                            {
+                                rangefilter.Add(range.Value);
+                            }
                             qry = qry.Where(y => rangefilter.Contains(y.Range));
                         }
                     }
@@ -116,28 +118,17 @@ namespace iCollect.Controllers
                     {
                         qry = qry.Where(y => rangefilter.Contains(y.Range));
                     }
+                    
+
+
                 }
                 else if (col.Column.Value == "SetType")
                 {
-                    var setTypefilter = new List<string>();
-
-                    foreach (var setType in col.SetType)
+                    if (col.SetType[0].Value != "All")
                     {
-                        if (setType.isChecked.Value && setType.Name != "All")
-                        {
-                            setTypefilter.Add(setType.Name.Value);
-                        }
-                    }
-                    if (col.SetType.Count > 0)
-                    {
-                        if (!(col.SetType[0].isChecked.Value && col.SetType[0].Name.Value == "All"))
-                        {
-                            qry = qry.Where(y => setTypefilter.Contains(y.SetType));
-                        }
-                    }
-                    else
-                    {
-                        qry = qry.Where(y => setTypefilter.Contains(y.SetType));
+                        var setTypefilter = new List<string>();
+                        setTypefilter.AddRange(col.SetType);
+                        qry = qry.Where(y => setTypefilter.Contains(y.Range));
                     }
                 }
             }
@@ -199,7 +190,7 @@ namespace iCollect.Controllers
         }
 
 
-            public void oneTimeTemp()
+        public void oneTimeTemp()
         {
             // OneTime Updates
             //foreach (var set in sets)

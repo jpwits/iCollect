@@ -1,4 +1,4 @@
-﻿function AccountCtrl($window, $sessionStorage, $localStorage,$scope, passData, loginUser) {
+﻿function AccountCtrl($window, $sessionStorage, $localStorage, $scope, getLookups,loginUser) {
     $scope.$sessionStorage = $sessionStorage.$default(/* any defaults here */);
     $scope.$localStorage = $localStorage.$default(/* any defaults here */);
 
