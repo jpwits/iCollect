@@ -43,12 +43,14 @@ namespace iCollect.Controllers
         }
 
         //[HttpGet, Authorize]
-        [HttpGet, Route("GetSets/{start}/{length}/{sortby}/{filterby}/{groupby}")]
-        public ActionResult GetSets(int start, int length, string sortby, string filterby, string groupby, int albumId)
+        [HttpPut, Route("GetSets/{start}/{length}/{sortby}/{filterbyYear}/{filterbyRanges}/{filterbySetTypes}/{groupby}/{albumId}")]
+        public ActionResult GetSets([FromBody] int start, int length, string sortby,string filterbyYear, string filterbyRanges, string filterbySetTypes, string groupby, int albumId)
         {
             // dynamic sortbyObj = Json.Decode(sortby);
             var sortbyObj = JsonConvert.DeserializeObject<dynamic>(sortby);
-            var filterbyObj = JsonConvert.DeserializeObject<dynamic>(filterby);
+            var filterbyYearObj = JsonConvert.DeserializeObject<dynamic>(filterbyYear);
+            var filterbyRangesObj = JsonConvert.DeserializeObject<dynamic>(filterbyRanges);
+            var filterbySetTypesObj = JsonConvert.DeserializeObject<dynamic>(filterbySetTypes);
             var groupbyObj = JsonConvert.DeserializeObject<dynamic>(groupby);
             var yrGroup = _context.Sets.AsEnumerable().GroupBy(a => a.Year);
             int dtMin = yrGroup.FirstOrDefault().Key ?? 1987;
@@ -56,7 +58,7 @@ namespace iCollect.Controllers
             var sortCol = sortbyObj.Columns;
             var qry = _context.Sets.AsQueryable();
 
-            qry = filterQry(qry, filterbyObj);
+            qry = filterQry(qry, filterbyYearObj, filterbyRangesObj, filterbySetTypesObj);
             var recordsTotal = qry.Count();
 
             qry = sortQry(qry, sortbyObj);
@@ -89,20 +91,20 @@ namespace iCollect.Controllers
             });
         }
 
-        public IQueryable filterQry(IQueryable<Sets> qry, dynamic filterbyObj)
+        public IQueryable filterQry(IQueryable<Sets> qry, dynamic filterbyYearObj, dynamic filterbyRangesObj, dynamic filterbySetTypesObj)
         {
-            int yrStartSel = ((DateTime)filterbyObj.Year.Start).Year;
-            int yrEndSel = ((DateTime)filterbyObj.Year.End).Year;
+            int yrStartSel = ((DateTime)filterbyYearObj.Start).Year;
+            int yrEndSel = ((DateTime)filterbyYearObj.End).Year;
             qry = qry.Where(y => y.Year >= yrStartSel && y.Year < yrEndSel + 1);
 
             var rangefilter = new List<string>();
-            foreach (var range in filterbyObj.Ranges)
+            foreach (var range in filterbyRangesObj)
             {
                 rangefilter.Add(range.Value);
             }
 
             var setTypesfilter = new List<string>();
-            foreach (var setType in filterbyObj.SetTypes)
+            foreach (var setType in filterbySetTypesObj)
             {
                 setTypesfilter.Add(setType.Value);
             }

@@ -44,7 +44,7 @@
     $scope.formats = ['yyyy'];
     $scope.format = $scope.formats[0];
     //$scope.altInputFormats = ['M!/d!/yyyy'];
-    $scope.altInputFormats = ['yyyy/M!/d!'];
+    $scope.altInputFormats = ['yyyy-M!-d!'];
     $scope.popup1 = {
         opened: false
     };
@@ -55,16 +55,24 @@
     if ($sessionStorage.album === undefined) {
         $sessionStorage.album = $state.params.album;
     }
-    else if ($sessionStorage.album === null) {
+    else if ($sessionStorage.album === null) {/* #####!!!!!!!!!*/
         $sessionStorage.album = 0;
     }
 
     if ($sessionStorage.dtMin === undefined) {
-        $sessionStorage.dtMin = $sessionStorage.album.startDate;
+        $sessionStorage.dtMin = new Date($sessionStorage.album.startDate);
     }
 
     if ($sessionStorage.dtMax === undefined) {
-        $sessionStorage.dtMax = $sessionStorage.album.endDate;
+        $sessionStorage.dtMax = new Date($sessionStorage.album.endDate);
+    }
+
+    if ($sessionStorage.yrStartSel === undefined) {
+        $sessionStorage.yrStartSel = $sessionStorage.dtMin;
+    }
+
+    if ($sessionStorage.yrEndSel === undefined) {
+        $sessionStorage.yrEndSel = $sessionStorage.dtMax;
     }
 
     if ($localStorage.session_pglen === undefined) {
@@ -99,13 +107,7 @@
         "Types": ["Prestige", "Launch", "Special"]
     }];
 
-    if ($sessionStorage.yrStartSel === undefined) {
-        $sessionStorage.yrStartSel = $sessionStorage.dtMin;
-    }
-
-    if ($sessionStorage.yrEndSel === undefined) {
-        $sessionStorage.yrEndSel = $sessionStorage.dtMax;
-    }
+    
 
     //$sessionStorage.filterby = [
     //    {
@@ -123,15 +125,14 @@
     //    }
     //];
 
-    $sessionStorage.filterby = {};
-    $sessionStorage.filterby.Ranges = ["Kruggerrand"];
-    $sessionStorage.filterby.Year = {
+
+    if ($sessionStorage.filterbyRanges === undefined) $sessionStorage.filterbyRanges = ["Kruggerrand"];
+    if ($sessionStorage.filterbyYear === undefined) $sessionStorage.filterbyYear = {
         "Start": $sessionStorage.album.startDate,
         "End": $sessionStorage.album.endDate
     };
 
-    $sessionStorage.filterby.SetTypes = ["Coin"];
-
+    if ($sessionStorage.filterbySetTypes === undefined) $sessionStorage.filterbySetTypes = ["Coin"];
 
     $scope.pageSize = $localStorage.session_pglen;
     $scope.viewby = $localStorage.session_pglen;
@@ -163,17 +164,19 @@
 
     $scope.getsets = () => {
 
-        getSetsSrvNg.get({
+        getSetsSrvNg.update({
             start: ($sessionStorage.currentPage - 1) * $localStorage.session_pglen,
             length: $sessionStorage.currentPage * $localStorage.session_pglen,
             sortby: JSON.stringify($sessionStorage.sortby),
-            filterby: JSON.stringify($sessionStorage.filterby),
+            filterbyYear: JSON.stringify($sessionStorage.filterbyYear),
+            filterbyRanges: JSON.stringify($sessionStorage.filterbyRanges),
+            filterbySetTypes: JSON.stringify($sessionStorage.filterbySetTypes),
             groupby: JSON.stringify($sessionStorage.groupby),
             albumId: $sessionStorage.album.albumId
         }).$promise.then(function (response) {
             $sessionStorage.iColSets = JSON.parse(JSON.stringify(response));
-            $scope.dtMin = $sessionStorage.iColSets.yrstartmin;
-            $scope.yrEndMax = $sessionStorage.iColSets.yrendmax;
+            //$scope.dtMin = new Date($sessionStorage.iColSets.yrstartmin);
+            //$scope.dtMax = new Date($sessionStorage.iColSets.yrendmax);
             angular.forEach($sessionStorage.iColSets.data, function (set) {
                 if (set.items.length > 0) {
                     set.delItems = set.items.filter(item => item.isActive === false);
@@ -206,20 +209,19 @@
     }
 
     $scope.filterRangeChange = (event) => {
-        $sessionStorage.filterby.Ranges = event;
+        $sessionStorage.filterbyRanges = event;
         $scope.getsets();
     };
 
     $scope.filterTypeChange = (event) => {
-        $sessionStorage.filterby.SetTypes = event;
+        $sessionStorage.filterbySetTypes = event;
         $scope.getsets();
     };
 
     $scope.filterDate = () => {
-        var ftrYear = $sessionStorage.filterby.find(a => a.Column === "Year");
-        ftrYear.Start = $sessionStorage.yrStartSel;
-        ftrYear.End = $sessionStorage.yrEndSel;
-
+        var ftrYear = $sessionStorage.filterbyYear;
+        $sessionStorage.filterbyYear.Start = $sessionStorage.yrStartSel;
+        $sessionStorage.filterbyYear.End = $sessionStorage.yrEndSel;
         $scope.getsets();
     };
 

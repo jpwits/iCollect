@@ -4,13 +4,16 @@ function getSetSrv($resource) {
     );
 }
 
-
 function getAlbums($resource) {
     return $resource('api/albums/GetAlbums');
 }
 
 function getSetsSrvNg($resource) {
-    return $resource('api/SetsNg/GetSets/:start/:length/:sortby/:filterby/:groupby', { start: '@start', length: '@length', sortby: '@sortby', filterby: '@filterby', groupby: '@groupby' }
+    return $resource('api/SetsNg/GetSets/:start/:length/:sortby/:filterbyYear/:filterbyRanges/:filterbySetTypes/:groupby/:albumId',
+        { start: '@start', length: '@length', sortby: '@sortby', filterbyYear: '@filterbyYear', filterbyRanges: '@filterbyRanges', filterbySetTypes: '@filterbySetTypes', groupby: '@groupby', albumId: '@albumId' }
+        , {
+            'update': { method: 'PUT' }
+        }
     );
 }
 
