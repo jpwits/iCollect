@@ -107,21 +107,31 @@
         $sessionStorage.yrEndSel = $sessionStorage.dtMax;
     }
 
-    $sessionStorage.filterby = [
-        {
-            "Column": "Year",
-            "Start": $sessionStorage.yrStartSel,
-            "End": $sessionStorage.yrEndSel
-        },
-        {
-            "Column": "Range",
-            "Ranges": ["All"]
-        },
-        {
-            "Column": "SetType",
-            "SetType": ["All"]
-        }
-    ];
+    //$sessionStorage.filterby = [
+    //    {
+    //        "Column": "Year",
+    //        "Start": $sessionStorage.yrStartSel,
+    //        "End": $sessionStorage.yrEndSel
+    //    },
+    //    {
+    //        "Column": "Range",
+    //        "Ranges": ["Kruggerrand"]
+    //    },
+    //    {
+    //        "Column": "SetType",
+    //        "SetType": ["All"]
+    //    }
+    //];
+
+    $sessionStorage.filterby = {};
+    $sessionStorage.filterby.Ranges = ["Kruggerrand"];
+    $sessionStorage.filterby.Year = {
+        "Start": $sessionStorage.album.startDate,
+        "End": $sessionStorage.album.endDate
+    };
+
+    $sessionStorage.filterby.SetTypes = ["Coin"];
+
 
     $scope.pageSize = $localStorage.session_pglen;
     $scope.viewby = $localStorage.session_pglen;
@@ -196,29 +206,14 @@
     }
 
     $scope.filterRangeChange = (event) => {
-        var ftrType = $sessionStorage.filterby.find(a => a.Column === "Range");
-
-        if ($localStorage.lookups.rangeGroup.length === event.length) {
-            ftrType.Ranges = ["All"];
-        }
-        else {
-            ftrType.Ranges = event;
-        }
+        $sessionStorage.filterby.Ranges = event;
         $scope.getsets();
     };
 
     $scope.filterTypeChange = (event) => {
-        var ftrType = $sessionStorage.filterby.find(a => a.Column === "SetType");
-        var type = ftrType.SetType.find(a => a.Name === event.key);
-        if (type !== undefined) {
-            type.isChecked = event.isChecked;
-        }
-        else {
-            ftrType.SetType.push({ "Name": event.key, "isChecked": true });
-        }
+        $sessionStorage.filterby.SetTypes = event;
         $scope.getsets();
     };
-
 
     $scope.filterDate = () => {
         var ftrYear = $sessionStorage.filterby.find(a => a.Column === "Year");

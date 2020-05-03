@@ -65,7 +65,7 @@ namespace iCollect.Controllers
                 .Take(length)
                 .Include(a => a.Items);
 
-            var qryTake = qry.ToList(); 
+            var qryTake = qry.ToList();
 
             var qryUser = from sets in qryTake
                           join items in _context.Items on sets.SetId equals items.SetId
@@ -91,47 +91,24 @@ namespace iCollect.Controllers
 
         public IQueryable filterQry(IQueryable<Sets> qry, dynamic filterbyObj)
         {
-            foreach (var col in filterbyObj)
+            int yrStartSel = ((DateTime)filterbyObj.Year.Start).Year;
+            int yrEndSel = ((DateTime)filterbyObj.Year.End).Year;
+            qry = qry.Where(y => y.Year >= yrStartSel && y.Year < yrEndSel + 1);
+
+            var rangefilter = new List<string>();
+            foreach (var range in filterbyObj.Ranges)
             {
-                if (col.Column.Value == "Year") // Do for one column only (the famous Jos) 4 now.
-                {
-                    int yrStartSel = ((DateTime)col.Start).Year;
-                    int yrEndSel = ((DateTime)col.End).Year;
-                    qry = qry.Where(y => y.Year >= yrStartSel && y.Year < yrEndSel + 1);
-                }
-                else if (col.Column.Value == "Range")
-                {
-                    var rangefilter = new List<string>();
-                    var count = Enumerable.Count(col.Ranges);
-                    if (count != 0)
-                    {
-                        if (col.Ranges[0].Value != "All")
-                        {
-                            foreach (var range in col.Ranges)
-                            {
-                                rangefilter.Add(range.Value);
-                            }
-                            qry = qry.Where(y => rangefilter.Contains(y.Range));
-                        }
-                    }
-                    else
-                    {
-                        qry = qry.Where(y => rangefilter.Contains(y.Range));
-                    }
-                    
-
-
-                }
-                else if (col.Column.Value == "SetType")
-                {
-                    if (col.SetType[0].Value != "All")
-                    {
-                        var setTypefilter = new List<string>();
-                        setTypefilter.AddRange(col.SetType);
-                        qry = qry.Where(y => setTypefilter.Contains(y.Range));
-                    }
-                }
+                rangefilter.Add(range.Value);
             }
+
+            var setTypesfilter = new List<string>();
+            foreach (var setType in filterbyObj.SetTypes)
+            {
+                setTypesfilter.Add(setType.Value);
+            }
+            qry = qry.Where(y => setTypesfilter.Contains(y.SetType));
+            qry = qry.Where(y => rangefilter.Contains(y.Range) && setTypesfilter.Contains(y.SetType)); 
+
             return qry;
         }
         public IQueryable sortQry(IQueryable<Sets> qry, dynamic sortbyObj)
