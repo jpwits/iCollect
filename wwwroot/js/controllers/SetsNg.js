@@ -59,21 +59,13 @@
         $sessionStorage.album = 0;
     }
 
-    if ($sessionStorage.dtMin === undefined) {
-        $sessionStorage.dtMin = new Date($sessionStorage.album.startDate);
-    }
+    if ($sessionStorage.filterbyYear === undefined) $sessionStorage.filterbyYear = {
+        "Start": $sessionStorage.album.startDate,
+        "End": $sessionStorage.album.endDate
+    };
 
-    if ($sessionStorage.dtMax === undefined) {
-        $sessionStorage.dtMax = new Date($sessionStorage.album.endDate);
-    }
-
-    if ($sessionStorage.yrStartSel === undefined) {
-        $sessionStorage.yrStartSel = $sessionStorage.dtMin;
-    }
-
-    if ($sessionStorage.yrEndSel === undefined) {
-        $sessionStorage.yrEndSel = $sessionStorage.dtMax;
-    }
+    $scope.yrStartSel = new Date($sessionStorage.filterbyYear.Start);
+    $scope.yrEndSel = new Date($sessionStorage.filterbyYear.End);
 
     if ($localStorage.session_pglen === undefined) {
         $localStorage.session_pglen = "50";
@@ -107,37 +99,23 @@
         "Types": ["Prestige", "Launch", "Special"]
     }];
 
-    
+ 
 
-    //$sessionStorage.filterby = [
-    //    {
-    //        "Column": "Year",
-    //        "Start": $sessionStorage.yrStartSel,
-    //        "End": $sessionStorage.yrEndSel
-    //    },
-    //    {
-    //        "Column": "Range",
-    //        "Ranges": ["Kruggerrand"]
-    //    },
-    //    {
-    //        "Column": "SetType",
-    //        "SetType": ["All"]
-    //    }
-    //];
-
-
-    if ($sessionStorage.filterbyRanges === undefined) $sessionStorage.filterbyRanges = ["Kruggerrand"];
-    if ($sessionStorage.filterbyYear === undefined) $sessionStorage.filterbyYear = {
-        "Start": $sessionStorage.album.startDate,
-        "End": $sessionStorage.album.endDate
+    if ($sessionStorage.filterbyRanges === undefined) {
+        $sessionStorage.filterbyRanges = [];
+        $localStorage.lookups.rangeGroup.forEach(function (range) {
+            $sessionStorage.filterbyRanges.push(range.key);
+        });
     };
-
-    if ($sessionStorage.filterbySetTypes === undefined) $sessionStorage.filterbySetTypes = ["Coin"];
+    if ($sessionStorage.filterbySetTypes === undefined) {
+        $sessionStorage.filterbySetTypes = [];
+        $localStorage.lookups.typeGroup.forEach(function (type) {
+            $sessionStorage.filterbySetTypes.push(type.key);
+        });
+    }
 
     $scope.pageSize = $localStorage.session_pglen;
     $scope.viewby = $localStorage.session_pglen;
-
-    //$scope.itemsPerPage = $scope.viewby;
     $scope.maxSize = 5; //Number of pager buttons to show
 
     if ($sessionStorage.currentPage === undefined) {
@@ -175,8 +153,8 @@
             albumId: $sessionStorage.album.albumId
         }).$promise.then(function (response) {
             $sessionStorage.iColSets = JSON.parse(JSON.stringify(response));
-            //$scope.dtMin = new Date($sessionStorage.iColSets.yrstartmin);
-            //$scope.dtMax = new Date($sessionStorage.iColSets.yrendmax);
+            $scope.dtMin = new Date($sessionStorage.iColSets.yrstartmin);
+            $scope.dtMax = new Date($sessionStorage.iColSets.yrendmax);
             angular.forEach($sessionStorage.iColSets.data, function (set) {
                 if (set.items.length > 0) {
                     set.delItems = set.items.filter(item => item.isActive === false);
