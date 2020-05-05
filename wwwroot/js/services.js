@@ -42,8 +42,8 @@ function getImage($resource) {
     );
 }
 
-function updateImage($resource) {
-    return $resource('api/SetsNg/Edit/:id', { id: '@id' }
+function updateSet($resource) {
+    return $resource('api/SetsNg/updateSet/:id', { id: '@id' }
         , {
             'update': { method: 'PUT' }
         }
@@ -96,7 +96,7 @@ function passData() {
 angular
     .module('inspinia')
     .service('getImage', getImage)
-    .service('updateImage', updateImage)
+    .service('updateSet', updateSet)
     .service('passData', passData)
     .service('getUser', getUser)
     .service('getCollectionSrv', getCollectionSrv)

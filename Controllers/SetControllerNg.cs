@@ -401,9 +401,9 @@ namespace iCollect.Controllers
             return new JsonResult(set);
         }
 
-        [HttpPut("Edit")]
+        [HttpPut("updateSet")]
         //[ValidateAntiForgeryToken]
-        public async Task<Sets> Edit([FromBody] Sets data)
+        public async Task<Sets> updateSet([FromBody] Sets data)
         {
             try
             {

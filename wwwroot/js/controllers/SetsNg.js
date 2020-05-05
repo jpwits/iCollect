@@ -1,4 +1,4 @@
-﻿function SetsNgCtrl($scope, $state, updateImage, $sessionStorage, $localStorage, getSetsSrvNg, passData, getSetSrv, $timeout, $q) {
+﻿function SetsNgCtrl($scope, $state, $sessionStorage, $localStorage, getSetsSrvNg, passData, getSetSrv, $timeout, $q) {
     //if ($sessionStorage.User === undefined) {
     //    $state.go("logins");
     //}
@@ -239,7 +239,7 @@
             item.userItems[0].quantity = item.userItems[0].quantity + direction;
         }  //0 here should be user find, do user filtering on api change entity []->{}
 
-        $scope.entry = new updateImage($sessionStorage.iColSets.data[setidx]);
+        $scope.entry = new updateSet($sessionStorage.iColSets.data[setidx]);
         $scope.entry.$update(function (response) {
 
         }, function (error) {

@@ -1,4 +1,4 @@
-﻿function SetCtrl($scope, $state, $sessionStorage, updateImage) {
+﻿function SetCtrl($scope, $state, $sessionStorage, updateSet) {
     $scope.iCol = $sessionStorage.iColSets.data[$sessionStorage.curSetIdx];
 
     $scope.UpdateSet = function (sets) {
@@ -6,7 +6,7 @@
         if (clone.delItems !== undefined) {
             clone.items = clone.items.concat(clone.delItems);
         }
-        $scope.entry = new updateImage(clone);
+        $scope.entry = new updateSet(clone);
         $scope.entry.$update(function (response) {
             iCol = response;
             if (iCol.items.length > 0) {
