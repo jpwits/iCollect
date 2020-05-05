@@ -198,8 +198,8 @@
 
     $scope.filterDate = () => {
         var ftrYear = $sessionStorage.filterbyYear;
-        $sessionStorage.filterbyYear.Start = $sessionStorage.yrStartSel;
-        $sessionStorage.filterbyYear.End = $sessionStorage.yrEndSel;
+        $sessionStorage.filterbyYear.Start = $scope.yrStartSel;
+        $sessionStorage.filterbyYear.End = $scope.yrEndSel;
         $scope.getsets();
     };
 
