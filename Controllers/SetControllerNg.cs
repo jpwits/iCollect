@@ -77,7 +77,7 @@ namespace iCollect.Controllers
             var qryUserTake = qryUser.ToList();
 
             var qryComb = qryTake.Union(qryUserTake);
-            //qryComb = sortQry(qryComb, sortbyObj);
+            qryComb = sortQry(qryComb.AsQueryable(), sortbyObj);
             var qryRes = qryComb.ToList();
 
             //oneTimeTemp();

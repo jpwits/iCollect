@@ -79,7 +79,7 @@
                 "Direction": "Descending"
             }, {
                 "Column": "Year",
-                "Direction": "Ascending"
+                "Direction": "Descending"
             }, {
                 "Column": "Range",
                 "Direction": "Descending"
@@ -183,7 +183,7 @@
     };
 
     if ($sessionStorage.iColSets === undefined) {
-        $scope.sortBy("Year");
+        $scope.getsets();
     }
 
     $scope.filterRangeChange = (event) => {
