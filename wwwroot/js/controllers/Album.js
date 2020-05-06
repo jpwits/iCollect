@@ -1,7 +1,7 @@
 ﻿function AlbumCtrl($scope, $state, $stateParams, $sessionStorage, $localStorage,  updateAlbumSrv) {
     if ($sessionStorage.User === undefined) {
         $state.go("logins");
-    } //replace with intersect
+    } 
 
     $scope.today = function () {
         $scope.dtStart = new Date(1987, 1, 1);

@@ -131,16 +131,14 @@
                                 <!--Details-->
                                 <div ng-repeat="(setidx,set) in $sessionStorage.iColSets.data" ng-if="$sessionStorage.viewLayout == 'Details'" class="div-table-row">
                                     <div style="min-width:450px" class="div-table-col">
+                                        <div ng-if="set.items.length === 0">
+                                            <img ng-click="selectSet($event, setidx)" width="120" style="margin-right : 25px;border:2px solid grey" ng-src="../img/NoImage.jpg" />
+                                        </div>
                                         <div ng-repeat="(itemidx, item)  in set.items" ng-if="item.isActive == true">
                                             <div class="SetContainer">
                                                 <div class="container">
-                                                    <div ng-if="item === undefined">
-                                                        <img ng-click="selectSet($event, setidx)" width="120" style="margin-right : 25px;border:2px solid grey" ng-src="../img/NoImage.jpg" />
-                                                    </div>
-                                                    <div ng-if="item !== undefined">
-                                                        <img ng-click="selectSet($event, setidx)" style="margin-right : 25px;border:2px solid grey" ng-src="data:{{item.type}};base64,{{item.thumbnailA}}" />
-                                                        <img ng-if="item.thumbnailB != undefined" class="overlay" ng-click="selectSet($event, setidx)" style="margin-right : 25px;border:2px solid grey" ng-src="data:{{item.type}};base64,{{item.thumbnailB}}" />
-                                                    </div>
+                                                    <img ng-click="selectSet($event, setidx)" style="margin-right : 25px;border:2px solid grey" ng-src="data:{{item.type}};base64,{{item.thumbnailA}}" />
+                                                    <img ng-if="item.thumbnailB != undefined" class="overlay" ng-click="selectSet($event, setidx)" style="margin-right : 25px;border:2px solid grey" ng-src="data:{{item.type}};base64,{{item.thumbnailB}}" />
                                                 </div>
                                                 <span class="ItemCheckbox" style="padding-bottom : 18px;">{{item.userItems[0].quantity}}</span>
                                                 <a ng-if="itemidx === 0" href="" ng-click="SelectItem($event, setidx, itemidx , 1)" type="button" class="ItemCheckbox"><i class="fa fa-plus" style="padding-bottom:35px;font-size:16px;color:green"></i></a>

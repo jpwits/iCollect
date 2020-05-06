@@ -1,7 +1,8 @@
 ﻿function SetsNgCtrl($scope, $state, $sessionStorage, $localStorage, getSetsSrvNg, passData, getSetSrv, $timeout, $q) {
-    //if ($sessionStorage.User === undefined) {
-    //    $state.go("logins");
-    //}
+    if ($sessionStorage.User === undefined) {
+        $state.go("logins");
+       // return;
+    }
 
     if ($state.params.viewLayout !== null) {
         $sessionStorage.viewLayout = $state.params.viewLayout;
@@ -170,6 +171,10 @@
 
     };
 
+    if ($sessionStorage.iColSets === undefined) {
+        $scope.getsets();
+    }
+
     $scope.sortBy = function (column) {
         var sortCol = $sessionStorage.sortby.Columns.find(a => a.Column === column);
         if (sortCol.Direction === "Ascending") {
@@ -181,10 +186,6 @@
         $sessionStorage.sortby.Active = column;
         $scope.getsets();
     };
-
-    if ($sessionStorage.iColSets === undefined) {
-        $scope.getsets();
-    }
 
     $scope.filterRangeChange = (event) => {
         $sessionStorage.filterbyRanges = event;
