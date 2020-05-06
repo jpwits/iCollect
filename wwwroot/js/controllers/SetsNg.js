@@ -127,22 +127,7 @@
         $sessionStorage.numberOfPages = 1;
     }
 
-    $scope.setPage = function (pageNo) {
-        $sessionStorage.currentPage = pageNo;
-    };
-
-    $scope.pageChanged = function () {
-        $scope.getsets();
-    };
-
-    $scope.setItemsPerPage = function (num) {
-        $localStorage.session_pglen = num;
-        $sessionStorage.iColSets = undefined;
-        $scope.getsets();
-    };
-
     $scope.getsets = () => {
-
         getSetsSrvNg.update({
             start: ($sessionStorage.currentPage - 1) * $localStorage.session_pglen,
             length: $sessionStorage.currentPage * $localStorage.session_pglen,
@@ -166,9 +151,16 @@
             });
             $sessionStorage.numberOfPages = Math.ceil($sessionStorage.iColSets.recordsTotal / $localStorage.session_pglen);
         }, function (error) {
+            $sessionStorage.iComsErr = JSON.parse(JSON.stringify(error));
             alert("Error Retrieving Sets : " + error);
         });
 
+    };
+
+    $scope.setItemsPerPage = function (num) {
+        $localStorage.session_pglen = num;
+        $sessionStorage.iColSets = undefined;
+        $scope.getsets();
     };
 
     if ($sessionStorage.iColSets === undefined) {
