@@ -26,7 +26,7 @@ namespace TGIS.Web
 
 				try
 				{
-					var context = services.GetRequiredService<NorthwindContext>();
+					var context = services.GetRequiredService<icollectdbContext>();
 					//if (context.Database.EnsureDeleted()) ///!!!-Note Live db in use...switch first!!!!
 					//{
 

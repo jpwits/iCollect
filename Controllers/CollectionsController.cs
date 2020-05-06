@@ -18,9 +18,9 @@ namespace iCollect.Controllers
     [Route("api/Collections"), Produces("application/json"), EnableCors("AppPolicy")]
     public class CollectionsController : Controller
     {
-        private readonly NorthwindContext _context;
+        private readonly icollectdbContext _context;
 
-        public CollectionsController(NorthwindContext context)
+        public CollectionsController(icollectdbContext context)
         {
             _context = context;
         }
@@ -43,7 +43,7 @@ namespace iCollect.Controllers
             int skip = start != null ? Convert.ToInt32(start) : 0;
             int recordsTotal = 0;
             //Database query
-            using (NorthwindContext dc = new NorthwindContext())
+            using (icollectdbContext dc = new icollectdbContext())
             {
                 recordsTotal = dc.Collections.Count();
                 allCollections = dc.Collections.OrderBy(a => a.Name).Skip(skip).Take(pageSize).ToList();

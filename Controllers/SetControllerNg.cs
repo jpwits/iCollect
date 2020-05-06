@@ -21,9 +21,9 @@ namespace iCollect.Controllers
     [Route("api/SetsNg"), Produces("application/json"), EnableCors("AppPolicy")]
     public class SetsNgController : Controller
     {
-        private readonly NorthwindContext _context;
+        private readonly icollectdbContext _context;
 
-        public SetsNgController(NorthwindContext context)
+        public SetsNgController(icollectdbContext context)
         {
             _context = context;
         }
@@ -72,7 +72,7 @@ namespace iCollect.Controllers
             var qryUser = from sets in qryTake
                           join items in _context.Items on sets.SetId equals items.SetId
                           join userItems in _context.UserItems on items.ItemId equals userItems.ItemId
-                          where (userItems.UserId == User.Identity.Name && userItems.AlbumId == albumId)
+                          where (userItems.UserId == User.Identity.Name)// && userItems.AlbumId == albumId)
                           select sets;
             var qryUserTake = qryUser.ToList();
 

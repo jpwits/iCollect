@@ -9,7 +9,7 @@ namespace TGIS.Web.DAL
 {
     public static class DbInitializer
     {
-        public static void Initialize(NorthwindContext context)
+        public static void Initialize(icollectdbContext context)
         {
             
         }

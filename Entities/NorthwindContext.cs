@@ -4,13 +4,13 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace iCollect.Entities
 {
-    public partial class NorthwindContext : DbContext
+    public partial class icollectdbContext : DbContext
     {
-        public NorthwindContext()
+        public icollectdbContext()
         {
         }
 
-        public NorthwindContext(DbContextOptions<NorthwindContext> options)
+        public icollectdbContext(DbContextOptions<icollectdbContext> options)
             : base(options)
         {
         }
@@ -29,7 +29,7 @@ namespace iCollect.Entities
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Data Source=DESKTOP-7DQTMIU\\SQLEXPRESS;Initial Catalog=Northwind;Trusted_Connection=True;");
+                //optionsBuilder.UseSqlServer("Data Source=DESKTOP-7DQTMIU\\SQLEXPRESS;Initial Catalog=Northwind;Trusted_Connection=True;");
             }
         }
 

@@ -19,9 +19,9 @@ namespace iCollect.Controllers
     [Route("api/Sets"), Produces("application/json"), EnableCors("AppPolicy")]
     public class SetsController : Controller
     {
-        private readonly NorthwindContext _context;
+        private readonly icollectdbContext _context;
 
-        public SetsController(NorthwindContext context)
+        public SetsController(icollectdbContext context)
         {
             _context = context;
         }
@@ -46,7 +46,7 @@ namespace iCollect.Controllers
             int skip = start != null ? Convert.ToInt32(start) : 0;
             int recordsTotal = 0;
             //Database query
-            using (NorthwindContext dc = new NorthwindContext())
+            using (icollectdbContext dc = new icollectdbContext())
             {
                 recordsTotal = dc.Sets.Count();
                 allSets = dc.Sets

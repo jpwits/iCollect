@@ -11,9 +11,9 @@ namespace iCollect.Controllers
     [Route("api/albums"), Produces("application/json"), EnableCors("AppPolicy")]
     public class AlbumController : Controller
     {
-        private readonly NorthwindContext _context;
+        private readonly icollectdbContext _context;
 
-        public AlbumController(NorthwindContext context)
+        public AlbumController(icollectdbContext context)
         {
             _context = context;
         }

@@ -64,6 +64,7 @@
     <Compile Remove="Entities\Links.cs" />
     <Compile Remove="Entities\Links1.cs" />
     <Compile Remove="Entities\Links2.cs" />
+    <Compile Remove="Entities\NorthwindContext.cs" />
     <Compile Remove="Entities\OrderDetails.cs" />
     <Compile Remove="Entities\Orders.cs" />
     <Compile Remove="Entities\Products.cs" />

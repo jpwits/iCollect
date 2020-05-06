@@ -60,7 +60,7 @@ namespace TGIS.Web
                 options.UseSqlite(
                     Configuration.GetConnectionString("AuthConnection")));
 
-            services.AddDbContext<NorthwindContext>(options =>
+            services.AddDbContext<icollectdbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("CollectConnection")));
 
