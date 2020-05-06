@@ -13,7 +13,7 @@
             $window.history.back();
             //$state.go("app.setsng");
         }, function (error) {
-            alert("Error getting orders from back-end : " + error);
+            alert("Error Logging in : " + error);
         });
     };
 
@@ -25,7 +25,7 @@
                 $('.selectpicker').selectpicker();
             });
         }, function (error) {
-            alert("Error getting orders from back-end : " + error);
+            alert("Error retrieving lookups : " + error);
         });
     };
 

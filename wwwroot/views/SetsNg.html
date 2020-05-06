@@ -112,7 +112,7 @@
                                 <div ng-if="$sessionStorage.viewLayout == 'Tiles'" class="div-table-row">
                                     <span ng-repeat="(setidx,set) in $sessionStorage.iColSets.data">
                                         <div class="SetContainer">
-                                            <div class="container">
+                                            <div class="container" title="{{set.description}}">
                                                 <div ng-if="set.items.length === 0">
                                                     <img ng-click="selectSet($event, setidx)" width="120" style="margin-right : 25px;border:2px solid grey" ng-src="../img/NoImage.jpg" />
                                                 </div>

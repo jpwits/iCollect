@@ -103,7 +103,11 @@
                             </div>
                         </div>
                         <div class="row">
-                            <button ng-click="updateAlbum($sessionStorage.album)" class="btn btn-primary dim" type="button"><i class="fa fa-save"></i> Add</button>
+                            <button ng-click="updateAlbum($sessionStorage.album)" class="btn btn-primary dim" type="button"><i class="fa fa-save"></i>&nbsp;&nbsp;Save</button>
+
+                            <button style="right:65px; top: 75px;float:right" id="favBtn" ng-click="RemoveAlbum($sessionStorage.album);" class="btn btn-danger dim" type="button" tooltip-placement="bottom" uib-tooltip="Delete Album">
+                                <i id="favIcon" class="fa fa-trash"></i>
+                            </button>
                         </div>
                     </div>
                 </div>

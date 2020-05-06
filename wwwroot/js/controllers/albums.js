@@ -16,15 +16,15 @@
         $state.go('ui.album');
     };
 
+   
+
     $scope.getAlbums = () => {
-        if ($sessionStorage.albums === undefined) {
-            getAlbums.get().$promise.then(function (response) {
-                var jsonResp = JSON.parse(JSON.stringify(response));
-                $sessionStorage.albums = jsonResp.albums;
-            }, function (error) {
-                alert("Error getting orders from back-end : " + error);
-            });
-        }
+        getAlbums.get().$promise.then(function (response) {
+            var jsonResp = JSON.parse(JSON.stringify(response));
+            $sessionStorage.albums = jsonResp.albums;
+        }, function (error) {
+            alert("Error retrieving albums : " + error);
+        });
     };
 
     $scope.getAlbums();

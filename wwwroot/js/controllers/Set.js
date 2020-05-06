@@ -18,7 +18,7 @@
             //iCol = iCol;
             alert("Saved successfully...");
         }, function (error) {
-            alert("Error getting orders from back-end : " + error);
+            alert("Error Updating Set : " + error);
         });
     };
 

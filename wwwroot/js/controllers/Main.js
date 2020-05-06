@@ -5,7 +5,7 @@
         //$scope.User = passData.get("User");
     },
         function (error) {
-            alert("Error getting user from back-end : " + error);
+            alert("Error Getting User Info : " + error);
         });
 
     this.countries = [

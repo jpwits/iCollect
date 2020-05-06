@@ -49,13 +49,35 @@
     };
 
     $scope.updateAlbum = function (album) {
+        if (album.albumId === undefined) {
+            album.isActive = true;
+        }
         $scope.entry = new updateAlbumSrv(album);
         $scope.entry.$update(function (response) {
-            sets = response;
+            $sessionStorage.albums.push(response);
             alert("Album Saved successfully...");
         }, function (error) {
-            alert("Error getting orders from back-end : " + error);
+            alert("Error Updating album : " + error);
         });
+    };
+
+    $scope.deleteAlbum = function (album) {
+        $scope.entry = new updateAlbumSrv(album);
+        $scope.entry.$update(function (response) {
+            $sessionStorage.albums.push(response);
+            alert("Album Saved successfully...");
+            $state.go('ui.albums');
+        }, function (error) {
+            alert("Error Deleting album : " + error);
+        });
+    }
+
+    $scope.RemoveAlbum = (album) => {
+        if (confirm('Are you sure you want to delete this album, by deleting this album you will loose all the item quantities in this album?')) {
+            // Save it!
+            album.isActive = false;
+            $scope.deleteAlbum(album);
+        } 
     };
 
     $(function () {

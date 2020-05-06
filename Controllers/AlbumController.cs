@@ -37,11 +37,11 @@ namespace iCollect.Controllers
 
         [HttpPut("updateAlbum")]
         //[ValidateAntiForgeryToken]
-        public async Task<int> updateAlbum([FromBody] Albums data)
+        public async Task<Albums> updateAlbum([FromBody] Albums data)
         {
             _context.Update(data);
             int rc = await _context.SaveChangesAsync();
-            return rc;
+            return data;
         }
     }
 }

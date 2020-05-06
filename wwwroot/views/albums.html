@@ -25,17 +25,16 @@
                         <img width="100%" src="../img/plus.png" />
                     </button>
                     <span ng-repeat="album in $sessionStorage.albums">
-                        <button ng-click="GotoAlbum(album);" style="width:200px;height:200px" class="btn btn-danger dim btn-large-dim" type="button" tooltip-placement="middle" uib-tooltip="View Album">
-                            <div style="font-size:small">{{album.name}}</div>
-                            <img width="100%" src="../img/Coins/krugerrand-2000-proof (3).jpg" />
-                        </button>
-                        <button style="right:65px; top: 75px" id="favBtn" ng-click="RemoveAlbum(album);" class="btn btn-danger dim" type="button" tooltip-placement="bottom" uib-tooltip="Delete Album">
-                            <i id="favIcon" class="fa fa-trash"></i>
-                        </button>
-                        <button style="right:165px; top: 75px" id="favBtn" ng-click="EditAlbum(album);" class="btn btn-info dim" type="button" tooltip-placement="bottom" uib-tooltip="Edit Album">
-                            <i id="favIcon" class="fa fa-edit"></i>
-                        </button>
-
+                        <span ng-if ="album.isActive == true">
+                            <button ng-click="GotoAlbum(album);" style="width:200px;height:200px" class="btn btn-danger dim btn-large-dim" type="button" tooltip-placement="middle" uib-tooltip="View Album">
+                                <div style="font-size:small">{{album.name}}</div>
+                                <img width="100%" src="../img/Coins/krugerrand-2000-proof (3).jpg" />
+                            </button>
+                          
+                            <button style="right:65px; top: 75px" id="favBtn" ng-click="EditAlbum(album);" class="btn btn-info dim" type="button" tooltip-placement="bottom" uib-tooltip="Edit Album">
+                                <i id="favIcon" class="fa fa-edit"></i>
+                            </button>
+                        </span>
                     </span>
                 </div>
             </div>

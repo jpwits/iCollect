@@ -165,7 +165,7 @@
             });
             $sessionStorage.numberOfPages = Math.ceil($sessionStorage.iColSets.recordsTotal / $localStorage.session_pglen);
         }, function (error) {
-            alert("Error getting orders from back-end : " + error);
+            alert("Error Retrieving Sets : " + error);
         });
 
     };
@@ -217,7 +217,7 @@
             $sessionStorage.iColSets.data[setidx] = set;
             $state.go('app.set');
         }, function (error) {
-            alert("Error getting orders from back-end : " + error);
+            alert("Error Selecting Set : " + error);
         });
     };
 
@@ -243,7 +243,7 @@
         $scope.entry.$update(function (response) {
 
         }, function (error) {
-            alert("Error getting orders from back-end : " + error);
+            alert("Error Selecting Item : " + error);
         });
     };
 
