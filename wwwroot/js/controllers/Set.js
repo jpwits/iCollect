@@ -1,7 +1,10 @@
 ﻿function SetCtrl($scope, $state, $sessionStorage, updateSet) {
     $scope.iCol = $sessionStorage.iColSets.data[$sessionStorage.curSetIdx];
 
+    $scope.searchButtonText = "Save";
+
     $scope.UpdateSet = function (sets) {
+        $scope.searchButtonText = "Saving";
         var clone = Object.assign({}, sets);
         if (clone.delItems !== undefined) {
             clone.items = clone.items.concat(clone.delItems);
@@ -16,8 +19,11 @@
                 }).filter(item => item.isActive === true);
             }
             //iCol = iCol;
-            alert("Saved successfully...");
+            //alert("Saved successfully...");
+            $scope.searchButtonText = "Save";
+
         }, function (error) {
+            $scope.searchButtonText = "Save";
             alert("Error Updating Set : " + error);
         });
     };

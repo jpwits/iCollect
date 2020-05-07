@@ -1,7 +1,9 @@
-﻿function AlbumCtrl($scope, $state, $stateParams, $sessionStorage, $localStorage,  updateAlbumSrv) {
+﻿function AlbumCtrl($scope, $state, $stateParams, $sessionStorage, $localStorage, updateAlbumSrv) {
     if ($sessionStorage.User === undefined) {
         $state.go("logins");
-    } 
+    }
+
+    $scope.spinUpdateAlbum = "Save";
 
     $scope.today = function () {
         $scope.dtStart = new Date(1987, 1, 1);
@@ -49,15 +51,18 @@
     };
 
     $scope.updateAlbum = function (album) {
+        $scope.spinUpdateAlbum = "Saving";
         if (album.albumId === undefined) {
             album.isActive = true;
         }
         $scope.entry = new updateAlbumSrv(album);
         $scope.entry.$update(function (response) {
             $sessionStorage.albums.push(response);
-            alert("Album Saved successfully...");
+            $scope.spinUpdateAlbum = "Save";
+            //alert("Album Saved successfully...");
         }, function (error) {
             alert("Error Updating album : " + error);
+                $scope.spinUpdateAlbum = "Save";
         });
     };
 
@@ -77,7 +82,7 @@
             // Save it!
             album.isActive = false;
             $scope.deleteAlbum(album);
-        } 
+        }
     };
 
     $(function () {

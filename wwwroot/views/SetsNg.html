@@ -32,7 +32,6 @@
                             <div>Page: {{$sessionStorage.currentPage}} / {{$sessionStorage.numberOfPages}} - [{{$sessionStorage.iColSets.recordsTotal}}]</div>
                             <br />
 
-
                             <div class="div-table fadeInRight">
                                 <!--Header-->
                                 <div class="div-table-row">
@@ -108,8 +107,13 @@
                                     </div>
                                 </div>
 
+
+
                                 <!--Tiles-->
                                 <div ng-if="$sessionStorage.viewLayout == 'Tiles'" class="div-table-row">
+                                    <div ng-show="spinLoadingSets == true">
+                                        <i style="font-size: 30px;" class="glyphicon glyphicon-refresh spinning"></i>
+                                    </div>
                                     <span ng-repeat="(setidx,set) in $sessionStorage.iColSets.data">
                                         <div class="SetContainer">
                                             <div class="container" title="{{set.description}}">
@@ -129,42 +133,46 @@
                                 </div>
 
                                 <!--Details-->
-                                <div ng-repeat="(setidx,set) in $sessionStorage.iColSets.data" ng-if="$sessionStorage.viewLayout == 'Details'" class="div-table-row">
-                                    <div style="min-width:450px" class="div-table-col">
-                                        <div ng-if="set.items.length === 0">
-                                            <img ng-click="selectSet($event, setidx)" width="120" style="margin-right : 25px;border:2px solid grey" ng-src="../img/NoImage.jpg" />
-                                        </div>
-                                        <div ng-repeat="(itemidx, item)  in set.items" ng-if="item.isActive == true">
-                                            <div class="SetContainer">
-                                                <div class="container">
-                                                    <img ng-click="selectSet($event, setidx)" style="margin-right : 25px;border:2px solid grey" ng-src="data:{{item.type}};base64,{{item.thumbnailA}}" />
-                                                    <img ng-if="item.thumbnailB != undefined" class="overlay" ng-click="selectSet($event, setidx)" style="margin-right : 25px;border:2px solid grey" ng-src="data:{{item.type}};base64,{{item.thumbnailB}}" />
+                                <div ng-if="$sessionStorage.viewLayout == 'Details'">
+                                    <div ng-show="spinLoadingSets == true">
+                                        <i style="font-size: 30px;" class="glyphicon glyphicon-refresh spinning"></i>
+                                    </div>
+                                    <div ng-repeat="(setidx,set) in $sessionStorage.iColSets.data" class="div-table-row">
+                                        <div style="min-width:450px" class="div-table-col">
+                                            <div ng-if="set.items.length === 0">
+                                                <img ng-click="selectSet($event, setidx)" width="120" style="margin-right : 25px;border:2px solid grey" ng-src="../img/NoImage.jpg" />
+                                            </div>
+                                            <div ng-repeat="(itemidx, item)  in set.items" ng-if="item.isActive == true">
+                                                <div class="SetContainer">
+                                                    <div class="container">
+                                                        <img ng-click="selectSet($event, setidx)" style="margin-right : 25px;border:2px solid grey" ng-src="data:{{item.type}};base64,{{item.thumbnailA}}" />
+                                                        <img ng-if="item.thumbnailB != undefined" class="overlay" ng-click="selectSet($event, setidx)" style="margin-right : 25px;border:2px solid grey" ng-src="data:{{item.type}};base64,{{item.thumbnailB}}" />
+                                                    </div>
+                                                    <span class="ItemCheckbox" style="padding-bottom : 18px;">{{item.userItems[0].quantity}}</span>
+                                                    <a ng-if="itemidx === 0" href="" ng-click="SelectItem($event, setidx, itemidx , 1)" type="button" class="ItemCheckbox"><i class="fa fa-plus" style="padding-bottom:35px;font-size:16px;color:green"></i></a>
+                                                    <a ng-if="itemidx === 0" href="" ng-click="SelectItem($event, setidx, itemidx , -1)" type="button" class="ItemCheckbox"><i class="fa fa-minus" style="font-size:16px;color:red"></i></a>
+                                                    <a ng-if="itemidx !== 0" href="" ng-click="SelectItem($event, setidx, itemidx , 1)" type="button" class="ItemCheckbox"><i class="fa fa-caret-up" style="padding-bottom:30px;font-size:24px;color:green"></i></a>
+                                                    <a ng-if="itemidx !== 0" href="" ng-click="SelectItem($event, setidx, itemidx , -1)" type="button" class="ItemCheckbox"><i class="fa fa-caret-down" style="font-size:24px;color:red"></i></a>
                                                 </div>
-                                                <span class="ItemCheckbox" style="padding-bottom : 18px;">{{item.userItems[0].quantity}}</span>
-                                                <a ng-if="itemidx === 0" href="" ng-click="SelectItem($event, setidx, itemidx , 1)" type="button" class="ItemCheckbox"><i class="fa fa-plus" style="padding-bottom:35px;font-size:16px;color:green"></i></a>
-                                                <a ng-if="itemidx === 0" href="" ng-click="SelectItem($event, setidx, itemidx , -1)" type="button" class="ItemCheckbox"><i class="fa fa-minus" style="font-size:16px;color:red"></i></a>
-                                                <a ng-if="itemidx !== 0" href="" ng-click="SelectItem($event, setidx, itemidx , 1)" type="button" class="ItemCheckbox"><i class="fa fa-caret-up" style="padding-bottom:30px;font-size:24px;color:green"></i></a>
-                                                <a ng-if="itemidx !== 0" href="" ng-click="SelectItem($event, setidx, itemidx , -1)" type="button" class="ItemCheckbox"><i class="fa fa-caret-down" style="font-size:24px;color:red"></i></a>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="div-table-col">
-                                        <span>{{set.year}}</span>
-                                    </div>
-                                    <div class="div-table-col">
-                                        <span>{{set.range}}</span>
-                                    </div>
-                                    <div class="div-table-col">
-                                        <div ng-if="set.setType === null">
-                                            <i>(No Type)</i>
+                                        <div class="div-table-col">
+                                            <span>{{set.year}}</span>
                                         </div>
-                                        <span>{{set.setType}}</span>
-                                    </div>
-                                    <div class="div-table-col">
-                                        <a href="" ng-click="selectSet($event,setidx)">{{set.description}}</a>
+                                        <div class="div-table-col">
+                                            <span>{{set.range}}</span>
+                                        </div>
+                                        <div class="div-table-col">
+                                            <div ng-if="set.setType === null">
+                                                <i>(No Type)</i>
+                                            </div>
+                                            <span>{{set.setType}}</span>
+                                        </div>
+                                        <div class="div-table-col">
+                                            <a href="" ng-click="selectSet($event,setidx)">{{set.description}}</a>
+                                        </div>
                                     </div>
                                 </div>
-
                                 <!--Footer-->
                                 <ul uib-pagination total-items="$sessionStorage.iColSets.recordsTotal" ng-model="$sessionStorage.currentPage" ng-change="pageChanged()" max-size="maxSize" class="pagination-sm" boundary-link-numbers="true"></ul>
                             </div>
@@ -172,9 +180,9 @@
 
 
                             <!--<div class="div-table-row">
-                                <h5>params</h5>
-                                <pre>{{$sessionStorage | json}}</pre>
-                            </div>-->
+        <h5>params</h5>
+        <pre>{{$sessionStorage | json}}</pre>
+    </div>-->
                         </div>
                     </div>
                 </div>

@@ -4,6 +4,8 @@
        // return;
     }
 
+    $scope.spinLoadingSets = false;
+
     if ($state.params.viewLayout !== null) {
         $sessionStorage.viewLayout = $state.params.viewLayout;
     }
@@ -21,7 +23,6 @@
     $scope.dateOptions = {
         datepickerMode: 'year',
         minMode: 'year',
-        //minDate: 'minDate',
         showWeeks: 'false',
         dateDisabled: false,
         formatYear: 'yyyy',
@@ -100,8 +101,6 @@
         "Types": ["Prestige", "Launch", "Special"]
     }];
 
- 
-
     if ($sessionStorage.filterbyRanges === undefined) {
         $sessionStorage.filterbyRanges = [];
         $localStorage.lookups.rangeGroup.forEach(function (range) {
@@ -128,6 +127,7 @@
     }
 
     $scope.getsets = () => {
+        $scope.spinLoadingSets = true;
         getSetsSrvNg.update({
             start: ($sessionStorage.currentPage - 1) * $localStorage.session_pglen,
             length: $sessionStorage.currentPage * $localStorage.session_pglen,
@@ -150,7 +150,9 @@
                 }
             });
             $sessionStorage.numberOfPages = Math.ceil($sessionStorage.iColSets.recordsTotal / $localStorage.session_pglen);
+            $scope.spinLoadingSets = false;
         }, function (error) {
+                $scope.spinLoadingSets = false;
             $sessionStorage.iComsErr = JSON.parse(JSON.stringify(error));
             alert("Error Retrieving Sets : " + error);
         });
