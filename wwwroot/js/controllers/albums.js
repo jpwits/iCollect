@@ -1,6 +1,7 @@
-﻿function AlbumsCtrl($scope, $state, $sessionStorage, $localStorage, $stateParams, getAlbums, passData, $timeout, $q) {
-    $scope.User = passData.get("User");
-
+﻿function AlbumsCtrl($scope, $state, $sessionStorage, $localStorage, getAlbums) {
+    if ($sessionStorage.User === undefined) {
+        $state.go("logins");
+    }
     $scope.spinLoadingAlbums = false;
 
     $scope.GotoAlbum = (album) => {
@@ -27,7 +28,8 @@
 
         }, function (error) {
             $scope.spinLoadingAlbums = false;
-            alert("Error retrieving albums : " + error);
+            $sessionStorage.iComsErr = JSON.parse(JSON.stringify(error));
+            alert("Error retrieving albums : " + $sessionStorage.iComsErr.data);
         });
     };
 

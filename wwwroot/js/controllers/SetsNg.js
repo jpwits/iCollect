@@ -1,7 +1,7 @@
-﻿function SetsNgCtrl($scope, $state, $sessionStorage, $localStorage, getSetsSrvNg, passData, getSetSrv, $timeout, $q) {
+﻿function SetsNgCtrl($scope, $state, $sessionStorage, $localStorage, getSetsSrvNg, getSetSrv, $timeout, $q) {
     if ($sessionStorage.User === undefined) {
         $state.go("logins");
-       // return;
+        // return;
     }
 
     $scope.spinLoadingSets = false;
@@ -152,9 +152,9 @@
             $sessionStorage.numberOfPages = Math.ceil($sessionStorage.iColSets.recordsTotal / $localStorage.session_pglen);
             $scope.spinLoadingSets = false;
         }, function (error) {
-                $scope.spinLoadingSets = false;
+            $scope.spinLoadingSets = false;
             $sessionStorage.iComsErr = JSON.parse(JSON.stringify(error));
-            alert("Error Retrieving Sets : " + error);
+            alert("Error Retrieving Sets : " + $sessionStorage.iComsErr.data);
         });
 
     };
@@ -212,7 +212,8 @@
             $sessionStorage.iColSets.data[setidx] = set;
             $state.go('app.set');
         }, function (error) {
-            alert("Error Selecting Set : " + error);
+            $sessionStorage.iComsErr = JSON.parse(JSON.stringify(error));
+            alert("Error Selecting Sets : " + $sessionStorage.iComsErr.data);
         });
     };
 
@@ -238,7 +239,8 @@
         $scope.entry.$update(function (response) {
 
         }, function (error) {
-            alert("Error Selecting Item : " + error);
+            $sessionStorage.iComsErr = JSON.parse(JSON.stringify(error));
+            alert("Error Selecting Item : " + $sessionStorage.iComsErr.data);
         });
     };
 

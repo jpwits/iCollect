@@ -74,6 +74,13 @@ namespace iCollect.Controllers
             //}
         }
 
+        [HttpGet, Route("logout")]
+        public async Task<IActionResult> logout()
+        {
+            _signInManager.SignOutAsync();
+            return new JsonResult(true);
+        }
+
         //[HttpPost]
         //public async Task<IActionResult> Post([FromBody]LoginModel model)
         //{

@@ -61,27 +61,24 @@
             $scope.spinUpdateAlbum = "Save";
             //alert("Album Saved successfully...");
         }, function (error) {
-            alert("Error Updating album : " + error);
-                $scope.spinUpdateAlbum = "Save";
+            $sessionStorage.iComsErr = JSON.parse(JSON.stringify(error));
+            alert("Error Updating Album : " + $sessionStorage.iComsErr.data);
         });
     };
-
-    $scope.deleteAlbum = function (album) {
-        $scope.entry = new updateAlbumSrv(album);
-        $scope.entry.$update(function (response) {
-            $sessionStorage.albums.push(response);
-            alert("Album Saved successfully...");
-            $state.go('ui.albums');
-        }, function (error) {
-            alert("Error Deleting album : " + error);
-        });
-    }
 
     $scope.RemoveAlbum = (album) => {
         if (confirm('Are you sure you want to delete this album, by deleting this album you will loose all the item quantities in this album?')) {
             // Save it!
             album.isActive = false;
-            $scope.deleteAlbum(album);
+            $scope.entry = new updateAlbumSrv(album);
+            $scope.entry.$update(function (response) {
+                $sessionStorage.albums.push(response);
+                alert("Album Saved successfully...");
+                $state.go('ui.albums');
+            }, function (error) {
+                $sessionStorage.iComsErr = JSON.parse(JSON.stringify(error));
+                alert("Error Deleting Album : " + $sessionStorage.iComsErr.data);
+            });
         }
     };
 

@@ -76,6 +76,11 @@ function loginUser($resource) {
     );
 }
 
+function logoutUser($resource) {
+    return $resource('api/Account/logout'
+    );
+}
+
 function passData() {
 
     var persistObject = [];
@@ -105,6 +110,7 @@ angular
     .service('getSetSrv', getSetSrv)
     .service('getLookups', getLookups)
     .service('loginUser', loginUser)
+    .service('logoutUser', logoutUser)
     .service('getAlbums', getAlbums)
     .service('updateAlbumSrv', updateAlbumSrv)
     .service('getItemSrvNg', getItemSrvNg)

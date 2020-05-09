@@ -1,12 +1,11 @@
-﻿function MainCtrl($http, $scope, passData, getUser) {
+﻿function MainCtrl($http, $scope, $sessionStorage, getUser) {
 
-    getUser.get({ username: " " }).$promise.then(function (response) {
-        passData.set("User", JSON.parse(JSON.stringify(response)));
-        //$scope.User = passData.get("User");
-    },
-        function (error) {
-            alert("Error Getting User Info : " + error);
-        });
+    //getUser.get({ username: " " }).$promise.then(function (response) {
+    //    $sessionStorage.User = JSON.parse(JSON.stringify(response));
+    //},
+    //    function (error) {
+    //        alert("Error Getting User Info : " + error);
+    //    });
 
     this.countries = [
         { name: 'Amsterdam' },

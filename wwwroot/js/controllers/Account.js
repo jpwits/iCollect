@@ -1,9 +1,9 @@
-﻿function AccountCtrl($window, $sessionStorage, $localStorage, $scope, getLookups,loginUser) {
+﻿function AccountCtrl($window, $sessionStorage, $localStorage, $scope, getLookups, loginUser, logoutUser) {
     $scope.$sessionStorage = $sessionStorage.$default(/* any defaults here */);
     $scope.$localStorage = $localStorage.$default(/* any defaults here */);
 
     $scope.login = function (username, password) {
-        // If we already have a bearer token, set the Authorization header.
+        // If we already have a bearer token, set the Authorization header - to check
         loginUser.get({
             username: username,
             password: password
@@ -11,9 +11,19 @@
             $sessionStorage.User = JSON.parse(JSON.stringify(response));
             $sessionStorage.User.name = username;
             $window.history.back();
-            //$state.go("app.setsng");
         }, function (error) {
-            alert("Error Logging in : " + error);
+            $sessionStorage.iComsErr = JSON.parse(JSON.stringify(error));
+            alert("Error Logging in : " + $sessionStorage.iComsErr.data);
+        });
+    };
+
+    $scope.logout = function () {
+        logoutUser.get().$promise.then(function (response) {
+            $sessionStorage.User = undefined;
+            //$window.history.back();
+        }, function (error) {
+            $sessionStorage.iComsErr = JSON.parse(JSON.stringify(error));
+            alert("Error Logging out : " + $sessionStorage.iComsErr.data);
         });
     };
 
