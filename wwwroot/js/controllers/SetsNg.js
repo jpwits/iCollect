@@ -154,7 +154,7 @@
         }, function (error) {
             $scope.spinLoadingSets = false;
             $sessionStorage.iComsErr = JSON.parse(JSON.stringify(error));
-            alert("Error Retrieving Sets : " + $sessionStorage.iComsErr.data);
+                alert("Error " + $sessionStorage.iComsErr.status +" Retrieving Sets : " + $sessionStorage.iComsErr.data);
         });
 
     };
@@ -213,7 +213,7 @@
             $state.go('app.set');
         }, function (error) {
             $sessionStorage.iComsErr = JSON.parse(JSON.stringify(error));
-            alert("Error Selecting Sets : " + $sessionStorage.iComsErr.data);
+                alert("Error " + $sessionStorage.iComsErr.status +" Selecting Sets : " + $sessionStorage.iComsErr.data);
         });
     };
 
@@ -240,7 +240,7 @@
 
         }, function (error) {
             $sessionStorage.iComsErr = JSON.parse(JSON.stringify(error));
-            alert("Error Selecting Item : " + $sessionStorage.iComsErr.data);
+                alert("Error " + $sessionStorage.iComsErr.status +" Selecting Item : " + $sessionStorage.iComsErr.data);
         });
     };
 

@@ -62,7 +62,7 @@
             //alert("Album Saved successfully...");
         }, function (error) {
             $sessionStorage.iComsErr = JSON.parse(JSON.stringify(error));
-            alert("Error Updating Album : " + $sessionStorage.iComsErr.data);
+                alert("Error " + $sessionStorage.iComsErr.status +" Updating Album : " + $sessionStorage.iComsErr.data);
         });
     };
 
@@ -77,7 +77,7 @@
                 $state.go('ui.albums');
             }, function (error) {
                 $sessionStorage.iComsErr = JSON.parse(JSON.stringify(error));
-                alert("Error Deleting Album : " + $sessionStorage.iComsErr.data);
+                    alert("Error " + $sessionStorage.iComsErr.status +" Deleting Album : " + $sessionStorage.iComsErr.data);
             });
         }
     };

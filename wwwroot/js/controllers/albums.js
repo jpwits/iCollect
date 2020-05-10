@@ -29,7 +29,7 @@
         }, function (error) {
             $scope.spinLoadingAlbums = false;
             $sessionStorage.iComsErr = JSON.parse(JSON.stringify(error));
-            alert("Error retrieving albums : " + $sessionStorage.iComsErr.data);
+                alert("Error " + $sessionStorage.iComsErr.status +" Retrieving Albums : " + $sessionStorage.iComsErr.data);
         });
     };
 

@@ -35,7 +35,7 @@ namespace iCollect.Controllers
             return new JsonResult(album);
         }
 
-        [HttpPut("updateAlbum")]
+        [HttpPost("updateAlbum")]
         //[ValidateAntiForgeryToken]
         public async Task<Albums> updateAlbum([FromBody] Albums data)
         {
