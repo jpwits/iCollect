@@ -246,10 +246,9 @@
 
     $scope.createSet = function (id) {
         if (id === undefined) {
-            var iCol = new getSetSrv();
-            iCol.setImages = [];
-            iCol.delImages = [];
-            //passData.set("Selected", iCol);
+            var iSet = new getSetSrv();
+            iSet.setImages = [];
+            iSet.delImages = [];
             $state.go('app.set');
         }
     };

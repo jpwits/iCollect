@@ -33,7 +33,7 @@ function getCollectionSrv($resource) {
 }
 
 function getCollectionsSrv($resource) {
-    return $resource('api/Collections/GetCollection/:start/:length', { start: '@start', length: '@length' }
+    return $resource('api/Collections/GetCollections'
     );
 }
 

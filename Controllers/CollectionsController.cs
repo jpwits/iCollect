@@ -52,16 +52,13 @@ namespace iCollect.Controllers
         }
 
         // GET: Collections
-        [HttpGet, Route("GetCollections/{start}/{length}")]
-        public List<Collections> GetCollections(int start, int length)
+        [HttpGet, Route("GetCollections")]
+        public ActionResult GetCollections()
         {
             var qry = _context.Collections
-                .Skip(start)
-                .Take(length)
                 .ToList();
-            var idx = 0;
 
-            return qry;
+            return Json(new { data = qry });
         }
 
         [HttpGet, Route("GetCollection/{id}")]

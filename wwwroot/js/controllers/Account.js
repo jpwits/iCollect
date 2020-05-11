@@ -1,11 +1,11 @@
-﻿function AccountCtrl($window, $sessionStorage, $localStorage, $scope, getLookups, loginUser, logoutUser, registerUser, getUser) {
+﻿function AccountCtrl($window, $sessionStorage, $localStorage, $scope, getLookups, loginUser, logoutUser, registerUser, getUser, getCollectionsSrv) {
     $scope.$sessionStorage = $sessionStorage.$default(/* any defaults here */);
     $scope.$localStorage = $localStorage.$default(/* any defaults here */);
 
     getUser.get().$promise.then(function (response) {
         $sessionStorage.User = JSON.parse(JSON.stringify(response));
+        if ($sessionStorage.User.name == null) { $sessionStorage.User = undefined }
     }, function (error) {
-        $sessionStorage.User === undefined
         $sessionStorage.iComsErr = JSON.parse(JSON.stringify(error));
         //alert("Error " + $sessionStorage.iComsErr.status + " getting current User : " + $sessionStorage.iComsErr.data);
     });
@@ -78,6 +78,22 @@
     if ($localStorage.lookups === undefined) {
         $scope.fillLookups();
     }
+
+    $scope.getCollections = () => {
+        getCollectionsSrv.get().$promise.then(function (response) {
+            var jsonResp = JSON.parse(JSON.stringify(response));
+            $sessionStorage.iCols = jsonResp.data;
+        }, function (error) {
+            $sessionStorage.iComsErr = JSON.parse(JSON.stringify(error));
+            alert("Error " + $sessionStorage.iComsErr.status + " Retrieving Collections : " + $sessionStorage.iComsErr.data);
+        });
+    };
+
+    if ($sessionStorage.iCols === undefined) {
+        $scope.getCollections();
+    }
+
+    $scope.getCollections();
     /*
      * countries - Used as duallistbox in form advanced view
      */

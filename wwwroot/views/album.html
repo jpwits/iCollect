@@ -13,29 +13,27 @@
         </div>
     </div>
 
-    <form class="m-t" role="form">
-        <!--ng-submit="register(regemail,regpswd)">-->
+    <form class="m-t" role="form" ng-submit="updateAlbum($sessionStorage.album)">
         <div class="form-group row">
             <label class="col-sm-2 col-form-label" for="idAlbumName">Name:</label>
             <div class="col-sm-6">
-                <input class="input-sm form-control" id="idAlbumName" type="text" name="input"  required=""
+                <input class="input-sm form-control" id="idAlbumName" type="text" name="input" required=""
                        ng-model="$sessionStorage.album.name">
             </div>
         </div>
         <div class="form-group row">
             <label class="col-sm-2 col-form-label" for="idAlbumDescription">Description:</label>
             <div class="col-sm-6">
-                <input class="input-sm form-control" id="idAlbumDescription" type="text" name="input"  required=""
+                <input class="input-sm form-control" id="idAlbumDescription" type="text" name="input" required=""
                        ng-model="$sessionStorage.album.description">
             </div>
         </div>
         <div class="form-group row">
-            <label class="col-sm-2 col-form-label" for="idAlbumCollection">Description:</label>
+            <label class="col-sm-2 col-form-label" for="idAlbumCollection">Collection based on:</label>
             <div class="col-sm-6">
-                <select class="input-sm form-control" id="idAlbumCollection" ng-model="item.Collections"  required=""> 
-                    <option>RSA Republic Coins</option>
-                    <option>USA Coins</option>
-                </select>
+                <select  id="idAlbumCollection" data-style="bg-black rounded-pill" class="form-control input-sm selectpicker"   data-container="body" data-size="6" ng-required="true">
+                    <option ng-model="$sessionStorage.album.collectionId" ng-repeat="col in $sessionStorage.iCols">{{col.name}}</option>
+                </select><!-- End -->
                 <div class="form-group row">
                     <label class="col-sm-2 col-form-label" for="idAlbumDates">Timespan:</label>
                     <div class="col-md-4">
@@ -56,20 +54,20 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-sm-2 col-form-label" for="idAlbumRanges">Range:</label>
+                    <label class="col-sm-2 col-form-label" for="idAlbumRanges">Ranges:</label>
                     <div class="col-lg-6">
                         <!-- Multiselect dropdown -->
-                        <select multiple id="idAlbumRanges" data-style="bg-black rounded-pill" class="form-control input-sm selectpicker" data-container="body" data-size="6" data-selected-text-format="count>2" data-actions-box="true">
+                        <select multiple id="idAlbumRanges" data-style="bg-black rounded-pill" class="form-control input-sm selectpicker" ng-model="$sessionStorage.filterbyRanges" data-container="body" data-size="6" data-selected-text-format="count>2" data-actions-box="true" ng-required="true">
                             <option ng-repeat="range in $localStorage.lookups.rangeGroup">{{range.key}}</option>
                         </select><!-- End -->
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-sm-2 col-form-label" for="idAlbumTypes">Range:</label>
+                    <label class="col-sm-2 col-form-label" for="idAlbumTypes">Types:</label>
                     <div class="col-lg-6">
                         <!-- Multiselect dropdown -->
-                        <select multiple id="idAlbumTypes" data-style="bg-black rounded-pill" class="form-control input-sm selectpicker" data-container="body" data-size="6" data-selected-text-format="count>2" data-actions-box="true">
-                            <option ng-repeat="type in $localStorage.lookups.typeGroup">Gr{{type.key}}</</option>
+                        <select multiple id="idAlbumTypes" data-style="bg-black rounded-pill" class="form-control input-sm selectpicker" ng-model="$sessionStorage.filterbyTypes" data-container="body" data-size="6" data-selected-text-format="count>2" data-actions-box="true" ng-required="true">
+                            <option ng-repeat="type in $localStorage.lookups.typeGroup">{{type.key}}</option>
                         </select><!-- End -->
                     </div>
                 </div>
@@ -78,24 +76,20 @@
 
         <!--<a ng-repeat="error in errors" style="color:red">* {{error.description}}</a>-->
 
-    <button type="button" class="btn btn-primary dim" ng-click="updateAlbum($sessionStorage.album)">
-        <span ng-show="spinUpdateAlbum == 'Saving'">
-            <i class="glyphicon glyphicon-refresh spinning"></i>
-        </span>
-        <span ng-show="spinUpdateAlbum != 'Saving'">
-            <i class="glyphicon glyphicon-save"></i>
-        </span>
-        {{ spinUpdateAlbum }}
-    </button>
+        <button type="submit" class="btn btn-primary dim">
+            <span ng-show="spinUpdateAlbum == 'Saving'">
+                <i class="glyphicon glyphicon-refresh spinning"></i>
+            </span>
+            <span ng-show="spinUpdateAlbum != 'Saving'">
+                <i class="glyphicon glyphicon-save"></i>
+            </span>
+            {{ spinUpdateAlbum }}
+        </button>
 
         <button style="float:right" id="favBtn" ng-click="RemoveAlbum($sessionStorage.album);" class="btn btn-danger dim" type="button" tooltip-placement="bottom" uib-tooltip="Delete Album">
             <i id="favIcon" class="fa fa-trash"></i>
             Remove
         </button>
-        <!--<button type="submit" class="btn btn-primary block full-width m-b">Register</button>
-
-        <p class="text-muted text-center"><small>Already have an account?</small></p>
-        <a class="btn btn-sm btn-white btn-block" ui-sref="logins">Login</a>-->
     </form>
     <p class="m-t"> <small>CC &copy; 2020</small> </p>
 

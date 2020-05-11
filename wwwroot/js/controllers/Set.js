@@ -1,5 +1,5 @@
 ﻿function SetCtrl($scope, $state, $sessionStorage, updateSet) {
-    $scope.iCol = $sessionStorage.iColSets.data[$sessionStorage.curSetIdx];
+    $scope.iSet = $sessionStorage.iColSets.data[$sessionStorage.curSetIdx];
 
     $scope.searchButtonText = "Save";
 
@@ -41,13 +41,13 @@
                 newImage.thumbnailA = null;
                 newImage.isActive = true;
 
-                if ($scope.iCol.items.length === 0) {
+                if ($scope.iSet.items.length === 0) {
                     newImage.position = 0;
                 }
                 else {
-                    newImage.position = $scope.iCol.items[$scope.iCol.items.length - 1].position + 1;
+                    newImage.position = $scope.iSet.items[$scope.iSet.items.length - 1].position + 1;
                 }
-                $scope.iCol.items.push(newImage);
+                $scope.iSet.items.push(newImage);
 
                 if (newImage.position === files.length - 1) {
                     $state.go("app.set");
@@ -71,32 +71,32 @@
         };
     };
     $scope.ImageOrderUp = function (pos) {
-        if (pos > 0 && pos <= $scope.iCol.items.length - 1) {
-            $scope.iCol.items[pos].position--;
-            $scope.iCol.items[pos - 1].position++;
+        if (pos > 0 && pos <= $scope.iSet.items.length - 1) {
+            $scope.iSet.items[pos].position--;
+            $scope.iSet.items[pos - 1].position++;
         }
-        $scope.iCol.items = $scope.iCol.items.sort(function (a, b) {
+        $scope.iSet.items = $scope.iSet.items.sort(function (a, b) {
             return a.position - b.position;
         }).filter(img => img.isActive === true);
     };
 
     $scope.ImageOrderDown = function (pos) {
-        if (pos >= 0 && pos < $scope.iCol.items.length - 1) {
-            $scope.iCol.items[pos].position++;
-            $scope.iCol.items[pos + 1].position--;
+        if (pos >= 0 && pos < $scope.iSet.items.length - 1) {
+            $scope.iSet.items[pos].position++;
+            $scope.iSet.items[pos + 1].position--;
         }
-        $scope.iCol.items = $scope.iCol.items.sort(function (a, b) {
+        $scope.iSet.items = $scope.iSet.items.sort(function (a, b) {
             return a.position - b.position;
         }).filter(img => img.isActive === true);
     };
 
     $scope.Delete = function (pos) {
-        $scope.iCol.items[pos].isActive = false;
-        $scope.iCol.delItems.push($scope.iCol.items[pos]);
-        $scope.iCol.items.splice(pos, 1);
+        $scope.iSet.items[pos].isActive = false;
+        $scope.iSet.delItems.push($scope.iSet.items[pos]);
+        $scope.iSet.items.splice(pos, 1);
 
-        $scope.iCol.items.forEach(function (image, index) {
-            $scope.iCol.items[index].position = index;
+        $scope.iSet.items.forEach(function (image, index) {
+            $scope.iSet.items[index].position = index;
         });
     };
 }

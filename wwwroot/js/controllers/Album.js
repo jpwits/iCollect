@@ -75,7 +75,7 @@
             $scope.entry = new updateAlbumSrv(album);
             $scope.entry.$update(function (response) {
                 $sessionStorage.albums.push(response);
-                alert("Album Saved successfully...");
+                //alert("Album Saved successfully...");
                 $state.go('ui.albums');
             }, function (error) {
                 $sessionStorage.iComsErr = JSON.parse(JSON.stringify(error));

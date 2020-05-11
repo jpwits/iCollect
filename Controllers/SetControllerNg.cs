@@ -374,9 +374,9 @@ namespace iCollect.Controllers
         }
 
         [HttpGet, Route("GetSet/{id}")]
-        public async Task<IActionResult> GetSet(int id)
+        public ActionResult GetSet(int id)
         {
-            var set = await _context.Sets
+            var set = _context.Sets
                 .Include(a => a.Items)
                 .ThenInclude(c => c.ImageIdANavigation)
                 .Include(a => a.Items)
@@ -389,9 +389,9 @@ namespace iCollect.Controllers
         }
 
         [HttpGet, Route("GetUserItem/{id}")]
-        public async Task<IActionResult> GetUserItem(int id)
+        public IActionResult GetUserItem(int id)
         {
-            var set = await _context.Sets
+            var set = _context.Sets
                 .Include(a => a.Items)
                 .ThenInclude(c => c.ImageIdANavigation)
                 .Include(a => a.Items)
