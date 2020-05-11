@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using iCollect.Entities;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace iCollect.Controllers
 {
@@ -21,7 +22,12 @@ namespace iCollect.Controllers
         [HttpGet, Route("GetAlbums")]
         public ActionResult GetAlbums()
         {
-            var albums = _context.Albums.ToList();
+            var albums = _context.Albums.Where(a => a.UserId == User.Identity.Name).ToList();
+            //var albums = from userItems in _context.UserItems
+            //             join album in _context.Albums on userItems.AlbumId equals album.AlbumId
+            //             where userItems.UserId == User.Identity.Name
+            //             select album;
+
             return Json(new
             {
                 albums,
@@ -31,7 +37,7 @@ namespace iCollect.Controllers
         [HttpGet, Route("GetAlbum/{id}")]
         public async Task<IActionResult> GetAlbum(int id)
         {
-            var album =  _context.Albums.FirstOrDefault(m => m.AlbumId == id);
+            var album = _context.Albums.FirstOrDefault(m => m.AlbumId == id);
             return new JsonResult(album);
         }
 
