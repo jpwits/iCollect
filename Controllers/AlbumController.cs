@@ -22,7 +22,7 @@ namespace iCollect.Controllers
         [HttpGet, Route("GetAlbums")]
         public ActionResult GetAlbums()
         {
-            var albums = _context.Albums.Where(a => a.UserId == User.Identity.Name).ToList();
+            var albums = _context.Albums.Where(a => a.UserId == User.Identity.Name && a.IsActive==true).ToList();
             //var albums = from userItems in _context.UserItems
             //             join album in _context.Albums on userItems.AlbumId equals album.AlbumId
             //             where userItems.UserId == User.Identity.Name
