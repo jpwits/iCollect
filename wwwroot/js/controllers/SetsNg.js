@@ -213,7 +213,7 @@
             $state.go('app.set');
         }, function (error) {
             $sessionStorage.iComsErr = JSON.parse(JSON.stringify(error));
-                alert("Error " + $sessionStorage.iComsErr.status +" Selecting Sets : " + $sessionStorage.iComsErr.data);
+                alert("Error " + $sessionStorage.iComsErr.status +" Selecting Set : " + $sessionStorage.iComsErr.data);
         });
     };
 

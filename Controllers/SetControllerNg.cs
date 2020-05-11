@@ -374,9 +374,9 @@ namespace iCollect.Controllers
         }
 
         [HttpGet, Route("GetSet/{id}")]
-        public ActionResult GetSet(int id)
+        public async Task<IActionResult> GetSet(int id)
         {
-            var set = _context.Sets
+            var set = await _context.Sets
                 .Include(a => a.Items)
                 .ThenInclude(c => c.ImageIdANavigation)
                 .Include(a => a.Items)
