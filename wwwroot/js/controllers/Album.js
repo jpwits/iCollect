@@ -54,11 +54,13 @@
         $scope.spinUpdateAlbum = "Saving";
         if (album.albumId === undefined) {
             album.isActive = true;
+            album.userId = $sessionStorage.User.name;
         }
         $scope.entry = new updateAlbumSrv(album);
         $scope.entry.$update(function (response) {
             $sessionStorage.albums.push(response);
             $scope.spinUpdateAlbum = "Save";
+            $state.go("ui.albums");
             //alert("Album Saved successfully...");
         }, function (error) {
             $sessionStorage.iComsErr = JSON.parse(JSON.stringify(error));
