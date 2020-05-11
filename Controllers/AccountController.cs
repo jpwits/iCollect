@@ -28,10 +28,10 @@ namespace iCollect.Controllers
         }
 
 
-        [HttpGet, Route("getUser/{username}")]
-        public async Task<IActionResult> getUser(string username)
+        [HttpGet, Route("getUser")]
+        public async Task<IActionResult> getUser()
         {
-            return new JsonResult(new { Name = User.Identity.Name });
+            return new JsonResult(new { User.Identity.Name });
         }
 
         [HttpGet, Route("login/{username}/{password}")]

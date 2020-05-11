@@ -47,11 +47,6 @@
                                             <input class="input-sm form-control" style="width:100%"  type="text" name="input"
                                                    ng-model="iCol.description">
                                         </td>
-                                        <td>
-                                            <span ng-if="$stateParams.EditSet == false">
-                                                {{iCol.description}}
-                                            </span>
-                                        </td>
                                     </tr>
                                     <tr>
                                         <td>Upload Images:</td>
@@ -70,8 +65,6 @@
                                                 <div style="width:{{progress}}%" ng-bind="progress + '%'"></div>
                                             </span>-->
                                             {{errorMsg}}
-                                        </td>
-                                        <td>
                                         </td>
                                     </tr>
                                     <tr ng-repeat="(key, item) in iCol.items">

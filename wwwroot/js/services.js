@@ -67,7 +67,7 @@ function updateAlbumSrv($resource) {
 }
 
 function getUser($resource) {
-    return $resource('api/Account/getUser/:username', { username: '@username' }
+    return $resource('api/Account/getUser'
     );
 }
 

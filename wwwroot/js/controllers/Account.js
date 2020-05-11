@@ -1,6 +1,15 @@
-﻿function AccountCtrl($window, $sessionStorage, $localStorage, $scope, getLookups, loginUser, logoutUser, registerUser) {
+﻿function AccountCtrl($window, $sessionStorage, $localStorage, $scope, getLookups, loginUser, logoutUser, registerUser, getUser) {
     $scope.$sessionStorage = $sessionStorage.$default(/* any defaults here */);
     $scope.$localStorage = $localStorage.$default(/* any defaults here */);
+
+    getUser.get().$promise.then(function (response) {
+        $sessionStorage.User = JSON.parse(JSON.stringify(response));
+    }, function (error) {
+        $sessionStorage.User === undefined
+        $sessionStorage.iComsErr = JSON.parse(JSON.stringify(error));
+        //alert("Error " + $sessionStorage.iComsErr.status + " getting current User : " + $sessionStorage.iComsErr.data);
+    });
+
 
     $scope.login = function (username, password) {
         // If we already have a bearer token, set the Authorization header - to check
@@ -13,7 +22,7 @@
             $window.history.back();
         }, function (error) {
             $sessionStorage.iComsErr = JSON.parse(JSON.stringify(error));
-                alert("Error " + $sessionStorage.iComsErr.status +" Logging in : " + $sessionStorage.iComsErr.data);
+            alert("Error " + $sessionStorage.iComsErr.status + " Logging in : " + $sessionStorage.iComsErr.data);
         });
     };
 
@@ -23,7 +32,7 @@
             //$window.history.back();
         }, function (error) {
             $sessionStorage.iComsErr = JSON.parse(JSON.stringify(error));
-                alert("Error "+ $sessionStorage.iComsErr.status +" Logging out : " + $sessionStorage.iComsErr.data);
+            alert("Error " + $sessionStorage.iComsErr.status + " Logging out : " + $sessionStorage.iComsErr.data);
         });
     };
 
@@ -49,7 +58,7 @@
             }
         }, function (error) {
             $sessionStorage.iComsErr = JSON.parse(JSON.stringify(error));
-                alert("Error " + $sessionStorage.iComsErr.status +" registering username : " + $sessionStorage.iComsErr.data);
+            alert("Error " + $sessionStorage.iComsErr.status + " registering username : " + $sessionStorage.iComsErr.data);
         });
     };
 

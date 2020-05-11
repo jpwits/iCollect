@@ -11,120 +11,96 @@
                 </li>
             </ol>
         </div>
-   
-    <div class="row">
-        <div>
-            <div class="wrapper wrapper-content animated fadeInRight">
-                <div class="ibox">
-                    <div class="ibox-content">
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <table class="table body-wrap">
-                                    <tr>
-                                        <td>Name:</td>
-                                        <td>
-                                            <div class="col-lg-6">
-                                                <input class="input-sm form-control" style="width:100%" type="text" name="input"
-                                                       ng-model="$sessionStorage.album.name">
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Description:</td>
-                                        <td>
-                                            <div class="col-lg-6">
-                                                <input class="input-sm form-control" style="width:100%" type="text" name="input"
-                                                       ng-model="$sessionStorage.album.description">
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Collections:</td>
-                                        <td>
-                                            <div class="col-lg-8">
-                                                <select class="input-sm form-control" ng-model="item.Collections">
-                                                    <option>RSA Republic Coins</option>
-                                                </select>
-                                                <table>
-                                                    <tr>
-                                                        <td>
-                                                            Timespan :
-                                                        </td>
-                                                        <td>
-                                                            <div class="col-md-4">
-                                                                <p class="input-group">
-                                                                    <input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="$sessionStorage.album.startDate" is-open="popup1.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" />
-                                                                    <span class="input-group-btn">
-                                                                        <button type="button" class="btn btn-default" ng-click="open1()"><i class="glyphicon glyphicon-calendar"></i></button>
-                                                                    </span>
-                                                                </p>
-                                                            </div>
-                                                            <div class="col-md-4">
-                                                                <p class="input-group">
-                                                                    <input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="$sessionStorage.album.endDate" is-open="popup2.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" />
-                                                                    <span class="input-group-btn">
-                                                                        <button type="button" class="btn btn-default" ng-click="open2()"><i class="glyphicon glyphicon-calendar"></i></button>
-                                                                    </span>
-                                                                </p>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            Range :
-                                                        </td>
-                                                        <td>
-                                                            <div class="col-lg-6">
-                                                                <!-- Multiselect dropdown -->
-                                                                <select multiple data-style="bg-black rounded-pill" class="form-control input-sm selectpicker" data-container="body" data-size="6" data-selected-text-format="count>2" data-actions-box="true">
-                                                                    <option ng-repeat="range in $localStorage.lookups.rangeGroup">{{range.key}}</option>
-                                                                </select><!-- End -->
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            Types :
-                                                        </td>
-                                                        <td>
-                                                            <div class="col-lg-6">
-                                                                <!-- Multiselect dropdown -->
-                                                                <select multiple data-style="bg-black rounded-pill" class="form-control input-sm selectpicker" data-container="body" data-size="6" data-selected-text-format="count>2" data-actions-box="true">
-                                                                    <option ng-repeat="type in $localStorage.lookups.typeGroup">{{type.key}}</option>
-                                                                </select><!-- End -->
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                </table>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <!--<button ng-click="updateAlbum($sessionStorage.album)" class="btn btn-primary dim" type="button"><i class="fa fa-save"></i>&nbsp;&nbsp;Save</button>-->
-                            <button type="button" class="btn btn-primary dim" ng-click="updateAlbum($sessionStorage.album)">
-                                <span ng-show="spinUpdateAlbum == 'Saving'"><i class="glyphicon glyphicon-refresh spinning"></i></span>
-                                {{ spinUpdateAlbum }}
-                            </button>
+    </div>
 
-                            <button style="right:65px; top: 75px;float:right" id="favBtn" ng-click="RemoveAlbum($sessionStorage.album);" class="btn btn-danger dim" type="button" tooltip-placement="bottom" uib-tooltip="Delete Album">
-                                <i id="favIcon" class="fa fa-trash"></i>
-                            </button>
-                        </div>
+    <form class="m-t" role="form">
+        <!--ng-submit="register(regemail,regpswd)">-->
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label" for="idAlbumName">Name:</label>
+            <div class="col-sm-6">
+                <input class="input-sm form-control" id="idAlbumName" type="text" name="input"  required=""
+                       ng-model="$sessionStorage.album.name">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label" for="idAlbumDescription">Description:</label>
+            <div class="col-sm-6">
+                <input class="input-sm form-control" id="idAlbumDescription" type="text" name="input"  required=""
+                       ng-model="$sessionStorage.album.description">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label" for="idAlbumCollection">Description:</label>
+            <div class="col-sm-6">
+                <select class="input-sm form-control" id="idAlbumCollection" ng-model="item.Collections"  required=""> 
+                    <option>RSA Republic Coins</option>
+                    <option>USA Coins</option>
+                </select>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label" for="idAlbumDates">Timespan:</label>
+                    <div class="col-md-4">
+                        <p class="input-group">
+                            <input id="idAlbumDates" type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="$sessionStorage.album.startDate" is-open="popup1.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" />
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-default" ng-click="open1()"><i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                        </p>
+                    </div>
+                    <div class="col-md-4">
+                        <p class="input-group">
+                            <input id="idAlbumDates" type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="$sessionStorage.album.endDate" is-open="popup2.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" />
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-default" ng-click="open2()"><i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                        </p>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label" for="idAlbumRanges">Range:</label>
+                    <div class="col-lg-6">
+                        <!-- Multiselect dropdown -->
+                        <select multiple id="idAlbumRanges" data-style="bg-black rounded-pill" class="form-control input-sm selectpicker" data-container="body" data-size="6" data-selected-text-format="count>2" data-actions-box="true">
+                            <option ng-repeat="range in $localStorage.lookups.rangeGroup">{{range.key}}</option>
+                        </select><!-- End -->
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label" for="idAlbumTypes">Range:</label>
+                    <div class="col-lg-6">
+                        <!-- Multiselect dropdown -->
+                        <select multiple id="idAlbumTypes" data-style="bg-black rounded-pill" class="form-control input-sm selectpicker" data-container="body" data-size="6" data-selected-text-format="count>2" data-actions-box="true">
+                            <option ng-repeat="type in $localStorage.lookups.typeGroup">Gr{{type.key}}</</option>
+                        </select><!-- End -->
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!--<div class="row">
-        <h5>params</h5>
-        <pre>{{$localStorage | json}}</pre>
-        <pre>{{$sessionStorage | json}}</pre>
-    </div>-->
+        <!--<a ng-repeat="error in errors" style="color:red">* {{error.description}}</a>-->
+
+    <button type="button" class="btn btn-primary dim" ng-click="updateAlbum($sessionStorage.album)">
+        <span ng-show="spinUpdateAlbum == 'Saving'">
+            <i class="glyphicon glyphicon-refresh spinning"></i>
+        </span>
+        <span ng-show="spinUpdateAlbum != 'Saving'">
+            <i class="glyphicon glyphicon-save"></i>
+        </span>
+        {{ spinUpdateAlbum }}
+    </button>
+
+        <button style="float:right" id="favBtn" ng-click="RemoveAlbum($sessionStorage.album);" class="btn btn-danger dim" type="button" tooltip-placement="bottom" uib-tooltip="Delete Album">
+            <i id="favIcon" class="fa fa-trash"></i>
+            Remove
+        </button>
+        <!--<button type="submit" class="btn btn-primary block full-width m-b">Register</button>
+
+        <p class="text-muted text-center"><small>Already have an account?</small></p>
+        <a class="btn btn-sm btn-white btn-block" ui-sref="logins">Login</a>-->
+    </form>
+    <p class="m-t"> <small>CC &copy; 2020</small> </p>
+
 </div>
+
 
 
 
