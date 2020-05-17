@@ -127,14 +127,24 @@
     }
 
     $scope.getsets = () => {
+        var currentfilterbyRanges = $sessionStorage.filterbyRanges;
+        if ($sessionStorage.filterbyRanges.length === $localStorage.lookups.rangeGroup.length) {
+            currentfilterbyRanges = ["All"];
+        }
+
+        var currentfilterbySetTypes = $sessionStorage.filterbySetTypes;
+        if ($sessionStorage.filterbySetTypes.length === $localStorage.lookups.typeGroup.length) {
+            currentfilterbySetTypes = ["All"];
+        }
+
         $scope.spinLoadingSets = true;
         getSetsSrvNg.update({
             start: ($sessionStorage.currentPage - 1) * $localStorage.session_pglen,
             length: $sessionStorage.currentPage * $localStorage.session_pglen,
             sortby: JSON.stringify($sessionStorage.sortby),
             filterbyYear: JSON.stringify($sessionStorage.filterbyYear),
-            filterbyRanges: JSON.stringify($sessionStorage.filterbyRanges),
-            filterbySetTypes: JSON.stringify($sessionStorage.filterbySetTypes),
+            filterbyRanges: JSON.stringify(currentfilterbyRanges),
+            filterbySetTypes: JSON.stringify(currentfilterbySetTypes),
             groupby: JSON.stringify($sessionStorage.groupby),
             albumId: $sessionStorage.album.albumId
         }).$promise.then(function (response) {

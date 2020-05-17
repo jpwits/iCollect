@@ -44,9 +44,8 @@ namespace iCollect.Controllers
 
         [Authorize]
         [HttpPut, Route("GetSets/{start}/{length}/{sortby}/{filterbyYear}/{filterbyRanges}/{filterbySetTypes}/{groupby}/{albumId}")]
-        public ActionResult GetSets([FromBody] int start, int length, string sortby,string filterbyYear, string filterbyRanges, string filterbySetTypes, string groupby, int albumId)
+        public ActionResult GetSets([FromBody] int start, int length, string sortby, string filterbyYear, string filterbyRanges, string filterbySetTypes, string groupby, int albumId)
         {
-            // dynamic sortbyObj = Json.Decode(sortby);
             var sortbyObj = JsonConvert.DeserializeObject<dynamic>(sortby);
             var filterbyYearObj = JsonConvert.DeserializeObject<dynamic>(filterbyYear);
             var filterbyRangesObj = JsonConvert.DeserializeObject<dynamic>(filterbyRanges);
@@ -72,7 +71,7 @@ namespace iCollect.Controllers
             var qryUser = from sets in qryTake
                           join items in _context.Items on sets.SetId equals items.SetId
                           join userItems in _context.UserItems on items.ItemId equals userItems.ItemId
-                          where (userItems.UserId == User.Identity.Name)// && userItems.AlbumId == albumId)
+                          where (userItems.UserId == User.Identity.Name && userItems.AlbumId == albumId)
                           select sets;
             var qryUserTake = qryUser.ToList();
 
@@ -96,20 +95,39 @@ namespace iCollect.Controllers
             int yrStartSel = ((DateTime)filterbyYearObj.Start).Year;
             int yrEndSel = ((DateTime)filterbyYearObj.End).Year;
             qry = qry.Where(y => y.Year >= yrStartSel && y.Year < yrEndSel + 1);
-
             var rangefilter = new List<string>();
+            bool ignoreRange = false;
+            bool ignoreSetType = false;
+
             foreach (var range in filterbyRangesObj)
             {
+                if (range.Value == "All")
+                {
+                    ignoreRange = true;
+                    break;
+                }
                 rangefilter.Add(range.Value);
             }
-
+            if (!ignoreRange)
+            {
+                qry = qry.Where(y => rangefilter.Contains(y.Range));
+            }
             var setTypesfilter = new List<string>();
+
             foreach (var setType in filterbySetTypesObj)
             {
+                if (setType.Value == "All")
+                {
+                    ignoreSetType = true;
+                    break;
+                }
                 setTypesfilter.Add(setType.Value);
             }
-            qry = qry.Where(y => setTypesfilter.Contains(y.SetType));
-            qry = qry.Where(y => rangefilter.Contains(y.Range) && setTypesfilter.Contains(y.SetType)); 
+            if (!ignoreSetType)
+            {
+                qry = qry.Where(y => setTypesfilter.Contains(y.SetType));
+            }
+            //qry = qry.Where(y => rangefilter.Contains(y.Range) && setTypesfilter.Contains(y.SetType)); 
 
             return qry;
         }

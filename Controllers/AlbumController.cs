@@ -23,9 +23,14 @@ namespace iCollect.Controllers
         [HttpGet, Route("GetAlbumCollections")]
         public ActionResult GetAlbumCollections()
         {
-            var albumsCollections = _context.AlbumCollections.Include(a=>a.Album).Where(b => b.Album.UserId == User.Identity.Name &&
-                b.Album.IsActive == true);
+            var albumsCollections = _context.AlbumCollections.Where(b => b.Album.UserId == User.Identity.Name &&
+                  b.Album.IsActive == true).Include(a => a.Album);
 
+            //var albumsCollections = from albumCollections in _context.AlbumCollections
+            //                        join album in _context.Albums on albumCollections.AlbumId equals album.AlbumId
+            //                        where album.UserId == User.Identity.Name && album.IsActive == true
+            //                        select albumCollections;
+            var _debug = albumsCollections.ToList();
             return Json(new
             {
                 albumsCollections,
