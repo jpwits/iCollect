@@ -4,8 +4,8 @@ function getSetSrv($resource) {
     );
 }
 
-function getAlbums($resource) {
-    return $resource('api/albums/GetAlbums');
+function getAlbumCollections($resource) {
+    return $resource('api/albums/GetAlbumCollections');
 }
 
 function getSetsSrvNg($resource) {
@@ -58,13 +58,14 @@ function updateUserItem($resource) {
     );
 }
 
-function updateAlbumSrv($resource) {
-    return $resource('api/albums/updateAlbum/:id', { id: '@id' }
+function updateAlbumCollectionSrv($resource) {
+    return $resource('api/albums/updateAlbumCollection/:id', { id: '@id' }
         , {
             'update': { method: 'PUT' }
         }
     );
 }
+
 
 function getUser($resource) {
     return $resource('api/Account/getUser'
@@ -111,14 +112,14 @@ angular
     .service('getUser', getUser)
     .service('getCollectionSrv', getCollectionSrv)
     .service('getCollectionsSrv', getCollectionsSrv)
+    .service('getAlbumCollections', getAlbumCollections)
     .service('updateUserItem', updateUserItem)
     .service('getSetSrv', getSetSrv)
     .service('getLookups', getLookups)
     .service('loginUser', loginUser)
     .service('logoutUser', logoutUser)
     .service('registerUser', registerUser)
-    .service('getAlbums', getAlbums)
-    .service('updateAlbumSrv', updateAlbumSrv)
+    .service('updateAlbumCollectionSrv', updateAlbumCollectionSrv)
     .service('getItemSrvNg', getItemSrvNg)
     .service('getSetsSrvNg', getSetsSrvNg);
 

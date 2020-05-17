@@ -7,6 +7,7 @@ namespace iCollect.Entities
     {
         public Albums()
         {
+            AlbumCollections = new HashSet<AlbumCollections>();
             UserItems = new HashSet<UserItems>();
         }
 
@@ -17,7 +18,10 @@ namespace iCollect.Entities
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
         public bool? IsActive { get; set; }
+        public string JsonRanges { get; set; }
+        public string JsonSetTypes { get; set; }
 
+        public virtual ICollection<AlbumCollections> AlbumCollections { get; set; }
         public virtual ICollection<UserItems> UserItems { get; set; }
     }
 }

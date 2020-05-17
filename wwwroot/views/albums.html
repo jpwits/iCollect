@@ -1,13 +1,13 @@
 ﻿<div ng-controller="AlbumsCtrl">
     <div class="row wrapper border-bottom white-bg page-heading">
         <div class="col-lg-10">
-            <h2>Buttons</h2>
+            <!--<h2>Collections</h2>-->
             <ol class="breadcrumb">
                 <li>
                     <a href="index.html">Home</a>
                 </li>
                 <li class="active">
-                    <strong>Albums</strong>
+                    <strong>Collections</strong>
                 </li>
             </ol>
         </div>
@@ -21,20 +21,20 @@
                     <div ibox-tools></div>
                 </div>
                 <div class="ibox-content">
-                    <button ng-click="NewAlbum()" class="btn btn-default dim btn-large-dim float-right" type="button" tooltip-placement="top" uib-tooltip="Create an Album">
+                    <button ng-click="NewAlbum()" class="btn btn-default dim btn-large-dim float-right" type="button" tooltip-placement="top" uib-tooltip="Create a Collection">
                         <img width="100%" src="../img/plus.png" />
                     </button>
                     <span ng-show="spinLoadingAlbums == true">
                         <i style="font-size: 30px;" class="glyphicon glyphicon-refresh spinning"></i>
                     </span>
-                    <span ng-repeat="album in $sessionStorage.albums">
-                        <span ng-if="album.isActive == true">
-                            <button ng-click="GotoAlbum(album);" style="width:200px;height:200px" class="btn btn-danger dim btn-large-dim" type="button" tooltip-placement="middle" uib-tooltip="View Album">
-                                <div style="font-size:small">{{album.name}}</div>
+                    <span ng-repeat="albumCollection in $sessionStorage.albumCollections">
+                        <span ng-if="albumCollection.album.isActive == true">
+                            <button ng-click="GotoAlbum(albumCollection);" style="width:200px;height:200px" class="btn btn-danger dim btn-large-dim" type="button" tooltip-placement="middle" uib-tooltip="View Album">
+                                <div style="font-size:small">{{albumCollection.album.name}}</div>
                                 <img width="100%" src="../img/Coins/krugerrand-2000-proof (3).jpg" />
                             </button>
 
-                            <button style="right:65px; top: 75px" id="favBtn" ng-click="EditAlbum(album);" class="btn btn-info dim" type="button" tooltip-placement="bottom" uib-tooltip="Edit Album">
+                            <button style="right:65px; top: 75px" id="favBtn" ng-click="EditAlbum(albumCollection);" class="btn btn-info dim" type="button" tooltip-placement="bottom" uib-tooltip="Edit Album">
                                 <i id="favIcon" class="fa fa-gear"></i>
                             </button>
                         </span>

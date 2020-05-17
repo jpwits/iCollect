@@ -19,10 +19,25 @@ namespace iCollect.Controllers
             _context = context;
         }
 
-        [HttpGet, Route("GetAlbums")]
-        public ActionResult GetAlbums()
+      
+        [HttpGet, Route("GetAlbumCollections")]
+        public ActionResult GetAlbumCollections()
         {
-            var albums = _context.Albums.Where(a => a.UserId == User.Identity.Name && a.IsActive==true).ToList();
+            var albumsCollections = _context.AlbumCollections.Include(a=>a.Album).Where(b => b.Album.UserId == User.Identity.Name &&
+                b.Album.IsActive == true);
+
+            return Json(new
+            {
+                albumsCollections,
+            });
+        }
+
+        [HttpGet, Route("GetAlbumCollections/{albumId}")]
+        public ActionResult GetAlbumCollections(int albumId)
+        {
+            var albumsCollections = _context.AlbumCollections.Where(b => b.AlbumId == albumId && 
+                                b.Album.UserId == User.Identity.Name && b.Album.IsActive == true);
+
             //var albums = from userItems in _context.UserItems
             //             join album in _context.Albums on userItems.AlbumId equals album.AlbumId
             //             where userItems.UserId == User.Identity.Name
@@ -30,21 +45,23 @@ namespace iCollect.Controllers
 
             return Json(new
             {
-                albums,
+                albumsCollections,
             });
         }
 
-        [HttpGet, Route("GetAlbum/{id}")]
-        public async Task<IActionResult> GetAlbum(int id)
-        {
-            var album = _context.Albums.FirstOrDefault(m => m.AlbumId == id);
-            return new JsonResult(album);
-        }
-
-        [HttpPut("updateAlbum")]
+        [HttpPut("updateAlbumCollection")]
         //[ValidateAntiForgeryToken]
-        public async Task<Albums> updateAlbum([FromBody] Albums data)
+        public async Task<AlbumCollections> updateAlbumCollection([FromBody] AlbumCollections data)
         {
+            //warning check data albumid not null, do not check for the impossible ever, we want the error :)
+            if (!_context.AlbumCollections.Any(m => m.AlbumId == data.AlbumId))
+            {
+                data.CollectionId = 1;
+            }
+            else
+            {
+                data.CollectionId = 1;
+            }
             _context.Update(data);
             int rc = await _context.SaveChangesAsync();
             return data;

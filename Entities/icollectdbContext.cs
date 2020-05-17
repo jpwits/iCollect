@@ -37,16 +37,18 @@ namespace iCollect.Entities
         {
             modelBuilder.Entity<AlbumCollections>(entity =>
             {
-                entity.HasNoKey();
+                entity.HasKey(e => new { e.CollectionId, e.AlbumId });
 
                 entity.HasOne(d => d.Album)
-                    .WithMany()
+                    .WithMany(p => p.AlbumCollections)
                     .HasForeignKey(d => d.AlbumId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_AlbumCollections_Albums");
 
                 entity.HasOne(d => d.Collection)
-                    .WithMany()
+                    .WithMany(p => p.AlbumCollections)
                     .HasForeignKey(d => d.CollectionId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_AlbumCollections_Collections");
             });
 
@@ -59,6 +61,14 @@ namespace iCollect.Entities
                     .IsUnicode(false);
 
                 entity.Property(e => e.EndDate).HasColumnType("datetime");
+
+                entity.Property(e => e.JsonRanges)
+                    .HasColumnName("jsonRanges")
+                    .HasMaxLength(1024);
+
+                entity.Property(e => e.JsonSetTypes)
+                    .HasColumnName("jsonSetTypes")
+                    .HasMaxLength(1024);
 
                 entity.Property(e => e.Name)
                     .HasMaxLength(50)

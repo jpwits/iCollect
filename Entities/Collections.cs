@@ -7,6 +7,7 @@ namespace iCollect.Entities
     {
         public Collections()
         {
+            AlbumCollections = new HashSet<AlbumCollections>();
             Sets = new HashSet<Sets>();
         }
 
@@ -17,6 +18,7 @@ namespace iCollect.Entities
         public int? CollectionTypeId { get; set; }
 
         public virtual CollectionTypes CollectionType { get; set; }
+        public virtual ICollection<AlbumCollections> AlbumCollections { get; set; }
         public virtual ICollection<Sets> Sets { get; set; }
     }
 }
