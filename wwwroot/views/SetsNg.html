@@ -29,9 +29,10 @@
                         <div class="ibox-content">
 
                             View <select ng-model="$localStorage.session_pglen" ng-change="setItemsPerPage($localStorage.session_pglen)"><option>10</option><option>20</option><option>50</option><option>100</option><option>200</option><option>500</option><option>1000</option></select> records at a time.
-                            <div>Page: {{$sessionStorage.currentPage}} / {{$sessionStorage.numberOfPages}} - [{{$sessionStorage.iColSets.recordsTotal}}]</div>
+                           <!-- <div>Page: {{$sessionStorage.currentPage}} / {{$sessionStorage.numberOfPages}} - [{{$sessionStorage.iColSets.recordsTotal}}]</div>-->
                             <br />
-
+                            <ul uib-pagination total-items="$sessionStorage.iColSets.recordsTotal" items-per-page="$localStorage.session_pglen" ng-model="$sessionStorage.currentPage" ng-change="pageChanged()" max-size="maxSize" class="pagination-sm" boundary-link-numbers="true"></ul>
+                            Items : [{{$sessionStorage.iColSets.recordsTotal}}]
                             <div class="div-table fadeInRight">
                                 <!--Header-->
                                 <div class="div-table-row">
@@ -50,10 +51,10 @@
                                                 <button type="button" class="btn btn-default" ng-click="open2()"><i class="glyphicon glyphicon-calendar"></i></button>
                                             </span>
                                             <span ng-if="$sessionStorage.sortby.Columns[1].Direction === 'Ascending'">
-                                                <i ng-click="sortBy('Year')" class="fa fa-caret-down"></i>
+                                                <i ng-click="sortBy('Year')" class="fa fa-arrow-down"></i>
                                             </span>
                                             <span ng-if="$sessionStorage.sortby.Columns[1].Direction === 'Descending'">
-                                                <i ng-click="sortBy('Year')" class="fa fa-caret-up"></i>
+                                                <i ng-click="sortBy('Year')" class="fa fa-arrow-up"></i>
                                             </span>
                                         </div>
                                     </div>
@@ -66,11 +67,11 @@
                                         </div>
 
                                         <span ng-if="$sessionStorage.sortby.Columns[2].Direction === 'Ascending'">
-                                            <i ng-click="sortBy('Range')" class="fa fa-caret-down"></i>
+                                            <i ng-click="sortBy('Range')" class="fa fa-arrow-down"></i>
                                         </span>
 
                                         <span ng-if="$sessionStorage.sortby.Columns[2].Direction === 'Descending'">
-                                            <i ng-click="sortBy('Range')" class="fa fa-caret-up"></i>
+                                            <i ng-click="sortBy('Range')" class="fa fa-arrow-up"></i>
                                         </span>
                                     </div>
                                     <div class="div-table-col">
@@ -82,20 +83,20 @@
                                         </div>
 
                                         <span ng-if="$sessionStorage.sortby.Columns[3].Direction === 'Ascending'">
-                                            <i ng-click="sortBy('SetType')" class="fa fa-caret-down"></i>
+                                            <i ng-click="sortBy('SetType')" class="fa fa-arrow-down"></i>
                                         </span>
                                         <span ng-if="$sessionStorage.sortby.Columns[3].Direction === 'Descending'">
-                                            <i ng-click="sortBy('SetType')" class="fa fa-caret-up"></i>
+                                            <i ng-click="sortBy('SetType')" class="fa fa-arrow-up"></i>
                                         </span>
                                     </div>
 
                                     <div class="div-table-col" ng-if="$sessionStorage.viewLayout == 'Details'">
                                         <strong>Description</strong>
                                         <span ng-if="$sessionStorage.sortby.Columns[0].Direction === 'Ascending'">
-                                            <i ng-click="sortBy('Description')" class="fa fa-caret-down"></i>
+                                            <i ng-click="sortBy('Description')" class="fa fa-arrow-down"></i>
                                         </span>
                                         <span ng-if="$sessionStorage.sortby.Columns[0].Direction === 'Descending'">
-                                            <i ng-click="sortBy('Description')" class="fa fa-caret-up"></i>
+                                            <i ng-click="sortBy('Description')" class="fa fa-arrow-up"></i>
                                         </span>
                                     </div>
 
@@ -177,11 +178,8 @@
                                     </div>
                                 </div>
                                 <!--Footer-->
-                                <ul uib-pagination total-items="$sessionStorage.iColSets.recordsTotal" ng-model="$sessionStorage.currentPage" ng-change="pageChanged()" max-size="maxSize" class="pagination-sm" boundary-link-numbers="true"></ul>
+                                <ul uib-pagination total-items="$sessionStorage.iColSets.recordsTotal" items-per-page="$localStorage.session_pglen" ng-model="$sessionStorage.currentPage" ng-change="pageChanged()" max-size="maxSize" class="pagination-sm" boundary-link-numbers="true"></ul>
                             </div>
-
-
-
                             <!--<div class="div-table-row">
         <h5>params</h5>
         <pre>{{$sessionStorage | json}}</pre>

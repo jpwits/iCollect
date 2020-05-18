@@ -5,7 +5,7 @@
     $scope.currentUser = function () {
         getUser.get().$promise.then(function (response) {
             $sessionStorage.User = JSON.parse(JSON.stringify(response));
-            if ($sessionStorage.User.name == null) { $sessionStorage.User = undefined }
+            if ($sessionStorage.User.name === null) { $sessionStorage.User = undefined }
         }, function (error) {
             $sessionStorage.iComsErr = JSON.parse(JSON.stringify(error));
             //alert("Error " + $sessionStorage.iComsErr.status + " getting current User : " + $sessionStorage.iComsErr.data);

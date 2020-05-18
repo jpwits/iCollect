@@ -1,4 +1,12 @@
-﻿function SetCtrl($scope, $state, $sessionStorage, updateSet) {
+﻿function SetCtrl($scope, $state, $sessionStorage, $q, updateSet) {
+    var curTCB = $q.defer();
+    var result = $scope.currentUser();
+    curTCB.promise;
+
+    if ($sessionStorage.User === undefined) {
+        $state.go("logins");
+    }
+
     $scope.iSet = $sessionStorage.iColSets.data[$sessionStorage.curSetIdx];
 
     $scope.searchButtonText = "Save";

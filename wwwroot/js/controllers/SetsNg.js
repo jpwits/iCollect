@@ -1,7 +1,10 @@
 ﻿function SetsNgCtrl($scope, $state, $sessionStorage, $localStorage, getSetsSrvNg, getSetSrv, $timeout, $q) {
+    var curTCB = $q.defer();
+    var result = $scope.currentUser();
+    curTCB.promise;
+
     if ($sessionStorage.User === undefined) {
         $state.go("logins");
-        // return;
     }
 
     $scope.spinLoadingSets = false;
@@ -205,6 +208,10 @@
         var ftrYear = $sessionStorage.filterbyYear;
         $sessionStorage.filterbyYear.Start = $scope.yrStartSel;
         $sessionStorage.filterbyYear.End = $scope.yrEndSel;
+        $scope.getsets();
+    };
+
+    $scope.pageChanged = function () {
         $scope.getsets();
     };
 

@@ -1,4 +1,5 @@
 ﻿using iCollect.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -27,23 +28,17 @@ namespace iCollect.Controllers
             _context = context;
         }
 
-
+        [AllowAnonymous]
         [HttpGet, Route("getUser")]
         public async Task<IActionResult> getUser()
         {
             return new JsonResult(new { User.Identity.Name });
         }
 
+        [AllowAnonymous]
         [HttpGet, Route("login/{username}/{password}")]
         public async Task<IActionResult> Login(string username, string password)
         {
-            //if (user == null)
-            //{
-            //    return BadRequest("Invalid client request");
-            //}
-
-            //if (user.UserName == "johndoe" && user.Password == "def@123")
-            //{
             var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("superSecretKey@345"));
             var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
 
@@ -66,6 +61,7 @@ namespace iCollect.Controllers
             return Ok(new { Token = tokenString });
         }
 
+        [AllowAnonymous]
         [HttpGet, Route("logout")]
         public async Task<IActionResult> logout()
         {
@@ -73,6 +69,7 @@ namespace iCollect.Controllers
             return new JsonResult(true);
         }
 
+        [AllowAnonymous]
         [HttpGet, Route("register/{username}/{email}/{password}")]
         public async Task<IActionResult> register(string username, string email, string password)
         {

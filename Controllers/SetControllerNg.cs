@@ -44,7 +44,7 @@ namespace iCollect.Controllers
 
         [Authorize]
         [HttpPut, Route("GetSets/{start}/{length}/{sortby}/{filterbyYear}/{filterbyRanges}/{filterbySetTypes}/{groupby}/{albumId}")]
-        public ActionResult GetSets([FromBody] int start, int length, string sortby, string filterbyYear, string filterbyRanges, string filterbySetTypes, string groupby, int albumId)
+        public ActionResult GetSets(int start, int length, string sortby, string filterbyYear, string filterbyRanges, string filterbySetTypes, string groupby, int albumId)
         {
             var sortbyObj = JsonConvert.DeserializeObject<dynamic>(sortby);
             var filterbyYearObj = JsonConvert.DeserializeObject<dynamic>(filterbyYear);

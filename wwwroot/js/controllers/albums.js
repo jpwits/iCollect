@@ -1,5 +1,9 @@
-﻿function AlbumsCtrl($scope, $state, $sessionStorage, $localStorage, getAlbumCollections) {
-    $scope.currentUser();
+﻿function AlbumsCtrl($scope, $state, $sessionStorage, $q, $localStorage, getAlbumCollections) {
+
+    var curTCB = $q.defer();
+    var result = $scope.currentUser();
+    curTCB.promise;
+
     if ($sessionStorage.User === undefined) {
         $state.go("logins");
     }
