@@ -1,4 +1,4 @@
-﻿function SetCtrl($scope, $state, $sessionStorage, $q, updateSet) {
+﻿function SetCtrl($window, $scope, $state, $sessionStorage, $q, updateSet) {
     var curTCB = $q.defer();
     var result = $scope.currentUser();
     curTCB.promise;
@@ -7,28 +7,33 @@
         $state.go("logins");
     }
 
+    $scope.goBack = function () {
+        $window.history.back();
+    }
+
     $scope.iSet = $sessionStorage.iColSets.data[$sessionStorage.curSetIdx];
 
     $scope.searchButtonText = "Save";
 
-    $scope.UpdateSet = function (sets) {
+    $scope.UpdateSet = function (set) {
         $scope.searchButtonText = "Saving";
-        var clone = Object.assign({}, sets);
+        var clone = Object.assign({}, set);
         if (clone.delItems !== undefined) {
             clone.items = clone.items.concat(clone.delItems);
         }
         $scope.entry = new updateSet(clone);
         $scope.entry.$update(function (response) {
-            iCol = response;
-            if (iCol.items.length > 0) {
-                iCol.delItems = iCol.items.filter(item => item.isActive === false);
-                iCol.items = iCol.items.sort(function (a, b) {
+            if (response.items.length > 0) {
+                response.delItems = response.items.filter(item => item.isActive === false);
+                response.items = response.items.sort(function (a, b) {
                     return a.position - b.position;
                 }).filter(item => item.isActive === true);
             }
-            //iCol = iCol;
+            $scope.iSet = response;
+            $sessionStorage.iColSets.data[$sessionStorage.curSetIdx] = $scope.iSet;
             //alert("Saved successfully...");
             $scope.searchButtonText = "Save";
+            $window.history.back();
 
         }, function (error) {
             $scope.searchButtonText = "Save";
