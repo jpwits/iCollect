@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Cors;
+﻿using iCollect.Entities;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -17,30 +19,26 @@ namespace iCollect.Controllers
     {
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly icollectdbContext _context;
 
-        public AccountController(UserManager<IdentityUser> userManager,SignInManager<IdentityUser> signInManager)
+        public AccountController(UserManager<IdentityUser> userManager,SignInManager<IdentityUser> signInManager, icollectdbContext context)
         {
             _signInManager = signInManager;
             _userManager = userManager;
+            _context = context;
         }
 
-
-        [HttpGet, Route("getUser/{username}")]
-        public async Task<IActionResult> getUser(string username)
+        [AllowAnonymous]
+        [HttpGet, Route("getUser")]
+        public async Task<IActionResult> getUser()
         {
-            return new JsonResult(new { Name = User.Identity.Name });
+            return new JsonResult(new { User.Identity.Name });
         }
 
+        [AllowAnonymous]
         [HttpGet, Route("login/{username}/{password}")]
         public async Task<IActionResult> Login(string username, string password)
         {
-            //if (user == null)
-            //{
-            //    return BadRequest("Invalid client request");
-            //}
-
-            //if (user.UserName == "johndoe" && user.Password == "def@123")
-            //{
             var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("superSecretKey@345"));
             var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
 
@@ -60,19 +58,31 @@ namespace iCollect.Controllers
             };
             await _signInManager.SignInAsync(user, true);
 
-            //var result = await _userManager.CreateAsync(user, password);
-            //if (result.Succeeded)
-            //{
-            //    _signInManager.SignInAsync(user, true);
-            //}
-
             return Ok(new { Token = tokenString });
-            //}
-            //else
-            //{
-            //    return Unauthorized();
-            //}
         }
+
+        [AllowAnonymous]
+        [HttpGet, Route("logout")]
+        public async Task<IActionResult> logout()
+        {
+            _signInManager.SignOutAsync();
+            return new JsonResult(true);
+        }
+
+        [AllowAnonymous]
+        [HttpGet, Route("register/{username}/{email}/{password}")]
+        public async Task<IActionResult> register(string username, string email, string password)
+        {
+            var userIdentity = new IdentityUser()
+            {
+                UserName = username,
+                Email = email
+            };
+            var result = await _userManager.CreateAsync(userIdentity, password);
+
+            return new JsonResult(new { result });
+        }
+
 
         //[HttpPost]
         //public async Task<IActionResult> Post([FromBody]LoginModel model)

@@ -13,15 +13,17 @@ using System.Text;
 using Newtonsoft.Json;
 using System.Drawing.Imaging;
 using Microsoft.AspNetCore.Authorization;
+using Z.EntityFramework.Plus;
+using Newtonsoft.Json.Linq;
 
 namespace iCollect.Controllers
 {
     [Route("api/SetsNg"), Produces("application/json"), EnableCors("AppPolicy")]
     public class SetsNgController : Controller
     {
-        private readonly NorthwindContext _context;
+        private readonly icollectdbContext _context;
 
-        public SetsNgController(NorthwindContext context)
+        public SetsNgController(icollectdbContext context)
         {
             _context = context;
         }
@@ -32,9 +34,7 @@ namespace iCollect.Controllers
             var _sets = _context.Sets.AsEnumerable();
             var yrGroup = _sets.GroupBy(a => a.Year);
             var rangeGroup = _sets.GroupBy(a => a.Range).Select(a => new { a.Key }).ToList();
-            rangeGroup.Insert(0, new { Key = "All" });
             var typeGroup = _sets.GroupBy(a => a.SetType).Select(a => new { a.Key }).ToList();
-            typeGroup.Insert(0, new { Key = "All" });
             return Json(new
             {
                 rangeGroup,
@@ -42,77 +42,97 @@ namespace iCollect.Controllers
             });
         }
 
-        //[HttpGet, Authorize]
-        [HttpGet, Route("GetSets/{start}/{length}/{sortby}/{filterby}/{groupby}")]
-        public ActionResult GetSets(int start, int length, string sortby, string filterby, string groupby)
+        [Authorize]
+        [HttpPut, Route("GetSets/{start}/{length}/{sortby}/{filterbyYear}/{filterbyRanges}/{filterbySetTypes}/{groupby}/{albumId}")]
+        public ActionResult GetSets(int start, int length, string sortby, string filterbyYear, string filterbyRanges, string filterbySetTypes, string groupby, int albumId)
         {
-            // dynamic sortbyObj = Json.Decode(sortby);
             var sortbyObj = JsonConvert.DeserializeObject<dynamic>(sortby);
-            var filterbyObj = JsonConvert.DeserializeObject<dynamic>(filterby);
+            var filterbyYearObj = JsonConvert.DeserializeObject<dynamic>(filterbyYear);
+            var filterbyRangesObj = JsonConvert.DeserializeObject<dynamic>(filterbyRanges);
+            var filterbySetTypesObj = JsonConvert.DeserializeObject<dynamic>(filterbySetTypes);
             var groupbyObj = JsonConvert.DeserializeObject<dynamic>(groupby);
-            var _sets = _context.Sets.AsEnumerable();
-            var yrGroup = _sets.GroupBy(a => a.Year);
-            int yrStartMin = yrGroup.FirstOrDefault().Key??1987;
-            int yrEndMax = yrGroup.OrderByDescending(a => a.Key).FirstOrDefault().Key??2015;
-            var sortCol = sortbyObj.Columns;//.Select(a => a.Column.Value == sortbyObj.Active);
+            var yrGroup = _context.Sets.AsEnumerable().GroupBy(a => a.Year);
+            int dtMin = yrGroup.FirstOrDefault().Key ?? 1987;
+            int yrEndMax = yrGroup.OrderByDescending(a => a.Key).FirstOrDefault().Key ?? 2015;
+            var sortCol = sortbyObj.Columns;
             var qry = _context.Sets.AsQueryable();
 
-            foreach (var col in filterbyObj)
-            {
-                if (col.Column.Value == "Year") // Do for one column only 4 (the famous Jos) now.
-                {
-                    int yrStartSel = col.Start;
-                    int yrEndSel = col.End;
-                    qry = qry.Where(y => y.Year >= yrStartSel && y.Year < yrEndSel +1);
-                }
-                else if (col.Column.Value == "Range")
-                {
-                    var rangefilter = new List<string>();
-                    foreach (var range in col.Ranges)
-                    {
-                        if (range.isChecked.Value && range.Name != "All")
-                        {
-                            rangefilter.Add(range.Name.Value);
-                        }
-                    }
-                    if (col.Ranges.Count > 0)
-                    {
-                        if (!(col.Ranges[0].isChecked.Value && col.Ranges[0].Name.Value == "All"))
-                        {
-                            qry = qry.Where(y => rangefilter.Contains(y.Range));
-                        }
-                    }
-                    else
-                    {
-                        qry = qry.Where(y => rangefilter.Contains(y.Range));
-                    }
-                }
-                else if (col.Column.Value == "SetType")
-                {
-                    var setTypefilter = new List<string>();
-
-                    foreach (var setType in col.SetType)
-                    {
-                        if (setType.isChecked.Value && setType.Name != "All")
-                        {
-                            setTypefilter.Add(setType.Name.Value);
-                        }
-                    }
-                    if (col.SetType.Count > 0)
-                    {
-                        if (!(col.SetType[0].isChecked.Value && col.SetType[0].Name.Value == "All"))
-                        {
-                            qry = qry.Where(y => setTypefilter.Contains(y.SetType));
-                        }
-                    }
-                    else
-                    {
-                        qry = qry.Where(y => setTypefilter.Contains(y.SetType));
-                    }
-                }
-            }
-
+            qry = filterQry(qry, filterbyYearObj, filterbyRangesObj, filterbySetTypesObj);
             var recordsTotal = qry.Count();
+
+            qry = sortQry(qry, sortbyObj);
+
+            qry = qry.Skip(start)
+                .Take(length)
+                .Include(a => a.Items);
+
+            var qryTake = qry.ToList();
+
+            var qryUser = from sets in qryTake
+                          join items in _context.Items on sets.SetId equals items.SetId
+                          join userItems in _context.UserItems on items.ItemId equals userItems.ItemId
+                          where (userItems.UserId == User.Identity.Name && userItems.AlbumId == albumId)
+                          select sets;
+            var qryUserTake = qryUser.ToList();
+
+            var qryComb = qryTake.Union(qryUserTake);
+            qryComb = sortQry(qryComb.AsQueryable(), sortbyObj);
+            var qryRes = qryComb.ToList();
+
+            //oneTimeTemp();
+
+            return Json(new
+            {
+                recordsTotal = recordsTotal,
+                yrstartmin = dtMin,
+                yrendmax = yrEndMax,
+                data = qryRes
+            });
+        }
+
+        public IQueryable filterQry(IQueryable<Sets> qry, dynamic filterbyYearObj, dynamic filterbyRangesObj, dynamic filterbySetTypesObj)
+        {
+            int yrStartSel = ((DateTime)filterbyYearObj.Start).Year;
+            int yrEndSel = ((DateTime)filterbyYearObj.End).Year;
+            qry = qry.Where(y => y.Year >= yrStartSel && y.Year < yrEndSel + 1);
+            var rangefilter = new List<string>();
+            bool ignoreRange = false;
+            bool ignoreSetType = false;
+
+            foreach (var range in filterbyRangesObj)
+            {
+                if (range.Value == "All")
+                {
+                    ignoreRange = true;
+                    break;
+                }
+                rangefilter.Add(range.Value);
+            }
+            if (!ignoreRange)
+            {
+                qry = qry.Where(y => rangefilter.Contains(y.Range));
+            }
+            var setTypesfilter = new List<string>();
+
+            foreach (var setType in filterbySetTypesObj)
+            {
+                if (setType.Value == "All")
+                {
+                    ignoreSetType = true;
+                    break;
+                }
+                setTypesfilter.Add(setType.Value);
+            }
+            if (!ignoreSetType)
+            {
+                qry = qry.Where(y => setTypesfilter.Contains(y.SetType));
+            }
+            //qry = qry.Where(y => rangefilter.Contains(y.Range) && setTypesfilter.Contains(y.SetType)); 
+
+            return qry;
+        }
+        public IQueryable sortQry(IQueryable<Sets> qry, dynamic sortbyObj)
+        {
             foreach (var col in sortbyObj.Columns)
             {
                 if (sortbyObj.Active.Value == col.Column.Value) // Do for one column only 4 (the famous Jos) now.
@@ -163,16 +183,12 @@ namespace iCollect.Controllers
                     };
                 }
             }
-            qry = qry.Skip(start)
-                .Take(length);
-            qry = qry
-                .Include(a => a.Items)
-                .ThenInclude(b => b.UserItems);
+            return qry;
+        }
 
-            var sets = qry
-                .ToList();
 
-            #region _temp
+        public void oneTimeTemp()
+        {
             // OneTime Updates
             //foreach (var set in sets)
             //{
@@ -373,15 +389,6 @@ namespace iCollect.Controllers
             //}
             //_context.UpdateRange(sets);
             //_context.SaveChangesAsync();
-            #endregion
-
-            return Json(new
-            {
-                recordsTotal = recordsTotal,
-                yrstartmin = yrStartMin,
-                yrendmax = yrEndMax,
-                data = sets
-            });
         }
 
         [HttpGet, Route("GetSet/{id}")]
@@ -400,9 +407,9 @@ namespace iCollect.Controllers
         }
 
         [HttpGet, Route("GetUserItem/{id}")]
-        public async Task<IActionResult> GetUserItem(int id)
+        public IActionResult GetUserItem(int id)
         {
-            var set = await _context.Sets
+            var set = _context.Sets
                 .Include(a => a.Items)
                 .ThenInclude(c => c.ImageIdANavigation)
                 .Include(a => a.Items)
@@ -412,9 +419,9 @@ namespace iCollect.Controllers
             return new JsonResult(set);
         }
 
-        [HttpPut("Edit")]
+        [HttpPut("updateSet")]
         //[ValidateAntiForgeryToken]
-        public async Task<Sets> Edit([FromBody] Sets data)
+        public async Task<Sets> updateSet([FromBody] Sets data)
         {
             try
             {

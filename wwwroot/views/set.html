@@ -20,26 +20,24 @@
                     <div class="ibox-content">
                         <div class="row">
                             <div class="col-lg-12">
-                                <div class="m-b-md" ng-if="$stateParams.EditSet == false">
-                                    <button class="btn btn-white pull-right"
-                                            ng-click="UpdateSet(iCol)">
-                                        Edit Set
+                                <div class="m-b-md">
+                                    <button type="button" class="btn btn-primary dim pull-right" ng-click="UpdateSet(iSet)">
+                                        <span ng-show="searchButtonText == 'Saving'"><i class="glyphicon glyphicon-refresh spinning"></i></span>
+                                        {{ searchButtonText }}
                                     </button>
-                                    <h2><strong>{{iCol.description}} </strong></h2>
-                                </div>
-                                <div class="m-b-md" ng-if="$stateParams.EditSet == true">
-                                    <button class="btn btn-primary pull-right"
-                                            ng-click="UpdateSet(iCol)">
-                                        Save Set
+                                    <button type="button" class="btn btn-success dim pull-left" ng-click="goBack();">
+                                        <i class="fa fa-arrow-left spinning"></i>
+                                        Back
                                     </button>
-                                    <h2>
-                                        <strong>
-                                            {{iCol.year}} {{iCol.range}} {{iCol.setType}}
-                                            <!--    {{iCol.description}}-->
-                                        </strong>
-                                    </h2>
                                 </div>
+                                <h2>
+                                    <strong>
+                                        {{iSet.year}} {{iSet.range}} {{iSet.setType}}
+                                        <!--    {{iSet.description}}-->
+                                    </strong>
+                                </h2>
                             </div>
+                           
                         </div>
                         <div class="row">
                             <div class="col-lg-12">
@@ -47,19 +45,14 @@
                                     <tr>
                                         <td>Description:</td>
                                         <td>
-                                            <input class="input-sm form-control" style="width:100%" ng-if="$stateParams.EditSet == true" type="text" name="input"
-                                                   ng-model="iCol.description">
-                                        </td>
-                                        <td>
-                                            <span ng-if="$stateParams.EditSet == false">
-                                                {{iCol.description}}
-                                            </span>
+                                            <input class="input-sm form-control" style="width:100%" type="text" name="input"
+                                                   ng-model="iSet.description">
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Upload Images:</td>
                                         <td>
-                                            <input class="btn btn-primary dim btn-default" type="file" multiple="multiple" ngf-select="uploadFiles($files, iCol)" /> <!--accept="image/*"-->
+                                            <input class="btn btn-primary dim btn-default" type="file" multiple="multiple" ngf-select="uploadFiles($files, iSet)" /> <!--accept="image/*"-->
                                             <!--
                                                 ngf-multiple="true"
                                                 <br>
@@ -74,10 +67,8 @@
                                             </span>-->
                                             {{errorMsg}}
                                         </td>
-                                        <td>
-                                        </td>
                                     </tr>
-                                    <tr ng-repeat="(key, item) in iCol.items">
+                                    <tr ng-repeat="(key, item) in iSet.items">
                                         <!--<td>Images:</td>-->
                                         <td colspan="2">
                                             <div class="container">
@@ -124,7 +115,7 @@
                                                 <button ng-click="ImageOrderDown(item.position)" class="btn btn-primary dim btn-default" type="button"><i class="fa fa-chevron-down"></i>Down </button>
                                             </div>
                                             <div>
-                                                <button ng-click="Delete(item.position)" class="btn btn-primary dim btn-default" type="button"><i class="fa fa-trash"></i>Remove</button>
+                                                <button ng-click="Delete(item.position)" class="btn btn-danger dim btn-default" type="button"><i class="fa fa-trash"></i>Remove</button>
                                             </div>
                                             <br />
                                             <div ng-if="item.imageIdBNavigation == undefined">
@@ -138,54 +129,37 @@
                                     <!--<tr>
                                         <td>Set Id:</td>
                                         <td colspan="2">
-                                            <input type="text" name="input" ng-model="iCol.setId">
+                                            <input type="text" name="input" ng-model="iSet.setId">
                                         </td>
                                     </tr>-->
                                     <!--<tr>
                                         <td>Coin Id:</td>
                                         <td colspan="2">
-                                            <input type="checkbox" name="input" ng-model="iCol.coinId">
+                                            <input type="checkbox" name="input" ng-model="iSet.coinId">
                                         </td>
                                     </tr>-->
                                     <!--<tr>
                                         <td>Image Id:</td>
                                         <td colspan="2">
-                                            <input type="text" name="input" ng-model="iCol.itemId">
-                                        </td>
-                                    </tr>-->
-                                    <tr>
-                                        <td>Year:</td>
-                                        <td colspan="2">
-                                            <!--<input type="text" name="input" ng-model="iCol.year">-->
-                                            <select ng-change="filterDate()" ng-model="iCol.year" id="yrStart" name="yrStart">
-                                                <option ng-repeat="n in []|range:yrStartMax-yrStartMin +1" value="{{$index*1 + yrStartMin*1}}">
-                                                    {{$index*1 + yrStartMin*1}}
-                                                </option>
-                                            </select>
-                                        </td>
-                                    </tr>
-                                    <!--<tr>
-                                        <td>Description:</td>
-                                        <td colspan="2">
-                                            <input type="text" name="input" ng-model="iCol.description">
+                                            <input type="text" name="input" ng-model="iSet.itemId">
                                         </td>
                                     </tr>-->
                                     <tr>
                                         <td>Date:</td>
                                         <td colspan="2">
-                                            <input type="text" name="input" ng-model="iCol.date">
+                                            <input type="text" name="input" ng-model="iSet.date">
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Range:</td>
                                         <td colspan="2">
-                                            <input type="text" name="input" ng-model="iCol.range">
+                                            <input type="text" name="input" ng-model="iSet.range">
                                         </td>
                                     </tr>
                                     <!--<tr>
                                         <td>CatCode:</td>
                                         <td colspan="2">
-                                            <input type="text" name="input" ng-model="iCol.catCode">
+                                            <input type="text" name="input" ng-model="iSet.catCode">
                                         </td>
                                     </tr>-->
                                 </table>

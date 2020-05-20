@@ -4,19 +4,20 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace iCollect.Entities
 {
-    public partial class NorthwindContext : DbContext
+    public partial class icollectdbContext : DbContext
     {
-        public NorthwindContext()
+        public icollectdbContext()
         {
         }
 
-        public NorthwindContext(DbContextOptions<NorthwindContext> options)
+        public icollectdbContext(DbContextOptions<icollectdbContext> options)
             : base(options)
         {
         }
 
         public virtual DbSet<AlbumCollections> AlbumCollections { get; set; }
         public virtual DbSet<Albums> Albums { get; set; }
+        public virtual DbSet<CollectionTypes> CollectionTypes { get; set; }
         public virtual DbSet<Collections> Collections { get; set; }
         public virtual DbSet<Images> Images { get; set; }
         public virtual DbSet<Items> Items { get; set; }
@@ -28,7 +29,7 @@ namespace iCollect.Entities
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Data Source=DESKTOP-7DQTMIU\\SQLEXPRESS;Initial Catalog=Northwind;Trusted_Connection=True;");
+                //optionsBuilder.UseSqlServer("Data Source=DESKTOP-7DQTMIU\\SQLEXPRESS;Initial Catalog=Northwind;Trusted_Connection=True;");
             }
         }
 
@@ -51,7 +52,7 @@ namespace iCollect.Entities
 
             modelBuilder.Entity<Albums>(entity =>
             {
-                entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.HasKey(e => e.AlbumId);
 
                 entity.Property(e => e.Description)
                     .HasMaxLength(255)
@@ -70,6 +71,15 @@ namespace iCollect.Entities
                     .IsUnicode(false);
             });
 
+            modelBuilder.Entity<CollectionTypes>(entity =>
+            {
+                entity.HasKey(e => e.CollectionTypeId);
+
+                entity.Property(e => e.Type)
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+            });
+
             modelBuilder.Entity<Collections>(entity =>
             {
                 entity.HasKey(e => e.CollectionId);
@@ -77,6 +87,11 @@ namespace iCollect.Entities
                 entity.Property(e => e.Description).HasMaxLength(255);
 
                 entity.Property(e => e.Name).HasMaxLength(255);
+
+                entity.HasOne(d => d.CollectionType)
+                    .WithMany(p => p.Collections)
+                    .HasForeignKey(d => d.CollectionTypeId)
+                    .HasConstraintName("FK_Collections_CollectionTypes");
             });
 
             modelBuilder.Entity<Images>(entity =>
@@ -164,6 +179,11 @@ namespace iCollect.Entities
                 entity.Property(e => e.UserId)
                     .IsRequired()
                     .HasMaxLength(255);
+
+                entity.HasOne(d => d.Album)
+                    .WithMany(p => p.UserItems)
+                    .HasForeignKey(d => d.AlbumId)
+                    .HasConstraintName("FK_UserItems_Albums");
 
                 entity.HasOne(d => d.Item)
                     .WithMany(p => p.UserItems)

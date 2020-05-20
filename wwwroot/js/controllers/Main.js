@@ -1,12 +1,6 @@
-﻿function MainCtrl($http, $scope, passData, getUser) {
+﻿function MainCtrl($http, $scope, $sessionStorage, getUser) {
 
-    getUser.get({ username: " " }).$promise.then(function (response) {
-        passData.set("User", JSON.parse(JSON.stringify(response)));
-        //$scope.User = passData.get("User");
-    },
-        function (error) {
-            alert("Error getting user from back-end : " + error);
-        });
+    
 
     this.countries = [
         { name: 'Amsterdam' },

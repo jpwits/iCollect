@@ -15,7 +15,7 @@
     <div class="animated fadeInRight">
         <div class="row">
             <div class="col-lg-12">
-                <div class="wrapper wrapper-content animated fadeInUp">
+                <div class="wrapper wrapper-content">
                     <div class="ibox">
                         <div class="ibox-title">
                             <h5>All Sets assigned to this account</h5>
@@ -24,151 +24,183 @@
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
+                    <!--{{$localStorage.lookups.rangeGroup}}-->
+                    <div class="ibox">
+                        <div class="ibox-content">
 
-    <div>
-        View <select ng-model="session_pglen" ng-change="setItemsPerPage(session_pglen)"><option>3</option><option>5</option><option>10</option><option>20</option><option>30</option><option>40</option><option>50</option></select> records at a time.
-        <div>Page: {{currentPage}} / {{numberOfPages}}</div>
-        <br />
+                            View <select ng-model="$localStorage.session_pglen" ng-change="setItemsPerPage($localStorage.session_pglen)"><option>10</option><option>20</option><option>50</option><option>100</option><option>200</option><option>500</option><option>1000</option></select> records at a time. [Total Sets : {{$sessionStorage.iColSets.recordsTotal}}]
+                            <!-- <div>Page: {{$sessionStorage.currentPage}} / {{$sessionStorage.numberOfPages}} - [{{$sessionStorage.iColSets.recordsTotal}}]</div>-->
+                            <br />
+                            <ul uib-pagination total-items="$sessionStorage.iColSets.recordsTotal" items-per-page="$localStorage.session_pglen" ng-model="$sessionStorage.currentPage" ng-change="pageChanged()" max-size="maxSize" class="pagination-sm" boundary-link-numbers="true"></ul>
 
-        <div class="div-table fadeInRight">
-            <div class="div-table-row">
-                <div style="min-width:450px" class="div-table-col" align="center">
-                    <strong>Images</strong>
-                </div>
+                            <div class="div-table fadeInRight">
+                                <!--Header-->
+                                <div class="div-table-row">
+                                    <div class="div-table-col">
+                                        <div class="input-group">
+                                            <input ng-change="filterDate()" type="text" class="form-control col-lg-8" uib-datepicker-popup="{{format}}" ng-model="yrStartSel" is-open="popup1.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" />
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default" ng-click="open1()"><i class="glyphicon glyphicon-calendar"></i></button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="div-table-col">
+                                        <div class="input-group">
+                                            <input ng-change="filterDate()" type="text" class="form-control col-lg-8" uib-datepicker-popup="{{format}}" ng-model="yrEndSel" is-open="popup2.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" />
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default" ng-click="open2()"><i class="glyphicon glyphicon-calendar"></i></button>
+                                            </span>
+                                            <span ng-if="$sessionStorage.sortby.Columns[1].Direction === 'Ascending'">
+                                                <i ng-click="sortBy('Year')" class="fa fa-arrow-down"></i>
+                                            </span>
+                                            <span ng-if="$sessionStorage.sortby.Columns[1].Direction === 'Descending'">
+                                                <i ng-click="sortBy('Year')" class="fa fa-arrow-up"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="div-table-col">
+                                        <div class="col-lg-8">
+                                            <!-- Multiselect dropdown -->
+                                            <select multiple title="Range" data-style="bg-white rounded-pill" class="form-control input-sm selectpicker" ng-model="$sessionStorage.filterbyRanges" ng-change="filterRangeChange($sessionStorage.filterbyRanges)" data-container="body" data-size="6" data-selected-text-format="count>2" data-actions-box="true">
+                                                <option ng-repeat="range in $localStorage.lookups.rangeGroup">{{range.key}}</option>
+                                            </select><!-- End -->
+                                        </div>
 
-                <div class="div-table-col">
-                    <!--Year-->
-                    <!--<div class="dropdown">
-                    <button class="dropbtn">Year</button>
-                    <div class="dropdown-content">
-                        <a href="#">Sort Ascending</a>
-                        <a href="#">Sort Descending</a>-->
-                    <!--<label for="yrStart">Date Range:</label>-->
-                    <select ng-change="filterDate()" ng-model="yrStartSel" id="yrStart" name="yrStart">
-                        <option ng-repeat="n in []|range:yrStartMax-yrStartMin +1" value="{{$index*1 + yrStartMin*1}}">
-                            {{$index*1 + yrStartMin*1}}
-                        </option>
-                    </select>
-                    :<!--{{yrStartSel}}-->
-                    <select ng-change="filterDate()" ng-model="yrEndSel" id="yrEnd" name="yrEnd">
-                        <option ng-repeat="n in []|range:yrStartMax-yrStartSel+1" value="{{$index*1 + yrStartSel*1}}">
-                            {{$index*1 + yrStartSel*1}}
-                        </option>
-                    </select>
-                    <!--</div>
-                    </div>-->
-                    <span ng-if="sortby.Columns[1].Direction === 'Ascending'">
-                        <i ng-click="sortBy('Year')" class="fa fa-caret-down"></i>
-                    </span>
-                    <span ng-if="sortby.Columns[1].Direction === 'Descending'">
-                        <i ng-click="sortBy('Year')" class="fa fa-caret-up"></i>
-                    </span>
-                </div>
-                <div class="div-table-col">
-                    <div class="dropdown">
-                        <button class="dropbtn">Range</button>
-                        <div class="dropdown-content">
-                            <div ng-repeat="range in rangeGroup">
-                                <input style="text-align:left" class="ngColListCheckbox" type="checkbox" ng-model="range.isChecked" ng-change="filterRangeChange(range)" ng-checked="filterRange(range.key)" />{{range.key}}
-                            </div>
-                        </div>
-                    </div>
+                                        <span ng-if="$sessionStorage.sortby.Columns[2].Direction === 'Ascending'">
+                                            <i ng-click="sortBy('Range')" class="fa fa-arrow-down"></i>
+                                        </span>
 
-                    <span ng-if="sortby.Columns[2].Direction === 'Ascending'">
-                        <i ng-click="sortBy('Range')" class="fa fa-caret-down"></i>
-                    </span>
+                                        <span ng-if="$sessionStorage.sortby.Columns[2].Direction === 'Descending'">
+                                            <i ng-click="sortBy('Range')" class="fa fa-arrow-up"></i>
+                                        </span>
+                                    </div>
+                                    <div class="div-table-col">
+                                        <div class="col-lg-6">
+                                            <!-- Multiselect dropdown -->
+                                            <select multiple title="Type" data-style="bg-black rounded-pill" class="form-control input-sm selectpicker" ng-model="$sessionStorage.filterbySetTypes" ng-change="filterTypeChange($sessionStorage.filterbySetTypes)" data-container="body" data-size="6" data-selected-text-format="count>2" data-actions-box="true">
+                                                <option ng-repeat="type in $localStorage.lookups.typeGroup">{{type.key}}</option>
+                                            </select><!-- End -->
+                                        </div>
 
-                    <span ng-if="sortby.Columns[2].Direction === 'Descending'">
-                        <i ng-click="sortBy('Range')" class="fa fa-caret-up"></i>
-                    </span>
-                </div>
-                <div class="div-table-col">
-                    <div class="dropdown">
-                        <button class="dropbtn">Type</button>
-                        <div class="dropdown-content">
-                            <div ng-repeat="type in typeGroup">
-                                <input style="text-align:left" class="ngColListCheckbox" type="checkbox" ng-model="type.isChecked" ng-change="filterSetTypeChange(type)" ng-checked="filterSetType(type.key)" />{{type.key}}
-                            </div>
-                        </div>
-                    </div>
-                    <span ng-if="sortby.Columns[3].Direction === 'Ascending'">
-                        <i ng-click="sortBy('SetType')" class="fa fa-caret-down"></i>
-                    </span>
-                    <span ng-if="sortby.Columns[3].Direction === 'Descending'">
-                        <i ng-click="sortBy('SetType')" class="fa fa-caret-up"></i>
-                    </span>
-                </div>
-                <div class="div-table-col">
-                    <strong>Description</strong>
-                    <span ng-if="sortby.Columns[0].Direction === 'Ascending'">
-                        <i ng-click="sortBy('Description')" class="fa fa-caret-down"></i>
-                    </span>
-                    <span ng-if="sortby.Columns[0].Direction === 'Descending'">
-                        <i ng-click="sortBy('Description')" class="fa fa-caret-up"></i>
-                    </span>
-                </div>
-            </div>
+                                        <span ng-if="$sessionStorage.sortby.Columns[3].Direction === 'Ascending'">
+                                            <i ng-click="sortBy('SetType')" class="fa fa-arrow-down"></i>
+                                        </span>
+                                        <span ng-if="$sessionStorage.sortby.Columns[3].Direction === 'Descending'">
+                                            <i ng-click="sortBy('SetType')" class="fa fa-arrow-up"></i>
+                                        </span>
+                                    </div>
 
-            <div class="div-table-row" ng-repeat="(setidx,set) in iColSets.data">
-                <div style="min-width:450px" class="div-table-col">
-                    <div ng-if="set.items.length === 0">
-                        <i>(No Image Available)</i>
-                    </div>
-                    <div ng-repeat="(itemidx, item)  in set.items" ng-if="item.isActive == true">
-                        <div class="SetContainer">
-                            <div class="container">
-                                <img ng-click="selectSet($event, setidx)" style="margin-right : 25px;border:2px solid grey" ng-src="data:{{item.type}};base64,{{item.thumbnailA}}" />
-                                <img ng-if="item.thumbnailB != undefined" class="overlay" ng-click="selectSet($event, setidx)" style="margin-right : 25px;border:2px solid grey" ng-src="data:{{item.type}};base64,{{item.thumbnailB}}" />
-                            </div>
-                            <span class="ItemCheckbox" style="padding-bottom : 18px;">{{item.userItems[0].quantity}}</span>
-                            <a ng-if="itemidx === 0" href="" ng-click="SelectItem($event, setidx, itemidx , 1)" type="button" class="ItemCheckbox"><i class="fa fa-plus" style="padding-bottom:35px;font-size:16px;color:green"></i></a>
-                            <a ng-if="itemidx === 0" href="" ng-click="SelectItem($event, setidx, itemidx , -1)" type="button" class="ItemCheckbox"><i class="fa fa-minus" style="font-size:16px;color:red"></i></a>
-                            <a ng-if="itemidx !== 0" href="" ng-click="SelectItem($event, setidx, itemidx , 1)" type="button" class="ItemCheckbox"><i class="fa fa-caret-up" style="padding-bottom:30px;font-size:24px;color:green"></i></a>
-                            <a ng-if="itemidx !== 0" href="" ng-click="SelectItem($event, setidx, itemidx , -1)" type="button" class="ItemCheckbox"><i class="fa fa-caret-down" style="font-size:24px;color:red"></i></a>
-                        </div>
-                        <!--<div ng-if="itemidx !== 0" class="SetContainer">
-                            <div class="container">
-                                <img style="width:80%;height:80%;margin-right : 25px;border:2px solid grey" ng-src="data:{{item.type}};base64,{{item.thumbnailA}}" />
-                                <div ng-if="item.thumbnailB != undefined">
-                                    <img class="overlay" style="width:80%;height:80%;margin-right : 25px;border:2px solid grey" ng-src="data:{{item.type}};base64,{{item.thumbnailB}}" />
+                                    <div class="div-table-col" ng-if="$sessionStorage.viewLayout == 'Details'">
+                                        <strong>Description</strong>
+                                        <span ng-if="$sessionStorage.sortby.Columns[0].Direction === 'Ascending'">
+                                            <i ng-click="sortBy('Description')" class="fa fa-arrow-down"></i>
+                                        </span>
+                                        <span ng-if="$sessionStorage.sortby.Columns[0].Direction === 'Descending'">
+                                            <i ng-click="sortBy('Description')" class="fa fa-arrow-up"></i>
+                                        </span>
+                                    </div>
+
+                                    <div class="div-table-col">
+                                        <div class="col-lg-8" style="float:right">
+                                            <button ng-if="$sessionStorage.viewLayout == 'Tiles'" type="button" class="btn btn-default" ng-model="$sessionStorage.viewLayout" ng-click="$sessionStorage.viewLayout = 'Details'"><i class="glyphicon glyphicon-th-list"></i></button>
+                                            <button ng-if="$sessionStorage.viewLayout == 'Details'" type="button" class="btn btn-default" ng-model="$sessionStorage.viewLayout" ng-click="$sessionStorage.viewLayout = 'Tiles'"><i class="glyphicon glyphicon-th"></i></button>
+                                        </div>
+                                    </div>
                                 </div>
+
+
+
+                                <!--Tiles-->
+                                <div ng-if="$sessionStorage.viewLayout == 'Tiles'" class="div-table-row">
+                                    <div ng-show="spinLoadingSets == true">
+                                        <i style="font-size: 30px;" class="glyphicon glyphicon-refresh spinning"></i>
+                                    </div>
+                                    <span ng-repeat="(setidx,set) in $sessionStorage.iColSets.data">
+                                        <div class="SetContainer">
+                                            <div class="container" title="{{set.description}}">
+                                                <div ng-if="set.items.length === 0">
+                                                    <img ng-click="selectSet($event, setidx)" width="120" style="margin-right : 25px;border:2px solid grey" ng-src="../img/NoImage.jpg" />
+                                                </div>
+                                                <div ng-if="set.items.length > 0">
+                                                    <img ng-click="selectSet($event, setidx)" style="margin-right : 25px;border:2px solid grey" ng-src="data:{{set.items[0].type}};base64,{{set.items[0].thumbnailA}}" />
+                                                    <img ng-if="set.items[0].thumbnailB != undefined" class="overlay" ng-click="selectSet($event, setidx)" style="margin-right : 25px;border:2px solid grey" ng-src="data:{{set.items[0].type}};base64,{{set.items[0].thumbnailB}}" />
+                                                </div>
+                                            </div>
+                                            <span class="ItemCheckbox" style="padding-bottom : 18px;">{{set.items[0].userItems[0].quantity}}</span>
+                                            <a href="" ng-click="SelectItem($event, setidx, 0 , 1)" type="button" class="ItemCheckbox"><i class="fa fa-plus" style="padding-bottom:35px;font-size:16px;color:green"></i></a>
+                                            <a href="" ng-click="SelectItem($event, setidx, 0 , -1)" type="button" class="ItemCheckbox"><i class="fa fa-minus" style="font-size:16px;color:red"></i></a>
+                                        </div>
+                                    </span>
+                                </div>
+
+                                <!--Details-->
+                                <div ng-if="$sessionStorage.viewLayout == 'Details'">
+                                    <div ng-show="spinLoadingSets == true">
+                                        <i style="font-size: 30px;" class="glyphicon glyphicon-refresh spinning"></i>
+                                    </div>
+                                    <div ng-repeat="(setidx,set) in $sessionStorage.iColSets.data" class="div-table-row">
+                                        <div style="min-width:450px" class="div-table-col">
+                                            <div ng-if="set.items.length === 0">
+                                                <img ng-click="selectSet($event, setidx)" width="120" style="margin-right : 25px;border:2px solid grey" ng-src="../img/NoImage.jpg" />
+                                            </div>
+                                            <div ng-repeat="(itemidx, item)  in set.items" ng-if="item.isActive == true">
+                                                <div class="SetContainer">
+                                                    <div class="container" title="{{set.description}}">
+                                                        <img ng-click="selectSet($event, setidx)" style="margin-right : 25px;border:2px solid grey" ng-src="data:{{item.type}};base64,{{item.thumbnailA}}" />
+                                                        <img ng-if="item.thumbnailB != undefined" class="overlay" ng-click="selectSet($event, setidx)" style="margin-right : 25px;border:2px solid grey" ng-src="data:{{item.type}};base64,{{item.thumbnailB}}" />
+                                                    </div>
+                                                    <span class="ItemCheckbox" style="padding-bottom : 18px;">{{item.userItems[0].quantity}}</span>
+                                                    <a ng-if="itemidx === 0" href="" ng-click="SelectItem($event, setidx, itemidx , 1)" type="button" class="ItemCheckbox"><i class="fa fa-plus" style="padding-bottom:35px;font-size:16px;color:green"></i></a>
+                                                    <a ng-if="itemidx === 0" href="" ng-click="SelectItem($event, setidx, itemidx , -1)" type="button" class="ItemCheckbox"><i class="fa fa-minus" style="font-size:16px;color:red"></i></a>
+                                                    <a ng-if="itemidx !== 0" href="" ng-click="SelectItem($event, setidx, itemidx , 1)" type="button" class="ItemCheckbox"><i class="fa fa-caret-up" style="padding-bottom:30px;font-size:24px;color:green"></i></a>
+                                                    <a ng-if="itemidx !== 0" href="" ng-click="SelectItem($event, setidx, itemidx , -1)" type="button" class="ItemCheckbox"><i class="fa fa-caret-down" style="font-size:24px;color:red"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="div-table-col">
+                                            <span>{{set.year}}</span>
+                                        </div>
+                                        <div class="div-table-col">
+                                            <span>{{set.range}}</span>
+                                        </div>
+                                        <div class="div-table-col">
+                                            <div ng-if="set.setType === null">
+                                                <i>(No Type)</i>
+                                            </div>
+                                            <span>{{set.setType}}</span>
+                                        </div>
+                                        <div class="div-table-col">
+                                            <a href="" ng-click="selectSet($event,setidx)">{{set.description}}</a>
+                                        </div>
+                                        <div class="div-table-col">
+                                            <a href="" ng-click="selectSet($event,setidx)">$0.00</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--Footer-->
+                                <ul uib-pagination total-items="$sessionStorage.iColSets.recordsTotal" items-per-page="$localStorage.session_pglen" ng-model="$sessionStorage.currentPage" ng-change="pageChanged()" max-size="maxSize" class="pagination-sm" boundary-link-numbers="true"></ul>
                             </div>
-                            <span class="ItemCheckbox" style="padding-bottom : 18px;">{{item.userItems[0].quantity}}</span>
-                            <a href="" ng-click="SelectItem($event, setidx, itemidx , 1)" type="button" class="ItemCheckbox"><i class="fa fa-caret-up" style="padding-bottom:30px;font-size:24px;color:green"></i></a>
-                            <a href="" ng-click="SelectItem($event, setidx, itemidx , -1)" type="button" class="ItemCheckbox"><i class="fa fa-caret-down" style="font-size:24px;color:red"></i></a>
-                        </div>-->
+                            <!--<div class="div-table-row">
+        <h5>params</h5>
+        <pre>{{$sessionStorage | json}}</pre>
+    </div>-->
+                        </div>
                     </div>
-                </div>
-                <div class="div-table-col">
-                    <span>{{set.year}}</span>
-                </div>
-                <div class="div-table-col">
-                    <span>{{set.range}}</span>
-                </div>
-                <div class="div-table-col">
-                    <div ng-if="set.setType === null">
-                        <i>(No Type)</i>
-                    </div>
-                    <span>{{set.setType}}</span>
-                </div>
-                <div class="div-table-col">
-                    <a href="" ng-click="selectSet($event,setidx)">{{set.description}}</a>
                 </div>
             </div>
-
         </div>
-        <ul uib-pagination total-items="iColSets.recordsTotal" ng-model="currentPage" ng-change="pageChanged()" max-size="maxSize" class="pagination-sm" boundary-link-numbers="true"></ul>
     </div>
     <br />
-    <br />
-    <!-- <form name="myForm" ng-submit="">-->
-    <!--</form>-->
-    <!--<h5>params</h5>
-    <pre>{{$stateParams | json}}</pre>
-    <h5>state</h5>
-    <pre>{{sortby.Columns.find(a => a.Column === 'Description') | json}}</pre>-->
-</div>
+
+    <style>
+
+        /* Local style for demo purpose */
+
+        .lightBoxGallery {
+            text-align: center;
+        }
+
+            .lightBoxGallery img {
+                margin: 5px;
+            }
+    </style>

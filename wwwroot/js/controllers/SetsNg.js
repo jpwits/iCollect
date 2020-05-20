@@ -1,40 +1,82 @@
-﻿function SetsNgCtrl($scope, $state, updateImage, DTOptionsBuilder, $compile, $templateCache, getSetsSrvNg, passData, getSetSrv, getLookups, $timeout, $q) {
+﻿function SetsNgCtrl($scope, $state, $sessionStorage, $localStorage, getSetsSrvNg, getSetSrv, $timeout, $q) {
+    var curTCB = $q.defer();
+    var result = $scope.currentUser();
+    curTCB.promise;
 
-    $scope.User = passData.get("User")
+    if ($sessionStorage.User === undefined) {
+        $state.go("logins");
+    }
 
-    $scope.rangeGroup = passData.get("$scope.rangeGroup");
-    $scope.typeGroup = passData.get("$scope.typeGroup");
+    $scope.spinLoadingSets = false;
 
-    $scope.fillLookups = () => {
-        getLookups.get().$promise.then(function (response) {
-            var Lookups = JSON.parse(JSON.stringify(response));
-            $scope.rangeGroup = Lookups.rangeGroup;
-            $scope.typeGroup = Lookups.typeGroup;
-        }, function (error) {
-            alert("Error getting orders from back-end : " + error);
-        });
+    if ($state.params.viewLayout !== null) {
+        $sessionStorage.viewLayout = $state.params.viewLayout;
+    }
+
+    $scope.today = function () {
+        $scope.dtStart = new Date(1987, 1, 1);
+        $scope.dtEnd = new Date(2020, 1, 1);
+    };
+    $scope.today();
+
+    $scope.clear = function () {
+        $scope.dtStart = new Date(1987, 1, 1);
     };
 
-    if ($scope.rangeGroup === undefined || $scope.typeGroup === undefined) {
-        $scope.fillLookups();
+    $scope.dateOptions = {
+        datepickerMode: 'year',
+        minMode: 'year',
+        showWeeks: 'false',
+        dateDisabled: false,
+        formatYear: 'yyyy',
+        maxDate: $scope.dtEnd,
+        minDate: $scope.dtStart,
+        startingDay: 1
+    };
+
+    $scope.open1 = function () {
+        $scope.popup1.opened = true;
+    };
+
+    $scope.open2 = function () {
+        $scope.popup2.opened = true;
+    };
+
+    $scope.setDate = function (year, month, day) {
+        $scope.dt = new Date(year, month, day);
+    };
+
+    $scope.formats = ['yyyy'];
+    $scope.format = $scope.formats[0];
+    //$scope.altInputFormats = ['M!/d!/yyyy'];
+    $scope.altInputFormats = ['yyyy-M!-d!'];
+    $scope.popup1 = {
+        opened: false
+    };
+
+    $scope.popup2 = {
+        opened: false
+    };
+    if ($sessionStorage.album === undefined) {
+        $sessionStorage.album = $state.params.album;
+    }
+    else if ($sessionStorage.album === null) {/* #####!!!!!!!!!*/
+        $sessionStorage.album = 0;
     }
 
-    $scope.yrStartMin = passData.get("$scope.yrStartMin");
-    if ($scope.yrStartMin === undefined) {
-        $scope.yrStartMin = "1987";
+    if ($sessionStorage.filterbyYear === undefined) $sessionStorage.filterbyYear = {
+        "Start": $sessionStorage.album.startDate,
+        "End": $sessionStorage.album.endDate
+    };
+
+    $scope.yrStartSel = new Date($sessionStorage.filterbyYear.Start);
+    $scope.yrEndSel = new Date($sessionStorage.filterbyYear.End);
+
+    if ($localStorage.session_pglen === undefined) {
+        $localStorage.session_pglen = "50";
     }
 
-    $scope.yrStartMax = passData.get("$scope.yrStartMin");
-    if ($scope.yrStartMax === undefined) {
-        $scope.yrStartMax = "2015";
-    }
-
-    $scope.session_pglen = passData.get("Session_PgLen");
-    if ($scope.session_pglen === undefined) {
-        $scope.session_pglen = "50";
-    }
-
-    $scope.sortby = {
+    $sessionStorage.sortby = {
         "Active": "Year",
         "Columns": [
             {
@@ -42,7 +84,7 @@
                 "Direction": "Descending"
             }, {
                 "Column": "Year",
-                "Direction": "Ascending"
+                "Direction": "Descending"
             }, {
                 "Column": "Range",
                 "Direction": "Descending"
@@ -51,7 +93,8 @@
                 "Direction": "Descending"
             }]
     };
-    $scope.groupby = [{
+
+    $sessionStorage.groupby = [{
         "Column": "Range",
         "Ranges": []
         //[{ "Name": "Protea", "isChecked": true },
@@ -60,160 +103,120 @@
         "Column": "Type",
         "Types": ["Prestige", "Launch", "Special"]
     }];
-    $scope.yrStartSel = passData.get("$scope.yrStartSel");
-    $scope.yrEndSel = passData.get("$scope.yrEndSel");
 
-    if ($scope.yrStartSel === undefined) {
-        $scope.yrStartSel = "1987";
+    if ($sessionStorage.filterbyRanges === undefined) {
+        $sessionStorage.filterbyRanges = [];
+        $localStorage.lookups.rangeGroup.forEach(function (range) {
+            $sessionStorage.filterbyRanges.push(range.key);
+        });
+    };
+    if ($sessionStorage.filterbySetTypes === undefined) {
+        $sessionStorage.filterbySetTypes = [];
+        $localStorage.lookups.typeGroup.forEach(function (type) {
+            $sessionStorage.filterbySetTypes.push(type.key);
+        });
     }
 
-    if ($scope.yrEndSel === undefined) {
-        $scope.yrEndSel = "2013";
-    }
-
-    $scope.filterby = [
-        {
-            "Column": "Year",
-            "Start": $scope.yrStartSel,
-            "End": $scope.yrEndSel
-        },
-        {
-            "Column": "Range",
-            "Ranges": [{ "Name": "All", "isChecked": true }]
-        },
-        {
-            "Column": "SetType",
-            "SetType": [{ "Name": "All", "isChecked": true }]
-        }
-    ];
-
-    $scope.pageSize = $scope.session_pglen;
-    $scope.viewby = $scope.session_pglen;//10;
-    
-    $scope.itemsPerPage = $scope.viewby;
+    $scope.pageSize = $localStorage.session_pglen;
+    $scope.viewby = $localStorage.session_pglen;
     $scope.maxSize = 5; //Number of pager buttons to show
 
-    $scope.currentPage = passData.get("$scope.currentPage");
-    if ($scope.currentPage === undefined) {
-        $scope.currentPage = 1;
+    if ($sessionStorage.currentPage === undefined) {
+        $sessionStorage.currentPage = 1;
     }
 
-    $scope.numberOfPages = passData.get("$scope.numberOfPages");
-    if ($scope.numberOfPages === undefined) {
-        $scope.numberOfPages = 1;
+    if ($sessionStorage.numberOfPages === undefined) {
+        $sessionStorage.numberOfPages = 1;
     }
 
-    $scope.setPage = function (pageNo) {
-        $scope.currentPage = pageNo;
-    };
+    $scope.getsets = () => {
+        var currentfilterbyRanges = $sessionStorage.filterbyRanges;
+        if ($sessionStorage.filterbyRanges.length === $localStorage.lookups.rangeGroup.length) {
+            currentfilterbyRanges = ["All"];
+        }
 
-    $scope.pageChanged = function () {
-        $scope.getsets();
+        var currentfilterbySetTypes = $sessionStorage.filterbySetTypes;
+        if ($sessionStorage.filterbySetTypes.length === $localStorage.lookups.typeGroup.length) {
+            currentfilterbySetTypes = ["All"];
+        }
+
+        $scope.spinLoadingSets = true;
+        getSetsSrvNg.update({
+            start: ($sessionStorage.currentPage - 1) * $localStorage.session_pglen,
+            length: $sessionStorage.currentPage * $localStorage.session_pglen,
+            sortby: JSON.stringify($sessionStorage.sortby),
+            filterbyYear: JSON.stringify($sessionStorage.filterbyYear),
+            filterbyRanges: JSON.stringify(currentfilterbyRanges),
+            filterbySetTypes: JSON.stringify(currentfilterbySetTypes),
+            groupby: JSON.stringify($sessionStorage.groupby),
+            albumId: $sessionStorage.album.albumId
+        }).$promise.then(function (response) {
+            $sessionStorage.iColSets = JSON.parse(JSON.stringify(response));
+            $scope.dtMin = new Date($sessionStorage.iColSets.yrstartmin);
+            $scope.dtMax = new Date($sessionStorage.iColSets.yrendmax);
+            angular.forEach($sessionStorage.iColSets.data, function (set) {
+                if (set.items.length > 0) {
+                    set.delItems = set.items.filter(item => item.isActive === false);
+                    set.items = set.items.sort(function (a, b) {
+                        return a.position - b.position;
+                    }).filter(item => item.isActive === true);
+                }
+            });
+            $sessionStorage.numberOfPages = Math.ceil($sessionStorage.iColSets.recordsTotal / $localStorage.session_pglen);
+            $scope.spinLoadingSets = false;
+        }, function (error) {
+            $scope.spinLoadingSets = false;
+            $sessionStorage.iComsErr = JSON.parse(JSON.stringify(error));
+                alert("Error " + $sessionStorage.iComsErr.status +" Retrieving Sets : " + $sessionStorage.iComsErr.data);
+        });
+
     };
 
     $scope.setItemsPerPage = function (num) {
-        $scope.itemsPerPage = num;
-        passData.set("$scope.iColSets", undefined); //serious, dispose , incremental...l8r!
+        $localStorage.session_pglen = num;
+        $sessionStorage.iColSets = undefined;
         $scope.getsets();
-        // $scope.currentPage = 1; //reset to first page
     };
 
-    $scope.getsets = () => {
-        $scope.iColSets = passData.get("$scope.iColSets");
-        if ($scope.iColSets !== undefined) {
-            //$scope.totalItems = $scope.iColSets.totalItems;
-        } else {
-            getSetsSrvNg.get({
-                start: ($scope.currentPage - 1) * $scope.itemsPerPage,
-                length: $scope.currentPage * $scope.itemsPerPage,
-                sortby: JSON.stringify($scope.sortby),
-                filterby: JSON.stringify($scope.filterby),
-                groupby: JSON.stringify($scope.groupby)
-            }).$promise.then(function (response) {
-                $scope.iColSets = JSON.parse(JSON.stringify(response));
-                $scope.yrStartMin = $scope.iColSets.yrstartmin;
-                $scope.yrEndMax = $scope.iColSets.yrendmax;
-                angular.forEach($scope.iColSets.data, function (set) {
-                    if (set.items.length > 0) {
-                        set.delItems = set.items.filter(item => item.isActive === false);
-                        set.items = set.items.sort(function (a, b) {
-                            return a.position - b.position;
-                        }).filter(item => item.isActive === true);
-                    }
-                });
-                $scope.numberOfPages = Math.ceil($scope.iColSets.recordsTotal / $scope.session_pglen);
-            }, function (error) {
-                alert("Error getting orders from back-end : " + error);
-            });
-        }
-    };
+    if ($sessionStorage.iColSets === undefined) {
+        $scope.getsets();
+    }
 
     $scope.sortBy = function (column) {
-        var sortCol = $scope.sortby.Columns.find(a => a.Column === column);
+        var sortCol = $sessionStorage.sortby.Columns.find(a => a.Column === column);
         if (sortCol.Direction === "Ascending") {
             sortCol.Direction = "Descending";
         }
         else {
             sortCol.Direction = "Ascending";
         }
-        $scope.sortby.Active = column;
+        $sessionStorage.sortby.Active = column;
         $scope.getsets();
-    };
-    $scope.sortBy("Year");
-
-    $scope.filterRange = (range) => {
-        var ftrType = $scope.filterby.find(a => a.Column === "Range");
-        var curRange = ftrType.Ranges.find(a => a.Name === range);
-        if (curRange !== undefined) {
-            return curRange.isChecked;
-        }
-        return false;
-    };
-
-    $scope.filterSetType = (type) => {
-        var ftrType = $scope.filterby.find(a => a.Column === "SetType");
-        var curType = ftrType.SetType.find(a => a.Name === type);
-        if (curType !== undefined) {
-            return curType.isChecked;
-        }
-        return false;
     };
 
     $scope.filterRangeChange = (event) => {
-        var ftrType = $scope.filterby.find(a => a.Column === "Range");
-        var range = ftrType.Ranges.find(a => a.Name === event.key);
-        if (range !== undefined) {
-            range.isChecked = event.isChecked;
-        }
-        else {
-            ftrType.Ranges.push({ "Name": event.key, "isChecked": true });
-        }
+        $sessionStorage.filterbyRanges = event;
         $scope.getsets();
     };
 
-    $scope.filterSetTypeChange = (event) => {
-        var ftrType = $scope.filterby.find(a => a.Column === "SetType");
-        var type = ftrType.SetType.find(a => a.Name === event.key);
-        if (type !== undefined) {
-            type.isChecked = event.isChecked;
-        }
-        else {
-            ftrType.SetType.push({ "Name": event.key, "isChecked": true });
-        }
+    $scope.filterTypeChange = (event) => {
+        $sessionStorage.filterbySetTypes = event;
         $scope.getsets();
     };
-
 
     $scope.filterDate = () => {
-        var ftrYear = $scope.filterby.find(a => a.Column === "Year");
-        ftrYear.Start = $scope.yrStartSel;
-        ftrYear.End = $scope.yrEndSel;
+        var ftrYear = $sessionStorage.filterbyYear;
+        $sessionStorage.filterbyYear.Start = $scope.yrStartSel;
+        $sessionStorage.filterbyYear.End = $scope.yrEndSel;
+        $scope.getsets();
+    };
 
+    $scope.pageChanged = function () {
         $scope.getsets();
     };
 
     $scope.selectSet = (event, setidx) => {
-        var set = $scope.iColSets.data[setidx];
+        var set = $sessionStorage.iColSets.data[setidx];
         getSetSrv.get({ id: set.setId }).$promise.then(function (response) { //we need to get full images from server
             set = JSON.parse(JSON.stringify(response));
             if (set.items.length > 0) {
@@ -222,76 +225,54 @@
                     return a.position - b.position;
                 }).filter(item => item.isActive === true);
             }
-            passData.set("$scope.currentPage", $scope.currentPage);
-            passData.set("$scope.numberOfPages", $scope.numberOfPages);
-            passData.set("$scope.curSetIdx", $scope.curSetIdx = setidx);
-            $scope.iColSets.data[$scope.curSetIdx] = set;
-            passData.set("$scope.iColSets", $scope.iColSets);
-            passData.set("$scope.yrStartSel", $scope.yrStartSel);
-            passData.set("$scope.yrEndSel", $scope.yrEndSel);
-
+            $sessionStorage.curSetIdx = setidx;
+            $sessionStorage.iColSets.data[setidx] = set;
             $state.go('app.set');
         }, function (error) {
-            alert("Error getting orders from back-end : " + error);
+            $sessionStorage.iComsErr = JSON.parse(JSON.stringify(error));
+                alert("Error " + $sessionStorage.iComsErr.status +" Selecting Set : " + $sessionStorage.iComsErr.data);
         });
     };
 
     $scope.SelectItem = (event, setidx, itemidx, direction) => {
-        var items = $scope.iColSets.data[setidx].items;
+        var items = $sessionStorage.iColSets.data[setidx].items;
         var item = items[itemidx];
-
-        $scope.User = passData.get("User");
-        if ($scope.User.name === undefined) {
-            alert('Login Please.');
-            return;
-        }
 
         if (itemidx === 0) {
             items.forEach(function (item) {
                 if (item.userItems.length === 0) {
-                    item.userItems.push({ userId: $scope.User.name, itemId: item.itemId, quantity: 0 });
+                    item.userItems.push({ userId: $sessionStorage.name, itemId: item.itemId, quantity: 0 });
                 }
                 item.userItems[0].quantity = item.userItems[0].quantity + direction;
             });
         } else {
             if (item.userItems.length === 0) {
-                item.userItems.push({ userId: $scope.User.name, itemId: item.itemId, quantity: 0 });
+                item.userItems.push({ userId: $sessionStorage.name, itemId: item.itemId, quantity: 0 });
             }
             item.userItems[0].quantity = item.userItems[0].quantity + direction;
         }  //0 here should be user find, do user filtering on api change entity []->{}
 
-        $scope.entry = new updateImage($scope.iColSets.data[setidx]);
+        $scope.entry = new updateSet($sessionStorage.iColSets.data[setidx]);
         $scope.entry.$update(function (response) {
 
         }, function (error) {
-            alert("Error getting orders from back-end : " + error);
+            $sessionStorage.iComsErr = JSON.parse(JSON.stringify(error));
+                alert("Error " + $sessionStorage.iComsErr.status +" Selecting Item : " + $sessionStorage.iComsErr.data);
         });
-
-        //var cboxes = document.getElementsByName('cb_' + setId);
-        //cboxes.forEach(function (cbox) {
-        //    cbox.checked = event.currentTarget.checked;
-        //});
-
-        //if (event.currentTarget.checked === true) {
-        //    event.currentTarget.previousSibling.style.border = "2px solid lime";
-        //}
-        //else {
-        //    event.currentTarget.previousSibling.style.border = "2px solid grey";
-        //}
-
-        //update db
     };
 
     $scope.createSet = function (id) {
         if (id === undefined) {
-            var iCol = new getSetSrv();
-            iCol.setImages = [];
-            iCol.delImages = [];
-            passData.set("Selected", iCol);
-            $state.go('app.sets_edit', {});
+            var iSet = new getSetSrv();
+            iSet.setImages = [];
+            iSet.delImages = [];
+            $state.go('app.set');
         }
     };
 
+    $(function () {
+        $('.selectpicker').selectpicker();
+    });
 
 }
 

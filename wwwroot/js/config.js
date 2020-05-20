@@ -1,3 +1,5 @@
+/// <reference path="../lib/blueimp-gallery/js/blueimp-gallery.min.js" />
+/// <reference path="../lib/blueimp-gallery/js/blueimp-gallery.min.js" />
 /*
  * INSPINIA - Responsive Admin Theme
  *
@@ -662,23 +664,17 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, IdlePro
         .state('app.set', {
             url: "/set",
             templateUrl: "views/set.html",
-            params: { SetDetail: null, EditSet: true },
             data: { pageTitle: 'Set' }
         })
-        .state('app.sets', {
-            url: "/sets",
-            templateUrl: "views/sets.html",
-            data: { pageTitle: 'Sets' }
-        })
-        //.state('app.setng', {
-        //    url: "/setng",
-        //    templateUrl: "views/setng.html",
-        //    params: { SetDetail: null, EditSet: true },
-        //    data: { pageTitle: 'Setng' }
+        //.state('app.sets', {
+        //    url: "/sets",
+        //    templateUrl: "views/sets.html",
+        //    data: { pageTitle: 'Sets' }
         //})
         .state('app.setsng', {
             url: "/setsng",
             templateUrl: "views/setsng.html",
+            params: { viewLayout : null },
             data: { pageTitle: 'Setsng' }
         })
         .state('app.collection', {
@@ -845,6 +841,16 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, IdlePro
             url: "/buttons",
             templateUrl: "views/buttons.html",
             data: { pageTitle: 'Buttons' }
+        })
+        .state('ui.albums', {
+            url: "/albums",
+            templateUrl: "views/albums.html",
+            data: { pageTitle: 'Albums' }
+        })
+        .state('ui.album', {
+            url: "/album",
+            templateUrl: "views/album.html",
+            data: { pageTitle: 'Album' }
         })
         .state('ui.tabs_panels', {
             url: "/tabs_panels",
@@ -1475,12 +1481,12 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, IdlePro
         .state('gallery.basic_gallery', {
             url: "/basic_gallery",
             templateUrl: "views/basic_gallery.html",
-            data: { pageTitle: 'Lightbox Gallery' },
+            data: { pageTitle: 'Albums' },
             resolve: {
                 loadPlugin: function ($ocLazyLoad) {
                     return $ocLazyLoad.load([
                         {
-                            files: ['js/plugins/blueimp/jquery.blueimp-gallery.min.js','css/plugins/blueimp/css/blueimp-gallery.min.css']
+                            files: ['lib/blueimp-gallery/js/blueimp-gallery.min.js','lib/blueimp-gallery/css/blueimp-gallery.min.css']
                         }
                     ]);
                 }

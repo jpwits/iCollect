@@ -59,10 +59,10 @@ namespace TGIS.Web
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlite(
                     Configuration.GetConnectionString("AuthConnection")));
-           
-            //services.AddDbContext<NorthwindContext>(options => options.UseSqlServer(
-            services.AddDbContext<NorthwindContext>(options => options.UseSqlite(
-                Configuration.GetConnectionString("CollectConnection")));
+
+            services.AddDbContext<icollectdbContext>(options =>
+                options.UseSqlServer(
+                    Configuration.GetConnectionString("CollectConnection")));
 
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                .AddEntityFrameworkStores<ApplicationDbContext>();

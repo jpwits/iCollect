@@ -26,16 +26,16 @@ namespace TGIS.Web
 
 				try
 				{
-					var context = services.GetRequiredService<NorthwindContext>();
+					var context = services.GetRequiredService<icollectdbContext>();
 					//if (context.Database.EnsureDeleted()) ///!!!-Note Live db in use...switch first!!!!
 					//{
-						
+
 					//}
-                    
-                    //if (context.Database.EnsureCreated()) //This will wipe and re-create the dB...Yes!
-                    //{
-                    //    DbInitializer.Initialize(context);  // Seed with Dummy data
-                    //}
+
+					//if (context.Database.EnsureCreated()) //This will wipe and re-create the dB...Yes!
+					//{
+					//	DbInitializer.Initialize(context);  // Seed with Dummy data
+					//}
 				}
 				catch (Exception ex)
 				{

@@ -1,27 +1,43 @@
-﻿
-function SetCtrl($scope, $state, $compile, $templateCache, getImage, updateImage, passData, $timeout) {
-    $scope.iCols = passData.get("$scope.iColSets");
-    $scope.iCol = $scope.iCols.data[passData.get("$scope.curSetIdx")];
+﻿function SetCtrl($window, $scope, $state, $sessionStorage, $q, updateSet) {
+    var curTCB = $q.defer();
+    var result = $scope.currentUser();
+    curTCB.promise;
 
-    $scope.UpdateSet = function (sets) {
-        var clone = Object.assign({}, sets);
+    if ($sessionStorage.User === undefined) {
+        $state.go("logins");
+    }
+
+    $scope.goBack = function () {
+        $window.history.back();
+    }
+
+    $scope.iSet = $sessionStorage.iColSets.data[$sessionStorage.curSetIdx];
+
+    $scope.searchButtonText = "Save";
+
+    $scope.UpdateSet = function (set) {
+        $scope.searchButtonText = "Saving";
+        var clone = Object.assign({}, set);
         if (clone.delItems !== undefined) {
             clone.items = clone.items.concat(clone.delItems);
         }
-        $scope.entry = new updateImage(clone);
+        $scope.entry = new updateSet(clone);
         $scope.entry.$update(function (response) {
-            sets = response;
-            if (sets.items.length > 0) {
-                sets.delItems = sets.items.filter(item => item.isActive === false);
-                sets.items = sets.items.sort(function (a, b) {
+            if (response.items.length > 0) {
+                response.delItems = response.items.filter(item => item.isActive === false);
+                response.items = response.items.sort(function (a, b) {
                     return a.position - b.position;
                 }).filter(item => item.isActive === true);
             }
-            $scope.iCols.data[passData.get("$scope.curSetIdx")] = sets;
-            passData.set("$scope.iColSets", $scope.iCols);
-            alert("Saved successfully...");
+            $scope.iSet = response;
+            $sessionStorage.iColSets.data[$sessionStorage.curSetIdx] = $scope.iSet;
+            //alert("Saved successfully...");
+            $scope.searchButtonText = "Save";
+            $window.history.back();
+
         }, function (error) {
-            alert("Error getting orders from back-end : " + error);
+            $scope.searchButtonText = "Save";
+            alert("Error Updating Set : " + error);
         });
     };
 
@@ -38,13 +54,13 @@ function SetCtrl($scope, $state, $compile, $templateCache, getImage, updateImage
                 newImage.thumbnailA = null;
                 newImage.isActive = true;
 
-                if ($scope.iCol.items.length === 0) {
+                if ($scope.iSet.items.length === 0) {
                     newImage.position = 0;
                 }
                 else {
-                    newImage.position = $scope.iCol.items[$scope.iCol.items.length - 1].position + 1;
+                    newImage.position = $scope.iSet.items[$scope.iSet.items.length - 1].position + 1;
                 }
-                $scope.iCol.items.push(newImage);
+                $scope.iSet.items.push(newImage);
 
                 if (newImage.position === files.length - 1) {
                     $state.go("app.set");
@@ -68,32 +84,32 @@ function SetCtrl($scope, $state, $compile, $templateCache, getImage, updateImage
         };
     };
     $scope.ImageOrderUp = function (pos) {
-        if (pos > 0 && pos <= $scope.iCol.items.length - 1) {
-            $scope.iCol.items[pos].position--;
-            $scope.iCol.items[pos - 1].position++;
+        if (pos > 0 && pos <= $scope.iSet.items.length - 1) {
+            $scope.iSet.items[pos].position--;
+            $scope.iSet.items[pos - 1].position++;
         }
-        $scope.iCol.items = $scope.iCol.items.sort(function (a, b) {
+        $scope.iSet.items = $scope.iSet.items.sort(function (a, b) {
             return a.position - b.position;
         }).filter(img => img.isActive === true);
     };
 
     $scope.ImageOrderDown = function (pos) {
-        if (pos >= 0 && pos < $scope.iCol.items.length - 1) {
-            $scope.iCol.items[pos].position++;
-            $scope.iCol.items[pos + 1].position--;
+        if (pos >= 0 && pos < $scope.iSet.items.length - 1) {
+            $scope.iSet.items[pos].position++;
+            $scope.iSet.items[pos + 1].position--;
         }
-        $scope.iCol.items = $scope.iCol.items.sort(function (a, b) {
+        $scope.iSet.items = $scope.iSet.items.sort(function (a, b) {
             return a.position - b.position;
         }).filter(img => img.isActive === true);
     };
 
     $scope.Delete = function (pos) {
-        $scope.iCol.items[pos].isActive = false;
-        $scope.iCol.delItems.push($scope.iCol.items[pos]);
-        $scope.iCol.items.splice(pos, 1);
+        $scope.iSet.items[pos].isActive = false;
+        $scope.iSet.delItems.push($scope.iSet.items[pos]);
+        $scope.iSet.items.splice(pos, 1);
 
-        $scope.iCol.items.forEach(function (image, index) {
-            $scope.iCol.items[index].position = index;
+        $scope.iSet.items.forEach(function (image, index) {
+            $scope.iSet.items[index].position = index;
         });
     };
 }

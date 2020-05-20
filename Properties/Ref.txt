@@ -1,12 +1,21 @@
 ﻿EF
 ==
 1. dotnet ef dbcontext scaffold "Data Source=DESKTOP-7DQTMIU\SQLEXPRESS;Initial Catalog=Northwind;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -o Entities -f
-2. dotnet ef migrations add iCollFirstMigration --context NorthwindContext
-dotnet ef migrations add InitialCreate --context NorthwindContext
-dotnet ef database update --context NorthwindContext
+2. dotnet ef migrations add iCollFirstMigration --context icollectdbContext
+dotnet ef migrations add InitialCreate --context icollectdbContext
+dotnet ef migrations add TestUpdate --context icollectdbContext
+
+dotnet ef database update --context icollectdbContext
+dotnet ef database update TestUpdate --context icollectdbContext
+
+dotnet ef migrations list --context icollectdbContext
+
+
+optionsBuilder.UseSqlServer("Data Source=DESKTOP-7DQTMIU\\SQLEXPRESS;Initial Catalog=Northwind;Trusted_Connection=True;");
+
 
 Dsn=Collect;database=D:\user\ITS\iCollect\NetCoreSPA.Web\Data\Collect.db;stepapi=0;notxn=0;shortnames=0;longnames=0;nocreat=0;nowchar=0;fksupport=0;oemcp=0;bigint=0;jdconv=0
-
+dotnet ef dbcontext scaffold "Server=tcp:icollectdb.database.windows.net,1433;Initial Catalog=icollectdb;Persist Security Info=False;User ID=jpwits@gmail.com@icollectdb;Password=Monitor3##;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;" Microsoft.EntityFrameworkCore.SqlServer -o Entities -f
 API
 ===
 [HttpGet("Details/{id}")]				-->		Use api/Sets/Details/1
@@ -18,3 +27,7 @@ MVC
 public async Task<IActionResult> Details(int id)
 return View(Set);
 
+
+Optimize
+========
+PassData -> $state, $etc

@@ -4,8 +4,16 @@ function getSetSrv($resource) {
     );
 }
 
+function getAlbumCollections($resource) {
+    return $resource('api/albums/GetAlbumCollections');
+}
+
 function getSetsSrvNg($resource) {
-    return $resource('api/SetsNg/GetSets/:start/:length/:sortby/:filterby/:groupby', { start: '@start', length: '@length', sortby: '@sortby', filterby: '@filterby', groupby: '@groupby' }
+    return $resource('api/SetsNg/GetSets/:start/:length/:sortby/:filterbyYear/:filterbyRanges/:filterbySetTypes/:groupby/:albumId',
+        { start: '@start', length: '@length', sortby: '@sortby', filterbyYear: '@filterbyYear', filterbyRanges: '@filterbyRanges', filterbySetTypes: '@filterbySetTypes', groupby: '@groupby', albumId: '@albumId' }
+        , {
+            'update': { method: 'PUT' }
+        }
     );
 }
 
@@ -25,7 +33,7 @@ function getCollectionSrv($resource) {
 }
 
 function getCollectionsSrv($resource) {
-    return $resource('api/Collections/GetCollection/:start/:length', { start: '@start', length: '@length' }
+    return $resource('api/Collections/GetCollections'
     );
 }
 
@@ -34,8 +42,8 @@ function getImage($resource) {
     );
 }
 
-function updateImage($resource) {
-    return $resource('api/SetsNg/Edit/:id', { id: '@id' }
+function updateSet($resource) {
+    return $resource('api/SetsNg/updateSet/:id', { id: '@id' }
         , {
             'update': { method: 'PUT' }
         }
@@ -50,13 +58,32 @@ function updateUserItem($resource) {
     );
 }
 
+function updateAlbumCollectionSrv($resource) {
+    return $resource('api/albums/updateAlbumCollection/:id', { id: '@id' }
+        , {
+            'update': { method: 'PUT' }
+        }
+    );
+}
+
+
 function getUser($resource) {
-    return $resource('api/Account/getUser/:username', { username: '@username' }
+    return $resource('api/Account/getUser'
     );
 }
 
 function loginUser($resource) {
     return $resource('api/Account/login/:username/:password', { username: '@username', password: '@password' }   
+    );
+}
+
+function logoutUser($resource) {
+    return $resource('api/Account/logout'
+    );
+}
+
+function registerUser($resource) {
+    return $resource('api/Account/register/:username/:email/:password', { username: '@username',email:'@email', password: '@password' }
     );
 }
 
@@ -80,15 +107,19 @@ function passData() {
 angular
     .module('inspinia')
     .service('getImage', getImage)
-    .service('updateImage', updateImage)
+    .service('updateSet', updateSet)
     .service('passData', passData)
     .service('getUser', getUser)
     .service('getCollectionSrv', getCollectionSrv)
     .service('getCollectionsSrv', getCollectionsSrv)
+    .service('getAlbumCollections', getAlbumCollections)
     .service('updateUserItem', updateUserItem)
     .service('getSetSrv', getSetSrv)
     .service('getLookups', getLookups)
     .service('loginUser', loginUser)
+    .service('logoutUser', logoutUser)
+    .service('registerUser', registerUser)
+    .service('updateAlbumCollectionSrv', updateAlbumCollectionSrv)
     .service('getItemSrvNg', getItemSrvNg)
     .service('getSetsSrvNg', getSetsSrvNg);
 

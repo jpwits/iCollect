@@ -64,6 +64,7 @@
     <Compile Remove="Entities\Links.cs" />
     <Compile Remove="Entities\Links1.cs" />
     <Compile Remove="Entities\Links2.cs" />
+    <Compile Remove="Entities\NorthwindContext.cs" />
     <Compile Remove="Entities\OrderDetails.cs" />
     <Compile Remove="Entities\Orders.cs" />
     <Compile Remove="Entities\Products.cs" />
@@ -101,29 +102,6 @@
     <Content Include="wwwroot\js\bootstrap\grunt\configBridge.json" />
     <Content Include="wwwroot\js\bootstrap\grunt\npm-shrinkwrap.json" />
     <Content Include="wwwroot\js\bootstrap\package.json" />
-    <Content Include="wwwroot\js\font-awesome\css\all.css" />
-    <Content Include="wwwroot\js\font-awesome\css\all.min.css" />
-    <Content Include="wwwroot\js\font-awesome\css\brands.css" />
-    <Content Include="wwwroot\js\font-awesome\css\brands.min.css" />
-    <Content Include="wwwroot\js\font-awesome\css\fontawesome.css" />
-    <Content Include="wwwroot\js\font-awesome\css\fontawesome.min.css" />
-    <Content Include="wwwroot\js\font-awesome\css\regular.css" />
-    <Content Include="wwwroot\js\font-awesome\css\regular.min.css" />
-    <Content Include="wwwroot\js\font-awesome\css\solid.css" />
-    <Content Include="wwwroot\js\font-awesome\css\solid.min.css" />
-    <Content Include="wwwroot\js\font-awesome\css\svg-with-js.css" />
-    <Content Include="wwwroot\js\font-awesome\css\svg-with-js.min.css" />
-    <Content Include="wwwroot\js\font-awesome\css\v4-shims.css" />
-    <Content Include="wwwroot\js\font-awesome\css\v4-shims.min.css" />
-    <Content Include="wwwroot\js\font-awesome\webfonts\fa-brands-400.eot" />
-    <Content Include="wwwroot\js\font-awesome\webfonts\fa-brands-400.ttf" />
-    <Content Include="wwwroot\js\font-awesome\webfonts\fa-brands-400.woff" />
-    <Content Include="wwwroot\js\font-awesome\webfonts\fa-regular-400.eot" />
-    <Content Include="wwwroot\js\font-awesome\webfonts\fa-regular-400.ttf" />
-    <Content Include="wwwroot\js\font-awesome\webfonts\fa-regular-400.woff" />
-    <Content Include="wwwroot\js\font-awesome\webfonts\fa-solid-900.eot" />
-    <Content Include="wwwroot\js\font-awesome\webfonts\fa-solid-900.ttf" />
-    <Content Include="wwwroot\js\font-awesome\webfonts\fa-solid-900.woff" />
   </ItemGroup>
 
   <ItemGroup>
@@ -150,8 +128,10 @@
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.9.10" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.2" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="3.0.0-rc1.final" />
     <PackageReference Include="System.Drawing.Common" Version="4.7.0" />
     <PackageReference Include="System.Text.Json" Version="4.7.1" />
+    <PackageReference Include="Z.EntityFramework.Plus.EFCore" Version="3.0.48" />
   </ItemGroup>
 
   <ItemGroup>
@@ -289,37 +269,15 @@
     <None Include="wwwroot\js\config.js" />
     <None Include="wwwroot\js\controllers.js" />
     <None Include="wwwroot\js\controllers\account.js" />
+    <None Include="wwwroot\js\controllers\album.js" />
+    <None Include="wwwroot\js\controllers\albums.js" />
     <None Include="wwwroot\js\controllers\main.js" />
     <None Include="wwwroot\js\controllers\set.js" />
     <None Include="wwwroot\js\controllers\collection.js" />
     <None Include="wwwroot\js\controllers\SetsNg.js" />
-    <None Include="wwwroot\js\controllers\sets.js" />
     <None Include="wwwroot\js\directives.js" />
-    <None Include="wwwroot\js\font-awesome\js\all.js" />
-    <None Include="wwwroot\js\font-awesome\js\all.min.js" />
-    <None Include="wwwroot\js\font-awesome\js\brands.js" />
-    <None Include="wwwroot\js\font-awesome\js\brands.min.js" />
-    <None Include="wwwroot\js\font-awesome\js\conflict-detection.js" />
-    <None Include="wwwroot\js\font-awesome\js\conflict-detection.min.js" />
-    <None Include="wwwroot\js\font-awesome\js\fontawesome.js" />
-    <None Include="wwwroot\js\font-awesome\js\fontawesome.min.js" />
-    <None Include="wwwroot\js\font-awesome\js\regular.js" />
-    <None Include="wwwroot\js\font-awesome\js\regular.min.js" />
-    <None Include="wwwroot\js\font-awesome\js\solid.js" />
-    <None Include="wwwroot\js\font-awesome\js\solid.min.js" />
-    <None Include="wwwroot\js\font-awesome\js\v4-shims.js" />
-    <None Include="wwwroot\js\font-awesome\js\v4-shims.min.js" />
-    <None Include="wwwroot\js\font-awesome\sprites\brands.svg" />
-    <None Include="wwwroot\js\font-awesome\sprites\regular.svg" />
-    <None Include="wwwroot\js\font-awesome\sprites\solid.svg" />
-    <None Include="wwwroot\js\font-awesome\webfonts\fa-brands-400.svg" />
-    <None Include="wwwroot\js\font-awesome\webfonts\fa-brands-400.woff2" />
-    <None Include="wwwroot\js\font-awesome\webfonts\fa-regular-400.svg" />
-    <None Include="wwwroot\js\font-awesome\webfonts\fa-regular-400.woff2" />
-    <None Include="wwwroot\js\font-awesome\webfonts\fa-solid-900.svg" />
-    <None Include="wwwroot\js\font-awesome\webfonts\fa-solid-900.woff2" />
     <None Include="wwwroot\js\inspinia.js" />
-    <None Include="wwwroot\js\junk.js" />
+    <None Include="wwwroot\app\junk.js" />
     <None Include="wwwroot\js\plugins\chartJs\angles.js" />
     <None Include="wwwroot\js\plugins\chartJs\Chart.min.js" />
     <None Include="wwwroot\js\plugins\flot\angular-flot.js" />

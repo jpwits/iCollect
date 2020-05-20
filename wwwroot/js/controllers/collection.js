@@ -21,7 +21,7 @@ function CollectionsCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $com
             $state.go('app.collection');
         },
         function (error) {
-            alert("Error getting orders from back-end : " + error);
+            alert("Error Retrieving collections : " + error);
         });
     };
 

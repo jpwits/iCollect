@@ -9,10 +9,7 @@
             </form>
         </div>
         <ul class="nav navbar-top-links navbar-right">
-            <!--<li>-->
-                <!--<span class="m-r-sm text-muted welcome-message">Welcome to INSPINIA+ Admin Theme.</span>-->
-            <!--</li>-->
-            <li uib-dropdown>
+            <!--<li uib-dropdown>
                 <a class="count-info" href uib-dropdown-toggle>
                     Language
                 </a>
@@ -20,8 +17,8 @@
                     <li><a ng-click="changeLanguage('en')">English</a></li>
                     <li><a ng-click="changeLanguage('es')">Spanish</a></li>
                 </ul>
-            </li>
-            <li uib-dropdown>
+            </li>-->
+            <!--<li uib-dropdown>
                 <a class="count-info" href uib-dropdown-toggle>
                     <i class="fa fa-envelope"></i> <span class="label label-warning">16</span>
                 </a>
@@ -76,8 +73,8 @@
                         </div>
                     </li>
                 </ul>
-            </li>
-            <li uib-dropdown>
+            </li>-->
+            <!--<li uib-dropdown>
                 <a class="count-info" href uib-dropdown-toggle>
                     <i class="fa fa-bell"></i> <span class="label label-primary">8</span>
                 </a>
@@ -118,17 +115,34 @@
                         </div>
                     </li>
                 </ul>
-            </li>
+            </li>-->
+            <div class="profile-element" uib-dropdown>
+                <!--<img alt="image" class="img-circle" src="/img/jos_sft.jpg" />-->
+                <a uib-dropdown-toggle href>
+                    <span class="clear">
+                        <span class="block m-t-xs">
+                            <strong class="font-bold">{{$sessionStorage.User.name}}</strong>
+                        </span>
+                        <span class="text-muted text-xs block">[Role] <b class="caret"></b></span>
+                    </span>
+                </a>
+                <ul uib-dropdown-menu class="animated fadeInRight m-t-xs">
+                    <li><a ng-if="$sessionStorage.User === undefined" ui-sref="logins">Login</a></li>
+                    <li><a ng-if="$sessionStorage.User === undefined" ui-sref="register">Register</a></li>
+                    <!--<li class="divider"></li>-->
+                    <li><a ng-if="$sessionStorage.User !== undefined" ng-click="logout()">Logout</a></li>
+                </ul>
+            </div>
             <li>
                 <a ui-sref="login">
-                    <i class="fa fa-sign-out"></i> Log out
+                    <i class="fa fa-gear"></i> Settings
                 </a>
             </li>
-            <li>
+            <!--<li>
                 <a ng-click="$root.rightSidebar = !$root.rightSidebar">
-                    <i class="fa fa-tasks"></i>
+                    <i class="fa fa-tasks"></i>g
                 </a>
-            </li>
+            </li>-->
         </ul>
 
     </nav>

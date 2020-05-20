@@ -27,6 +27,7 @@ namespace iCollect.Entities
         public int? ImageIdB { get; set; }
         public byte[] ThumbnailA { get; set; }
         public byte[] ThumbnailB { get; set; }
+        public decimal? PriceEstimated { get; set; }
 
         public virtual Images ImageIdANavigation { get; set; }
         public virtual Images ImageIdBNavigation { get; set; }

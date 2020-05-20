@@ -7,13 +7,15 @@
         'ui.router',                    // Routing
         'oc.lazyLoad',                  // ocLazyLoad
         'ui.bootstrap',                 // Ui Bootstrap
+        'ui.bootstrap.datepicker',
         'pascalprecht.translate',       // Angular Translate
         'ngIdle',                       // Idle timer
         'ngSanitize',                   // ngSanitize
         'ngResource',                    // ngResource
         'datatables',
         'datatables.buttons',
-        'ngFileUpload'
+        'ngFileUpload',
+        'ngStorage'
     ]);
 })();
 
