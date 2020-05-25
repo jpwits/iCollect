@@ -56,7 +56,7 @@ namespace iCollect.Controllers
             int yrEndMax = yrGroup.OrderByDescending(a => a.Key).FirstOrDefault().Key ?? 2015;
             var sortCol = sortbyObj.Columns;
             var qry = _context.Sets.AsQueryable();
-
+            qry = qry.Where(y => y.IsActive == true);
             qry = filterQry(qry, filterbyYearObj, filterbyRangesObj, filterbySetTypesObj);
             var recordsTotal = qry.Count();
 
@@ -71,7 +71,7 @@ namespace iCollect.Controllers
             var qryUser = from sets in qryTake
                           join items in _context.Items on sets.SetId equals items.SetId
                           join userItems in _context.UserItems on items.ItemId equals userItems.ItemId
-                          where (userItems.UserId == User.Identity.Name && userItems.AlbumId == albumId)
+                          where (userItems.UserId == User.Identity.Name && userItems.AlbumId == albumId && sets.IsActive == true)
                           select sets;
             var qryUserTake = qryUser.ToList();
 

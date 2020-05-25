@@ -3,6 +3,8 @@
     var result = $scope.currentUser();
     curTCB.promise;
 
+    $sessionStorage.newSet = false;
+
     if ($sessionStorage.User === undefined) {
         $state.go("logins");
     }
@@ -266,6 +268,7 @@
             var iSet = new getSetSrv();
             iSet.setImages = [];
             iSet.delImages = [];
+            $sessionStorage.newSet = true;
             $state.go('app.set');
         }
     };
