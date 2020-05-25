@@ -83,6 +83,9 @@
             }
             else {
                 $sessionStorage.iColSets.data[$sessionStorage.curSetIdx] = $scope.iSet;
+                if ($scope.iSet.isActive === false) {
+                    $sessionStorage.iColSets.data.splice($sessionStorage.curSetIdx);
+                }
             }
             //alert("Saved successfully...");
             $scope.searchButtonText = "Save";
@@ -99,13 +102,16 @@
             var fReader = new FileReader();
             fReader.readAsDataURL(file);
             fReader.onloadend = function (event) {
-                newImage = {};
+                newImage = {}; 
                 newImage.type = event.target.result.split(';')[0].split(':')[1];
                 newImage.imageIdANavigation = {};
                 newImage.imageIdANavigation.image = event.target.result.replace('data:' + newImage.type + ';base64,', '');
                 newImage.imageIdANavigation.type = event.target.result.split(';')[0].split(':')[1];
                 newImage.thumbnailA = null;
                 newImage.isActive = true;
+                if ($scope.iSet.items === undefined) {
+                    $scope.iSet.items = [];
+                }
 
                 if ($scope.iSet.items.length === 0) {
                     newImage.position = 0;
@@ -158,6 +164,9 @@
 
     $scope.Delete = function (pos) {
         $scope.iSet.items[pos].isActive = false;
+        if ($scope.iSet.delItems === undefined) {
+            $scope.iSet.delItems = [];
+        }
         $scope.iSet.delItems.push($scope.iSet.items[pos]);
         $scope.iSet.items.splice(pos, 1);
 
@@ -167,12 +176,12 @@
     };
 
     $scope.DeleteSet = function (set) {
-        $scope.iSet.items.forEach(function (image, index) {
-            $scope.iSet.items[index].isActive = false;
-        });
         if (confirm('Are you sure you want to delete this set?!!!')) {
             $scope.iSet.isActive = false;
             $scope.UpdateSet($scope.iSet);
+            $scope.iSet.items.forEach(function (image, index) {
+                $scope.iSet.items[index].isActive = false;
+            });
         }
     };
 
