@@ -1,4 +1,4 @@
-﻿function SetsNgCtrl($scope, $state, $sessionStorage, $localStorage, getSetsSrvNg, getSetSrv, $timeout, $q) {
+﻿function SetsNgCtrl($scope, $state, $sessionStorage, $localStorage, getSetsSrvNg, getSetSrv, $timeout, $q, updateSet) {
     var curTCB = $q.defer();
     var result = $scope.currentUser();
     curTCB.promise;
@@ -169,7 +169,7 @@
         }, function (error) {
             $scope.spinLoadingSets = false;
             $sessionStorage.iComsErr = JSON.parse(JSON.stringify(error));
-                alert("Error " + $sessionStorage.iComsErr.status +" Retrieving Sets : " + $sessionStorage.iComsErr.data);
+            alert("Error " + $sessionStorage.iComsErr.status + " Retrieving Sets : " + $sessionStorage.iComsErr.data);
         });
 
     };
@@ -232,7 +232,7 @@
             $state.go('app.set');
         }, function (error) {
             $sessionStorage.iComsErr = JSON.parse(JSON.stringify(error));
-                alert("Error " + $sessionStorage.iComsErr.status +" Selecting Set : " + $sessionStorage.iComsErr.data);
+            alert("Error " + $sessionStorage.iComsErr.status + " Selecting Set : " + $sessionStorage.iComsErr.data);
         });
     };
 
@@ -243,13 +243,13 @@
         if (itemidx === 0) {
             items.forEach(function (item) {
                 if (item.userItems.length === 0) {
-                    item.userItems.push({ userId: $sessionStorage.name, itemId: item.itemId, quantity: 0 });
+                    item.userItems.push({ userId: $sessionStorage.User.name, itemId: item.itemId, quantity: 0 });
                 }
                 item.userItems[0].quantity = item.userItems[0].quantity + direction;
             });
         } else {
             if (item.userItems.length === 0) {
-                item.userItems.push({ userId: $sessionStorage.name, itemId: item.itemId, quantity: 0 });
+                item.userItems.push({ userId: $sessionStorage.User.name, itemId: item.itemId, quantity: 0 });
             }
             item.userItems[0].quantity = item.userItems[0].quantity + direction;
         }  //0 here should be user find, do user filtering on api change entity []->{}
@@ -259,9 +259,21 @@
 
         }, function (error) {
             $sessionStorage.iComsErr = JSON.parse(JSON.stringify(error));
-                alert("Error " + $sessionStorage.iComsErr.status +" Selecting Item : " + $sessionStorage.iComsErr.data);
+            alert("Error " + $sessionStorage.iComsErr.status + " Selecting Item : " + $sessionStorage.iComsErr.data);
         });
     };
+
+    $scope.HaveSet = function (set) {
+        var ret = false;
+        if (set.items[0].userItems[0] !== undefined) {
+            if (set.items[0].userItems[0].quantity !== undefined) {
+                if (set.items[0].userItems[0].quantity > 0) {
+                    ret = true;
+                }
+            }
+        }
+        return ret;
+    }
 
     $scope.createSet = function (id) {
         if (id === undefined) {
