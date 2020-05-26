@@ -4,12 +4,13 @@
 2. dotnet ef migrations add iCollFirstMigration --context icollectdbContext
 dotnet ef migrations add InitialCreate --context icollectdbContext
 dotnet ef migrations add TestUpdate --context icollectdbContext
+dotnet ef migrations add SwitchHosting --context icollectdbContext
 
 dotnet ef database update --context icollectdbContext
-dotnet ef database update TestUpdate --context icollectdbContext
+dotnet ef database update 20200506150901_TestUpdate --context icollectdbContext
 
 dotnet ef migrations list --context icollectdbContext
-
+dotnet ef migrations script --idempotent --output "script.sql" --context icollectdbContext
 
 optionsBuilder.UseSqlServer("Data Source=DESKTOP-7DQTMIU\\SQLEXPRESS;Initial Catalog=Northwind;Trusted_Connection=True;");
 

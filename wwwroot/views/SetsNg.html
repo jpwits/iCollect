@@ -20,7 +20,7 @@
                         <div class="ibox-title">
                             <h5>All Sets assigned to this account</h5>
                             <div class="ibox-tools">
-                                <a ng-click="createSet(undefined)" class="btn btn-primary btn-xs">New Set</a>
+                                <a ng-click="createSet(undefined)" class="btn btn-primary dim">New Set</a>
                             </div>
                         </div>
                     </div>
@@ -119,14 +119,16 @@
                                         <div class="SetContainer">
                                             <div class="container" title="{{set.description}}">
                                                 <div ng-if="set.items.length === 0">
-                                                    <img ng-click="selectSet($event, setidx)" width="120" style="margin-right : 25px;border:2px solid grey" ng-src="../img/NoImage.jpg" />
+                                                    <img ng-click="selectSet($event, setidx)" width="120" style="opacity: 0.2;margin-right : 25px;border:2px solid grey" ng-src="../img/NoImage.jpg" />
                                                 </div>
                                                 <div ng-if="set.items.length > 0">
-                                                    <img ng-click="selectSet($event, setidx)" style="margin-right : 25px;border:2px solid grey" ng-src="data:{{set.items[0].type}};base64,{{set.items[0].thumbnailA}}" />
-                                                    <img ng-if="set.items[0].thumbnailB != undefined" class="overlay" ng-click="selectSet($event, setidx)" style="margin-right : 25px;border:2px solid grey" ng-src="data:{{set.items[0].type}};base64,{{set.items[0].thumbnailB}}" />
+                                                    <!--<img ng-click="selectSet($event, setidx)" style="opacity: 0.4; margin-right : 25px;border:2px solid grey" ng-src="data:{{set.items[0].type}};base64,{{set.items[0].thumbnailA}}" />-->
+                                                    <img ng-if="HaveSet(set)" ng-click="selectSet($event, setidx)" style="opacity: 1; margin-right : 25px;border:2px solid grey" ng-src="data:{{set.items[0].type}};base64,{{set.items[0].thumbnailA}}" />
+                                                    <img ng-if="!HaveSet(set)" ng-click="selectSet($event, setidx)" style="opacity: 0.3; margin-right : 25px;border:2px solid grey" ng-src="data:{{set.items[0].type}};base64,{{set.items[0].thumbnailA}}" />
+                                                    <img ng-if="set.items[0].thumbnailB != undefined" class="overlay" ng-click="selectSet($event, setidx)" style=" margin-right : 25px;border:2px solid grey" ng-src="data:{{set.items[0].type}};base64,{{set.items[0].thumbnailB}}" />
                                                 </div>
                                             </div>
-                                            <span class="ItemCheckbox" style="padding-bottom : 18px;">{{set.items[0].userItems[0].quantity}}</span>
+                                            <span class="ItemCheckbox" style=" padding-bottom : 18px;">{{set.items[0].userItems[0].quantity}}</span>
                                             <a href="" ng-click="SelectItem($event, setidx, 0 , 1)" type="button" class="ItemCheckbox"><i class="fa fa-plus" style="padding-bottom:35px;font-size:16px;color:green"></i></a>
                                             <a href="" ng-click="SelectItem($event, setidx, 0 , -1)" type="button" class="ItemCheckbox"><i class="fa fa-minus" style="font-size:16px;color:red"></i></a>
                                         </div>
@@ -141,7 +143,7 @@
                                     <div ng-repeat="(setidx,set) in $sessionStorage.iColSets.data" class="div-table-row">
                                         <div style="min-width:450px" class="div-table-col">
                                             <div ng-if="set.items.length === 0">
-                                                <img ng-click="selectSet($event, setidx)" width="120" style="margin-right : 25px;border:2px solid grey" ng-src="../img/NoImage.jpg" />
+                                                <img ng-click="selectSet($event, setidx)" width="120" style="opacity: 0.2;margin-right : 25px;border:2px solid grey" ng-src="../img/NoImage.jpg" />
                                             </div>
                                             <div ng-repeat="(itemidx, item)  in set.items" ng-if="item.isActive == true">
                                                 <div class="SetContainer">

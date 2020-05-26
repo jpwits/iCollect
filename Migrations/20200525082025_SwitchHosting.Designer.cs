@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using iCollect.Entities;
 
 namespace iCollect.Migrations
 {
     [DbContext(typeof(icollectdbContext))]
-    partial class icollectdbContextModelSnapshot : ModelSnapshot
+    [Migration("20200525082025_SwitchHosting")]
+    partial class SwitchHosting
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
