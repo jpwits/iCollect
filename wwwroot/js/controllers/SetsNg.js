@@ -2,11 +2,9 @@
     //var curTCB = $q.defer();
     //var result = $scope.currentUser();
     //curTCB.promise;
-    //if ($sessionStorage.User === undefined) {
-    //    $state.go("logins");
-    //}
 
     $sessionStorage.newSet = false;
+   
     $scope.spinLoadingSets = false;
 
     if ($state.params.viewLayout !== null) {
