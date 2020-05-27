@@ -1,4 +1,4 @@
-﻿function SetsNgCtrl($scope, $state, $sessionStorage, $localStorage, getSetsSrvNg, getSetSrv, $timeout, $q, updateSet) {
+﻿function SetsNgCtrl($scope, $state, $sessionStorage, $localStorage, getSetsSrvNg, $timeout, $q, updateSet) {
     $sessionStorage.newSet = false;
    
     $scope.spinLoadingSets = false;
@@ -124,6 +124,10 @@
     }
 
     $scope.getsets = () => {
+        if ($sessionStorage.User === undefined) {
+            $state.go("logins");
+            return;
+        }
         var currentfilterbyRanges = $sessionStorage.filterbyRanges;
         if ($sessionStorage.filterbyRanges.length === $localStorage.lookups.rangeGroup.length) {
             currentfilterbyRanges = ["All"];
@@ -135,7 +139,7 @@
         }
 
         $scope.spinLoadingSets = true;
-        getSetsSrvNg.update({
+        getSetsSrvNg.sets($sessionStorage.User.token).update({
             start: ($sessionStorage.currentPage - 1) * $localStorage.session_pglen,
             length: $sessionStorage.currentPage * $localStorage.session_pglen,
             sortby: JSON.stringify($sessionStorage.sortby),
@@ -209,8 +213,12 @@
     };
 
     $scope.selectSet = (event, setidx) => {
+        if ($sessionStorage.User === undefined) {
+            $state.go("logins");
+             return;
+        }
         var set = $sessionStorage.iColSets.data[setidx];
-        getSetSrv.get({ id: set.setId }).$promise.then(function (response) { //we need to get full images from server
+        getSetsSrvNg.set($sessionStorage.User.token).get({ id: set.setId }).$promise.then(function (response) { //we need to get full images from server
             set = JSON.parse(JSON.stringify(response));
             if (set.items.length > 0) {
                 set.delItems = set.items.filter(item => item.isActive === false);
@@ -268,7 +276,7 @@
 
     $scope.createSet = function (id) {
         if (id === undefined) {
-            var iSet = new getSetSrv();
+            var iSet = new getSetSrvNg.set();
             iSet.setImages = [];
             iSet.delImages = [];
             $sessionStorage.newSet = true;

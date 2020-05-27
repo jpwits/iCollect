@@ -28,6 +28,7 @@ namespace iCollect.Controllers
             _context = context;
         }
 
+        [Authorize]
         [HttpGet, Route("GetLookups")]
         public ActionResult GetLookups()
         {
@@ -391,6 +392,7 @@ namespace iCollect.Controllers
             //_context.SaveChangesAsync();
         }
 
+        [Authorize]
         [HttpGet, Route("GetSet/{id}")]
         public async Task<IActionResult> GetSet(int id)
         {
@@ -418,7 +420,7 @@ namespace iCollect.Controllers
 
             return new JsonResult(set);
         }
-
+        [Authorize]
         [HttpPut("updateSet")]
         //[ValidateAntiForgeryToken]
         public async Task<Sets> updateSet([FromBody] Sets data)

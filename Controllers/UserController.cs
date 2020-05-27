@@ -81,7 +81,7 @@ namespace iCollect.Controllers
                 , _config["Jwt:Issuer"],
                 claims,
                 null,
-                expires: DateTime.Now.AddHours(5),
+                expires: DateTime.Now.AddHours(12),
                 signingCredentials: credentials
             );
 

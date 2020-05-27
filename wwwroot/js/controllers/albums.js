@@ -19,6 +19,7 @@
     $scope.getAlbumCollections = () => {
         if ($sessionStorage.User === undefined) {
             $state.go("logins");
+            return;
         }
         $scope.spinLoadingAlbums = true;
         getAlbumCollections.albumcollections($sessionStorage.User.token).query().$promise.then(function (response) {

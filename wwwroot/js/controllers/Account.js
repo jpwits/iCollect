@@ -1,4 +1,4 @@
-﻿function AccountCtrl($window, $sessionStorage, $localStorage, $scope, $state, getLookups, loginUser, logoutUser, registerUser, getUser, getCollectionsSrv, authUser) {
+﻿function AccountCtrl($window, $sessionStorage, $localStorage, $scope, $state, getSetsSrvNg, loginUser, logoutUser, registerUser, getUser, getCollectionsSrv, authUser) {
     $scope.$sessionStorage = $sessionStorage.$default(/* any defaults here */);
     $scope.$localStorage = $localStorage.$default(/* any defaults here */);
 
@@ -12,20 +12,20 @@
     //    });
     //}
 
-    $scope.login2 = function (username, password) {
-        // If we already have a bearer token, set the Authorization header - to check
-        loginUser.get({
-            username: username,
-            password: password
-        }).$promise.then(function (response) {
-            $sessionStorage.User = JSON.parse(JSON.stringify(response));
-            $sessionStorage.User.name = username;
-            $window.history.back();
-        }, function (error) {
-            $sessionStorage.iComsErr = JSON.parse(JSON.stringify(error));
-            alert("Error " + $sessionStorage.iComsErr.status + " Logging in : " + $sessionStorage.iComsErr.data);
-        });
-    };
+    //$scope.login2 = function (username, password) {
+    //    // If we already have a bearer token, set the Authorization header - to check
+    //    loginUser.get({
+    //        username: username,
+    //        password: password
+    //    }).$promise.then(function (response) {
+    //        $sessionStorage.User = JSON.parse(JSON.stringify(response));
+    //        $sessionStorage.User.name = username;
+    //        $window.history.back();
+    //    }, function (error) {
+    //        $sessionStorage.iComsErr = JSON.parse(JSON.stringify(error));
+    //        alert("Error " + $sessionStorage.iComsErr.status + " Logging in : " + $sessionStorage.iComsErr.data);
+    //    });
+    //};
 
     $scope.login = function (username, password) {
         $scope.entry = new authUser();
@@ -34,6 +34,9 @@
         $scope.entry.$save(function (response) {
             $sessionStorage.User = JSON.parse(JSON.stringify(response));
             $sessionStorage.User.name = username;
+            if ($localStorage.lookups === undefined) {
+                $scope.fillLookups();
+            }
             $window.history.back();
         }, function (error) {
             $sessionStorage.iComsErr = JSON.parse(JSON.stringify(error));
@@ -79,7 +82,7 @@
 
 
     $scope.fillLookups = () => {
-        getLookups.get().$promise.then(function (response) {
+        getSetsSrvNg.lookups($sessionStorage.User.token).get().$promise.then(function (response) {
             var Lookups = JSON.parse(JSON.stringify(response));
             $localStorage.lookups = Lookups;
             $(function () {
@@ -89,10 +92,6 @@
             alert("Error retrieving lookups : " + error);
         });
     };
-
-    if ($localStorage.lookups === undefined) {
-        $scope.fillLookups();
-    }
 
     $scope.getCollections = () => {
         getCollectionsSrv.get().$promise.then(function (response) {

@@ -1,5 +1,5 @@
 ﻿function SetCtrl($window, $scope, $state, $sessionStorage, $q, updateSet) {
-    
+
     $scope.dateOptions = {
         datepickerMode: 'year',
         minMode: 'year',
@@ -85,7 +85,8 @@
 
         }, function (error) {
             $scope.searchButtonText = "Save";
-            alert("Error Updating Set : " + error);
+            $sessionStorage.iComsErr = JSON.parse(JSON.stringify(error));
+            alert("Error " + $sessionStorage.iComsErr.status + " Retrieving Sets : " + $sessionStorage.iComsErr.data);
         });
     };
 
@@ -94,7 +95,7 @@
             var fReader = new FileReader();
             fReader.readAsDataURL(file);
             fReader.onloadend = function (event) {
-                newImage = {}; 
+                newImage = {};
                 newImage.type = event.target.result.split(';')[0].split(':')[1];
                 newImage.imageIdANavigation = {};
                 newImage.imageIdANavigation.image = event.target.result.replace('data:' + newImage.type + ';base64,', '');
