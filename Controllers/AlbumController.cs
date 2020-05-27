@@ -25,9 +25,9 @@ namespace iCollect.Controllers
             _context = context;
         }
 
-      
+        [Authorize]
         [HttpGet, Route("GetAlbumCollections")]
-        public ActionResult GetAlbumCollections()
+        public async Task<IActionResult> GetAlbumCollections()
         {
             var username = User.Identities.First().Claims.First().Value;
             var albumsCollections = _context.AlbumCollections.Where(b => b.Album.UserId == username &&
@@ -45,6 +45,7 @@ namespace iCollect.Controllers
             });
         }
 
+        [Authorize]
         [HttpGet, Route("GetAlbumCollections/{albumId}")]
         public ActionResult GetAlbumCollections(int albumId)
         {
@@ -62,6 +63,7 @@ namespace iCollect.Controllers
             //});
         }
 
+        [Authorize]
         [HttpPut("updateAlbumCollection")]
         //[ValidateAntiForgeryToken]
         public async Task<AlbumCollections> updateAlbumCollection([FromBody] AlbumCollections data)

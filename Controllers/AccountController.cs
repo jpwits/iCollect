@@ -40,21 +40,6 @@ namespace iCollect.Controllers
         [HttpGet, Route("login/{username}/{password}")]
         public async Task<IActionResult> Login(string username, string password)
         {
-            var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("superSecretKey@345"));
-
-            var tokeOptions = new JwtSecurityToken(
-                issuer: "http://localhost:2070",
-                audience: "http://localhost:2070",
-                claims: new Claim[]
-                {
-                    new Claim(ClaimTypes.Name, username)
-                    //new Claim(ClaimTypes.Role, user.Role)
-                },
-                expires: DateTime.UtcNow.AddDays(7),
-                signingCredentials: new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256Signature)
-            );
-
-            var tokenString = new JwtSecurityTokenHandler().WriteToken(tokeOptions);
             var user = new IdentityUser()
             {
                 UserName = username,
@@ -62,7 +47,9 @@ namespace iCollect.Controllers
             };
             await _signInManager.SignInAsync(user, true);
 
-            return Ok(new { Token = tokenString });
+            //return Ok(new { Token = tokenString });
+            return Ok(user);
+
         }
 
         [AllowAnonymous]

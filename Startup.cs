@@ -32,6 +32,13 @@ namespace TGIS.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(o => o.AddPolicy("AppPolicy", builder =>
+            {
+                builder.AllowAnyOrigin()
+                       .AllowAnyMethod()
+                       .AllowAnyHeader();
+            }));
+
             services.AddControllers()
                 .AddNewtonsoftJson();
 
@@ -40,13 +47,6 @@ namespace TGIS.Web
                 {
                     options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
                 });
-           
-            services.AddCors(o => o.AddPolicy("AppPolicy", builder =>
-            {
-                builder.AllowAnyOrigin()
-                       .AllowAnyMethod()
-                       .AllowAnyHeader();
-            }));
 
             //Database Connection
             //var connection = @"Data Source=DESKTOP-7DQTMIU\SQLEXPRESS;Initial Catalog=Northwind;Trusted_Connection=True;";
@@ -100,6 +100,9 @@ namespace TGIS.Web
             //           await next();
             //       }
             //   });
+
+            app.UseExceptionHandler("/api/errors/500");
+            app.UseStatusCodePagesWithReExecute("/api/errors/{0}");
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();

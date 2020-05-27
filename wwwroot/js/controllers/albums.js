@@ -44,7 +44,6 @@
                 errorMsg = error.data;
             }
             alert("Error " + $sessionStorage.iComsErr.status + " Retrieving Albums : " + errorMsg);
-
         });
     };
 

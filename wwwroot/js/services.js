@@ -19,6 +19,21 @@ function getAlbumCollections($resource) {
     }
 }
 
+//function getAlbumCollections($resource) {
+//    return {
+//        jokes: function (token) {
+//            return $resource('api/albums/GetAlbumCollections', null, {
+//                query: {
+//                    method: 'GET',
+//                    headers: {
+//                        'Authorization': 'Bearer ' + token
+//                    }
+//                }
+//            });
+//        }
+//    }
+//}
+
 function getSetsSrvNg($resource) {
     return $resource('api/SetsNg/GetSets/:start/:length/:sortby/:filterbyYear/:filterbyRanges/:filterbySetTypes/:groupby/:albumId',
         { start: '@start', length: '@length', sortby: '@sortby', filterbyYear: '@filterbyYear', filterbyRanges: '@filterbyRanges', filterbySetTypes: '@filterbySetTypes', groupby: '@groupby', albumId: '@albumId' }
@@ -44,7 +59,10 @@ function getCollectionSrv($resource) {
 }
 
 function getCollectionsSrv($resource) {
-    return $resource('api/Collections/GetCollections'
+    return $resource('api/Collections/GetCollections', null,
+        {
+            'get': { method: 'GET' }
+        }
     );
 }
 

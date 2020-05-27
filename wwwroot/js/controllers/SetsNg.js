@@ -4,11 +4,7 @@
     //curTCB.promise;
 
     $sessionStorage.newSet = false;
-
-    //if ($sessionStorage.User === undefined) {
-    //    $state.go("logins");
-    //}
-
+   
     $scope.spinLoadingSets = false;
 
     if ($state.params.viewLayout !== null) {
@@ -171,7 +167,6 @@
             $sessionStorage.iComsErr = JSON.parse(JSON.stringify(error));
             alert("Error " + $sessionStorage.iComsErr.status + " Retrieving Sets : " + $sessionStorage.iComsErr.data);
         });
-
     };
 
     $scope.setItemsPerPage = function (num) {
