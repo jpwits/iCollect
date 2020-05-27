@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 
 namespace iCollect.Controllers
 {
+   
     [Route("api/Account"), Produces("application/json"), EnableCors("AppPolicy")]
     public class AccountController : Controller
     {
@@ -40,14 +41,17 @@ namespace iCollect.Controllers
         public async Task<IActionResult> Login(string username, string password)
         {
             var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("superSecretKey@345"));
-            var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
 
             var tokeOptions = new JwtSecurityToken(
-                issuer: "http://localhost:5000",
-                audience: "http://localhost:5000",
-                claims: new List<Claim>(),
-                expires: DateTime.Now.AddMinutes(5),
-                signingCredentials: signinCredentials
+                issuer: "http://localhost:2070",
+                audience: "http://localhost:2070",
+                claims: new Claim[]
+                {
+                    new Claim(ClaimTypes.Name, username)
+                    //new Claim(ClaimTypes.Role, user.Role)
+                },
+                expires: DateTime.UtcNow.AddDays(7),
+                signingCredentials: new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256Signature)
             );
 
             var tokenString = new JwtSecurityTokenHandler().WriteToken(tokeOptions);

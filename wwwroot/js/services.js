@@ -5,7 +5,18 @@ function getSetSrv($resource) {
 }
 
 function getAlbumCollections($resource) {
-    return $resource('api/albums/GetAlbumCollections');
+    return {
+        albumcollections: function (token) {
+            return $resource('api/albums/GetAlbumCollections', null, {
+                query: {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': 'Bearer ' + token
+                    }
+                }
+            });
+        }
+    }
 }
 
 function getSetsSrvNg($resource) {
@@ -67,13 +78,25 @@ function updateAlbumCollectionSrv($resource) {
 }
 
 
+
+
 function getUser($resource) {
     return $resource('api/Account/getUser'
     );
 }
 
+
+
 function loginUser($resource) {
-    return $resource('api/Account/login/:username/:password', { username: '@username', password: '@password' }   
+    return $resource('api/Account/login/:username/:password', { username: '@username', password: '@password' }
+    );
+}
+
+function authUser($resource) {
+    return $resource('api/User/authenticate'
+        , {
+            'update': { method: 'PUT' }
+        }
     );
 }
 
@@ -83,7 +106,7 @@ function logoutUser($resource) {
 }
 
 function registerUser($resource) {
-    return $resource('api/Account/register/:username/:email/:password', { username: '@username',email:'@email', password: '@password' }
+    return $resource('api/Account/register/:username/:email/:password', { username: '@username', email: '@email', password: '@password' }
     );
 }
 
@@ -112,10 +135,11 @@ angular
     .service('getUser', getUser)
     .service('getCollectionSrv', getCollectionSrv)
     .service('getCollectionsSrv', getCollectionsSrv)
-    .service('getAlbumCollections', getAlbumCollections)
+    .service('getAlbumCollections', ['$resource', getAlbumCollections])
     .service('updateUserItem', updateUserItem)
     .service('getSetSrv', getSetSrv)
     .service('getLookups', getLookups)
+    .service('authUser', authUser)
     .service('loginUser', loginUser)
     .service('logoutUser', logoutUser)
     .service('registerUser', registerUser)

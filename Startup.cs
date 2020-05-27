@@ -39,14 +39,8 @@ namespace TGIS.Web
                 .AddNewtonsoftJson(options =>
                 {
                     options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-                    //options.SerializerSettings.ContractResolver = new DefaultContractResolver();
                 });
-            //services.AddMvc().AddJsonOptions(options =>
-            //{
-            //    //options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-            //    //options.SerializerSettings.ContractResolver = new DefaultContractResolver();
-
-            //});
+           
             services.AddCors(o => o.AddPolicy("AppPolicy", builder =>
             {
                 builder.AllowAnyOrigin()
@@ -67,7 +61,20 @@ namespace TGIS.Web
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                .AddEntityFrameworkStores<ApplicationDbContext>();
 
-            services.AddAuthentication();
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(o => {
+                    o.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidIssuer = Configuration["Jwt:Issuer"],
+                        ValidAudience = Configuration["Jwt:Issuer"],
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
+
+                    };
+                });
 
             services.AddControllersWithViews();
             services.AddRazorPages();

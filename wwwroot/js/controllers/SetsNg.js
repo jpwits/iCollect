@@ -1,13 +1,13 @@
 ﻿function SetsNgCtrl($scope, $state, $sessionStorage, $localStorage, getSetsSrvNg, getSetSrv, $timeout, $q, updateSet) {
-    var curTCB = $q.defer();
-    var result = $scope.currentUser();
-    curTCB.promise;
+    //var curTCB = $q.defer();
+    //var result = $scope.currentUser();
+    //curTCB.promise;
 
     $sessionStorage.newSet = false;
 
-    if ($sessionStorage.User === undefined) {
-        $state.go("logins");
-    }
+    //if ($sessionStorage.User === undefined) {
+    //    $state.go("logins");
+    //}
 
     $scope.spinLoadingSets = false;
 

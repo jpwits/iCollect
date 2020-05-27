@@ -1,4 +1,4 @@
-﻿function AccountCtrl($window, $sessionStorage, $localStorage, $scope, getLookups, loginUser, logoutUser, registerUser, getUser, getCollectionsSrv) {
+﻿function AccountCtrl($window, $sessionStorage, $localStorage, $scope, $state, getLookups, loginUser, logoutUser, registerUser, getUser, getCollectionsSrv, authUser) {
     $scope.$sessionStorage = $sessionStorage.$default(/* any defaults here */);
     $scope.$localStorage = $localStorage.$default(/* any defaults here */);
 
@@ -14,7 +14,7 @@
 
     $scope.currentUser();
 
-    $scope.login = function (username, password) {
+    $scope.login2 = function (username, password) {
         // If we already have a bearer token, set the Authorization header - to check
         loginUser.get({
             username: username,
@@ -28,6 +28,20 @@
             alert("Error " + $sessionStorage.iComsErr.status + " Logging in : " + $sessionStorage.iComsErr.data);
         });
     };
+
+    $scope.login = function (username, password) {
+        $scope.entry = new authUser();
+        $scope.entry.username = username;
+        $scope.entry.password = password;
+        $scope.entry.$save(function (response) {
+            $sessionStorage.User = JSON.parse(JSON.stringify(response));
+            $sessionStorage.User.name = username;
+            $window.history.back();
+        }, function (error) {
+            $sessionStorage.iComsErr = JSON.parse(JSON.stringify(error));
+                alert("Error " + $sessionStorage.iComsErr.status + " Logging in : " + $sessionStorage.iComsErr.data);
+        });
+    }
 
     $scope.logout = function () {
         logoutUser.get().$promise.then(function (response) {

@@ -3,19 +3,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using iCollect.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace iCollect.Controllers
 {
+    [Authorize]
+    [ApiController]
     [Route("api/albums"), Produces("application/json"), EnableCors("AppPolicy")]
     public class AlbumController : Controller
     {
+        private readonly SignInManager<IdentityUser> _signInManager;
         private readonly icollectdbContext _context;
 
-        public AlbumController(icollectdbContext context)
+        public AlbumController(SignInManager<IdentityUser> signInManager, icollectdbContext context)
         {
+            _signInManager = signInManager;
             _context = context;
         }
 
@@ -23,7 +29,8 @@ namespace iCollect.Controllers
         [HttpGet, Route("GetAlbumCollections")]
         public ActionResult GetAlbumCollections()
         {
-            var albumsCollections = _context.AlbumCollections.Where(b => b.Album.UserId == User.Identity.Name &&
+            var username = User.Identities.First().Claims.First().Value;
+            var albumsCollections = _context.AlbumCollections.Where(b => b.Album.UserId == username &&
                   b.Album.IsActive == true).Include(a => a.Album);
 
             //var albumsCollections = from albumCollections in _context.AlbumCollections
@@ -31,9 +38,10 @@ namespace iCollect.Controllers
             //                        where album.UserId == User.Identity.Name && album.IsActive == true
             //                        select albumCollections;
             var _debug = albumsCollections.ToList();
+            //return Ok(_debug);
             return Json(new
             {
-                albumsCollections,
+                albumsCollections
             });
         }
 
@@ -47,11 +55,11 @@ namespace iCollect.Controllers
             //             join album in _context.Albums on userItems.AlbumId equals album.AlbumId
             //             where userItems.UserId == User.Identity.Name
             //             select album;
-
-            return Json(new
-            {
-                albumsCollections,
-            });
+            return Ok(albumsCollections);
+            //return Json(new
+            //{
+            //    albumsCollections,
+            //});
         }
 
         [HttpPut("updateAlbumCollection")]
