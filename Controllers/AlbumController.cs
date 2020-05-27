@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using iCollect.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -19,9 +20,9 @@ namespace iCollect.Controllers
             _context = context;
         }
 
-      
+        [Authorize]
         [HttpGet, Route("GetAlbumCollections")]
-        public ActionResult GetAlbumCollections()
+        public async Task<IActionResult> GetAlbumCollections()
         {
             var albumsCollections = _context.AlbumCollections.Where(b => b.Album.UserId == User.Identity.Name &&
                   b.Album.IsActive == true).Include(a => a.Album);
@@ -37,6 +38,7 @@ namespace iCollect.Controllers
             });
         }
 
+        [Authorize]
         [HttpGet, Route("GetAlbumCollections/{albumId}")]
         public ActionResult GetAlbumCollections(int albumId)
         {
@@ -54,6 +56,7 @@ namespace iCollect.Controllers
             });
         }
 
+        [Authorize]
         [HttpPut("updateAlbumCollection")]
         //[ValidateAntiForgeryToken]
         public async Task<AlbumCollections> updateAlbumCollection([FromBody] AlbumCollections data)
