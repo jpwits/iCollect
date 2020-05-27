@@ -63,10 +63,15 @@ function getSetsSrvNg($resource) {
     }
 }
 
-function updateSet($resource) {
+function updateSet($resource, $sessionStorage) {
     return $resource('api/SetsNg/updateSet/:id', { id: '@id' }
         , {
-            'update': { method: 'PUT' }
+            'update': {
+                method: 'PUT',
+                headers: {
+                    'Authorization': 'Bearer ' + $sessionStorage.User.token
+                }
+            }
         }
     );
 }
