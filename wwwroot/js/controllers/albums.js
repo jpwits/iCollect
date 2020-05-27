@@ -1,12 +1,4 @@
 ﻿function AlbumsCtrl($scope, $state, $sessionStorage, $q, $localStorage, getAlbumCollections) {
-
-    //var curTCB = $q.defer();
-    //var result = $scope.currentUser();
-    //curTCB.promise;
-
-    //if ($sessionStorage.User === undefined) {
-    //    $state.go("logins");
-    //}
     $scope.spinLoadingAlbums = false;
 
     $scope.GotoAlbum = (albumCollection) => {

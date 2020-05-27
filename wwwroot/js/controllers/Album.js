@@ -1,12 +1,4 @@
 ﻿function AlbumCtrl($scope, $state, $stateParams, $sessionStorage, $localStorage, $q, updateAlbumCollectionSrv) {
-    //var curTCB = $q.defer();
-    //var result = $scope.currentUser();
-    //curTCB.promise;
-
-    //if ($sessionStorage.User === undefined) {
-    //    $state.go("logins");
-    //}
-
     $scope.spinUpdateAlbum = "Save";
 
     if ($sessionStorage.albumCollection.album == undefined) {

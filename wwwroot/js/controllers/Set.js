@@ -1,13 +1,5 @@
 ﻿function SetCtrl($window, $scope, $state, $sessionStorage, $q, updateSet) {
-    //var curTCB = $q.defer();
-    //var result = $scope.currentUser();
-    //curTCB.promise;
-
-    //if ($sessionStorage.User === undefined) {
-    //    $state.go("logins");
-    //}
-
-
+    
     $scope.dateOptions = {
         datepickerMode: 'year',
         minMode: 'year',
