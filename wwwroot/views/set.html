@@ -48,8 +48,23 @@
                         <div class="form-group row">
                             <label class="col-sm-2 col-form-label" for="idUploadImages">Upload Images:</label>
                             <div class="col-sm-6">
-                                <input class="btn btn-primary dim btn-default" id="idUploadImages" type="file" multiple="multiple" ngf-select="uploadFiles($files, iSet)" /> <!--accept="image/*"-->
+                                <input class="btn btn-primary dim btn-default" id="idUploadImages" type="file" multiple="multiple" ngf-select="uploadFiles($files)" /> <!--accept="image/*"-->
                                 {{file.name}}
+                            </div>
+                        </div>
+                        <h2> or </h2>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label" for="idLinkCoins">Link existing coins : </label>
+                            <div class="col-sm-6" style="border:ridge">
+                                <input class="btn btn-primary dim btn-default" value="..." id="idLinkCoins" type="button" ng-click="showCoins(iSet);" /><!--accept="image/*"-->
+                                <div ng-repeat="(itemidx, shareditem)  in rangeCoins" ng-if="dspCoins == true">
+                                    <div class="SetContainer">
+                                        <div class="container" title="{{shareditem.weight + ' ' + shareditem.metalContent}}">
+                                            <img ng-click="linkCoin(shareditem)" style="margin-right : 25px;border:2px solid grey" ng-src="data:{{shareditem.type}};base64,{{shareditem.thumbnailA}}" />
+                                            <img ng-if="shareditem.thumbnailB != undefined" class="overlay1" ng-click="linkCoin(shareditem)" style="margin-right : 25px;border:2px solid grey" ng-src="data:{{shareditem.type}};base64,{{shareditem.thumbnailB}}" />
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="form-group row" ng-repeat="(key, item) in iSet.items">
@@ -60,37 +75,90 @@
                                 </div>
                             </div>
                             <div class="col col-sm-6">
-                                <div>
-                                    <div>pos: {{item.position}}</div>
-                                    <div>
-                                        <span>Item Type:</span>
-                                        <select ng-model="item.type" required="">
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label" for="idItemType">Item Type :</label>
+                                    <div class="col-lg-2">
+                                        <select id="idItemType" ng-change="itemSelect();" data-style="bg-black rounded-pill" class="form-control input-sm selectpicker" ng-model="item.type" ng-required="true">
                                             <option>Set</option>
                                             <option>Box</option>
                                             <option>Coin</option>
                                             <option>Certificate</option>
+                                            <option>Medallion</option>
                                             <option>Mintmark Coin</option>
                                             <option>Extra</option>
-                                        </select>
+                                        </select><!-- End -->
                                     </div>
-                                    <div ng-if="item.type == 'Coin'">
-                                        Denominator:
-                                        <select ng-model="item.denominator">
-                                            <option>2½c</option>
-                                            <option>5c</option>
-                                            <option>10c</option>
-                                            <option>20c</option>
-                                            <option>50c</option>
-                                            <option>R1</option>
-                                            <option>R2</option>
-                                            <option>R5</option>
-                                            <option>R10</option>
-                                            <option>R20</option>
-                                            <option>R50</option>
-                                            <option>R100</option>
-                                            <option>R200</option>
-                                        </select>
+                                </div>
+                                <div ng-if="item.type == 'Coin'">
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label" for="idItemDenom">Denominator :</label>
+                                        <div class="col-lg-2">
+                                            <select id="idItemDenom" data-style="bg-black rounded-pill" class="form-control input-sm selectpicker" ng-model="item.denominator"  ng-required="true">
+                                                <option>None</option>
+                                                <option>½c</option>
+                                                <option>1c</option>
+                                                <option>2c</option>
+                                                <option>2½c</option>
+                                                <option>5c</option>
+                                                <option>10c</option>
+                                                <option>20c</option>
+                                                <option>50c</option>
+                                                <option>R1</option>
+                                                <option>R2</option>
+                                                <option>R5</option>
+                                                <option>R10</option>
+                                                <option>R20</option>
+                                                <option>R25</option>
+                                                <option>R50</option>
+                                                <option>R100</option>
+                                                <option>R200</option>
+                                                <option>KR</option>
+                                                <option>1/2 KR</option>
+                                                <option>1/4 KR</option>
+                                                <option>1/10 KR</option>
+                                            </select><!-- End -->
+                                        </div>
                                     </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label" for="idItemWeight">Weight :</label>
+                                        <div class="col-lg-2">
+                                            <select id="idItemWeight" data-style="bg-black rounded-pill" class="form-control input-sm selectpicker" ng-model="item.weight" data-container="body" data-size="6" data-selected-text-format="count>2" data-actions-box="true" ng-required="true">
+                                                <option>None</option>
+                                                <option>5 Oz</option>
+                                                <option>2 Oz</option>
+                                                <option>1 Oz</option>
+                                                <option>1/2 Oz</option>
+                                                <option>1/4 Oz</option>
+                                                <option>1/10 Oz</option>
+                                                <option>1/20 Oz</option>
+                                                <option>1/50 Oz</option>
+                                            </select><!-- End -->
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label" for="idItemMetalContent">Metal Content :</label>
+                                        <div class="col-lg-2">
+                                            <select id="idItemMetalContent" data-style="bg-black rounded-pill" class="form-control input-sm selectpicker" ng-model="item.metalContent" data-container="body" data-size="6" data-selected-text-format="count>2" data-actions-box="true" ng-required="true">
+                                                <option>None</option>
+                                                <option>Silver</option>
+                                                <option>Gold</option>
+                                                <option>Platinum</option>
+                                                <option>Currency</option>
+                                            </select><!-- End -->
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label" for="idItemMintMark">MintMark :</label>
+                                        <div class="col-lg-2">
+                                            <input id="idItemMintMark" type="checkbox" class="form-control input-sm" ng-model="item.mintMark" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <div>pos: {{item.position}}</div>
                                     <br />
                                     <div>
                                         <button ng-click="ImageOrderUp(item.position)" class="btn btn-primary dim btn-default" type="button"><i class="fa fa-chevron-up"></i>Up </button>
@@ -103,8 +171,23 @@
                                     </div>
                                     <br />
                                     <div ng-if="item.imageIdBNavigation == undefined">
-                                        Upload Reverse :
+                                        Upload Obverse :
                                         <input type="file" ngf-select="uploadReverse($file, item)" class="btn btn-primary dim btn-default" />
+                                    </div>
+                                    <h2> or </h2>
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label" for="idLinkObverse">Link Existing Obverse's : </label>
+                                        <div class="col-sm-6" style="border:ridge">
+                                            <input class="btn btn-primary dim btn-default" value="..." id="idLinkObverse" type="button" ng-click="showObserves(iSet);" /><!--accept="image/*"-->
+                                            <div ng-repeat="(coinidx, sharedItem)  in rangeCoins" ng-if="dspObserves == true">
+                                                <div class="SetContainer">
+                                                    <div class="container" title="{{set.description}}">
+                                                        <!--<img ng-click="linkCoin(item)" style="margin-right : 25px;border:2px solid grey" ng-src="data:{{item.type}};base64,{{item.thumbnailA}}" />-->
+                                                        <img ng-if="sharedItem.thumbnailB != undefined" ng-click="linkObverse(item, sharedItem)" style="margin-right : 25px;border:2px solid grey" ng-src="data:{{sharedItem.type}};base64,{{sharedItem.thumbnailB}}" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -113,7 +196,7 @@
                             <label class="col-sm-2 col-form-label" for="idYear">Year:</label>
                             <div class="col-md-4">
                                 <p class="input-group">
-                                    <input id="idYear" type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="iSet.date" is-open="popupStart.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" />
+                                    <input id="idYear" type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="iSet.date" is-open="popupStart.opened" datepicker-options="dateOptions" ng-required="false" close-text="Close" alt-input-formats="altInputFormats" />
                                     <span class="input-group-btn">
                                         <button type="button" class="btn btn-default" ng-click="openStart()"><i class="glyphicon glyphicon-calendar"></i></button>
                                     </span>
@@ -183,17 +266,18 @@
                 </div>
             </div>
         </div>-->
-
     </div>
-    <!--<div class="row">
-            <div class="col-lg-9">
-                <div class="wrapper wrapper-content animated fadeInRight">
-                    <h5>params</h5>
-                          <pre>{{$stateParams | json}}</pre>
-                          <h5>state</h5>
-                          <pre>{{$state.current | json}}</pre>
-                <pre>{{$scope | json}}</pre>
+
+    <div class="row">
+        <div class="col-lg-9">
+            <div class="wrapper wrapper-content animated fadeInRight">
+                <h5>$stateParams</h5>
+                <pre>{{$stateParams | json}}</pre>
+                <h5>$state</h5>
+                <pre>{{$state.current | json}}</pre>
+                <h5>iSet</h5>
+                <pre>{{iSet | json}}</pre>
             </div>
-            </div>
-        </div>-->
+        </div>
+    </div>
 </div>

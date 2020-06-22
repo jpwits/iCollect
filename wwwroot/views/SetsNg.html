@@ -177,8 +177,14 @@
                                         <div class="div-table-col">
                                             <a href="" ng-click="selectSet($event,setidx)">$0.00</a>
                                         </div>
+                                        <div class="div-table-col">
+                                            <a style="color:mediumvioletred" ng-click="selectSet($event,setidx)" href="">{{set.coinList}}</a>
+                                        </div>
                                     </div>
                                 </div>
+
+                                <!--Coin Ranges-->
+                                <!--Collector - Matrix Year/setType-->
                                 <!--Footer-->
                                 <ul uib-pagination total-items="$sessionStorage.iColSets.recordsTotal" items-per-page="$localStorage.session_pglen" ng-model="$sessionStorage.currentPage" ng-change="pageChanged()" max-size="maxSize" class="pagination-sm" boundary-link-numbers="true"></ul>
                             </div>

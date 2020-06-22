@@ -29,7 +29,7 @@ namespace iCollect.Entities
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Server=tcp:icollectdb.database.windows.net,1433;Initial Catalog=icollectdb;Persist Security Info=False;User ID=jpwits@gmail.com@icollectdb;Password=Monitor3##;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
+                optionsBuilder.UseSqlServer("Data Source=DESKTOP-4NM3MIF\\SQLEXPRESS;Initial Catalog=icollectdb;Trusted_Connection=True;");
             }
         }
 
@@ -38,6 +38,8 @@ namespace iCollect.Entities
             modelBuilder.Entity<AlbumCollections>(entity =>
             {
                 entity.HasKey(e => new { e.CollectionId, e.AlbumId });
+
+                entity.HasIndex(e => e.AlbumId);
 
                 entity.HasOne(d => d.Album)
                     .WithMany(p => p.AlbumCollections)
@@ -92,6 +94,8 @@ namespace iCollect.Entities
             {
                 entity.HasKey(e => e.CollectionId);
 
+                entity.HasIndex(e => e.CollectionTypeId);
+
                 entity.Property(e => e.Description).HasMaxLength(255);
 
                 entity.Property(e => e.Name).HasMaxLength(255);
@@ -118,6 +122,10 @@ namespace iCollect.Entities
                 entity.HasKey(e => e.ItemId)
                     .HasName("PK_SetImages");
 
+                entity.HasIndex(e => e.ImageIdA);
+
+                entity.HasIndex(e => e.ImageIdB);
+
                 entity.HasIndex(e => e.SetId)
                     .HasName("IX_SetImages_setId");
 
@@ -129,7 +137,7 @@ namespace iCollect.Entities
 
                 entity.Property(e => e.Description).HasMaxLength(100);
 
-                entity.Property(e => e.Dimention).HasColumnType("decimal(18, 3)");
+                entity.Property(e => e.Dimension).HasColumnType("decimal(18, 3)");
 
                 entity.Property(e => e.Mass).HasColumnType("decimal(18, 3)");
 
@@ -168,13 +176,17 @@ namespace iCollect.Entities
             {
                 entity.HasKey(e => e.SetId);
 
+                entity.HasIndex(e => e.CollectionId);
+
                 entity.Property(e => e.CatCode).HasMaxLength(50);
 
                 entity.Property(e => e.Date).HasColumnType("date");
 
-                entity.Property(e => e.Description).HasMaxLength(100);
+                entity.Property(e => e.Description).HasMaxLength(255);
 
                 entity.Property(e => e.Range).HasMaxLength(50);
+
+                entity.Property(e => e.Series).HasMaxLength(255);
 
                 entity.Property(e => e.SetType).HasMaxLength(50);
 
@@ -186,6 +198,10 @@ namespace iCollect.Entities
 
             modelBuilder.Entity<UserItems>(entity =>
             {
+                entity.HasIndex(e => e.AlbumId);
+
+                entity.HasIndex(e => e.ItemId);
+
                 entity.Property(e => e.UserId)
                     .IsRequired()
                     .HasMaxLength(255);

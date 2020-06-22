@@ -1,5 +1,5 @@
-﻿function SetsNgCtrl($scope, $state, $sessionStorage, $localStorage, getSetsSrvNg, $timeout, $q, updateSet) {
-    $sessionStorage.newSet = false;
+﻿function SetsNgCtrl($scope, $state, $stateParams, $sessionStorage, $localStorage, getSetsSrvNg, $timeout, $q, updateSet) {
+    //$sessionStorage.newSet = false;
    
     $scope.spinLoadingSets = false;
 
@@ -158,6 +158,13 @@
                     set.items = set.items.sort(function (a, b) {
                         return a.position - b.position;
                     }).filter(item => item.isActive === true);
+                    set.coinList = "";
+                    angular.forEach(set.items, function (item) {
+                        if (item.type === "Coin") {
+                            set.coinList += item.type + " " + item.denominator + " " +
+                                item.weight + " " + item.metalContent + " MM:" + item.mintMark + "; ";
+                        }
+                    })
                 }
             });
             $sessionStorage.numberOfPages = Math.ceil($sessionStorage.iColSets.recordsTotal / $localStorage.session_pglen);
@@ -226,9 +233,9 @@
                     return a.position - b.position;
                 }).filter(item => item.isActive === true);
             }
-            $sessionStorage.curSetIdx = setidx;
+            //$sessionStorage.curSetIdx = setidx;
             $sessionStorage.iColSets.data[setidx] = set;
-            $state.go('app.set');
+            $state.go('app.set', { setIdx: setidx });
         }, function (error) {
             $sessionStorage.iComsErr = JSON.parse(JSON.stringify(error));
             alert("Error " + $sessionStorage.iComsErr.status + " Selecting Set : " + $sessionStorage.iComsErr.data);
@@ -276,11 +283,7 @@
 
     $scope.createSet = function (id) {
         if (id === undefined) {
-            var iSet = new getSetSrvNg.set();
-            iSet.setImages = [];
-            iSet.delImages = [];
-            $sessionStorage.newSet = true;
-            $state.go('app.set');
+            $state.go('app.set', { setId: -1 });
         }
     };
 

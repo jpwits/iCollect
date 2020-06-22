@@ -50,6 +50,16 @@ function getSetsSrvNg($resource) {
                 }
             });
         },
+        coins: function (token) {
+            return $resource('api/SetsNg/GetRangeCoins/:year/:type/:range', { year: '@year', type: '@type', range: '@range' }, {
+                get: {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': 'Bearer ' + token
+                    }
+                }
+            });
+        },
         //userItem : function (token) {
         //    return $resource('api/SetsNg/GetUserItem/:id', { id: '@id' }, {
         //        get: {
@@ -80,6 +90,13 @@ function updateUserItem($resource) {
     return $resource('api/SetsNg/updateUserItem/:id', { id: '@id' }
         , {
             'update': { method: 'PUT' }
+        }
+    );
+}
+function getCoinRangeSrv($resource) {
+    return $resource('api/Collections/GetCollections', null,
+        {
+            'get': { method: 'GET' }
         }
     );
 }
