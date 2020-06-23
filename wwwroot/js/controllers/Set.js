@@ -106,7 +106,7 @@
                     $scope.iSet.items = [];
                 }
 
-                if ($scope.iSet.items.length >  0) {
+                if ($scope.iSet.items.length > 0) {
                     newItem.position = $scope.iSet.items[$scope.iSet.items.length - 1].position + 1;
                 }
                 $scope.iSet.items.push(newItem);
@@ -137,7 +137,7 @@
             delImage: null,
             isActive: true,
             position: 0,
-            type: 'Set',
+            type: 'None',
             denominator: 'None',
             mass: null,
             metalContent: 'None',
@@ -224,6 +224,27 @@
 
     $scope.showCoins = function (set) {
         $scope.dspCoins = !$scope.dspCoins;
+    };
+
+    $scope.linkCoin = function (sharedItem) {
+        $scope.iSet.items.push(sharedItem);
+        $(function () {
+            $('.selectpicker').selectpicker();
+        });
+    };
+
+    $scope.linkObverse = function (item, sharedItem) {
+        item.imageIdB = sharedItem.imageIdB;
+        item.imageIdBNavigation = {
+            imageId: sharedItem.imageIdBNavigation.imageId,
+            image: sharedItem.imageIdBNavigation.image,
+            type: sharedItem.imageIdBNavigation.type
+        };
+        item.type = sharedItem.type;
+        item.ThumbnailB = sharedItem.ThumbnailB;
+        $(function () {
+            $('.selectpicker').selectpicker();
+        });
     };
 
     $scope.showObserves = function (set) {

@@ -147,6 +147,7 @@
                                             </div>
                                             <div ng-repeat="(itemidx, item)  in set.items" ng-if="item.isActive == true">
                                                 <div class="SetContainer">
+                                                    <!--<div class="container" title="{{item.weight + ' ' + item.metalContent}}">-->
                                                     <div class="container" title="{{set.description}}">
                                                         <img ng-click="selectSet($event, setidx)" style="margin-right : 25px;border:2px solid grey" ng-src="data:{{item.type}};base64,{{item.thumbnailA}}" />
                                                         <img ng-if="item.thumbnailB != undefined" class="overlay1" ng-click="selectSet($event, setidx)" style="margin-right : 25px;border:2px solid grey" ng-src="data:{{item.type}};base64,{{item.thumbnailB}}" />
@@ -189,9 +190,9 @@
                                 <ul uib-pagination total-items="$sessionStorage.iColSets.recordsTotal" items-per-page="$localStorage.session_pglen" ng-model="$sessionStorage.currentPage" ng-change="pageChanged()" max-size="maxSize" class="pagination-sm" boundary-link-numbers="true"></ul>
                             </div>
                             <!--<div class="div-table-row">
-        <h5>params</h5>
-        <pre>{{$sessionStorage | json}}</pre>
-    </div>-->
+                                <h5>params</h5>
+                                <pre>{{$sessionStorage | json}}</pre>
+                            </div>-->
                         </div>
                     </div>
                 </div>

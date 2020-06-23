@@ -1,5 +1,5 @@
-﻿--USE [icollectdb]
---GO
+﻿USE [icollectdb]
+GO
 
 ----Updates 
 --UPDATE [dbo].[Sets]
@@ -22,8 +22,8 @@
 --select * from sets where Description  like'%Oom Paul%'
 --select * from sets where Range  is null
 --select * from sets where Series  is null
-select * from sets where setId = 12
-select * from items where setId = 12
+--select * from sets where setId = 12
+--select * from items where setId = 12
 --select Range from sets group by range
 
 --select * from sets where Range  = 'Currency'
@@ -53,3 +53,21 @@ select * from items where setId = 12
 --  select Items.ItemId from Items 
 --  join sets on Items.SetId = sets.SetId where sets.Year = 2000 and sets.Range= 'Natura' and Items.Type = 'Coin'  group by Items.ItemId)
 
+--select * from Items where Items.ItemId in(
+--  select Items.ItemId from Items 
+--  join sets on Items.SetId = sets.SetId where sets.Year = 1987 and sets.Range= 'Krugerrand' and Items.Type = 'Coin'  group by Items.ItemId)
+
+
+  select * from Items 
+  join sets on Items.SetId = sets.SetId 
+  where sets.isActive = 'true' and Items.IsActive = 'false'
+
+    select Images.*, Items.* from Images 
+	 join Items on Images.ImageId = Items.ImageIdA 
+	 join sets on Items.SetId = sets.SetId 
+  where sets.isActive = 1 and Items.IsActive = 0
+
+     delete img from  Images img 
+	 join Items itm on img.ImageId = itm.ImageIdA 
+	 join sets on itm.SetId = sets.SetId 
+  where sets.isActive = 1 and itm.IsActive = 0
