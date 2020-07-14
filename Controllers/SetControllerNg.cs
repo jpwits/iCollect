@@ -104,8 +104,10 @@ namespace iCollect.Controllers
 
             var rangeCoins = (from items in _context.Items
                     join sets in _context.Sets on items.SetId equals sets.SetId
-                    where sets.Year == year & sets.Range == range & items.Type == "Coin" & sets.IsActive == true & items.IsActive == true
-                    select items).Include(a => a.ImageIdANavigation).Include(b=>b.ImageIdBNavigation).ToList();
+                    where sets.Year == year & sets.Range == range & items.Type == "Coin" &
+                    sets.IsActive == true & items.IsActive == true & items.LinkedItem != true
+                    select items).Include(a => a.ImageIdANavigation)
+                    .Include(b=>b.ImageIdBNavigation).Include(c=>c.Set).ToList();
             return Json(new { rangeCoins });
         }
          

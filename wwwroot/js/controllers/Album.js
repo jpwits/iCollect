@@ -73,7 +73,7 @@
             $scope.entry.$update(function (response) {
                 $sessionStorage.albumCollections.push(response);
                 //alert("Album Saved successfully...");
-                $state.go('ui.albums');
+                $state.go('ui.albums'); //replace with $scope.apply!
             }, function (error) {
                 $sessionStorage.iComsErr = JSON.parse(JSON.stringify(error));
                 alert("Error " + $sessionStorage.iComsErr.status + " Deleting Album : " + $sessionStorage.iComsErr.data);

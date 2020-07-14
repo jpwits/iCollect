@@ -29,6 +29,7 @@ namespace iCollect.Entities
         public byte[] ThumbnailB { get; set; }
         public decimal? PriceEstimated { get; set; }
         public bool? MintMark { get; set; }
+        public bool? LinkedItem { get; set; }
 
         public virtual Images ImageIdANavigation { get; set; }
         public virtual Images ImageIdBNavigation { get; set; }

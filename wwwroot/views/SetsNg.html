@@ -147,7 +147,6 @@
                                             </div>
                                             <div ng-repeat="(itemidx, item)  in set.items" ng-if="item.isActive == true">
                                                 <div class="SetContainer">
-                                                    <!--<div class="container" title="{{item.weight + ' ' + item.metalContent}}">-->
                                                     <div class="container" title="{{set.description}}">
                                                         <img ng-click="selectSet($event, setidx)" style="margin-right : 25px;border:2px solid grey" ng-src="data:{{item.type}};base64,{{item.thumbnailA}}" />
                                                         <img ng-if="item.thumbnailB != undefined" class="overlay1" ng-click="selectSet($event, setidx)" style="margin-right : 25px;border:2px solid grey" ng-src="data:{{item.type}};base64,{{item.thumbnailB}}" />
@@ -173,14 +172,18 @@
                                             <span>{{set.setType}}</span>
                                         </div>
                                         <div class="div-table-col">
+                                            <span>{{set.series}}</span>
+                                        </div>
+                                        <div class="div-table-col">
                                             <a href="" ng-click="selectSet($event,setidx)">{{set.description}}</a>
+                                        </div>
+                                        <div class="div-table-col">
+                                            <a style="color:mediumvioletred" ng-click="selectSet($event,setidx)" href="">{{set.year}} {{set.range}} {{set.series}} {{set.setType}} {{set.singleDenominator}} {{set.singleWeight}} {{set.singleMetalContent}} {{set.singleMintMark}}</a>
                                         </div>
                                         <div class="div-table-col">
                                             <a href="" ng-click="selectSet($event,setidx)">$0.00</a>
                                         </div>
-                                        <div class="div-table-col">
-                                            <a style="color:mediumvioletred" ng-click="selectSet($event,setidx)" href="">{{set.coinList}}</a>
-                                        </div>
+                                        
                                     </div>
                                 </div>
 

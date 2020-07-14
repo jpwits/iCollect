@@ -13,8 +13,8 @@ GO
 --GO
 
 --UPDATE [dbo].Items
---   SET Denominator = '1/10KR' 
---   WHERE Denominator = '⅒KR'
+--   SET linkedItem = 'false'
+--   WHERE linkedItem is null
 --GO
 
 ----selects
@@ -55,19 +55,67 @@ GO
 
 --select * from Items where Items.ItemId in(
 --  select Items.ItemId from Items 
---  join sets on Items.SetId = sets.SetId where sets.Year = 1987 and sets.Range= 'Krugerrand' and Items.Type = 'Coin'  group by Items.ItemId)
+--  join sets on Items.SetId = sets.SetId where sets.Year = 1988 and sets.Range= 'Protea' and Items.Type = 'Coin'  group by Items.ItemId)
 
 
-  select * from Items 
-  join sets on Items.SetId = sets.SetId 
-  where sets.isActive = 'true' and Items.IsActive = 'false'
+  select sets.*, Items.* from Items 
+  join sets on Items.SetId = sets.SetId where sets.Year = 2018 and sets.Range= 'Krugerrand' and Items.Type = 'Coin' --and Items.MetalContent= 'Silver'
 
-    select Images.*, Items.* from Images 
-	 join Items on Images.ImageId = Items.ImageIdA 
-	 join sets on Items.SetId = sets.SetId 
-  where sets.isActive = 1 and Items.IsActive = 0
 
-     delete img from  Images img 
-	 join Items itm on img.ImageId = itm.ImageIdA 
-	 join sets on itm.SetId = sets.SetId 
-  where sets.isActive = 1 and itm.IsActive = 0
+  --select * from Items 
+  --join sets on Items.SetId = sets.SetId 
+  --where sets.isActive = 'true' and Items.IsActive = 'false'
+
+--    select Images.ImageId from Images 
+--	 join Items on Images.ImageId = Items.ImageIdA Group by Images.ImageId
+--	 Union
+--	select Images.ImageId from Images 
+--join Items on Images.ImageId = Items.ImageIdB Group by Images.ImageId
+  --   delete itm from  Images img 
+	 --join Items itm on img.ImageId = itm.ImageIdA 
+	 --join sets on itm.SetId = sets.SetId 
+  --where sets.isActive = 1 and itm.IsActive = 0
+
+--   select Images.ImageId from Images 
+--	 join Items on Images.ImageId = Items.ImageIdA 
+	 
+--	 SELECT Images.ImageId
+--FROM Images Images
+--    LEFT JOIN Items t2 ON (Images.ImageId = t2.ImageIdA or Images.ImageId = t2.ImageIdB)
+--WHERE t2.ImageIdA IS NULL
+
+--	 delete img from  Images img 
+--	-- select img.ImageId from  Images img 
+--    LEFT JOIN Items t2 ON (img.ImageId = t2.ImageIdA or img.ImageId = t2.ImageIdB)
+--WHERE t2.ImageIdA IS NULL
+
+
+--   select Distinct Items.ItemId, Images.Image from Images 
+--	 join Items on Items.ItemId = 2764
+
+--	 select  *  from  Images img 
+--	-- select img.ImageId from  Images img 
+--    LEFT JOIN Items t2 ON (img.ImageId = t2.ImageIdA or img.ImageId = t2.ImageIdB)  
+--WHERE  t2.ItemId = 2764
+
+--	 2767
+--delete itm from Items itm where itm.ItemId = 2764
+--delete itm from Items itm where itm.ItemId = 2767
+--delete img from Images img where img.ImageId = 3522
+--delete img from Images img where img.ImageId = 3523
+--delete img from Images img where img.ImageId = 3526
+
+--	  ItemId = 2764
+--	 imageId = 3522
+
+--	 ItemId = 2767
+--	 imageId = 3526
+
+--	 	 SELECT *
+--FROM Images Images
+--    LEFT JOIN Items t2 ON (Images.ImageId = t2.ImageIdA or Images.ImageId = t2.ImageIdB)
+--WHERE t2.isActive = 'false'
+
+--delete itm from Items itm where isActive = 'false'
+
+	

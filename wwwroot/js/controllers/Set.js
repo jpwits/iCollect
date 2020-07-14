@@ -47,14 +47,16 @@
         $scope.iSet = $sessionStorage.iColSets.data[$stateParams.setIdx];
     }
 
-    getSetsSrvNg.coins($sessionStorage.User.token)
-        .get({ year: $scope.iSet.year, type: $scope.iSet.setType, range: $scope.iSet.range })
-        .$promise.then(function (response) { //we need to get full images from server
-            $scope.rangeCoins = JSON.parse(JSON.stringify(response)).rangeCoins;
-        }, function (error) {
-            $sessionStorage.iComsErr = JSON.parse(JSON.stringify(error));
-            alert("Error " + $sessionStorage.iComsErr.status + " Selecting Set : " + $sessionStorage.iComsErr.data);
-        });
+    if ($scope.iSet !== undefined) {
+        getSetsSrvNg.coins($sessionStorage.User.token)
+            .get({ year: $scope.iSet.year, type: $scope.iSet.setType, range: $scope.iSet.range })
+            .$promise.then(function (response) { //we need to get full images from server
+                $scope.rangeCoins = JSON.parse(JSON.stringify(response)).rangeCoins;
+            }, function (error) {
+                $sessionStorage.iComsErr = JSON.parse(JSON.stringify(error));
+                alert("Error " + $sessionStorage.iComsErr.status + " Selecting Set : " + $sessionStorage.iComsErr.data);
+            });
+    }
 
     $scope.searchButtonText = "Save";
 
@@ -101,7 +103,6 @@
             fReader.readAsDataURL(file);
             fReader.onloadend = function (event) {
                 var newItem = $scope.initSet(event);
-
                 if ($scope.iSet.items === undefined) {
                     $scope.iSet.items = [];
                 }
@@ -109,25 +110,22 @@
                 if ($scope.iSet.items.length > 0) {
                     newItem.position = $scope.iSet.items[$scope.iSet.items.length - 1].position + 1;
                 }
-                $scope.iSet.items.push(newItem);
+                newItem.linkedItem = false;
+                
+                $scope.$apply(function () {
+                    $scope.iSet.items.push(newItem);
+                });
+                
                 $(function () {
                     $('.selectpicker').selectpicker();
                 });
-                //$state.go("app.set");
+                
             };
         });
     };
 
     $scope.initSet = function (event) {
-        //newItem = {};
-
-        //newItem.thumbnailA = null;
-        //newItem.isActive = true;
-        //newItem.type = 'Set';
-        //newItem.denominator = 'None';
-        //newItem.weight = 'None';
-        //newItem.metalContent = 'None';
-        let type = event.target.result.split(';')[0].split(':')[1];
+        var type = event.target.result.split(';')[0].split(':')[1];
 
         return newItem = {
             itemId: 0,
@@ -137,12 +135,12 @@
             delImage: null,
             isActive: true,
             position: 0,
-            type: 'None',
-            denominator: 'None',
+            type: null,
+            denominator: null,
             mass: null,
-            metalContent: 'None',
+            metalContent: null,
             dimension: null,
-            weight: 'None',
+            weight: null,
             imageIdA: 0,
             imageIdB: null,
             thumbnailA: null,
@@ -155,7 +153,8 @@
                 type: type,
             },
             imageIdBNavigation: null,
-            userItems: []
+            userItems: [],
+            linkedItem: true
         }
     }
 
@@ -227,7 +226,20 @@
     };
 
     $scope.linkCoin = function (sharedItem) {
-        $scope.iSet.items.push(sharedItem);
+        
+        var clone = Object.assign({}, sharedItem);
+
+        if ($scope.iSet.items === undefined) {
+            $scope.iSet.items = [];
+        }
+
+        if ($scope.iSet.items.length > 0) {
+            clone.position = $scope.iSet.items[$scope.iSet.items.length - 1].position + 1;
+        }
+        clone.linkedItem = true;
+        clone.ItemId = 0;
+        clone.setId = $scope.iSet.setId;
+        $scope.iSet.items.push(clone);
         $(function () {
             $('.selectpicker').selectpicker();
         });

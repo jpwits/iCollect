@@ -139,6 +139,8 @@ namespace iCollect.Entities
 
                 entity.Property(e => e.Dimension).HasColumnType("decimal(18, 3)");
 
+                entity.Property(e => e.LinkedItem).HasColumnName("linkedItem");
+
                 entity.Property(e => e.Mass).HasColumnType("decimal(18, 3)");
 
                 entity.Property(e => e.MetalContent).HasMaxLength(255);

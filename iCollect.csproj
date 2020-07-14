@@ -85,6 +85,7 @@
     <None Remove=".bowerrc" />
     <None Remove="Data\app.db" />
     <None Remove="Data\Auth.db" />
+    <None Remove="Data\Bak\iCollect.bak" />
     <None Remove="Data\Collect.db" />
   </ItemGroup>
 

@@ -1,6 +1,6 @@
 ﻿function SetsNgCtrl($scope, $state, $stateParams, $sessionStorage, $localStorage, getSetsSrvNg, $timeout, $q, updateSet) {
     //$sessionStorage.newSet = false;
-   
+
     $scope.spinLoadingSets = false;
 
     if ($state.params.viewLayout !== null) {
@@ -159,12 +159,16 @@
                         return a.position - b.position;
                     }).filter(item => item.isActive === true);
                     set.coinList = "";
-                    angular.forEach(set.items, function (item) {
-                        if (item.type === "Coin") {
-                            set.coinList += item.type + " " + item.denominator + " " +
-                                item.weight + " " + item.metalContent + " MM:" + item.mintMark + "; ";
-                        }
-                    })
+                    //if (set.setType === "SingleCoin") {
+                        angular.forEach(set.items, function (item) {
+                            if (item.type === "Coin") {
+                                set.singleDenominator =  item.denominator 
+                                set.singleWeight = item.weight
+                                set.singleMetalContent = item.metalContent;
+                                set.singleMintMark = item.mintMark;
+                            }
+                        })
+                    //}
                 }
             });
             $sessionStorage.numberOfPages = Math.ceil($sessionStorage.iColSets.recordsTotal / $localStorage.session_pglen);
@@ -222,11 +226,21 @@
     $scope.selectSet = (event, setidx) => {
         if ($sessionStorage.User === undefined) {
             $state.go("logins");
-             return;
+            return;
         }
-        var set = $sessionStorage.iColSets.data[setidx];
-        getSetsSrvNg.set($sessionStorage.User.token).get({ id: set.setId }).$promise.then(function (response) { //we need to get full images from server
+
+        var curset = $sessionStorage.iColSets.data[setidx];
+        var singleDenominator = curset.singleDenominator;
+        var singleMetalContent = curset.singleMetalContent;
+        var singleWeight = curset.singleWeight;
+        var singleMintMark = curset.singleMintMark;
+        getSetsSrvNg.set($sessionStorage.User.token).get({ id: curset.setId }).$promise.then(function (response) { //we need to get full images from server
             set = JSON.parse(JSON.stringify(response));
+            set.singleDenominator = singleDenominator;
+            set.singleMetalContent = singleMetalContent;
+            set.singleWeight = singleWeight;
+            set.singleMintMark = singleMintMark;
+
             if (set.items.length > 0) {
                 set.delItems = set.items.filter(item => item.isActive === false);
                 set.items = set.items.sort(function (a, b) {
