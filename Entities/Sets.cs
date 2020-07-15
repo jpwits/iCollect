@@ -19,6 +19,7 @@ namespace iCollect.Entities
         public string CatCode { get; set; }
         public string SetType { get; set; }
         public bool? IsActive { get; set; }
+        public string Series { get; set; }
 
         public virtual Collections Collection { get; set; }
         public virtual ICollection<Items> Items { get; set; }

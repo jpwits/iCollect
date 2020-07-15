@@ -21,13 +21,15 @@ namespace iCollect.Entities
         public string Denominator { get; set; }
         public decimal? Mass { get; set; }
         public string MetalContent { get; set; }
-        public decimal? Dimention { get; set; }
+        public decimal? Dimension { get; set; }
         public string Weight { get; set; }
         public int? ImageIdA { get; set; }
         public int? ImageIdB { get; set; }
         public byte[] ThumbnailA { get; set; }
         public byte[] ThumbnailB { get; set; }
         public decimal? PriceEstimated { get; set; }
+        public bool? MintMark { get; set; }
+        public bool? LinkedItem { get; set; }
 
         public virtual Images ImageIdANavigation { get; set; }
         public virtual Images ImageIdBNavigation { get; set; }

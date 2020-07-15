@@ -28,13 +28,14 @@ namespace iCollect.Controllers
             _context = context;
         }
 
+        [Authorize]
         [HttpGet, Route("GetLookups")]
         public ActionResult GetLookups()
         {
             var _sets = _context.Sets.AsEnumerable();
             var yrGroup = _sets.GroupBy(a => a.Year);
-            var rangeGroup = _sets.GroupBy(a => a.Range).Select(a => new { a.Key }).ToList();
-            var typeGroup = _sets.GroupBy(a => a.SetType).Select(a => new { a.Key }).ToList();
+            var rangeGroup = _sets.GroupBy(a => a.Range).Select(a => new { a.Key }).OrderBy(a=>a.Key).ToList();
+            var typeGroup = _sets.GroupBy(a => a.SetType).Select(a => new { a.Key }).OrderBy(a => a.Key).ToList();
             return Json(new
             {
                 rangeGroup,
@@ -90,6 +91,26 @@ namespace iCollect.Controllers
             });
         }
 
+        [Authorize]
+        [HttpGet, Route("GetRangeCoins/{year}/{type}/{range}")]
+        public ActionResult GetRangeCoins( int year, string type,string range)
+        {
+            //var q = _context.Items.Where(x => (
+            //        from items in _context.Items
+            //        join sets in _context.Sets on items.SetId equals sets.SetId
+            //        where sets.Year == year & sets.Range == range & items.Type == type
+            //        group items.ItemId by items.ItemId into g
+            //        select g.Key).ToList().Contains(x.ItemId));
+
+            var rangeCoins = (from items in _context.Items
+                    join sets in _context.Sets on items.SetId equals sets.SetId
+                    where sets.Year == year & sets.Range == range & items.Type == "Coin" &
+                    sets.IsActive == true & items.IsActive == true & items.LinkedItem != true
+                    select items).Include(a => a.ImageIdANavigation)
+                    .Include(b=>b.ImageIdBNavigation).Include(c=>c.Set).ToList();
+            return Json(new { rangeCoins });
+        }
+         
         public IQueryable filterQry(IQueryable<Sets> qry, dynamic filterbyYearObj, dynamic filterbyRangesObj, dynamic filterbySetTypesObj)
         {
             int yrStartSel = ((DateTime)filterbyYearObj.Start).Year;
@@ -391,6 +412,7 @@ namespace iCollect.Controllers
             //_context.SaveChangesAsync();
         }
 
+        [Authorize]
         [HttpGet, Route("GetSet/{id}")]
         public async Task<IActionResult> GetSet(int id)
         {
@@ -418,7 +440,7 @@ namespace iCollect.Controllers
 
             return new JsonResult(set);
         }
-
+        [Authorize]
         [HttpPut("updateSet")]
         //[ValidateAntiForgeryToken]
         public async Task<Sets> updateSet([FromBody] Sets data)

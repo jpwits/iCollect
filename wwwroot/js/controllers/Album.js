@@ -1,12 +1,4 @@
 ﻿function AlbumCtrl($scope, $state, $stateParams, $sessionStorage, $localStorage, $q, updateAlbumCollectionSrv) {
-    var curTCB = $q.defer();
-    var result = $scope.currentUser();
-    curTCB.promise;
-
-    if ($sessionStorage.User === undefined) {
-        $state.go("logins");
-    }
-
     $scope.spinUpdateAlbum = "Save";
 
     if ($sessionStorage.albumCollection.album == undefined) {
@@ -81,7 +73,7 @@
             $scope.entry.$update(function (response) {
                 $sessionStorage.albumCollections.push(response);
                 //alert("Album Saved successfully...");
-                $state.go('ui.albums');
+                $state.go('ui.albums'); //replace with $scope.apply!
             }, function (error) {
                 $sessionStorage.iComsErr = JSON.parse(JSON.stringify(error));
                 alert("Error " + $sessionStorage.iComsErr.status + " Deleting Album : " + $sessionStorage.iComsErr.data);

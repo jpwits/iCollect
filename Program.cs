@@ -18,7 +18,14 @@ namespace TGIS.Web
     {
         public static void Main(string[] args)
         {
-			var host = CreateWebHostBuilder(args).Build();
+			var host = WebHost.CreateDefaultBuilder(args)
+				//.UseKestrel()
+				//.UseContentRoot(Directory.GetCurrentDirectory())
+				//.UseSetting("detailedErrors", "true")
+				//.UseIISIntegration()
+				.UseStartup<Startup>().Build();
+
+			//.CaptureStartupErrors(true);
 
 			using (var scope = host.Services.CreateScope())
 			{
@@ -46,15 +53,5 @@ namespace TGIS.Web
 
 			host.Run();
 		}
-
-        public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
-                //.UseKestrel()
-                //.UseContentRoot(Directory.GetCurrentDirectory())
-                //.UseSetting("detailedErrors", "true")
-                //.UseIISIntegration()
-                .UseStartup<Startup>();
-
-        //.CaptureStartupErrors(true);
     }
 }

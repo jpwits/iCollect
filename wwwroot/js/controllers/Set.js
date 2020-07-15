@@ -1,12 +1,7 @@
-﻿function SetCtrl($window, $scope, $state, $sessionStorage, $q, updateSet) {
-    var curTCB = $q.defer();
-    var result = $scope.currentUser();
-    curTCB.promise;
+﻿function SetCtrl($window, $scope, $state, $stateParams, $sessionStorage, getSetsSrvNg, $q, updateSet) {
 
-    if ($sessionStorage.User === undefined) {
-        $state.go("logins");
-    }
-
+    $scope.dspCoins = false;
+    $scope.dspObserves = false;
 
     $scope.dateOptions = {
         datepickerMode: 'year',
@@ -42,16 +37,25 @@
         $window.history.back();
     }
 
-    if ($sessionStorage.newSet === true) {
-        $sessionStorage.newSet = false;
-        $scope.iSet = undefined;
-        $sessionStorage.curSetIdx = undefined;
-        //Ok waisting time doing all these flip flop UI logic --> Do SMUI!!
+    if ($stateParams.setIdx === '-1') {
+        var set = new getSetsSrvNg.set();
+        set.setImages = [];
+        set.delImages = [];
+        set.setId = 0;
     }
     else {
-        if ($sessionStorage.curSetIdx !== undefined) {
-            $scope.iSet = $sessionStorage.iColSets.data[$sessionStorage.curSetIdx];
-        }
+        $scope.iSet = $sessionStorage.iColSets.data[$stateParams.setIdx];
+    }
+
+    if ($scope.iSet !== undefined) {
+        getSetsSrvNg.coins($sessionStorage.User.token)
+            .get({ year: $scope.iSet.year, type: $scope.iSet.setType, range: $scope.iSet.range })
+            .$promise.then(function (response) { //we need to get full images from server
+                $scope.rangeCoins = JSON.parse(JSON.stringify(response)).rangeCoins;
+            }, function (error) {
+                $sessionStorage.iComsErr = JSON.parse(JSON.stringify(error));
+                alert("Error " + $sessionStorage.iComsErr.status + " Selecting Set : " + $sessionStorage.iComsErr.data);
+            });
     }
 
     $scope.searchButtonText = "Save";
@@ -78,14 +82,9 @@
             }
             $scope.iSet = response;
 
-            if ($sessionStorage.curSetIdx === undefined) {
-                $sessionStorage.iColSets.data.push($scope.iSet);
-            }
-            else {
-                $sessionStorage.iColSets.data[$sessionStorage.curSetIdx] = $scope.iSet;
-                if ($scope.iSet.isActive === false) {
-                    $sessionStorage.iColSets.data.splice($sessionStorage.curSetIdx);
-                }
+            $sessionStorage.iColSets.data[$stateParams.setIdx] = $scope.iSet;
+            if ($scope.iSet.isActive === false) {
+                $sessionStorage.iColSets.data.splice($stateParams.setIdx);
             }
             //alert("Saved successfully...");
             $scope.searchButtonText = "Save";
@@ -93,40 +92,71 @@
 
         }, function (error) {
             $scope.searchButtonText = "Save";
-            alert("Error Updating Set : " + error);
+            $sessionStorage.iComsErr = JSON.parse(JSON.stringify(error));
+            alert("Error " + $sessionStorage.iComsErr.status + " Retrieving Sets : " + $sessionStorage.iComsErr.data);
         });
     };
 
-    $scope.uploadFiles = function (files, iCol) {
+    $scope.uploadFiles = function (files) {
         files.forEach(function (file, index) {
             var fReader = new FileReader();
             fReader.readAsDataURL(file);
             fReader.onloadend = function (event) {
-                newImage = {}; 
-                newImage.type = event.target.result.split(';')[0].split(':')[1];
-                newImage.imageIdANavigation = {};
-                newImage.imageIdANavigation.image = event.target.result.replace('data:' + newImage.type + ';base64,', '');
-                newImage.imageIdANavigation.type = event.target.result.split(';')[0].split(':')[1];
-                newImage.thumbnailA = null;
-                newImage.isActive = true;
+                var newItem = $scope.initSet(event);
                 if ($scope.iSet.items === undefined) {
                     $scope.iSet.items = [];
                 }
 
-                if ($scope.iSet.items.length === 0) {
-                    newImage.position = 0;
+                if ($scope.iSet.items.length > 0) {
+                    newItem.position = $scope.iSet.items[$scope.iSet.items.length - 1].position + 1;
                 }
-                else {
-                    newImage.position = $scope.iSet.items[$scope.iSet.items.length - 1].position + 1;
-                }
-                $scope.iSet.items.push(newImage);
-
-                if (newImage.position === files.length - 1) {
-                    $state.go("app.set");
-                }
+                newItem.linkedItem = false;
+                
+                $scope.$apply(function () {
+                    $scope.iSet.items.push(newItem);
+                });
+                
+                $(function () {
+                    $('.selectpicker').selectpicker();
+                });
+                
             };
         });
     };
+
+    $scope.initSet = function (event) {
+        var type = event.target.result.split(';')[0].split(':')[1];
+
+        return newItem = {
+            itemId: 0,
+            description: null,
+            setId: $scope.iSet.setId,
+            thumbnail: null,
+            delImage: null,
+            isActive: true,
+            position: 0,
+            type: null,
+            denominator: null,
+            mass: null,
+            metalContent: null,
+            dimension: null,
+            weight: null,
+            imageIdA: 0,
+            imageIdB: null,
+            thumbnailA: null,
+            thumbnailB: null,
+            priceEstimated: null,
+            mintMark: null,
+            imageIdANavigation: {
+                imageId: 0,
+                image: event.target.result.replace('data:' + type + ';base64,', ''),
+                type: type,
+            },
+            imageIdBNavigation: null,
+            userItems: [],
+            linkedItem: true
+        }
+    }
 
     $scope.uploadReverse = function (file, item) {
         fReader = new FileReader();
@@ -183,6 +213,54 @@
                 $scope.iSet.items[index].isActive = false;
             });
         }
+    };
+
+    $scope.itemSelect = function (set) {
+        $(function () {
+            $('.selectpicker').selectpicker();
+        });
+    };
+
+    $scope.showCoins = function (set) {
+        $scope.dspCoins = !$scope.dspCoins;
+    };
+
+    $scope.linkCoin = function (sharedItem) {
+        
+        var clone = Object.assign({}, sharedItem);
+
+        if ($scope.iSet.items === undefined) {
+            $scope.iSet.items = [];
+        }
+
+        if ($scope.iSet.items.length > 0) {
+            clone.position = $scope.iSet.items[$scope.iSet.items.length - 1].position + 1;
+        }
+        clone.linkedItem = true;
+        clone.ItemId = 0;
+        clone.setId = $scope.iSet.setId;
+        $scope.iSet.items.push(clone);
+        $(function () {
+            $('.selectpicker').selectpicker();
+        });
+    };
+
+    $scope.linkObverse = function (item, sharedItem) {
+        item.imageIdB = sharedItem.imageIdB;
+        item.imageIdBNavigation = {
+            imageId: sharedItem.imageIdBNavigation.imageId,
+            image: sharedItem.imageIdBNavigation.image,
+            type: sharedItem.imageIdBNavigation.type
+        };
+        item.type = sharedItem.type;
+        item.ThumbnailB = sharedItem.ThumbnailB;
+        $(function () {
+            $('.selectpicker').selectpicker();
+        });
+    };
+
+    $scope.showObserves = function (set) {
+        $scope.dspObserves = !$scope.dspObserves;
     };
 
     $(function () {

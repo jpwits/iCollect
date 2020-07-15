@@ -125,7 +125,7 @@
                                                     <!--<img ng-click="selectSet($event, setidx)" style="opacity: 0.4; margin-right : 25px;border:2px solid grey" ng-src="data:{{set.items[0].type}};base64,{{set.items[0].thumbnailA}}" />-->
                                                     <img ng-if="HaveSet(set)" ng-click="selectSet($event, setidx)" style="opacity: 1; margin-right : 25px;border:2px solid grey" ng-src="data:{{set.items[0].type}};base64,{{set.items[0].thumbnailA}}" />
                                                     <img ng-if="!HaveSet(set)" ng-click="selectSet($event, setidx)" style="opacity: 0.3; margin-right : 25px;border:2px solid grey" ng-src="data:{{set.items[0].type}};base64,{{set.items[0].thumbnailA}}" />
-                                                    <img ng-if="set.items[0].thumbnailB != undefined" class="overlay" ng-click="selectSet($event, setidx)" style=" margin-right : 25px;border:2px solid grey" ng-src="data:{{set.items[0].type}};base64,{{set.items[0].thumbnailB}}" />
+                                                    <img ng-if="set.items[0].thumbnailB != undefined" class="overlay1" ng-click="selectSet($event, setidx)" style=" margin-right : 25px;border:2px solid grey" ng-src="data:{{set.items[0].type}};base64,{{set.items[0].thumbnailB}}" />
                                                 </div>
                                             </div>
                                             <span class="ItemCheckbox" style=" padding-bottom : 18px;">{{set.items[0].userItems[0].quantity}}</span>
@@ -149,7 +149,7 @@
                                                 <div class="SetContainer">
                                                     <div class="container" title="{{set.description}}">
                                                         <img ng-click="selectSet($event, setidx)" style="margin-right : 25px;border:2px solid grey" ng-src="data:{{item.type}};base64,{{item.thumbnailA}}" />
-                                                        <img ng-if="item.thumbnailB != undefined" class="overlay" ng-click="selectSet($event, setidx)" style="margin-right : 25px;border:2px solid grey" ng-src="data:{{item.type}};base64,{{item.thumbnailB}}" />
+                                                        <img ng-if="item.thumbnailB != undefined" class="overlay1" ng-click="selectSet($event, setidx)" style="margin-right : 25px;border:2px solid grey" ng-src="data:{{item.type}};base64,{{item.thumbnailB}}" />
                                                     </div>
                                                     <span class="ItemCheckbox" style="padding-bottom : 18px;">{{item.userItems[0].quantity}}</span>
                                                     <a ng-if="itemidx === 0" href="" ng-click="SelectItem($event, setidx, itemidx , 1)" type="button" class="ItemCheckbox"><i class="fa fa-plus" style="padding-bottom:35px;font-size:16px;color:green"></i></a>
@@ -172,20 +172,30 @@
                                             <span>{{set.setType}}</span>
                                         </div>
                                         <div class="div-table-col">
+                                            <span>{{set.series}}</span>
+                                        </div>
+                                        <div class="div-table-col">
                                             <a href="" ng-click="selectSet($event,setidx)">{{set.description}}</a>
+                                        </div>
+                                        <div class="div-table-col">
+                                            <a style="color:mediumvioletred" ng-click="selectSet($event,setidx)" href="">{{set.year}} {{set.range}} {{set.series}} {{set.setType}} {{set.singleDenominator}} {{set.singleWeight}} {{set.singleMetalContent}} {{set.singleMintMark}}</a>
                                         </div>
                                         <div class="div-table-col">
                                             <a href="" ng-click="selectSet($event,setidx)">$0.00</a>
                                         </div>
+                                        
                                     </div>
                                 </div>
+
+                                <!--Coin Ranges-->
+                                <!--Collector - Matrix Year/setType-->
                                 <!--Footer-->
                                 <ul uib-pagination total-items="$sessionStorage.iColSets.recordsTotal" items-per-page="$localStorage.session_pglen" ng-model="$sessionStorage.currentPage" ng-change="pageChanged()" max-size="maxSize" class="pagination-sm" boundary-link-numbers="true"></ul>
                             </div>
                             <!--<div class="div-table-row">
-        <h5>params</h5>
-        <pre>{{$sessionStorage | json}}</pre>
-    </div>-->
+                                <h5>params</h5>
+                                <pre>{{$sessionStorage | json}}</pre>
+                            </div>-->
                         </div>
                     </div>
                 </div>

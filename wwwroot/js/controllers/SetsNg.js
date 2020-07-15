@@ -1,13 +1,5 @@
-﻿function SetsNgCtrl($scope, $state, $sessionStorage, $localStorage, getSetsSrvNg, getSetSrv, $timeout, $q, updateSet) {
-    var curTCB = $q.defer();
-    var result = $scope.currentUser();
-    curTCB.promise;
-
-    $sessionStorage.newSet = false;
-
-    if ($sessionStorage.User === undefined) {
-        $state.go("logins");
-    }
+﻿function SetsNgCtrl($scope, $state, $stateParams, $sessionStorage, $localStorage, getSetsSrvNg, $timeout, $q, updateSet) {
+    //$sessionStorage.newSet = false;
 
     $scope.spinLoadingSets = false;
 
@@ -132,6 +124,10 @@
     }
 
     $scope.getsets = () => {
+        if ($sessionStorage.User === undefined) {
+            $state.go("logins");
+            return;
+        }
         var currentfilterbyRanges = $sessionStorage.filterbyRanges;
         if ($sessionStorage.filterbyRanges.length === $localStorage.lookups.rangeGroup.length) {
             currentfilterbyRanges = ["All"];
@@ -143,7 +139,7 @@
         }
 
         $scope.spinLoadingSets = true;
-        getSetsSrvNg.update({
+        getSetsSrvNg.sets($sessionStorage.User.token).update({
             start: ($sessionStorage.currentPage - 1) * $localStorage.session_pglen,
             length: $sessionStorage.currentPage * $localStorage.session_pglen,
             sortby: JSON.stringify($sessionStorage.sortby),
@@ -162,6 +158,17 @@
                     set.items = set.items.sort(function (a, b) {
                         return a.position - b.position;
                     }).filter(item => item.isActive === true);
+                    set.coinList = "";
+                    //if (set.setType === "SingleCoin") {
+                        angular.forEach(set.items, function (item) {
+                            if (item.type === "Coin") {
+                                set.singleDenominator =  item.denominator 
+                                set.singleWeight = item.weight
+                                set.singleMetalContent = item.metalContent;
+                                set.singleMintMark = item.mintMark;
+                            }
+                        })
+                    //}
                 }
             });
             $sessionStorage.numberOfPages = Math.ceil($sessionStorage.iColSets.recordsTotal / $localStorage.session_pglen);
@@ -171,7 +178,6 @@
             $sessionStorage.iComsErr = JSON.parse(JSON.stringify(error));
             alert("Error " + $sessionStorage.iComsErr.status + " Retrieving Sets : " + $sessionStorage.iComsErr.data);
         });
-
     };
 
     $scope.setItemsPerPage = function (num) {
@@ -218,18 +224,32 @@
     };
 
     $scope.selectSet = (event, setidx) => {
-        var set = $sessionStorage.iColSets.data[setidx];
-        getSetSrv.get({ id: set.setId }).$promise.then(function (response) { //we need to get full images from server
+        if ($sessionStorage.User === undefined) {
+            $state.go("logins");
+            return;
+        }
+
+        var curset = $sessionStorage.iColSets.data[setidx];
+        var singleDenominator = curset.singleDenominator;
+        var singleMetalContent = curset.singleMetalContent;
+        var singleWeight = curset.singleWeight;
+        var singleMintMark = curset.singleMintMark;
+        getSetsSrvNg.set($sessionStorage.User.token).get({ id: curset.setId }).$promise.then(function (response) { //we need to get full images from server
             set = JSON.parse(JSON.stringify(response));
+            set.singleDenominator = singleDenominator;
+            set.singleMetalContent = singleMetalContent;
+            set.singleWeight = singleWeight;
+            set.singleMintMark = singleMintMark;
+
             if (set.items.length > 0) {
                 set.delItems = set.items.filter(item => item.isActive === false);
                 set.items = set.items.sort(function (a, b) {
                     return a.position - b.position;
                 }).filter(item => item.isActive === true);
             }
-            $sessionStorage.curSetIdx = setidx;
+            //$sessionStorage.curSetIdx = setidx;
             $sessionStorage.iColSets.data[setidx] = set;
-            $state.go('app.set');
+            $state.go('app.set', { setIdx: setidx });
         }, function (error) {
             $sessionStorage.iComsErr = JSON.parse(JSON.stringify(error));
             alert("Error " + $sessionStorage.iComsErr.status + " Selecting Set : " + $sessionStorage.iComsErr.data);
@@ -277,11 +297,7 @@
 
     $scope.createSet = function (id) {
         if (id === undefined) {
-            var iSet = new getSetSrv();
-            iSet.setImages = [];
-            iSet.delImages = [];
-            $sessionStorage.newSet = true;
-            $state.go('app.set');
+            $state.go('app.set', { setId: -1 });
         }
     };
 

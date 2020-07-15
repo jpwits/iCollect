@@ -1,29 +1,103 @@
 ﻿
-function getSetSrv($resource) {
-    return $resource('api/SetsNg/GetSet/:id', { id: '@id' }
-    );
-}
 
 function getAlbumCollections($resource) {
-    return $resource('api/albums/GetAlbumCollections');
+    return {
+        albumcollections: function (token) {
+            return $resource('api/albums/GetAlbumCollections', null, {
+                query: {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': 'Bearer ' + token
+                    }
+                }
+            });
+        }
+    }
 }
 
 function getSetsSrvNg($resource) {
-    return $resource('api/SetsNg/GetSets/:start/:length/:sortby/:filterbyYear/:filterbyRanges/:filterbySetTypes/:groupby/:albumId',
-        { start: '@start', length: '@length', sortby: '@sortby', filterbyYear: '@filterbyYear', filterbyRanges: '@filterbyRanges', filterbySetTypes: '@filterbySetTypes', groupby: '@groupby', albumId: '@albumId' }
+    return {
+        sets: function (token) {
+            return $resource('api/SetsNg/GetSets/:start/:length/:sortby/:filterbyYear/:filterbyRanges/:filterbySetTypes/:groupby/:albumId',
+                { start: '@start', length: '@length', sortby: '@sortby', filterbyYear: '@filterbyYear', filterbyRanges: '@filterbyRanges', filterbySetTypes: '@filterbySetTypes', groupby: '@groupby', albumId: '@albumId' }, {
+                'update':
+                {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': 'Bearer ' + token
+                    }
+                }
+            });
+
+        },
+        set: function (token) {
+            return $resource('api/SetsNg/GetSet/:id', { id: '@id' }, {
+                get: {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': 'Bearer ' + token
+                    }
+                }
+            });
+        },
+        lookups: function (token) { //this need to move to init service
+            return $resource('api/SetsNg/GetLookups', null, {
+                get: {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': 'Bearer ' + token
+                    }
+                }
+            });
+        },
+        coins: function (token) {
+            return $resource('api/SetsNg/GetRangeCoins/:year/:type/:range', { year: '@year', type: '@type', range: '@range' }, {
+                get: {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': 'Bearer ' + token
+                    }
+                }
+            });
+        },
+        //userItem : function (token) {
+        //    return $resource('api/SetsNg/GetUserItem/:id', { id: '@id' }, {
+        //        get: {
+        //            method: 'GET',
+        //            headers: {
+        //                'Authorization': 'Bearer ' + token
+        //            }
+        //        }
+        //    });
+        //},
+    }
+}
+
+function updateSet($resource, $sessionStorage) {
+    return $resource('api/SetsNg/updateSet/:id', { id: '@id' }
+        , {
+            'update': {
+                method: 'PUT',
+                headers: {
+                    'Authorization': 'Bearer ' + $sessionStorage.User.token
+                }
+            }
+        }
+    );
+}
+
+function updateUserItem($resource) {
+    return $resource('api/SetsNg/updateUserItem/:id', { id: '@id' }
         , {
             'update': { method: 'PUT' }
         }
     );
 }
-
-function getLookups($resource) {
-    return $resource('api/SetsNg/GetLookups'
-    );
-}
-
-function getItemSrvNg($resource) {
-    return $resource('api/SetsNg/GetUserItem/:id', { id: '@id' }
+function getCoinRangeSrv($resource) {
+    return $resource('api/Collections/GetCollections', null,
+        {
+            'get': { method: 'GET' }
+        }
     );
 }
 
@@ -33,27 +107,9 @@ function getCollectionSrv($resource) {
 }
 
 function getCollectionsSrv($resource) {
-    return $resource('api/Collections/GetCollections'
-    );
-}
-
-function getImage($resource) {
-    return $resource('api/Sets/GetImage/:id', { filename: '@id' }
-    );
-}
-
-function updateSet($resource) {
-    return $resource('api/SetsNg/updateSet/:id', { id: '@id' }
-        , {
-            'update': { method: 'PUT' }
-        }
-    );
-}
-
-function updateUserItem($resource) {
-    return $resource('api/SetsNg/updateUserItem/:id', { id: '@id' }
-        , {
-            'update': { method: 'PUT' }
+    return $resource('api/Collections/GetCollections', null,
+        {
+            'get': { method: 'GET' }
         }
     );
 }
@@ -66,14 +122,21 @@ function updateAlbumCollectionSrv($resource) {
     );
 }
 
-
 function getUser($resource) {
     return $resource('api/Account/getUser'
     );
 }
 
 function loginUser($resource) {
-    return $resource('api/Account/login/:username/:password', { username: '@username', password: '@password' }   
+    return $resource('api/Account/login/:username/:password', { username: '@username', password: '@password' }
+    );
+}
+
+function authUser($resource) {
+    return $resource('api/User/authenticate'
+        , {
+            'update': { method: 'PUT' }
+        }
     );
 }
 
@@ -83,7 +146,7 @@ function logoutUser($resource) {
 }
 
 function registerUser($resource) {
-    return $resource('api/Account/register/:username/:email/:password', { username: '@username',email:'@email', password: '@password' }
+    return $resource('api/Account/register/:username/:email/:password', { username: '@username', email: '@email', password: '@password' }
     );
 }
 
@@ -106,21 +169,18 @@ function passData() {
 
 angular
     .module('inspinia')
-    .service('getImage', getImage)
     .service('updateSet', updateSet)
     .service('passData', passData)
     .service('getUser', getUser)
     .service('getCollectionSrv', getCollectionSrv)
     .service('getCollectionsSrv', getCollectionsSrv)
-    .service('getAlbumCollections', getAlbumCollections)
+    .service('getAlbumCollections', ['$resource', getAlbumCollections])
     .service('updateUserItem', updateUserItem)
-    .service('getSetSrv', getSetSrv)
-    .service('getLookups', getLookups)
+    .service('authUser', authUser)
     .service('loginUser', loginUser)
     .service('logoutUser', logoutUser)
     .service('registerUser', registerUser)
     .service('updateAlbumCollectionSrv', updateAlbumCollectionSrv)
-    .service('getItemSrvNg', getItemSrvNg)
-    .service('getSetsSrvNg', getSetsSrvNg);
+    .service('getSetsSrvNg', ['$resource', getSetsSrvNg]);
 
 

@@ -662,8 +662,9 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, IdlePro
             data: { pageTitle: 'Customers Edit' }
         })
         .state('app.set', {
-            url: "/set",
+            url: "/set/:setIdx",
             templateUrl: "views/set.html",
+            params: { setIdx: null },
             data: { pageTitle: 'Set' }
         })
         //.state('app.sets', {

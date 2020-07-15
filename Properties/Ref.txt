@@ -1,7 +1,7 @@
 ﻿EF
 ==
-1. dotnet ef dbcontext scaffold "Data Source=DESKTOP-7DQTMIU\SQLEXPRESS;Initial Catalog=Northwind;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -o Entities -f
-2. dotnet ef migrations add iCollFirstMigration --context icollectdbContext
+dotnet ef dbcontext scaffold "Data Source=DESKTOP-4NM3MIF\SQLEXPRESS;Initial Catalog=icollectdb;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -o Entities -f
+dotnet ef migrations add iCollFirstMigration --context icollectdbContext
 dotnet ef migrations add InitialCreate --context icollectdbContext
 dotnet ef migrations add TestUpdate --context icollectdbContext
 dotnet ef migrations add SwitchHosting --context icollectdbContext

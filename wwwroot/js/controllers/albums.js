@@ -1,12 +1,4 @@
 ﻿function AlbumsCtrl($scope, $state, $sessionStorage, $q, $localStorage, getAlbumCollections) {
-
-    var curTCB = $q.defer();
-    var result = $scope.currentUser();
-    curTCB.promise;
-
-    if ($sessionStorage.User === undefined) {
-        $state.go("logins");
-    }
     $scope.spinLoadingAlbums = false;
 
     $scope.GotoAlbum = (albumCollection) => {
@@ -25,16 +17,26 @@
     };
 
     $scope.getAlbumCollections = () => {
+        if ($sessionStorage.User === undefined) {
+            $state.go("logins");
+            return;
+        }
         $scope.spinLoadingAlbums = true;
-        getAlbumCollections.get().$promise.then(function (response) {
+        getAlbumCollections.albumcollections($sessionStorage.User.token).query().$promise.then(function (response) {
             var jsonResp = JSON.parse(JSON.stringify(response));
             $sessionStorage.albumCollections = jsonResp.albumsCollections;
             $scope.spinLoadingAlbums = false;
 
         }, function (error) {
             $scope.spinLoadingAlbums = false;
-            $sessionStorage.iComsErr = JSON.parse(JSON.stringify(error));
-                alert("Error " + $sessionStorage.iComsErr.status +" Retrieving Albums : " + $sessionStorage.iComsErr.data);
+            var errorMsg = "";
+            if (error.status === 401) {
+                errorMsg = "Unauthorised";
+            }
+            else {
+                errorMsg = error.data;
+            }
+            alert("Error " + $sessionStorage.iComsErr.status + " Retrieving Albums : " + errorMsg);
         });
     };
 

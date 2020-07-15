@@ -32,6 +32,13 @@ namespace TGIS.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(o => o.AddPolicy("AppPolicy", builder =>
+            {
+                builder.AllowAnyOrigin()
+                       .AllowAnyMethod()
+                       .AllowAnyHeader();
+            }));
+
             services.AddControllers()
                 .AddNewtonsoftJson();
 
@@ -39,20 +46,7 @@ namespace TGIS.Web
                 .AddNewtonsoftJson(options =>
                 {
                     options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-                    //options.SerializerSettings.ContractResolver = new DefaultContractResolver();
                 });
-            //services.AddMvc().AddJsonOptions(options =>
-            //{
-            //    //options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-            //    //options.SerializerSettings.ContractResolver = new DefaultContractResolver();
-
-            //});
-            services.AddCors(o => o.AddPolicy("AppPolicy", builder =>
-            {
-                builder.AllowAnyOrigin()
-                       .AllowAnyMethod()
-                       .AllowAnyHeader();
-            }));
 
             //Database Connection
             //var connection = @"Data Source=DESKTOP-7DQTMIU\SQLEXPRESS;Initial Catalog=Northwind;Trusted_Connection=True;";
@@ -67,7 +61,20 @@ namespace TGIS.Web
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                .AddEntityFrameworkStores<ApplicationDbContext>();
 
-            services.AddAuthentication();
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(o => {
+                    o.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidIssuer = Configuration["Jwt:Issuer"],
+                        ValidAudience = Configuration["Jwt:Issuer"],
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
+
+                    };
+                });
 
             services.AddControllersWithViews();
             services.AddRazorPages();
@@ -93,6 +100,9 @@ namespace TGIS.Web
             //           await next();
             //       }
             //   });
+
+            app.UseExceptionHandler("/api/errors/500");
+            app.UseStatusCodePagesWithReExecute("/api/errors/{0}");
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
