@@ -45,7 +45,8 @@ namespace iCollect.Controllers
                     //var name = _signInManager.GetExternalLoginInfoAsync();
                     //Retrieve authenticated user's details
                     var user = await _userManager.FindByEmailAsync(model.Username);
-
+                    var test = _userManager.GetRolesAsync(user);
+                    _userManager.AddToRoleAsync(user, "Admin");
                     //Generate unique token with user's details
                     var tokenString = await GenerateJSONWebToken(user);
 
@@ -88,6 +89,7 @@ namespace iCollect.Controllers
             //Return token string
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
+
 
         //[Authorize(Roles = RoleEnum.Admin)]
         //[HttpGet]

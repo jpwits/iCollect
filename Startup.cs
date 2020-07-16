@@ -17,6 +17,8 @@ using Newtonsoft.Json;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using IdentityServer4.AccessTokenValidation;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace TGIS.Web
 {
@@ -51,30 +53,46 @@ namespace TGIS.Web
             //Database Connection
             //var connection = @"Data Source=DESKTOP-7DQTMIU\SQLEXPRESS;Initial Catalog=Northwind;Trusted_Connection=True;";
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlite(
+                options.UseSqlServer(
                     Configuration.GetConnectionString("AuthConnection")));
 
             services.AddDbContext<icollectdbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("CollectConnection")));
 
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
+               .AddRoles<IdentityRole>()
+               .AddRoleManager<RoleManager<IdentityRole>>()
                .AddEntityFrameworkStores<ApplicationDbContext>();
 
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(o => {
-                    o.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuer = true,
-                        ValidateAudience = true,
-                        ValidateLifetime = true,
-                        ValidateIssuerSigningKey = true,
-                        ValidIssuer = Configuration["Jwt:Issuer"],
-                        ValidAudience = Configuration["Jwt:Issuer"],
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = IdentityConstants.ApplicationScheme;
+                options.DefaultChallengeScheme = IdentityConstants.ApplicationScheme;
+                options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
+                //options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                //options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 
-                    };
-                });
+            }).AddJwtBearer(options =>
+            {
+                //options.SecurityTokenValidators.Clear();
+                //options.SecurityTokenValidators.Add(new JwtSecurityTokenHandler
+                //{
+                //    // Disable the built-in JWT claims mapping feature.
+                //    InboundClaimTypeMap = new Dictionary<string, string>()
+                //});
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = Configuration["Jwt:Issuer"],
+                    ValidAudience = Configuration["Jwt:Issuer"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
+
+                };
+            });
 
             services.AddControllersWithViews();
             services.AddRazorPages();
@@ -90,16 +108,16 @@ namespace TGIS.Web
             }
 
             // Middleware to handle all request
-            //app.Use(async (context, next) =>
-            //   {
-            //       await next();
-            //       if (context.Response.StatusCode == 404 && !Path.HasExtension(context.Request.Path.Value))
-            //       {
-            //           context.Request.Path = "/index.html";
-            //           context.Response.StatusCode = 200;
-            //           await next();
-            //       }
-            //   });
+            app.Use(async (context, next) =>
+               {
+                   await next();
+                   if (context.Response.StatusCode == 404 && !Path.HasExtension(context.Request.Path.Value))
+                   {
+                       context.Request.Path = "/index.html";
+                       context.Response.StatusCode = 200;
+                       await next();
+                   }
+               });
 
             app.UseExceptionHandler("/api/errors/500");
             app.UseStatusCodePagesWithReExecute("/api/errors/{0}");

@@ -16,20 +16,27 @@ namespace iCollect.Controllers
     [Route("api/albums"), Produces("application/json"), EnableCors("AppPolicy")]
     public class AlbumController : Controller
     {
+        private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
+
         private readonly icollectdbContext _context;
 
-        public AlbumController(SignInManager<IdentityUser> signInManager, icollectdbContext context)
+        public AlbumController(SignInManager<IdentityUser> signInManager, RoleManager<IdentityRole> roleManager, UserManager<IdentityUser> userManager, icollectdbContext context)
         {
             _signInManager = signInManager;
+            _userManager = userManager;
+            _roleManager = roleManager;
             _context = context;
         }
 
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         [HttpGet, Route("GetAlbumCollections")]
         public async Task<IActionResult> GetAlbumCollections()
         {
+            System.Security.Claims.ClaimsPrincipal currentUser = this.User;
             var username = User.Identities.First().Claims.First().Value;
+            bool IsAdmin = currentUser.IsInRole("Admin");
             var albumsCollections = _context.AlbumCollections.Where(b => b.Album.UserId == username &&
                   b.Album.IsActive == true).Include(a => a.Album);
 
@@ -45,7 +52,7 @@ namespace iCollect.Controllers
             });
         }
 
-        [Authorize]
+       // [Authorize(Roles = "Admin")]
         [HttpGet, Route("GetAlbumCollections/{albumId}")]
         public ActionResult GetAlbumCollections(int albumId)
         {
@@ -63,7 +70,7 @@ namespace iCollect.Controllers
             //});
         }
 
-        [Authorize]
+       // [Authorize(Roles = "Admin")]
         [HttpPut("updateAlbumCollection")]
         //[ValidateAntiForgeryToken]
         public async Task<AlbumCollections> updateAlbumCollection([FromBody] AlbumCollections data)

@@ -1,4 +1,5 @@
 ﻿using iCollect.Entities;
+using iCollect.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Identity;
@@ -20,12 +21,18 @@ namespace iCollect.Controllers
     {
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
+
         private readonly icollectdbContext _context;
 
-        public AccountController(UserManager<IdentityUser> userManager,SignInManager<IdentityUser> signInManager, icollectdbContext context)
+        public AccountController(UserManager<IdentityUser> userManager,
+            RoleManager<IdentityRole> roleManager,
+            SignInManager<IdentityUser> signInManager,
+            icollectdbContext context)
         {
             _signInManager = signInManager;
             _userManager = userManager;
+            _roleManager = roleManager;
             _context = context;
         }
 
@@ -70,6 +77,17 @@ namespace iCollect.Controllers
                 Email = email
             };
             var result = await _userManager.CreateAsync(userIdentity, password);
+
+            if (result.Succeeded)
+            {
+                if (!await _roleManager.RoleExistsAsync(RoleNames.Admin))
+                {
+                    await _roleManager.CreateAsync(new IdentityRole(RoleNames.Admin));
+                }
+
+                await _userManager.AddToRoleAsync(userIdentity, RoleNames.Admin);
+            }
+
 
             return new JsonResult(new { result });
         }

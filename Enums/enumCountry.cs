@@ -4,9 +4,17 @@ using System.Linq;
 using System.Threading.Tasks;
 
 
-#if GotFromCore
-namespace TGIS.Web.enums
+namespace iCollect.Enums
 {
+    public class RoleNames
+    {
+        public const string Admin = "Admin";
+        public const string User = "User";
+        public const string Member = "Member";
+        public const string Contributor = "Contributor";
+
+    }
+#if GotFromCore
     /// <summary>
     /// Auto generated file - do not modify.
     /// Country
@@ -1691,5 +1699,5 @@ namespace TGIS.Web.enums
         [EnumInfo("UZBEKISTAN", "UZ")]
         Uzbekistan
     }
-}
 #endif
+}

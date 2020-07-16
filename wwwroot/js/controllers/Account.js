@@ -76,7 +76,7 @@
             }
         }, function (error) {
             $sessionStorage.iComsErr = JSON.parse(JSON.stringify(error));
-            alert("Error " + $sessionStorage.iComsErr.status + " registering username : " + $sessionStorage.iComsErr.data);
+                alert("Error " + $sessionStorage.iComsErr.status + " registering username : " + $sessionStorage.iComsErr.status + " : " +  $sessionStorage.iComsErr.data);
         });
     };
 
