@@ -95,12 +95,12 @@ function updateUserItem($resource) {
 }
 
 function getCatalogSrv($resource) {
-    return $resource('api/Catalogs/GetCatalog/:id', { id: '@id' }
+    return $resource('api/Catalog/GetCatalog/:id', { id: '@id' }
     );
 }
 
 function getCatalogsSrv($resource) {
-    return $resource('api/Catalogs/GetCatalogs', null,
+    return $resource('api/Catalog/GetCatalogs', null,
         {
             'get': { method: 'GET' }
         }
