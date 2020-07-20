@@ -1,7 +1,6 @@
 ﻿<div ng-controller="AlbumsCtrl">
     <div class="row wrapper border-bottom white-bg page-heading">
         <div class="col-lg-10">
-            <!--<h2>Collections</h2>-->
             <ol class="breadcrumb">
                 <li>
                     <a href="index.html">Home</a>
@@ -27,14 +26,14 @@
                     <span ng-show="spinLoadingAlbums == true">
                         <i style="font-size: 30px;" class="glyphicon glyphicon-refresh spinning"></i>
                     </span>
-                    <span ng-repeat="albumCollection in $sessionStorage.albumCollections">
-                        <span ng-if="albumCollection.album.isActive == true">
-                            <button ng-click="GotoAlbum(albumCollection);" style="width:200px;height:200px" class="btn btn-danger dim btn-large-dim" type="button" tooltip-placement="middle" uib-tooltip="View Album">
-                                <div style="font-size:small">{{albumCollection.album.name}}</div>
+                    <span ng-repeat="albumCatalog in $sessionStorage.albumCatalogs">
+                        <span ng-if="albumCatalog.album.isActive == true">
+                            <button ng-click="GotoAlbum(albumCatalog);" style="width:200px;height:200px" class="btn btn-danger dim btn-large-dim" type="button" tooltip-placement="middle" uib-tooltip="View Album">
+                                <div style="font-size:small">{{albumCatalog.album.name}}</div>
                                 <img width="100%" src="../img/Coins/krugerrand-2000-proof (3).jpg" />
                             </button>
 
-                            <button style="right:65px; top: 75px" id="favBtn" ng-click="EditAlbum(albumCollection);" class="btn btn-info dim" type="button" tooltip-placement="bottom" uib-tooltip="Edit Album">
+                            <button style="right:65px; top: 75px" id="favBtn" ng-click="EditAlbum(albumCatalog);" class="btn btn-info dim" type="button" tooltip-placement="bottom" uib-tooltip="Edit Album">
                                 <i id="favIcon" class="fa fa-gear"></i>
                             </button>
                         </span>

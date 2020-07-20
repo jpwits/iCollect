@@ -13,26 +13,26 @@
         </div>
     </div>
 
-    <form class="m-t" role="form" ng-submit="updateAlbum($sessionStorage.albumCollection)">
+    <form class="m-t" role="form" ng-submit="updateAlbum($sessionStorage.albumCatalog)">
         <div class="form-group row">
             <label class="col-sm-2 col-form-label" for="idAlbumName">Name:</label>
             <div class="col-sm-6">
                 <input class="input-sm form-control" id="idAlbumName" type="text" name="input" required=""
-                       ng-model="$sessionStorage.albumCollection.album.name">
+                       ng-model="$sessionStorage.albumCatalog.album.name">
             </div>
         </div>
         <div class="form-group row">
             <label class="col-sm-2 col-form-label" for="idAlbumDescription">Description :</label>
             <div class="col-sm-6">
                 <input class="input-sm form-control" id="idAlbumDescription" type="text" name="input" required=""
-                       ng-model="$sessionStorage.albumCollection.album.description">
+                       ng-model="$sessionStorage.albumCatalog.album.description">
             </div>
         </div>
         <div class="form-group row">
-            <label class="col-sm-2 col-form-label" for="idAlbumCollection">Catalogue :</label>
+            <label class="col-sm-2 col-form-label" for="idAlbumCatalog">Catalogue :</label>
             <div class="col-sm-6">
-                <select id="idAlbumCollection" data-style="bg-black rounded-pill" class="form-control input-sm selectpicker" data-container="body" data-size="6" ng-required="true">
-                    <option ng-model="$sessionStorage.albumCollection.album.collectionId" ng-repeat="col in $sessionStorage.iCols">{{col.name}}</option>
+                <select id="idAlbumCatalog" data-style="bg-black rounded-pill" class="form-control input-sm selectpicker" data-container="body" data-size="6" ng-required="true">
+                    <option ng-model="$sessionStorage.albumCatalog.album.catalogId" ng-repeat="col in $sessionStorage.iCols">{{col.name}}</option>
                 </select><!-- End -->
                 <div class="form-group row">
                     <label class="col-sm-2 col-form-label" for="idAlbumDates">Timespan:</label>
@@ -74,7 +74,7 @@
                 <div class="form-group row">
                     <label class="col-sm-2 col-form-label" for="idAlbumViews">Default View:</label>
                     <div class="col-lg-6">
-                        <select id="idAlbumViews" data-style="bg-black rounded-pill" class="form-control input-sm selectpicker" ng-model="item.Collections">
+                        <select id="idAlbumViews" data-style="bg-black rounded-pill" class="form-control input-sm selectpicker" ng-model="item.Catalogs">
                             <option>Details</option>
                             <option>Tiles</option>
                         </select>
@@ -95,7 +95,7 @@
             {{ spinUpdateAlbum }}
         </button>
 
-        <button style="float:right" id="favBtn" ng-click="RemoveAlbum($sessionStorage.albumCollection);" class="btn btn-danger dim" type="button" tooltip-placement="bottom" uib-tooltip="Delete Album">
+        <button style="float:right" id="favBtn" ng-click="RemoveAlbum($sessionStorage.albumCatalog);" class="btn btn-danger dim" type="button" tooltip-placement="bottom" uib-tooltip="Delete Album">
             <i id="favIcon" class="fa fa-trash"></i>
             Remove
         </button>

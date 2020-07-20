@@ -678,16 +678,16 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, IdlePro
             params: { viewLayout : null },
             data: { pageTitle: 'Setsng' }
         })
-        .state('app.collection', {
-            url: "/collection",
-            templateUrl: "views/collection.html",
+        .state('app.catalog', {
+            url: "/catalog",
+            templateUrl: "views/catalog.html",
             params: { SetDetail: null, EditSet: true },
-            data: { pageTitle: 'Colection' }
+            data: { pageTitle: 'Catalog' }
         })
-        .state('app.collections', {
-            url: "/collections",
-            templateUrl: "views/collections.html",
-            data: { pageTitle: 'Collections' }
+        .state('app.catalogs', {
+            url: "/catalogs",
+            templateUrl: "views/catalogs.html",
+            data: { pageTitle: 'Catalogs' }
         })
         .state('app.activity_stream', {
             url: "/activity_stream",

@@ -31,58 +31,58 @@ namespace iCollect.Controllers
         }
 
         //[Authorize(Roles = "Admin")]
-        [HttpGet, Route("GetAlbumCollections")]
-        public async Task<IActionResult> GetAlbumCollections()
+        [HttpGet, Route("GetAlbumCatalogs")]
+        public async Task<IActionResult> GetAlbumCatalogs()
         {
             System.Security.Claims.ClaimsPrincipal currentUser = this.User;
             var username = User.Identities.First().Name;//.Claims.First().Value;
             //bool IsAdmin = currentUser.IsInRole("Admin");
-            var albumsCollections = _context.AlbumCollections.Where(b => b.Album.UserId == username &&
+            var albumsCatalogs = _context.AlbumCatalogs.Where(b => b.Album.UserId == username &&
                   b.Album.IsActive == true).Include(a => a.Album);
 
-            //var albumsCollections = from albumCollections in _context.AlbumCollections
-            //                        join album in _context.Albums on albumCollections.AlbumId equals album.AlbumId
+            //var albumsCatalogs = from AlbumCatalogs in _context.AlbumCatalogs
+            //                        join album in _context.Albums on AlbumCatalogs.AlbumId equals album.AlbumId
             //                        where album.UserId == User.Identity.Name && album.IsActive == true
-            //                        select albumCollections;
-            var _debug = albumsCollections.ToList();
+            //                        select AlbumCatalogs;
+            var _debug = albumsCatalogs.ToList();
             //return Ok(_debug);
             return Json(new
             {
-                albumsCollections
+                albumsCatalogs
             });
         }
 
        // [Authorize(Roles = "Admin")]
-        [HttpGet, Route("GetAlbumCollections/{albumId}")]
-        public ActionResult GetAlbumCollections(int albumId)
+        [HttpGet, Route("GetAlbumCatalog/{albumId}")]
+        public ActionResult GetAlbumCatalog(int albumId)
         {
-            var albumsCollections = _context.AlbumCollections.Where(b => b.AlbumId == albumId && 
+            var albumsCatalogs = _context.AlbumCatalogs.Where(b => b.AlbumId == albumId && 
                                 b.Album.UserId == User.Identity.Name && b.Album.IsActive == true);
 
-            //var albums = from userItems in _context.UserItems
+            //var albumsCatalogs = from userItems in _context.UserItems
             //             join album in _context.Albums on userItems.AlbumId equals album.AlbumId
             //             where userItems.UserId == User.Identity.Name
             //             select album;
-            return Ok(albumsCollections);
+            return Ok(albumsCatalogs);
             //return Json(new
             //{
-            //    albumsCollections,
+            //    albumsCatalogs,
             //});
         }
 
-       // [Authorize(Roles = "Admin")]
-        [HttpPut("updateAlbumCollection")]
+        // [Authorize(Roles = "Admin")]
+        [HttpPut("updateAlbumCatalog")]
         //[ValidateAntiForgeryToken]
-        public async Task<AlbumCollections> updateAlbumCollection([FromBody] AlbumCollections data)
+        public async Task<AlbumCatalogs> updateAlbumCatalog([FromBody] AlbumCatalogs data)
         {
             //warning check data albumid not null, do not check for the impossible ever, we want the error :)
-            if (!_context.AlbumCollections.Any(m => m.AlbumId == data.AlbumId))
+            if (!_context.AlbumCatalogs.Any(m => m.AlbumId == data.AlbumId))
             {
-                data.CollectionId = 1;
+                data.CatalogId = 1;
             }
             else
             {
-                data.CollectionId = 1;
+                data.CatalogId = 1;
             }
             _context.Update(data);
             int rc = await _context.SaveChangesAsync();

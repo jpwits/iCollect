@@ -1,19 +1,19 @@
-﻿function AlbumCtrl($scope, $state, $stateParams, $sessionStorage, $localStorage, $q, updateAlbumCollectionSrv) {
+﻿function AlbumCtrl($scope, $state, $stateParams, $sessionStorage, $localStorage, $q, updateAlbumCatalogSrv) {
     $scope.spinUpdateAlbum = "Save";
 
-    if ($sessionStorage.albumCollection.album == undefined) {
-        $sessionStorage.albumCollection.album = {}
+    if ($sessionStorage.albumCatalog.album == undefined) {
+        $sessionStorage.albumCatalog.album = {}
         $scope.dtStart = new Date(1987, 1, 1);
         $scope.dtEnd = new Date(2020, 1, 1);
-        $sessionStorage.albumCollection.album.isActive = true;
-        $sessionStorage.albumCollection.album.userId = $sessionStorage.User.name;
+        $sessionStorage.albumCatalog.album.isActive = true;
+        $sessionStorage.albumCatalog.album.userId = $sessionStorage.User.name;
     }
     else {
         //var jsonResp = JSON.parse(JSON.stringify(response));
-        $scope.jsonRanges = JSON.parse($sessionStorage.albumCollection.album.jsonRanges);
-        $scope.jsonSetTypes = JSON.parse($sessionStorage.albumCollection.album.jsonSetTypes);
-        $scope.dtStart = new Date($sessionStorage.albumCollection.album.startDate);
-        $scope.dtEnd = new Date($sessionStorage.albumCollection.album.endDate);
+        $scope.jsonRanges = JSON.parse($sessionStorage.albumCatalog.album.jsonRanges);
+        $scope.jsonSetTypes = JSON.parse($sessionStorage.albumCatalog.album.jsonSetTypes);
+        $scope.dtStart = new Date($sessionStorage.albumCatalog.album.startDate);
+        $scope.dtEnd = new Date($sessionStorage.albumCatalog.album.endDate);
     }
     $scope.dateOptions = {
         datepickerMode: 'year',
@@ -48,14 +48,14 @@
 
 
 
-    $scope.updateAlbum = function (albumCollection) {
+    $scope.updateAlbum = function (albumCatalog) {
         $scope.spinUpdateAlbum = "Saving";
-        albumCollection.album.startDate = $scope.dtStart;
-        albumCollection.album.endDate = $scope.dtEnd;
-        $sessionStorage.albumCollection.album.jsonRanges = JSON.stringify($scope.jsonRanges);
-        $sessionStorage.albumCollection.album.jsonSetTypes = JSON.stringify($scope.jsonSetTypes);
+        albumCatalog.album.startDate = $scope.dtStart;
+        albumCatalog.album.endDate = $scope.dtEnd;
+        $sessionStorage.albumCatalog.album.jsonRanges = JSON.stringify($scope.jsonRanges);
+        $sessionStorage.albumCatalog.album.jsonSetTypes = JSON.stringify($scope.jsonSetTypes);
 
-        $scope.entry = new updateAlbumCollectionSrv(albumCollection);
+        $scope.entry = new updateAlbumCatalogSrv(albumCatalog);
         $scope.entry.$update(function (response) {
             $scope.spinUpdateAlbum = "Save";
             $state.go("ui.albums");
@@ -65,13 +65,13 @@
         });
     };
 
-    $scope.RemoveAlbum = (albumCollection) => {
+    $scope.RemoveAlbum = (albumCatalog) => {
         if (confirm('Are you sure you want to delete this album, by deleting this album you will loose all the item quantities in this album?')) {
             // Save it!
-            albumCollection.album.isActive = false;
-            $scope.entry = new updateAlbumCollectionSrv(albumCollection);
+            albumCatalog.album.isActive = false;
+            $scope.entry = new updateAlbumCatalogSrv(albumCatalog);
             $scope.entry.$update(function (response) {
-                $sessionStorage.albumCollections.push(response);
+                $sessionStorage.albumCatalogs.push(response);
                 //alert("Album Saved successfully...");
                 $state.go('ui.albums'); //replace with $scope.apply!
             }, function (error) {

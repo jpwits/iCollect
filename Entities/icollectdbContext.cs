@@ -15,10 +15,10 @@ namespace iCollect.Entities
         {
         }
 
-        public virtual DbSet<AlbumCollections> AlbumCollections { get; set; }
+        public virtual DbSet<AlbumCatalogs> AlbumCatalogs { get; set; }
         public virtual DbSet<Albums> Albums { get; set; }
-        public virtual DbSet<CollectionTypes> CollectionTypes { get; set; }
-        public virtual DbSet<Collections> Collections { get; set; }
+        public virtual DbSet<Catalog> Catalog { get; set; }
+        public virtual DbSet<CatalogTypes> CatalogTypes { get; set; }
         public virtual DbSet<Images> Images { get; set; }
         public virtual DbSet<Items> Items { get; set; }
         public virtual DbSet<Sets> Sets { get; set; }
@@ -35,23 +35,25 @@ namespace iCollect.Entities
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<AlbumCollections>(entity =>
+            modelBuilder.Entity<AlbumCatalogs>(entity =>
             {
-                entity.HasKey(e => new { e.CollectionId, e.AlbumId });
+                entity.HasKey(e => new { e.CatalogId, e.AlbumId })
+                    .HasName("PK_AlbumCatalog");
 
-                entity.HasIndex(e => e.AlbumId);
+                entity.HasIndex(e => e.AlbumId)
+                    .HasName("IX_AlbumCatalog_AlbumId");
 
                 entity.HasOne(d => d.Album)
-                    .WithMany(p => p.AlbumCollections)
+                    .WithMany(p => p.AlbumCatalogs)
                     .HasForeignKey(d => d.AlbumId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_AlbumCollections_Albums");
+                    .HasConstraintName("FK_AlbumCatalogs_Albums");
 
-                entity.HasOne(d => d.Collection)
-                    .WithMany(p => p.AlbumCollections)
-                    .HasForeignKey(d => d.CollectionId)
+                entity.HasOne(d => d.Catalog)
+                    .WithMany(p => p.AlbumCatalogs)
+                    .HasForeignKey(d => d.CatalogId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_AlbumCollections_Collections");
+                    .HasConstraintName("FK_AlbumCatalogs_Catalogs");
             });
 
             modelBuilder.Entity<Albums>(entity =>
@@ -83,27 +85,26 @@ namespace iCollect.Entities
                     .IsUnicode(false);
             });
 
-            modelBuilder.Entity<CollectionTypes>(entity =>
+            modelBuilder.Entity<Catalog>(entity =>
             {
-                entity.HasKey(e => e.CollectionTypeId);
-
-                entity.Property(e => e.Type).HasMaxLength(255);
-            });
-
-            modelBuilder.Entity<Collections>(entity =>
-            {
-                entity.HasKey(e => e.CollectionId);
-
-                entity.HasIndex(e => e.CollectionTypeId);
+                entity.HasIndex(e => e.CatalogTypeId)
+                    .HasName("IX_Catlog_CatalogTypeId");
 
                 entity.Property(e => e.Description).HasMaxLength(255);
 
                 entity.Property(e => e.Name).HasMaxLength(255);
 
-                entity.HasOne(d => d.CollectionType)
-                    .WithMany(p => p.Collections)
-                    .HasForeignKey(d => d.CollectionTypeId)
-                    .HasConstraintName("FK_Collections_CollectionTypes");
+                entity.HasOne(d => d.CatalogType)
+                    .WithMany(p => p.Catalog)
+                    .HasForeignKey(d => d.CatalogTypeId)
+                    .HasConstraintName("FK_Catalogs_CatalogTypes");
+            });
+
+            modelBuilder.Entity<CatalogTypes>(entity =>
+            {
+                entity.HasKey(e => e.CatalogTypeId);
+
+                entity.Property(e => e.Type).HasMaxLength(255);
             });
 
             modelBuilder.Entity<Images>(entity =>
@@ -178,7 +179,8 @@ namespace iCollect.Entities
             {
                 entity.HasKey(e => e.SetId);
 
-                entity.HasIndex(e => e.CollectionId);
+                entity.HasIndex(e => e.CatalogId)
+                    .HasName("IX_Sets_CatlogId");
 
                 entity.Property(e => e.CatCode).HasMaxLength(50);
 
@@ -192,10 +194,10 @@ namespace iCollect.Entities
 
                 entity.Property(e => e.SetType).HasMaxLength(50);
 
-                entity.HasOne(d => d.Collection)
+                entity.HasOne(d => d.Catalog)
                     .WithMany(p => p.Sets)
-                    .HasForeignKey(d => d.CollectionId)
-                    .HasConstraintName("FK_Sets_Collections");
+                    .HasForeignKey(d => d.CatalogId)
+                    .HasConstraintName("FK_Sets_Catalogs");
             });
 
             modelBuilder.Entity<UserItems>(entity =>

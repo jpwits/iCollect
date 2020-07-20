@@ -64,7 +64,7 @@
         if (set.setId === undefined) {
             set.setId = 0;
             set.year = set.date.getFullYear();
-            set.collectionId = 1;
+            set.catalogId = 1;
             set.isActive = true;
         }
         $scope.searchButtonText = "Saving";

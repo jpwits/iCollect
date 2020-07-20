@@ -1,30 +1,30 @@
-﻿function AlbumsCtrl($scope, $state, $sessionStorage, $q, $localStorage, getAlbumCollections) {
+﻿function AlbumsCtrl($scope, $state, $sessionStorage, $q, $localStorage, getAlbumCatalogs) {
     $scope.spinLoadingAlbums = false;
 
-    $scope.GotoAlbum = (albumCollection) => {
-        $sessionStorage.album = albumCollection.album;
+    $scope.GotoAlbum = (albumCatalog) => {
+        $sessionStorage.album = albumCatalog.album;
         $state.go('app.setsng', { viewLayout: 'Tiles' });
     };
 
-    $scope.EditAlbum = (albumCollection) => {
-        $sessionStorage.albumCollection = albumCollection;
+    $scope.EditAlbum = (albumCatalog) => {
+        $sessionStorage.albumCatalog = albumCatalog;
         $state.go('ui.album');
     };
 
     $scope.NewAlbum = () => {
-        $sessionStorage.albumCollection = {};
+        $sessionStorage.albumCatalog = {};
         $state.go('ui.album');
     };
 
-    $scope.getAlbumCollections = () => {
+    $scope.getAlbumCatalogs = () => {
         if ($sessionStorage.User === undefined) {
             $state.go("logins");
             return;
         }
         $scope.spinLoadingAlbums = true;
-        getAlbumCollections.albumcollections($sessionStorage.User.token).query().$promise.then(function (response) {
+        getAlbumCatalogs.albumcatalogs($sessionStorage.User.token).query().$promise.then(function (response) {
             var jsonResp = JSON.parse(JSON.stringify(response));
-            $sessionStorage.albumCollections = jsonResp.albumsCollections;
+            $sessionStorage.albumCatalogs = jsonResp.albumsCatalogs;
             $scope.spinLoadingAlbums = false;
 
         }, function (error) {
@@ -40,7 +40,7 @@
         });
     };
 
-    $scope.getAlbumCollections();
+    $scope.getAlbumCatalogs();
 }
 angular
     .module('inspinia')

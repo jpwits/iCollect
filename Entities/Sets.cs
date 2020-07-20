@@ -11,7 +11,7 @@ namespace iCollect.Entities
         }
 
         public int SetId { get; set; }
-        public int? CollectionId { get; set; }
+        public int? CatalogId { get; set; }
         public int? Year { get; set; }
         public string Description { get; set; }
         public DateTime? Date { get; set; }
@@ -21,7 +21,7 @@ namespace iCollect.Entities
         public bool? IsActive { get; set; }
         public string Series { get; set; }
 
-        public virtual Collections Collection { get; set; }
+        public virtual Catalog Catalog { get; set; }
         public virtual ICollection<Items> Items { get; set; }
     }
 }

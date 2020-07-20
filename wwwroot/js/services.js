@@ -1,9 +1,9 @@
 ﻿
 
-function getAlbumCollections($resource) {
+function getAlbumCatalogs($resource) {
     return {
-        albumcollections: function (token) {
-            return $resource('api/albums/GetAlbumCollections', null, {
+        albumcatalogs: function (token) {
+            return $resource('api/albums/GetAlbumCatalogs', null, {
                 query: {
                     method: 'GET',
                     headers: {
@@ -93,29 +93,22 @@ function updateUserItem($resource) {
         }
     );
 }
-function getCoinRangeSrv($resource) {
-    return $resource('api/Collections/GetCollections', null,
+
+function getCatalogSrv($resource) {
+    return $resource('api/Catalogs/GetCatalog/:id', { id: '@id' }
+    );
+}
+
+function getCatalogsSrv($resource) {
+    return $resource('api/Catalogs/GetCatalogs', null,
         {
             'get': { method: 'GET' }
         }
     );
 }
 
-function getCollectionSrv($resource) {
-    return $resource('api/Collections/GetCollection/:id', { id: '@id' }
-    );
-}
-
-function getCollectionsSrv($resource) {
-    return $resource('api/Collections/GetCollections', null,
-        {
-            'get': { method: 'GET' }
-        }
-    );
-}
-
-function updateAlbumCollectionSrv($resource) {
-    return $resource('api/albums/updateAlbumCollection/:id', { id: '@id' }
+function updateAlbumCatalogSrv($resource) {
+    return $resource('api/albums/updateAlbumCatalog/:id', { id: '@id' }
         , {
             'update': { method: 'PUT' }
         }
@@ -177,16 +170,16 @@ angular
     .service('updateSet', updateSet)
     .service('passData', passData)
     .service('getUser', getUser)
-    .service('getCollectionSrv', getCollectionSrv)
-    .service('getCollectionsSrv', getCollectionsSrv)
-    .service('getAlbumCollections', ['$resource', getAlbumCollections])
+    .service('getCatalogSrv', getCatalogSrv)
+    .service('getCatalogsSrv', getCatalogsSrv)
+    .service('getAlbumCatalogs', ['$resource', getAlbumCatalogs])
     .service('updateUserItem', updateUserItem)
     .service('authUser', authUser)
     .service('loginUser', loginUser)
     .service('logoutUser', logoutUser)
     .service('registerUser', registerUser)
     .service('getRoles', getRoles)
-    .service('updateAlbumCollectionSrv', updateAlbumCollectionSrv)
+    .service('updateAlbumCatalogSrv', updateAlbumCatalogSrv)
     .service('getSetsSrvNg', ['$resource', getSetsSrvNg]);
 
 

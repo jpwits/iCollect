@@ -1,4 +1,4 @@
-﻿function AccountCtrl($window, $sessionStorage, $localStorage, $scope, $state, getSetsSrvNg, loginUser, logoutUser, registerUser, getRoles, getCollectionsSrv, authUser) {
+﻿function AccountCtrl($window, $sessionStorage, $localStorage, $scope, $state, getSetsSrvNg, loginUser, logoutUser, registerUser, getRoles, getCatalogsSrv, authUser) {
     $scope.$sessionStorage = $sessionStorage.$default(/* any defaults here */);
     $scope.$localStorage = $localStorage.$default(/* any defaults here */);
 
@@ -110,21 +110,21 @@
         });
     };
 
-    $scope.getCollections = () => {
-        getCollectionsSrv.get().$promise.then(function (response) {
+    $scope.getCatalogs = () => {
+        getCatalogsSrv.get().$promise.then(function (response) {
             var jsonResp = JSON.parse(JSON.stringify(response));
             $sessionStorage.iCols = jsonResp.data;
         }, function (error) {
             $sessionStorage.iComsErr = JSON.parse(JSON.stringify(error));
-            alert("Error " + $sessionStorage.iComsErr.status + " Retrieving Collections : " + $sessionStorage.iComsErr.data);
+            alert("Error " + $sessionStorage.iComsErr.status + " Retrieving Catalogs : " + $sessionStorage.iComsErr.data);
         });
     };
 
     if ($sessionStorage.iCols === undefined) {
-        $scope.getCollections();
+        $scope.getCatalogs();
     }
 
-    $scope.getCollections();
+    $scope.getCatalogs();
     /*
      * countries - Used as duallistbox in form advanced view
      */
