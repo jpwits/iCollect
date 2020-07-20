@@ -8,6 +8,7 @@ namespace iCollect.Enums
 {
     public class RoleNames
     {
+        public const string Dev = "Dev";
         public const string Admin = "Admin";
         public const string User = "User";
         public const string Member = "Member";

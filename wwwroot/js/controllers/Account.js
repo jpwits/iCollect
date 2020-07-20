@@ -1,7 +1,14 @@
-﻿function AccountCtrl($window, $sessionStorage, $localStorage, $scope, $state, getSetsSrvNg, loginUser, logoutUser, registerUser, getUser, getCollectionsSrv, authUser) {
+﻿function AccountCtrl($window, $sessionStorage, $localStorage, $scope, $state, getSetsSrvNg, loginUser, logoutUser, registerUser, getRoles, getCollectionsSrv, authUser) {
     $scope.$sessionStorage = $sessionStorage.$default(/* any defaults here */);
     $scope.$localStorage = $localStorage.$default(/* any defaults here */);
 
+    $scope.ifAdmin = function () {
+        if ($sessionStorage.User.roles.includes('Admin')) {
+            return true;
+        } else {
+            return false;
+        }
+    }
     //$scope.currentUser = function () {
     //    getUser.get().$promise.then(function (response) {
     //        $sessionStorage.User = JSON.parse(JSON.stringify(response));
@@ -37,7 +44,16 @@
             if ($localStorage.lookups === undefined) {
                 $scope.fillLookups();
             }
-            $window.history.back();
+
+            getRoles.get({
+                username: username
+            }).$promise.then(function (response) {
+                $sessionStorage.User.roles = JSON.parse(JSON.stringify(response)).roles;
+                $window.history.back();
+            }, function (error) {
+                $sessionStorage.iComsErr = JSON.parse(JSON.stringify(error));
+                alert("Error " + $sessionStorage.iComsErr.status + " Getting Roles : " + $sessionStorage.iComsErr.data);
+            });
         }, function (error) {
             $sessionStorage.iComsErr = JSON.parse(JSON.stringify(error));
                 alert("Error " + $sessionStorage.iComsErr.status + " Logging in : " + $sessionStorage.iComsErr.data);
@@ -48,6 +64,7 @@
         logoutUser.get().$promise.then(function (response) {
             $sessionStorage.User = undefined;
             //$window.history.back();
+            $state.go('dashboards.dashboard_4_1');
         }, function (error) {
             $sessionStorage.iComsErr = JSON.parse(JSON.stringify(error));
             alert("Error " + $sessionStorage.iComsErr.status + " Logging out : " + $sessionStorage.iComsErr.data);

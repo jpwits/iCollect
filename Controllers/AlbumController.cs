@@ -16,27 +16,27 @@ namespace iCollect.Controllers
     [Route("api/albums"), Produces("application/json"), EnableCors("AppPolicy")]
     public class AlbumController : Controller
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
+        //private readonly UserManager<IdentityUser> _userManager;
+        //private readonly SignInManager<IdentityUser> _signInManager;
+        //private readonly RoleManager<IdentityRole> _roleManager;
 
         private readonly icollectdbContext _context;
 
-        public AlbumController(SignInManager<IdentityUser> signInManager, RoleManager<IdentityRole> roleManager, UserManager<IdentityUser> userManager, icollectdbContext context)
+        public AlbumController(icollectdbContext context)
         {
-            _signInManager = signInManager;
-            _userManager = userManager;
-            _roleManager = roleManager;
+            //_signInManager = signInManager;
+            //_userManager = userManager;
+            //_roleManager = roleManager;
             _context = context;
         }
 
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         [HttpGet, Route("GetAlbumCollections")]
         public async Task<IActionResult> GetAlbumCollections()
         {
             System.Security.Claims.ClaimsPrincipal currentUser = this.User;
-            var username = User.Identities.First().Claims.First().Value;
-            bool IsAdmin = currentUser.IsInRole("Admin");
+            var username = User.Identities.First().Name;//.Claims.First().Value;
+            //bool IsAdmin = currentUser.IsInRole("Admin");
             var albumsCollections = _context.AlbumCollections.Where(b => b.Album.UserId == username &&
                   b.Album.IsActive == true).Include(a => a.Album);
 

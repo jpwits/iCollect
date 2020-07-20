@@ -80,14 +80,17 @@ namespace iCollect.Controllers
 
             if (result.Succeeded)
             {
-                if (!await _roleManager.RoleExistsAsync(RoleNames.Admin))
+                if (!await _roleManager.RoleExistsAsync(RoleNames.User))
                 {
-                    await _roleManager.CreateAsync(new IdentityRole(RoleNames.Admin));
+                    await _roleManager.CreateAsync(new IdentityRole(RoleNames.User));
                 }
 
-                await _userManager.AddToRoleAsync(userIdentity, RoleNames.Admin);
+                await _userManager.AddToRoleAsync(userIdentity, RoleNames.User);
             }
-
+            else
+            {
+                //do something...haha!
+            }
 
             return new JsonResult(new { result });
         }

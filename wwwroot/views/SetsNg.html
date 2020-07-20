@@ -20,7 +20,7 @@
                         <div class="ibox-title">
                             <h5>All Sets assigned to this account</h5>
                             <div class="ibox-tools">
-                                <a ng-click="createSet(undefined)" class="btn btn-primary dim">New Set</a>
+                                <a ng-click="createSet(undefined)" ng-show="ifAdmin();" class="btn btn-primary dim">New Set</a>
                             </div>
                         </div>
                     </div>

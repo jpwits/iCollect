@@ -150,6 +150,11 @@ function registerUser($resource) {
     );
 }
 
+function getRoles($resource) {
+    return $resource('api/User/getroles/:username', { username: '@username' }
+    );
+}
+
 function passData() {
 
     var persistObject = [];
@@ -180,6 +185,7 @@ angular
     .service('loginUser', loginUser)
     .service('logoutUser', logoutUser)
     .service('registerUser', registerUser)
+    .service('getRoles', getRoles)
     .service('updateAlbumCollectionSrv', updateAlbumCollectionSrv)
     .service('getSetsSrvNg', ['$resource', getSetsSrvNg]);
 
