@@ -840,15 +840,15 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, IdlePro
             templateUrl: "views/buttons.html",
             data: { pageTitle: 'Buttons' }
         })
-        .state('ui.albums', {
-            url: "/albums",
-            templateUrl: "views/albums.html",
-            data: { pageTitle: 'Albums' }
+        .state('ui.Collections', {
+            url: "/Collections",
+            templateUrl: "views/Collections.html",
+            data: { pageTitle: 'Collection' }
         })
-        .state('ui.album', {
-            url: "/album",
-            templateUrl: "views/album.html",
-            data: { pageTitle: 'Album' }
+        .state('ui.collection', {
+            url: "/collection",
+            templateUrl: "views/collection.html",
+            data: { pageTitle: 'Collection' }
         })
         .state('ui.tabs_panels', {
             url: "/tabs_panels",
@@ -1479,7 +1479,7 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, IdlePro
         .state('gallery.basic_gallery', {
             url: "/basic_gallery",
             templateUrl: "views/basic_gallery.html",
-            data: { pageTitle: 'Albums' },
+            data: { pageTitle: 'Collection' },
             resolve: {
                 loadPlugin: function ($ocLazyLoad) {
                     return $ocLazyLoad.load([

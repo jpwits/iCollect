@@ -51,17 +51,17 @@
     $scope.popup2 = {
         opened: false
     };
-    if ($sessionStorage.album === undefined) {
-        $sessionStorage.album = $state.params.album;
+    if ($sessionStorage.collection === undefined) {
+        $sessionStorage.collection = $state.params.collection;
     }
 
-    else if ($sessionStorage.album === null) {/* #####!!!!!!!!!*/
-        $sessionStorage.album = 0;
+    else if ($sessionStorage.collection === null) {/* #####!!!!!!!!!*/
+        $sessionStorage.collection = 0;
     }
 
     if ($sessionStorage.filterbyYear === undefined) $sessionStorage.filterbyYear = {
-        "Start": $sessionStorage.album.startDate,
-        "End": $sessionStorage.album.endDate
+        "Start": $sessionStorage.collection.startDate,
+        "End": $sessionStorage.collection.endDate
     };
 
     $scope.yrStartSel = new Date($sessionStorage.filterbyYear.Start);
@@ -148,7 +148,7 @@
             filterbyRanges: JSON.stringify(currentfilterbyRanges),
             filterbySetTypes: JSON.stringify(currentfilterbySetTypes),
             groupby: JSON.stringify($sessionStorage.groupby),
-            albumId: $sessionStorage.album.albumId
+            collectionId: $sessionStorage.collection.collectionId
         }).$promise.then(function (response) {
             $sessionStorage.iColSets = JSON.parse(JSON.stringify(response));
             $scope.dtMin = new Date($sessionStorage.iColSets.yrstartmin);

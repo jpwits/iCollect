@@ -1,9 +1,9 @@
 ﻿
 
-function getAlbumCatalogs($resource) {
+function getCatalogCollections($resource) {
     return {
-        albumcatalogs: function (token) {
-            return $resource('api/albums/GetAlbumCatalogs', null, {
+        CatalogCollections: function (token) {
+            return $resource('api/Collections/getCatalogCollections', null, {
                 query: {
                     method: 'GET',
                     headers: {
@@ -18,8 +18,8 @@ function getAlbumCatalogs($resource) {
 function getSetsSrvNg($resource) {
     return {
         sets: function (token) {
-            return $resource('api/SetsNg/GetSets/:start/:length/:sortby/:filterbyYear/:filterbyRanges/:filterbySetTypes/:groupby/:albumId',
-                { start: '@start', length: '@length', sortby: '@sortby', filterbyYear: '@filterbyYear', filterbyRanges: '@filterbyRanges', filterbySetTypes: '@filterbySetTypes', groupby: '@groupby', albumId: '@albumId' }, {
+            return $resource('api/SetsNg/GetSets/:start/:length/:sortby/:filterbyYear/:filterbyRanges/:filterbySetTypes/:groupby/:collectionId',
+                { start: '@start', length: '@length', sortby: '@sortby', filterbyYear: '@filterbyYear', filterbyRanges: '@filterbyRanges', filterbySetTypes: '@filterbySetTypes', groupby: '@groupby', collectionId: '@collectionId' }, {
                 'update':
                 {
                     method: 'PUT',
@@ -107,8 +107,8 @@ function getCatalogsSrv($resource) {
     );
 }
 
-function updateAlbumCatalogSrv($resource) {
-    return $resource('api/albums/updateAlbumCatalog/:id', { id: '@id' }
+function updateCatalogCollectionsrv($resource) {
+    return $resource('api/Collections/updateCatalogCollection/:id', { id: '@id' }
         , {
             'update': { method: 'PUT' }
         }
@@ -172,14 +172,14 @@ angular
     .service('getUser', getUser)
     .service('getCatalogSrv', getCatalogSrv)
     .service('getCatalogsSrv', getCatalogsSrv)
-    .service('getAlbumCatalogs', ['$resource', getAlbumCatalogs])
+    .service('getCatalogCollections', ['$resource', getCatalogCollections])
     .service('updateUserItem', updateUserItem)
     .service('authUser', authUser)
     .service('loginUser', loginUser)
     .service('logoutUser', logoutUser)
     .service('registerUser', registerUser)
     .service('getRoles', getRoles)
-    .service('updateAlbumCatalogSrv', updateAlbumCatalogSrv)
+    .service('updateCatalogCollectionsrv', updateCatalogCollectionsrv)
     .service('getSetsSrvNg', ['$resource', getSetsSrvNg]);
 
 

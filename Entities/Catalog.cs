@@ -7,7 +7,7 @@ namespace iCollect.Entities
     {
         public Catalog()
         {
-            AlbumCatalogs = new HashSet<AlbumCatalogs>();
+            CatalogCollections = new HashSet<CatalogCollections>();
             Sets = new HashSet<Sets>();
         }
 
@@ -20,7 +20,7 @@ namespace iCollect.Entities
         public DateTime? SEndDate { get; set; }
 
         public virtual CatalogTypes CatalogType { get; set; }
-        public virtual ICollection<AlbumCatalogs> AlbumCatalogs { get; set; }
+        public virtual ICollection<CatalogCollections> CatalogCollections { get; set; }
         public virtual ICollection<Sets> Sets { get; set; }
     }
 }

@@ -44,8 +44,8 @@ namespace iCollect.Controllers
         }
 
         [Authorize]
-        [HttpPut, Route("GetSets/{start}/{length}/{sortby}/{filterbyYear}/{filterbyRanges}/{filterbySetTypes}/{groupby}/{albumId}")]
-        public ActionResult GetSets(int start, int length, string sortby, string filterbyYear, string filterbyRanges, string filterbySetTypes, string groupby, int albumId)
+        [HttpPut, Route("GetSets/{start}/{length}/{sortby}/{filterbyYear}/{filterbyRanges}/{filterbySetTypes}/{groupby}/{collectionId}")]
+        public ActionResult GetSets(int start, int length, string sortby, string filterbyYear, string filterbyRanges, string filterbySetTypes, string groupby, int collectionId)
         {
             var sortbyObj = JsonConvert.DeserializeObject<dynamic>(sortby);
             var filterbyYearObj = JsonConvert.DeserializeObject<dynamic>(filterbyYear);
@@ -72,7 +72,7 @@ namespace iCollect.Controllers
             var qryUser = from sets in qryTake
                           join items in _context.Items on sets.SetId equals items.SetId
                           join userItems in _context.UserItems on items.ItemId equals userItems.ItemId
-                          where (userItems.UserId == User.Identity.Name && userItems.AlbumId == albumId && sets.IsActive == true)
+                          where (userItems.UserId == User.Identity.Name && userItems.CollectionId == collectionId && sets.IsActive == true)
                           select sets;
             var qryUserTake = qryUser.ToList();
 

@@ -283,8 +283,8 @@
     <None Include="wwwroot\js\config.js" />
     <None Include="wwwroot\js\controllers.js" />
     <None Include="wwwroot\js\controllers\account.js" />
-    <None Include="wwwroot\js\controllers\album.js" />
-    <None Include="wwwroot\js\controllers\albums.js" />
+    <None Include="wwwroot\js\controllers\collection.js" />
+    <None Include="wwwroot\js\controllers\collections.js" />
     <None Include="wwwroot\js\controllers\main.js" />
     <None Include="wwwroot\js\controllers\set.js" />
     <None Include="wwwroot\js\controllers\catalogs.js" />
