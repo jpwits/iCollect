@@ -3,7 +3,7 @@
 
     $scope.GotoAlbum = (albumCatalog) => {
         $sessionStorage.album = albumCatalog.album;
-        $state.go('app.setsng', { viewLayout: 'Tiles' });
+        $state.go('app.setsng', { viewLayout: 'Tiles'});
     };
 
     $scope.EditAlbum = (albumCatalog) => {

@@ -46,7 +46,9 @@
         opened: false
     };
 
-
+    $scope.toCats = function() {
+        $state.go('app.catalogs');
+    }
 
     $scope.updateAlbum = function (albumCatalog) {
         $scope.spinUpdateAlbum = "Saving";

@@ -54,6 +54,7 @@
     if ($sessionStorage.album === undefined) {
         $sessionStorage.album = $state.params.album;
     }
+
     else if ($sessionStorage.album === null) {/* #####!!!!!!!!!*/
         $sessionStorage.album = 0;
     }

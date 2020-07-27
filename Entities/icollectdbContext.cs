@@ -94,6 +94,14 @@ namespace iCollect.Entities
 
                 entity.Property(e => e.Name).HasMaxLength(255);
 
+                entity.Property(e => e.SEndDate)
+                    .HasColumnName("sEndDate")
+                    .HasColumnType("date");
+
+                entity.Property(e => e.SStartDate)
+                    .HasColumnName("sStartDate")
+                    .HasColumnType("date");
+
                 entity.HasOne(d => d.CatalogType)
                     .WithMany(p => p.Catalog)
                     .HasForeignKey(d => d.CatalogTypeId)

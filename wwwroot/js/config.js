@@ -667,15 +667,12 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, IdlePro
             params: { setIdx: null },
             data: { pageTitle: 'Set' }
         })
-        //.state('app.sets', {
-        //    url: "/sets",
-        //    templateUrl: "views/sets.html",
-        //    data: { pageTitle: 'Sets' }
-        //})
         .state('app.setsng', {
             url: "/setsng",
             templateUrl: "views/setsng.html",
-            params: { viewLayout : null },
+            params: {
+                viewLayout: null, catId: null
+            },
             data: { pageTitle: 'Setsng' }
         })
         .state('app.catalog', {

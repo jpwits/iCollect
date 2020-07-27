@@ -30,10 +30,11 @@
         </div>
         <div class="form-group row">
             <label class="col-sm-2 col-form-label" for="idAlbumCatalog">Catalogue :</label>
-            <div class="col-sm-6">
+            <div class="col-sm-3">
                 <select id="idAlbumCatalog" data-style="bg-black rounded-pill" class="form-control input-sm selectpicker" data-container="body" data-size="6" ng-required="true">
-                    <option ng-model="$sessionStorage.albumCatalog.album.catalogId" ng-repeat="col in $sessionStorage.iCols">{{col.name}}</option>
+                    <option ng-model="$sessionStorage.albumCatalog.album.catalogId" ng-repeat="iCat in $sessionStorage.iCats">{{iCat.name}}</option>
                 </select><!-- End -->
+                <a ng-click="toCats()" ng-show="ifAdmin();" class="btn btn-primary dim">Catalogs ...</a>
                 <div class="form-group row">
                     <label class="col-sm-2 col-form-label" for="idAlbumDates">Timespan:</label>
                     <div class="col-md-4">

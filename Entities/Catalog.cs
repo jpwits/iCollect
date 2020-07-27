@@ -16,6 +16,8 @@ namespace iCollect.Entities
         public string Description { get; set; }
         public int? CatalogTypeId { get; set; }
         public bool? IsActive { get; set; }
+        public DateTime? SStartDate { get; set; }
+        public DateTime? SEndDate { get; set; }
 
         public virtual CatalogTypes CatalogType { get; set; }
         public virtual ICollection<AlbumCatalogs> AlbumCatalogs { get; set; }

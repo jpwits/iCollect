@@ -1,5 +1,5 @@
 ﻿
-function CatalogsCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compile, $templateCache, getCatalogSrv, passData, $timeout) {
+function CatalogsCtrl($scope, $state, $compile, $templateCache, getCatalogSrv, passData, $timeout) {
     $scope.catalog_pglen = passData.get("catalog_pglen");
     if ($scope.catalog_pglen === undefined) { $scope.catalog_pglen = 10; }
 
@@ -9,6 +9,10 @@ function CatalogsCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compil
             $state.go('app.catalog');
         }
     };
+
+    $scope.gotoCatalog = function (cat) {
+        $state.go('app.setsng');
+    }
 
     $scope.loadCatalog = function (id) {
         getCatalogSrv.get({ id: id }).$promise.then(function (response) {
@@ -23,73 +27,6 @@ function CatalogsCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compil
         function (error) {
             alert("Error Retrieving catalogs : " + error);
         });
-    };
-
-    $scope.dtColumnsColls = [
-        DTColumnBuilder.newColumn("name", "Description").withOption('name', 'description')
-            .renderWith(function (data, type, full, meta) {
-                html = '<a ng-click="loadCatalog(' + full.catalogId + ')">' + data + '</a>';
-                return html;
-            }),
-        DTColumnBuilder.newColumn("description", "Description").withOption('name', 'Description')
-    ];
-
-    $scope.dtOptionsColls = DTOptionsBuilder.newOptions()
-        .withOption('ajax', {
-            dataSrc: "data",
-            url: "api/Catalogs/getData",
-            type: "POST"
-        })
-        .withOption('processing', true) //for show progress bar
-        .withOption('serverSide', true) // for server side processing
-        .withOption('responsive', true)
-        .withOption('stateSave', true)
-        .withOption('createdRow', function (row, data, dataIndex) {
-            $compile(angular.element(row).contents())($scope);      // Recompiling so we can bind Angular directive to the DT
-        })
-        .withPaginationType('full_numbers') // for get full pagination options // first / last / prev / next and page numbers
-        .withDisplayLength($scope.catalog_pglen) // Page size
-        .withOption('aaSorting', [1, 'asc']) // for default sorting column // here 0 means first column
-        .withOption('drawCallback', function () {
-            var table = this.DataTable();
-            passData.set("catalog_pglen", table.page.len());
-        })
-        .withDOM('<"html5buttons"B>lTfgitp')
-        .withButtons([
-            {
-                text: 'New',
-                action: function (e, dt, node, config) {
-                    $scope.createCatalog();
-                }
-            },
-            { extend: 'copy' },
-            { extend: 'csv' },
-            { extend: 'excel', title: 'ExampleFile' },
-            { extend: 'pdf', title: 'ExampleFile' },
-            {
-                extend: 'print',
-                customize: function (win) {
-                    $(win.document.body).addClass('white-bg');
-                    $(win.document.body).css('font-size', '10px');
-
-                    $(win.document.body).find('table')
-                        .addClass('compact')
-                        .css('font-size', 'inherit');
-                }
-            }
-        ]);
-
-    $scope.dtInstanceCallbackColls = (dtInstance) => {
-        dtInstance.DataTable.on('draw.dt', () => {
-            let elements = angular.element("#" + dtInstance.id + " .ng-scope");
-            angular.forEach(elements, (element) => {
-                $compile(element)($scope);
-            });
-        });
-    };
-
-    $scope.SelectSet = (event) => {
-        
     };
 }
 

@@ -2679,90 +2679,90 @@ function loadingCtrl($scope, $timeout) {
 }
 
 
-function datatablesCtrl($scope, DTOptionsBuilder) {
+//function datatablesCtrl($scope, DTOptionsBuilder) {
 
-    $scope.dtOptions = DTOptionsBuilder.newOptions()
-        //.withDataProp('data')
-        //.withOption('processing', true)
-        //.withOption('serverSide', true)
-        .withOption('ordering', false)
-        .withOption('searching', false)
-        .withDOM('<"html5buttons"B>lTfgitp')
-        .withButtons([
-            { extend: 'copy' },
-            { extend: 'csv' },
-            { extend: 'excel', title: 'ExampleFile' },
-            { extend: 'pdf', title: 'ExampleFile' },
+//    $scope.dtOptions = DTOptionsBuilder.newOptions()
+//        //.withDataProp('data')
+//        //.withOption('processing', true)
+//        //.withOption('serverSide', true)
+//        .withOption('ordering', false)
+//        .withOption('searching', false)
+//        .withDOM('<"html5buttons"B>lTfgitp')
+//        .withButtons([
+//            { extend: 'copy' },
+//            { extend: 'csv' },
+//            { extend: 'excel', title: 'ExampleFile' },
+//            { extend: 'pdf', title: 'ExampleFile' },
 
-            {
-                extend: 'print',
-                customize: function (win) {
-                    $(win.document.body).addClass('white-bg');
-                    $(win.document.body).css('font-size', '10px');
+//            {
+//                extend: 'print',
+//                customize: function (win) {
+//                    $(win.document.body).addClass('white-bg');
+//                    $(win.document.body).css('font-size', '10px');
 
-                    $(win.document.body).find('table')
-                        .addClass('compact')
-                        .css('font-size', 'inherit');
-                }
-            }
-        ])
-        .withOption('drawCallback', function (settings) {
-            if (settings.aoData.length > 0) {
-                var api = this.api();
-                var pgNo = api.page.info();
-                var currPg = pgNo.page;
-                var totalPg = pgNo.pages;
-                //recordsTotal: NoItems,
-                //    recordsFiltered: NoItems
+//                    $(win.document.body).find('table')
+//                        .addClass('compact')
+//                        .css('font-size', 'inherit');
+//                }
+//            }
+//        ])
+//        .withOption('drawCallback', function (settings) {
+//            if (settings.aoData.length > 0) {
+//                var api = this.api();
+//                var pgNo = api.page.info();
+//                var currPg = pgNo.page;
+//                var totalPg = pgNo.pages;
+//                //recordsTotal: NoItems,
+//                //    recordsFiltered: NoItems
 
-                var scope = angular.element($("#ngSetList")).scope();
-                scope.$apply(function () {
-                    scope.currentpage = currPg;
-                });
-            }
-        })
-        //.withOption('scrollY', 400)
-        //scrollY: 400,
-        //    scroller: {
-        //    loadingIndicator: true
-        //},
+//                var scope = angular.element($("#ngSetList")).scope();
+//                scope.$apply(function () {
+//                    scope.currentpage = currPg;
+//                });
+//            }
+//        })
+//        //.withOption('scrollY', 400)
+//        //scrollY: 400,
+//        //    scroller: {
+//        //    loadingIndicator: true
+//        //},
 
-        ;
-    //    vm.dtOptions = DTOptionsBuilder.newOptions().
-    //                    
+//        ;
+//    //    vm.dtOptions = DTOptionsBuilder.newOptions().
+//    //                    
 
-    /*
-     * persons - Data used in Tables view for Data Tables plugin
-     */
-    $scope.persons = [
-        {
-            id: '1',
-            firstName: 'Monica',
-            lastName: 'Smith'
-        },
-        {
-            id: '2',
-            firstName: 'Sandra',
-            lastName: 'Jackson'
-        },
-        {
-            id: '3',
-            firstName: 'John',
-            lastName: 'Underwood'
-        },
-        {
-            id: '4',
-            firstName: 'Chris',
-            lastName: 'Johnatan'
-        },
-        {
-            id: '5',
-            firstName: 'Kim',
-            lastName: 'Rosowski'
-        }
-    ];
+//    /*
+//     * persons - Data used in Tables view for Data Tables plugin
+//     */
+//    $scope.persons = [
+//        {
+//            id: '1',
+//            firstName: 'Monica',
+//            lastName: 'Smith'
+//        },
+//        {
+//            id: '2',
+//            firstName: 'Sandra',
+//            lastName: 'Jackson'
+//        },
+//        {
+//            id: '3',
+//            firstName: 'John',
+//            lastName: 'Underwood'
+//        },
+//        {
+//            id: '4',
+//            firstName: 'Chris',
+//            lastName: 'Johnatan'
+//        },
+//        {
+//            id: '5',
+//            firstName: 'Kim',
+//            lastName: 'Rosowski'
+//        }
+//    ];
 
-}
+//}
 
 function truncateCtrl($scope) {
 
@@ -3319,7 +3319,7 @@ angular
     .controller('selectCtrl', selectCtrl)
     .controller('toastrCtrl', toastrCtrl)
     .controller('loadingCtrl', loadingCtrl)
-    .controller('datatablesCtrl', datatablesCtrl)
+    //.controller('datatablesCtrl', datatablesCtrl)
     .controller('truncateCtrl', truncateCtrl)
     .controller('touchspinCtrl', touchspinCtrl)
     .controller('tourCtrl', tourCtrl)

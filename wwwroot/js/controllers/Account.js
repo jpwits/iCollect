@@ -3,6 +3,9 @@
     $scope.$localStorage = $localStorage.$default(/* any defaults here */);
 
     $scope.ifAdmin = function () {
+        if ($sessionStorage.User === undefined)
+            return false;
+
         if ($sessionStorage.User.roles.includes('Admin')) {
             return true;
         } else {
@@ -111,16 +114,16 @@
     };
 
     $scope.getCatalogs = () => {
-        getCatalogsSrv.get().$promise.then(function (response) {
+            getCatalogsSrv.get().$promise.then(function (response) {
             var jsonResp = JSON.parse(JSON.stringify(response));
-            $sessionStorage.iCols = jsonResp.data;
+            $sessionStorage.iCats = jsonResp.data;
         }, function (error) {
             $sessionStorage.iComsErr = JSON.parse(JSON.stringify(error));
             alert("Error " + $sessionStorage.iComsErr.status + " Retrieving Catalogs : " + $sessionStorage.iComsErr.data);
         });
     };
 
-    if ($sessionStorage.iCols === undefined) {
+    if ($sessionStorage.iCats === undefined) {
         $scope.getCatalogs();
     }
 
