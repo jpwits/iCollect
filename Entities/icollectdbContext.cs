@@ -64,6 +64,8 @@ namespace iCollect.Entities
 
                 entity.HasIndex(e => e.CollectionId);
 
+                entity.Property(e => e.IsMaster).HasColumnName("isMaster");
+
                 entity.HasOne(d => d.Catalog)
                     .WithMany(p => p.CatalogCollections)
                     .HasForeignKey(d => d.CatalogId)

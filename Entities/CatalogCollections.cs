@@ -7,6 +7,7 @@ namespace iCollect.Entities
     {
         public int CatalogId { get; set; }
         public int CollectionId { get; set; }
+        public bool? IsMaster { get; set; }
 
         public virtual Catalog Catalog { get; set; }
         public virtual Collections Collection { get; set; }

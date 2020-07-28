@@ -70,16 +70,21 @@
     $scope.RemoveCollection = (catalogCollection) => {
         if (confirm('Are you sure you want to delete this collection, by deleting this collection you will loose all the item quantities in this collection?')) {
             // Save it!
-            catalogCollection.collection.isActive = false;
-            $scope.entry = new updateCatalogCollectionsrv(catalogCollection);
-            $scope.entry.$update(function (response) {
-                $sessionStorage.CatalogCollections.push(response);
-                //alert("Collection Saved successfully...");
-                $state.go('ui.Collections'); //replace with $scope.apply!
-            }, function (error) {
-                $sessionStorage.iComsErr = JSON.parse(JSON.stringify(error));
-                alert("Error " + $sessionStorage.iComsErr.status + " Deleting Collection : " + $sessionStorage.iComsErr.data);
-            });
+            if (catalogCollection.isMaster === true) {
+                alert("In order to remove the master collection, you have to remove it's catalog...")
+            }
+            else {
+                catalogCollection.collection.isActive = false;
+                $scope.entry = new updateCatalogCollectionsrv(catalogCollection);
+                $scope.entry.$update(function (response) {
+                    $sessionStorage.CatalogCollections.push(response);
+                    //alert("Collection Saved successfully...");
+                    $state.go('ui.Collections'); //replace with $scope.apply!
+                }, function (error) {
+                    $sessionStorage.iComsErr = JSON.parse(JSON.stringify(error));
+                    alert("Error " + $sessionStorage.iComsErr.status + " Deleting Collection : " + $sessionStorage.iComsErr.data);
+                });
+            }
         }
     };
 
