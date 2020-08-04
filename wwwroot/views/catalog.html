@@ -1,7 +1,7 @@
-﻿<div ng-controller="CollectionCtrl">
+﻿<div ng-controller="CatalogsCtrl">
     <div class="row wrapper border-bottom white-bg page-heading">
         <div class="col-sm-4">
-            <h2>Collection</h2>
+            <h2>Catalog</h2>
             <ol class="breadcrumb">
                 <li>
                     <a href="..\"> Home </a>
@@ -13,33 +13,33 @@
         </div>
     </div>
 
-    <form class="m-t" role="form" ng-submit="updateCollection($sessionStorage.catalogCollection)">
+    <form class="m-t" role="form" ng-submit="updateCatalog($sessionStorage.catalogCollection)">
         <div class="form-group row">
-            <label class="col-sm-2 col-form-label" for="idCollectionName">Name:</label>
+            <label class="col-sm-2 col-form-label" for="idCatalogName">Name:</label>
             <div class="col-sm-6">
-                <input class="input-sm form-control" id="idCollectionName" type="text" name="input" required=""
+                <input class="input-sm form-control" id="idCatalogName" type="text" name="input" required=""
                        ng-model="$sessionStorage.catalogCollection.collection.name">
             </div>
         </div>
         <div class="form-group row">
-            <label class="col-sm-2 col-form-label" for="idCollectionDescription">Description :</label>
+            <label class="col-sm-2 col-form-label" for="idCatalogDescription">Description :</label>
             <div class="col-sm-6">
-                <input class="input-sm form-control" id="idCollectionDescription" type="text" name="input" required=""
+                <input class="input-sm form-control" id="idCatalogDescription" type="text" name="input" required=""
                        ng-model="$sessionStorage.catalogCollection.collection.description">
             </div>
         </div>
         <div class="form-group row">
-            <label class="col-sm-2 col-form-label" for="idCollectionCatalog">Catalogue :</label>
+            <label class="col-sm-2 col-form-label" for="idCatalogCatalog">Catalogue :</label>
             <div class="col-sm-3">
-                <select id="idCollectionCatalog" data-style="bg-black rounded-pill" class="form-control input-sm selectpicker" data-container="body" data-size="6" ng-required="true">
+                <select id="idCatalogCatalog" data-style="bg-black rounded-pill" class="form-control input-sm selectpicker" data-container="body" data-size="6" ng-required="true">
                     <option ng-model="$sessionStorage.catalogCollection.collection.catalogId" ng-repeat="iCat in $sessionStorage.iCats">{{iCat.name}}</option>
                 </select><!-- End -->
                 <a ng-click="toCats()" ng-show="ifAdmin();" class="btn btn-primary dim">Catalogs ...</a>
                 <div class="form-group row">
-                    <label class="col-sm-2 col-form-label" for="idCollectionDates">Timespan:</label>
+                    <label class="col-sm-2 col-form-label" for="idCatalogDates">Timespan:</label>
                     <div class="col-md-4">
                         <p class="input-group">
-                            <input id="idCollectionDates" type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="dtStart" is-open="popupStart.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" />
+                            <input id="idCatalogDates" type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="dtStart" is-open="popupStart.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" />
                             <span class="input-group-btn">
                                 <button type="button" class="btn btn-default" ng-click="openStart()"><i class="glyphicon glyphicon-calendar"></i></button>
                             </span>
@@ -47,7 +47,7 @@
                     </div>
                     <div class="col-md-4">
                         <p class="input-group">
-                            <input id="idCollectionDates" type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="dtEnd" is-open="popupEnd.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" />
+                            <input id="idCatalogDates" type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="dtEnd" is-open="popupEnd.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" />
                             <span class="input-group-btn">
                                 <button type="button" class="btn btn-default" ng-click="openEnd()"><i class="glyphicon glyphicon-calendar"></i></button>
                             </span>
@@ -55,27 +55,27 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-sm-2 col-form-label" for="idCollectionRanges">Ranges:</label>
+                    <label class="col-sm-2 col-form-label" for="idCatalogRanges">Ranges:</label>
                     <div class="col-lg-6">
                         <!-- Multiselect dropdown -->
-                        <select multiple id="idCollectionRanges" data-style="bg-black rounded-pill" class="form-control input-sm selectpicker" ng-model="jsonRanges" data-container="body" data-size="6" data-selected-text-format="count>2" data-actions-box="true" ng-required="true">
+                        <select multiple id="idCatalogRanges" data-style="bg-black rounded-pill" class="form-control input-sm selectpicker" ng-model="jsonRanges" data-container="body" data-size="6" data-selected-text-format="count>2" data-actions-box="true" ng-required="true">
                             <option ng-repeat="range in $localStorage.lookups.rangeGroup">{{range.key}}</option>
                         </select><!-- End -->
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-sm-2 col-form-label" for="idCollectionTypes">Types:</label>
+                    <label class="col-sm-2 col-form-label" for="idCatalogTypes">Types:</label>
                     <div class="col-lg-6">
                         <!-- Multiselect dropdown -->
-                        <select multiple id="idCollectionTypes" data-style="bg-black rounded-pill" class="form-control input-sm selectpicker" ng-model="jsonSetTypes" data-container="body" data-size="6" data-selected-text-format="count>2" data-actions-box="true" ng-required="true">
+                        <select multiple id="idCatalogTypes" data-style="bg-black rounded-pill" class="form-control input-sm selectpicker" ng-model="jsonSetTypes" data-container="body" data-size="6" data-selected-text-format="count>2" data-actions-box="true" ng-required="true">
                             <option ng-repeat="type in $localStorage.lookups.typeGroup">{{type.key}}</option>
                         </select><!-- End -->
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-sm-2 col-form-label" for="idCollectionViews">Default View:</label>
+                    <label class="col-sm-2 col-form-label" for="idCatalogViews">Default View:</label>
                     <div class="col-lg-6">
-                        <select id="idCollectionViews" data-style="bg-black rounded-pill" class="form-control input-sm selectpicker" ng-model="item.Catalogs">
+                        <select id="idCatalogViews" data-style="bg-black rounded-pill" class="form-control input-sm selectpicker" ng-model="item.Catalogs">
                             <option>Details</option>
                             <option>Tiles</option>
                         </select>
@@ -87,16 +87,16 @@
         <!--<a ng-repeat="error in errors" style="color:red">* {{error.description}}</a>-->
 
         <button type="submit" class="btn btn-primary dim">
-            <span ng-show="spinUpdateCollection == 'Saving'">
+            <span ng-show="spinUpdateCatalog == 'Saving'">
                 <i class="glyphicon glyphicon-refresh spinning"></i>
             </span>
-            <span ng-show="spinUpdateCollection != 'Saving'">
+            <span ng-show="spinUpdateCatalog != 'Saving'">
                 <i class="glyphicon glyphicon-save"></i>
             </span>
-            {{ spinUpdateCollection }}
+            {{ spinUpdateCatalog }}
         </button>
 
-        <button style="float:right" id="favBtn" ng-click="RemoveCollection($sessionStorage.catalogCollection);" class="btn btn-danger dim" type="button" tooltip-placement="bottom" uib-tooltip="Delete Collection">
+        <button style="float:right" id="favBtn" ng-click="RemoveCatalog($sessionStorage.catalogCollection);" class="btn btn-danger dim" type="button" tooltip-placement="bottom" uib-tooltip="Delete Catalog">
             <i id="favIcon" class="fa fa-trash"></i>
             Remove
         </button>

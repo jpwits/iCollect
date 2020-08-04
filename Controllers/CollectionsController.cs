@@ -38,7 +38,7 @@ namespace iCollect.Controllers
             var username = User.Identities.First().Name;//.Claims.First().Value;
             bool IsAdmin = currentUser.IsInRole("Admin");
             var catalogCollections = _context.CatalogCollections.Where(b => b.Collection.UserId == username &&
-                  b.Collection.IsActive == true).Include(a => a.Collection);
+                  b.Collection.IsActive == true).Include(a => a.Collection).Include(a=>a.Catalog).ThenInclude(b=>b.CatalogType);
 
             //var catalogCollections = from CatalogCollections in _context.CatalogCollections
             //                          join collection in _context.Collections on CatalogCollections.CollectionId equals collection.CollectionId

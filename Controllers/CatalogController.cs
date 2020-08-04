@@ -55,7 +55,7 @@ namespace iCollect.Controllers
         [HttpGet, Route("GetCatalogs")]
         public ActionResult GetCatalogs()
         {
-            var qry = _context.Catalog
+            var qry = _context.Catalog.Include(a=>a.CatalogType)
                 .ToList();
 
             return Json(new { data = qry });

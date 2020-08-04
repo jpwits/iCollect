@@ -127,7 +127,7 @@
         $scope.getCatalogs();
     }
 
-    $scope.getCatalogs();
+    //$scope.getCatalogs();
     /*
      * countries - Used as duallistbox in form advanced view
      */

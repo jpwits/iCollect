@@ -26,7 +26,6 @@
             var jsonResp = JSON.parse(JSON.stringify(response));
             $sessionStorage.CatalogCollections = jsonResp.catalogCollections;
             $scope.spinLoadingCollections = false;
-
         }, function (error) {
             $scope.spinLoadingCollections = false;
             var errorMsg = "";

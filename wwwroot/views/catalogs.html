@@ -20,78 +20,17 @@
                         <div class="ibox-title">
                             <h5>All catalogs</h5>
                             <div class="ibox-tools">
-                                <a ng-click="createCatalog(undefined)" ng-show="ifAdmin();" class="btn btn-primary dim">New Catelog</a>
+                                <a ng-click="createCatalog()" ng-show="ifAdmin();" class="btn btn-primary dim">New Catelog</a>
                             </div>
                         </div>
                     </div>
                     <div class="ibox">
                         <div class="ibox-content">
-                            <!--View <select ng-model="$localStorage.session_pglen" ng-change="setItemsPerPage($localStorage.session_pglen)"><option>10</option><option>20</option><option>50</option><option>100</option><option>200</option><option>500</option><option>1000</option></select> records at a time. [Total Sets : {{$sessionStorage.iColSets.recordsTotal}}]
-                            <br />
-                            <ul uib-pagination total-items="$sessionStorage.iColSets.recordsTotal" items-per-page="$localStorage.session_pglen" ng-model="$sessionStorage.currentPage" ng-change="pageChanged()" max-size="maxSize" class="pagination-sm" boundary-link-numbers="true"></ul>-->
-
                             <div class="div-table fadeInRight">
                                 <!--Header-->
                                 <div class="div-table-row">
-                                    <!--<div class="div-table-col">
-                                        <div class="input-group">
-                                            <input ng-change="filterDate()" type="text" class="form-control col-lg-8" uib-datepicker-popup="{{format}}" ng-model="yrStartSel" is-open="popup1.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" />
-                                            <span class="input-group-btn">
-                                                <button type="button" class="btn btn-default" ng-click="open1()"><i class="glyphicon glyphicon-calendar"></i></button>
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div class="div-table-col">
-                                        <div class="input-group">
-                                            <input ng-change="filterDate()" type="text" class="form-control col-lg-8" uib-datepicker-popup="{{format}}" ng-model="yrEndSel" is-open="popup2.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" />
-                                            <span class="input-group-btn">
-                                                <button type="button" class="btn btn-default" ng-click="open2()"><i class="glyphicon glyphicon-calendar"></i></button>
-                                            </span>
-                                            <span ng-if="$sessionStorage.sortby.Columns[1].Direction === 'Ascending'">
-                                                <i ng-click="sortBy('Year')" class="fa fa-arrow-down"></i>
-                                            </span>
-                                            <span ng-if="$sessionStorage.sortby.Columns[1].Direction === 'Descending'">
-                                                <i ng-click="sortBy('Year')" class="fa fa-arrow-up"></i>
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div class="div-table-col">
-                                        <div class="col-lg-8">
-                                            <select multiple title="Range" data-style="bg-white rounded-pill" class="form-control input-sm selectpicker" ng-model="$sessionStorage.filterbyRanges" ng-change="filterRangeChange($sessionStorage.filterbyRanges)" data-container="body" data-size="6" data-selected-text-format="count>2" data-actions-box="true">
-                                                <option ng-repeat="range in $localStorage.lookups.rangeGroup">{{range.key}}</option>
-                                            </select>
-                                        </div>
-
-                                        <span ng-if="$sessionStorage.sortby.Columns[2].Direction === 'Ascending'">
-                                            <i ng-click="sortBy('Range')" class="fa fa-arrow-down"></i>
-                                        </span>
-
-                                        <span ng-if="$sessionStorage.sortby.Columns[2].Direction === 'Descending'">
-                                            <i ng-click="sortBy('Range')" class="fa fa-arrow-up"></i>
-                                        </span>
-                                    </div>
-                                    <div class="div-table-col">
-                                        <div class="col-lg-6">
-                                            <select multiple title="Type" data-style="bg-black rounded-pill" class="form-control input-sm selectpicker" ng-model="$sessionStorage.filterbySetTypes" ng-change="filterTypeChange($sessionStorage.filterbySetTypes)" data-container="body" data-size="6" data-selected-text-format="count>2" data-actions-box="true">
-                                                <option ng-repeat="type in $localStorage.lookups.typeGroup">{{type.key}}</option>
-                                            </select>
-                                        </div>
-
-                                        <span ng-if="$sessionStorage.sortby.Columns[3].Direction === 'Ascending'">
-                                            <i ng-click="sortBy('SetType')" class="fa fa-arrow-down"></i>
-                                        </span>
-                                        <span ng-if="$sessionStorage.sortby.Columns[3].Direction === 'Descending'">
-                                            <i ng-click="sortBy('SetType')" class="fa fa-arrow-up"></i>
-                                        </span>
-                                    </div>-->
                                     <div class="div-table-col">
                                         <strong>Description</strong>
-                                        <span ng-if="$sessionStorage.sortby.Columns[0].Direction === 'Ascending'">
-                                            <i ng-click="sortBy('Description')" class="fa fa-arrow-down"></i>
-                                        </span>
-                                        <span ng-if="$sessionStorage.sortby.Columns[0].Direction === 'Descending'">
-                                            <i ng-click="sortBy('Description')" class="fa fa-arrow-up"></i>
-                                        </span>
                                     </div>
                                     <div class="div-table-col">
                                         <strong>Name</strong>
@@ -100,14 +39,14 @@
                                         <strong>Date</strong>
                                     </div>
                                     <div class="div-table-col">
+                                        <strong>Catalog Type</strong>
+                                    </div>
+                                    <div class="div-table-col">
                                         <strong>Total</strong>
                                     </div>
-                                    <!--<div class="div-table-col">
-                                        <div class="col-lg-8" style="float:right">
-                                            <button ng-if="$sessionStorage.viewLayout == 'Tiles'" type="button" class="btn btn-default" ng-model="$sessionStorage.viewLayout" ng-click="$sessionStorage.viewLayout = 'Details'"><i class="glyphicon glyphicon-th-list"></i></button>
-                                            <button ng-if="$sessionStorage.viewLayout == 'Details'" type="button" class="btn btn-default" ng-model="$sessionStorage.viewLayout" ng-click="$sessionStorage.viewLayout = 'Tiles'"><i class="glyphicon glyphicon-th"></i></button>
-                                        </div>
-                                    </div>-->
+                                    <div class="div-table-col">
+                                        <strong>Action</strong>
+                                    </div>
                                 </div>
                                 <!--Details-->
                                 <div class="div-table-row">
@@ -131,13 +70,13 @@
                                             <a href="">{{cat.catalogType.type}}</a>
                                         </div>
                                         <div class="div-table-col">
-                                            <a href=""></a>
+                                            <a href="">0</a>
+                                        </div>
+                                        <div class="div-table-col">
+                                            <a ng-click="editCatalog()" ng-show="ifAdmin();" class="btn btn-primary dim">Edit...</a>
                                         </div>
                                     </div>
                                 </div>
-
-                                <!--Footer-->
-                                <!--<ul uib-pagination total-items="$sessionStorage.iColSets.recordsTotal" items-per-page="$localStorage.session_pglen" ng-model="$sessionStorage.currentPage" ng-change="pageChanged()" max-size="maxSize" class="pagination-sm" boundary-link-numbers="true"></ul>-->
                             </div>
                         </div>
                     </div>

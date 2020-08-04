@@ -4,10 +4,8 @@ function CatalogsCtrl($scope, $state, $compile, $templateCache, getCatalogSrv, p
     if ($scope.catalog_pglen === undefined) { $scope.catalog_pglen = 10; }
 
     $scope.createCatalog = function () {
-        if (id === undefined) {
             passData.set("CurCatalog", { items: [], delItems: [] });
             $state.go('app.catalog');
-        }
     };
 
     $scope.gotoCatalog = function (cat) {
