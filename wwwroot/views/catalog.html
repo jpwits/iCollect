@@ -1,4 +1,4 @@
-﻿<div ng-controller="CatalogsCtrl">
+﻿<div ng-controller="CatalogCtrl">
     <div class="row wrapper border-bottom white-bg page-heading">
         <div class="col-sm-4">
             <h2>Catalog</h2>
@@ -18,72 +18,35 @@
             <label class="col-sm-2 col-form-label" for="idCatalogName">Name:</label>
             <div class="col-sm-6">
                 <input class="input-sm form-control" id="idCatalogName" type="text" name="input" required=""
-                       ng-model="$sessionStorage.catalogCollection.collection.name">
+                       ng-model="$stateParams.catalog.cat.name">
             </div>
         </div>
         <div class="form-group row">
             <label class="col-sm-2 col-form-label" for="idCatalogDescription">Description :</label>
             <div class="col-sm-6">
                 <input class="input-sm form-control" id="idCatalogDescription" type="text" name="input" required=""
-                       ng-model="$sessionStorage.catalogCollection.collection.description">
+                       ng-model="$stateParams.catalog.cat.description">
             </div>
         </div>
         <div class="form-group row">
-            <label class="col-sm-2 col-form-label" for="idCatalogCatalog">Catalogue :</label>
-            <div class="col-sm-3">
-                <select id="idCatalogCatalog" data-style="bg-black rounded-pill" class="form-control input-sm selectpicker" data-container="body" data-size="6" ng-required="true">
-                    <option ng-model="$sessionStorage.catalogCollection.collection.catalogId" ng-repeat="iCat in $sessionStorage.iCats">{{iCat.name}}</option>
-                </select><!-- End -->
-                <a ng-click="toCats()" ng-show="ifAdmin();" class="btn btn-primary dim">Catalogs ...</a>
-                <div class="form-group row">
-                    <label class="col-sm-2 col-form-label" for="idCatalogDates">Timespan:</label>
-                    <div class="col-md-4">
-                        <p class="input-group">
-                            <input id="idCatalogDates" type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="dtStart" is-open="popupStart.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" />
-                            <span class="input-group-btn">
-                                <button type="button" class="btn btn-default" ng-click="openStart()"><i class="glyphicon glyphicon-calendar"></i></button>
-                            </span>
-                        </p>
-                    </div>
-                    <div class="col-md-4">
-                        <p class="input-group">
-                            <input id="idCatalogDates" type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="dtEnd" is-open="popupEnd.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" />
-                            <span class="input-group-btn">
-                                <button type="button" class="btn btn-default" ng-click="openEnd()"><i class="glyphicon glyphicon-calendar"></i></button>
-                            </span>
-                        </p>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-sm-2 col-form-label" for="idCatalogRanges">Ranges:</label>
-                    <div class="col-lg-6">
-                        <!-- Multiselect dropdown -->
-                        <select multiple id="idCatalogRanges" data-style="bg-black rounded-pill" class="form-control input-sm selectpicker" ng-model="jsonRanges" data-container="body" data-size="6" data-selected-text-format="count>2" data-actions-box="true" ng-required="true">
-                            <option ng-repeat="range in $localStorage.lookups.rangeGroup">{{range.key}}</option>
-                        </select><!-- End -->
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-sm-2 col-form-label" for="idCatalogTypes">Types:</label>
-                    <div class="col-lg-6">
-                        <!-- Multiselect dropdown -->
-                        <select multiple id="idCatalogTypes" data-style="bg-black rounded-pill" class="form-control input-sm selectpicker" ng-model="jsonSetTypes" data-container="body" data-size="6" data-selected-text-format="count>2" data-actions-box="true" ng-required="true">
-                            <option ng-repeat="type in $localStorage.lookups.typeGroup">{{type.key}}</option>
-                        </select><!-- End -->
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-sm-2 col-form-label" for="idCatalogViews">Default View:</label>
-                    <div class="col-lg-6">
-                        <select id="idCatalogViews" data-style="bg-black rounded-pill" class="form-control input-sm selectpicker" ng-model="item.Catalogs">
-                            <option>Details</option>
-                            <option>Tiles</option>
-                        </select>
-                    </div>
-                </div>
+            <label class="col-sm-2 col-form-label" for="idCatalogDates">Timespan:</label>
+            <div class="col-md-4">
+                <p class="input-group">
+                    <input id="idCatalogDates" type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="dtStart" is-open="popupStart.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" />
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="openStart()"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                </p>
+            </div>
+            <div class="col-md-4">
+                <p class="input-group">
+                    <input id="idCatalogDates" type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="dtEnd" is-open="popupEnd.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" />
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="openEnd()"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                </p>
             </div>
         </div>
-
         <!--<a ng-repeat="error in errors" style="color:red">* {{error.description}}</a>-->
 
         <button type="submit" class="btn btn-primary dim">
@@ -96,19 +59,25 @@
             {{ spinUpdateCatalog }}
         </button>
 
-        <button style="float:right" id="favBtn" ng-click="RemoveCatalog($sessionStorage.catalogCollection);" class="btn btn-danger dim" type="button" tooltip-placement="bottom" uib-tooltip="Delete Catalog">
+        <!--<button style="float:right" id="favBtn" ng-click="RemoveCatalog($sessionStorage.catalogCollection);" class="btn btn-danger dim" type="button" tooltip-placement="bottom" uib-tooltip="Delete Catalog">
             <i id="favIcon" class="fa fa-trash"></i>
             Remove
-        </button>
+        </button>-->
     </form>
     <p class="m-t"> <small>CC &copy; 2020</small> </p>
 
 </div>
 
 
-
-
-
-
-
-
+<!--<div class="row">
+      <div class="col-lg-9">
+          <div class="wrapper wrapper-content animated fadeInRight">
+              <h5>$stateParams</h5>
+              <pre>{{$stateParams | json}}</pre>
+              <h5>$state</h5>
+              <pre>{{$state.current | json}}</pre>
+              <h5>iSet</h5>
+              <pre>{{iSet | json}}</pre>
+          </div>
+      </div>
+  </div>-->

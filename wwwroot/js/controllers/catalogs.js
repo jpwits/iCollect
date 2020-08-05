@@ -1,5 +1,5 @@
 ﻿
-function CatalogsCtrl($scope, $state, $compile, $templateCache, getCatalogSrv, passData, $timeout) {
+function CatalogsCtrl($scope, $state, $stateParams, $compile, $templateCache, getCatalogSrv, passData, $timeout) {
     $scope.catalog_pglen = passData.get("catalog_pglen");
     if ($scope.catalog_pglen === undefined) { $scope.catalog_pglen = 10; }
 
@@ -10,6 +10,12 @@ function CatalogsCtrl($scope, $state, $compile, $templateCache, getCatalogSrv, p
 
     $scope.gotoCatalog = function (cat) {
         $state.go('app.setsng');
+    }
+
+    $scope.editCatalog = function (cat) {
+        $state.go('app.catalog', {
+            viewLayout: null, catalog: { cat }
+        });
     }
 
     $scope.loadCatalog = function (id) {

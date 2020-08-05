@@ -283,6 +283,7 @@
     <None Include="wwwroot\js\config.js" />
     <None Include="wwwroot\js\controllers.js" />
     <None Include="wwwroot\js\controllers\account.js" />
+    <None Include="wwwroot\js\controllers\catalog.js" />
     <None Include="wwwroot\js\controllers\collection.js" />
     <None Include="wwwroot\js\controllers\collections.js" />
     <None Include="wwwroot\js\controllers\main.js" />

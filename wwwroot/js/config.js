@@ -678,7 +678,9 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, IdlePro
         .state('app.catalog', {
             url: "/catalog",
             templateUrl: "views/catalog.html",
-            params: { SetDetail: null, EditSet: true },
+            params: {
+                viewLayout: null, catalog: null
+            },
             data: { pageTitle: 'Catalog' }
         })
         .state('app.catalogs', {
