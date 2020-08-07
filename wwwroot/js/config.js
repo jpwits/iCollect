@@ -679,13 +679,16 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, IdlePro
             url: "/catalog",
             templateUrl: "views/catalog.html",
             params: {
-                viewLayout: null, catalog: null
+                catalog: null
             },
             data: { pageTitle: 'Catalog' }
         })
         .state('app.catalogs', {
             url: "/catalogs",
             templateUrl: "views/catalogs.html",
+            params: {
+                viewLayout: null
+            },
             data: { pageTitle: 'Catalogs' }
         })
         .state('app.activity_stream', {

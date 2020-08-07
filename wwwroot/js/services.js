@@ -107,6 +107,14 @@ function getCatalogsSrv($resource) {
     );
 }
 
+function updateCatalogSrv($resource) {
+    return $resource('api/Catalog/updateCatalog/:id', { id: '@id' }, 
+        {
+            'update': { method: 'PUT' }
+        }
+    );
+}
+
 function updateCatalogCollectionsrv($resource) {
     return $resource('api/Collections/updateCatalogCollection/:id', { id: '@id' }
         , {
@@ -172,6 +180,7 @@ angular
     .service('getUser', getUser)
     .service('getCatalogSrv', getCatalogSrv)
     .service('getCatalogsSrv', getCatalogsSrv)
+    .service('updateCatalogSrv', updateCatalogSrv)
     .service('getCatalogCollections', ['$resource', getCatalogCollections])
     .service('updateUserItem', updateUserItem)
     .service('authUser', authUser)

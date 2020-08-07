@@ -4,8 +4,15 @@ function CatalogsCtrl($scope, $state, $stateParams, $compile, $templateCache, ge
     if ($scope.catalog_pglen === undefined) { $scope.catalog_pglen = 10; }
 
     $scope.createCatalog = function () {
-            passData.set("CurCatalog", { items: [], delItems: [] });
-            $state.go('app.catalog');
+        cat = {};
+        cat.catalogId = 0;
+        cat.audience = 1;
+        cat.sStartDate = new Date(1900, 1, 1);
+        cat.sEndDate = new Date(2020, 1, 1);
+        cat.isActive = true;
+        $state.go('app.catalog', {
+             catalog: { cat }
+        });
     };
 
     $scope.gotoCatalog = function (cat) {
@@ -14,7 +21,7 @@ function CatalogsCtrl($scope, $state, $stateParams, $compile, $templateCache, ge
 
     $scope.editCatalog = function (cat) {
         $state.go('app.catalog', {
-            viewLayout: null, catalog: { cat }
+             catalog: { cat }
         });
     }
 
@@ -26,7 +33,9 @@ function CatalogsCtrl($scope, $state, $stateParams, $compile, $templateCache, ge
             //    return a.position - b.position;
             //}).filter(img => img.isActive === true);
             passData.set("CurCatalog", curCatalog);
-            $state.go('app.catalog');
+            $state.go('app.catalog', {
+                catalog: { curCatalog }
+            });
         },
         function (error) {
             alert("Error Retrieving catalogs : " + error);

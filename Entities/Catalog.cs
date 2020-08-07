@@ -18,6 +18,7 @@ namespace iCollect.Entities
         public bool? IsActive { get; set; }
         public DateTime? SStartDate { get; set; }
         public DateTime? SEndDate { get; set; }
+        public int? Audience { get; set; }
 
         public virtual CatalogTypes CatalogType { get; set; }
         public virtual ICollection<CatalogCollections> CatalogCollections { get; set; }

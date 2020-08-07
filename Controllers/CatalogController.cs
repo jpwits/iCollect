@@ -70,9 +70,9 @@ namespace iCollect.Controllers
             return new JsonResult(set);
         }
 
-        [HttpPut("Edit")]
-        [ValidateAntiForgeryToken]
-        public async Task<int> Edit([FromBody] Catalog data)
+        [HttpPut("updateCatalog")]
+        //[ValidateAntiForgeryToken]
+        public async Task<int> updateCatalog([FromBody] Catalog data)
         {
             _context.Update(data);
             int rc = await _context.SaveChangesAsync();
