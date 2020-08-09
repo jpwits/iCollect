@@ -1,4 +1,4 @@
-﻿function AccountCtrl($window, $sessionStorage, $localStorage, $scope, $state, getSetsSrvNg, loginUser, logoutUser, registerUser, getRoles, getCatalogsSrv, authUser) {
+﻿function AccountCtrl($window, $sessionStorage, $localStorage, $scope, $state, getSetsSrvNg, loginUser, logoutUser, registerUser, getRoles, getCatalogTypesSrv,authUser) {
     $scope.$sessionStorage = $sessionStorage.$default(/* any defaults here */);
     $scope.$localStorage = $localStorage.$default(/* any defaults here */);
 
@@ -113,18 +113,18 @@
         });
     };
 
-    $scope.getCatalogs = () => {
-            getCatalogsSrv.get().$promise.then(function (response) {
-            var jsonResp = JSON.parse(JSON.stringify(response));
-            $sessionStorage.iCats = jsonResp.data;
+    $scope.getCatalogTypes = () => {
+        getCatalogTypesSrv.get().$promise.then(function (response) {
+            var jsonResp = JSON.parse(JSON.stringify(response.data));
+            $sessionStorage.catTypes = jsonResp;
         }, function (error) {
             $sessionStorage.iComsErr = JSON.parse(JSON.stringify(error));
-            alert("Error " + $sessionStorage.iComsErr.status + " Retrieving Catalogs : " + $sessionStorage.iComsErr.data);
+            alert("Error " + $sessionStorage.iComsErr.status + " Retrieving Catalog Types : " + $sessionStorage.iComsErr.data);
         });
     };
 
-    if ($sessionStorage.iCats === undefined) {
-        $scope.getCatalogs();
+    if ($sessionStorage.catTypes === undefined) {
+        $scope.getCatalogTypes();
     }
 
     //$scope.getCatalogs();

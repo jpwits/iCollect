@@ -107,6 +107,15 @@ function getCatalogsSrv($resource) {
     );
 }
 
+
+function getCatalogTypesSrv($resource) {
+    return $resource('api/Catalog/getCatalogTypes', null,
+        {
+            'get': { method: 'GET' }
+        }
+    );
+}
+
 function updateCatalogSrv($resource) {
     return $resource('api/Catalog/updateCatalog/:id', { id: '@id' }, 
         {
@@ -156,31 +165,14 @@ function getRoles($resource) {
     );
 }
 
-function passData() {
-
-    var persistObject = [];
-
-    function set(objectName, data) {
-        persistObject[objectName] = data;
-    }
-    function get(objectName) {
-        return persistObject[objectName];
-    }
-
-    return {
-        set: set,
-        get: get
-    };
-}
-
 angular
     .module('inspinia')
     .service('updateSet', updateSet)
-    .service('passData', passData)
     .service('getUser', getUser)
     .service('getCatalogSrv', getCatalogSrv)
     .service('getCatalogsSrv', getCatalogsSrv)
     .service('updateCatalogSrv', updateCatalogSrv)
+    .service('getCatalogTypesSrv', getCatalogTypesSrv)
     .service('getCatalogCollections', ['$resource', getCatalogCollections])
     .service('updateUserItem', updateUserItem)
     .service('authUser', authUser)

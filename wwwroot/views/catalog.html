@@ -31,11 +31,8 @@
         <div class="form-group row">
             <label class="col-sm-2 col-form-label" for="idCatalogViews">Catalog Type:</label>
             <div class="col-lg-6">
-                <select id="idCatalogViews" data-style="bg-black rounded-pill" class="form-control input-sm selectpicker" ng-model="catalogType">
-                    <option>Coins</option>
-                    <option>Stamps</option>
-                    <option>Baseball Cards</option>
-                    <!--<option ng-repeat="range in $localStorage.lookups.rangeGroup">{{range.key}}</option>-->
+                <select id="idCatalogViews" data-style="bg-black rounded-pill" class="form-control input-sm selectpicker" 
+                        ng-model="$stateParams.catalog.cat.catalogTypeId" ng-options="catType.catalogTypeId as catType.type for catType in $sessionStorage.catTypes" >
                 </select>
             </div>
         </div>

@@ -1,8 +1,18 @@
 ﻿
-function CatalogsCtrl($scope, $state, $stateParams, $compile, $templateCache, getCatalogSrv, passData, $timeout) {
-    $scope.catalog_pglen = passData.get("catalog_pglen");
-    if ($scope.catalog_pglen === undefined) { $scope.catalog_pglen = 10; }
+function CatalogsCtrl($scope, $sessionStorage, $state, $stateParams, $compile, $templateCache, getCatalogsSrv, getCatalogSrv,  $timeout) {
 
+    $scope.getCatalogs = () => {
+        getCatalogsSrv.get().$promise.then(function (response) {
+            var jsonResp = JSON.parse(JSON.stringify(response));
+            $sessionStorage.iCats = jsonResp.data;
+        }, function (error) {
+            $sessionStorage.iComsErr = JSON.parse(JSON.stringify(error));
+            alert("Error " + $sessionStorage.iComsErr.status + " Retrieving Catalogs : " + $sessionStorage.iComsErr.data);
+        });
+    };
+
+    $scope.getCatalogs();
+  
     $scope.createCatalog = function () {
         cat = {};
         cat.catalogId = 0;
@@ -25,22 +35,17 @@ function CatalogsCtrl($scope, $state, $stateParams, $compile, $templateCache, ge
         });
     }
 
-    $scope.loadCatalog = function (id) {
-        getCatalogSrv.get({ id: id }).$promise.then(function (response) {
-            var curCatalog = JSON.parse(JSON.stringify(response));
-            //curCatalog.delItems = curCatalog.items.filter(img => img.isActive === false);
-            //curCatalog.items = curCatalog.items.sort(function (a, b) {
-            //    return a.position - b.position;
-            //}).filter(img => img.isActive === true);
-            passData.set("CurCatalog", curCatalog);
-            $state.go('app.catalog', {
-                catalog: { curCatalog }
-            });
-        },
-        function (error) {
-            alert("Error Retrieving catalogs : " + error);
-        });
-    };
+    //$scope.loadCatalog = function (id) {
+    //    getCatalogSrv.get({ id: id }).$promise.then(function (response) {
+    //        var curCatalog = JSON.parse(JSON.stringify(response));
+    //        $state.go('app.catalog', {
+    //            catalog: { curCatalog }
+    //        });
+    //    },
+    //    function (error) {
+    //        alert("Error Retrieving catalogs : " + error);
+    //    });
+    //};
 }
 
 angular

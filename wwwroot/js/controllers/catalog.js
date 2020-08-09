@@ -42,7 +42,7 @@
         $scope.entry = new updateCatalogSrv(catalog);
         $scope.entry.$update(function (response) {
             $scope.spinUpdateCatalog = "Save";
-            $state.go("app.Catalogs");
+            $state.go("app.catalogs");
         }, function (error) {
             $sessionStorage.iComsErr = JSON.parse(JSON.stringify(error));
             alert("Error " + $sessionStorage.iComsErr.status + " Updating Catalog : " + $sessionStorage.iComsErr.data);

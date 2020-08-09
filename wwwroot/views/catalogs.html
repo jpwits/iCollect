@@ -30,13 +30,16 @@
                                 <!--Header-->
                                 <div class="div-table-row">
                                     <div class="div-table-col">
-                                        <strong>Description</strong>
-                                    </div>
-                                    <div class="div-table-col">
                                         <strong>Name</strong>
                                     </div>
                                     <div class="div-table-col">
-                                        <strong>Date</strong>
+                                        <strong>Description</strong>
+                                    </div>
+                                    <div class="div-table-col">
+                                        <strong>Start Date</strong>
+                                    </div>
+                                    <div class="div-table-col">
+                                        <strong>End Date</strong>
                                     </div>
                                     <div class="div-table-col">
                                         <strong>Catalog Type</strong>
@@ -55,10 +58,10 @@
                                     </div>
                                     <div ng-repeat="(catidx,cat) in $sessionStorage.iCats" class="div-table-row">
                                         <div class="div-table-col">
-                                            <a href="" ng-click="gotoCatalog(cat)">{{cat.description}}</a>
+                                            <a href="" ng-click="loadCatalog($event,catidx)">{{cat.name}}</a>
                                         </div>
                                         <div class="div-table-col">
-                                            <a href="" ng-click="loadCatalog($event,catidx)">{{cat.Name}}</a>
+                                            <a href="" ng-click="gotoCatalog(cat)">{{cat.description}}</a>
                                         </div>
                                         <div class="div-table-col">
                                             <a href="">{{cat.sStartDate}}</a>
