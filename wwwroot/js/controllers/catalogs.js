@@ -26,7 +26,9 @@ function CatalogsCtrl($scope, $sessionStorage, $state, $stateParams, $compile, $
     };
 
     $scope.gotoCatalog = function (cat) {
-        $state.go('app.setsng');
+        $state.go('app.setsng',{
+            viewLayout: null, catId: cat.catalogId
+        });
     }
 
     $scope.editCatalog = function (cat) {

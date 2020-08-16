@@ -14,12 +14,10 @@
  *  - flotChartCtrl
  *  - rickshawChartCtrl
  *  - sparklineChartCtrl
- *  - widgetFlotChart
  *  - modalDemoCtrl
  *  - ionSlider
  *  - wizardCtrl
  *  - CalendarCtrl
- *  - chartJsCtrl
  *  - GoogleMaps
  *  - ngGridCtrl
  *  - codeEditorCtrl
@@ -1146,7 +1144,6 @@ angular
     .controller('jstreeCtrl', jstreeCtrl)
     .controller('datamapsCtrl', datamapsCtrl)
     .controller('pdfCtrl', pdfCtrl)
-    .controller('passwordMeterCtrl', passwordMeterCtrl)
-    .controller("HelpDeskCtrl", HelpDeskCtrl);
+    .controller('passwordMeterCtrl', passwordMeterCtrl);
 
 
