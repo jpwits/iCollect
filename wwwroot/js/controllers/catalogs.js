@@ -1,5 +1,5 @@
 ﻿
-function CatalogsCtrl($scope, $sessionStorage, $state, $stateParams, $compile, $templateCache, getCatalogsSrv, getCatalogSrv,  $timeout) {
+function CatalogsCtrl($scope, $sessionStorage, $state, $stateParams, $compile, $templateCache, getCatalogsSrv, getCatalogSrv, $timeout, getMasterCollectionSrv) {
 
     $scope.getCatalogs = () => {
         getCatalogsSrv.get().$promise.then(function (response) {
@@ -26,9 +26,25 @@ function CatalogsCtrl($scope, $sessionStorage, $state, $stateParams, $compile, $
     };
 
     $scope.gotoCatalog = function (cat) {
-        $state.go('app.setsng',{
-            viewLayout: null, catId: cat.catalogId
-        });
+        $scope.getMasterCollection = () => {
+            getMasterCollectionSrv.get({ catalogId: cat.catalogId }).$promise.then(function (response) {
+                var jsonResp = JSON.parse(JSON.stringify(response));
+                $state.go('app.setsng', {
+                    viewLayout: null, cat: cat, coll: jsonResp.collection, source : 'catalog'
+                });
+            }, function (error) {
+                var errorMsg = "";
+                if (error.status === 401) {
+                    errorMsg = "Unauthorised";
+                }
+                else {
+                    errorMsg = error.data;
+                }
+                alert("Error " + $sessionStorage.iComsErr.status + " Retrieving Anonymous collection : " + errorMsg);
+            });
+        };
+        $scope.getMasterCollection();
+        
     }
 
     $scope.editCatalog = function (cat) {

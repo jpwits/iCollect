@@ -266,7 +266,7 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, IdlePro
             url: "/setsng",
             templateUrl: "views/setsng.html",
             params: {
-                viewLayout: null, catId: null
+                viewLayout: null, cat: {}, coll: {}, source : 'none'
             },
             data: { pageTitle: 'Setsng' }
         })

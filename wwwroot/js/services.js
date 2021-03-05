@@ -15,6 +15,22 @@ function getCatalogCollections($resource) {
     }
 }
 
+function getMasterCollectionSrv($resource) {
+    return $resource('api/Collections/getMasterCollection/:catalogId', { catalogId: '@catalogId' },
+        {
+            'get': { method: 'GET' }
+        }
+    );
+}
+
+function getAnonymousSetsSrv($resource) {
+    return $resource('api/SetsNg/getAnonymousSets/:id', { id: '@id' },
+        {
+            'get': { method: 'GET' }
+        }
+    );
+}
+
 function getSetsSrvNg($resource) {
     return {
         sets: function (token) {
@@ -73,16 +89,15 @@ function getSetsSrvNg($resource) {
     }
 }
 
-function updateSet($resource, $sessionStorage) {
-    return $resource('api/SetsNg/updateSet/:id', { id: '@id' }
-        , {
-            'update': {
-                method: 'PUT',
-                headers: {
-                    'Authorization': 'Bearer ' + $sessionStorage.User.token
-                }
+function updateSet($resource, token) {
+    return $resource('api/SetsNg/updateSet/:id', { id: '@id' }, {
+        'update': {
+            method: 'PUT',
+            headers: {
+                'Authorization': 'Bearer ' + token
             }
         }
+    }
     );
 }
 
@@ -117,7 +132,7 @@ function getCatalogTypesSrv($resource) {
 }
 
 function updateCatalogSrv($resource) {
-    return $resource('api/Catalog/updateCatalog/:id', { id: '@id' }, 
+    return $resource('api/Catalog/updateCatalog/:id', { id: '@id' },
         {
             'update': { method: 'PUT' }
         }
@@ -167,12 +182,14 @@ function getRoles($resource) {
 
 angular
     .module('inspinia')
-    .service('updateSet', updateSet)
+    .service('updateSet', ['$resource', updateSet])
     .service('getUser', getUser)
     .service('getCatalogSrv', getCatalogSrv)
     .service('getCatalogsSrv', getCatalogsSrv)
+    .service('getAnonymousSetsSrv', getAnonymousSetsSrv)
     .service('updateCatalogSrv', updateCatalogSrv)
     .service('getCatalogTypesSrv', getCatalogTypesSrv)
+    .service('getMasterCollectionSrv', getMasterCollectionSrv)
     .service('getCatalogCollections', ['$resource', getCatalogCollections])
     .service('updateUserItem', updateUserItem)
     .service('authUser', authUser)

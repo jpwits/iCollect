@@ -58,7 +58,7 @@
                                     </div>
                                     <div ng-repeat="(catidx,cat) in $sessionStorage.iCats" class="div-table-row">
                                         <div class="div-table-col">
-                                            <a href="" ng-click="loadCatalog($event,catidx)">{{cat.name}}</a>
+                                            <a href="" ng-click="loadCatalog($event,cat)">{{cat.name}}</a>
                                         </div>
                                         <div class="div-table-col">
                                             <a href="" ng-click="gotoCatalog(cat)">{{cat.description}}</a>

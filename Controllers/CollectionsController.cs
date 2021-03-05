@@ -70,6 +70,25 @@ namespace iCollect.Controllers
             //});
         }
 
+        [AllowAnonymous]
+        // [Authorize(Roles = "Admin")]
+        [HttpGet, Route("getMasterCollection/{catalogId}")]
+        public ActionResult getMasterCollection(int catalogId)
+        {
+            var masterCollection = _context.CatalogCollections.Include(a=>a.Collection).FirstOrDefault(b => b.CatalogId == catalogId &&
+                                b.Collection.UserId == "jpwits@gmail.com" && b.Collection.IsActive == true && b.IsMaster == true);
+
+            //var catalogCollection = from userItems in _context.UserItems
+            //             join collection in _context.Collection on userItems.CollectionId equals collection.CollectionId
+            //             where userItems.UserId == User.Identity.Name
+            //             select collection;
+            return Ok(masterCollection);
+            //return Json(new
+            //{
+            //    catalogCollection,
+            //});
+        }
+
         // [Authorize(Roles = "Admin")]
         [HttpPut("updateCatalogCollection")]
         //[ValidateAntiForgeryToken]

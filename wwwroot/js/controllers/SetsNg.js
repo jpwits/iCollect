@@ -1,4 +1,4 @@
-﻿function SetsNgCtrl($scope, $state, $stateParams, $sessionStorage, $localStorage, getSetsSrvNg, $timeout, $q, updateSet) {
+﻿function SetsNgCtrl($scope, $state, $stateParams, $sessionStorage, $localStorage, getSetsSrvNg, $timeout, $q, updateSet, getAnonymousSetsSrv) {
     //$sessionStorage.newSet = false;
 
     $scope.spinLoadingSets = false;
@@ -51,18 +51,25 @@
     $scope.popup2 = {
         opened: false
     };
-    if ($sessionStorage.collection === undefined) {
-        $sessionStorage.collection = $state.params.collection;
-    }
 
-    else if ($sessionStorage.collection === null) {/* #####!!!!!!!!!*/
-        $sessionStorage.collection = 0;
-    }
+    //if ($sessionStorage.collection === undefined) {
+    //    if ($state.params.collection !== undefined) {
+    //        $sessionStorage.collection = $state.params.collection;
+    //    }
+    //    else {
+    //        $sessionStorage.collection = 0;
+    //    }
+    //}
+    //else if ($sessionStorage.collection === null) {/* #####!!!!!!!!!*/
+    //    $sessionStorage.collection = 0;
+    //}
 
     if ($sessionStorage.filterbyYear === undefined) $sessionStorage.filterbyYear = {
-        "Start": $sessionStorage.collection.startDate,
-        "End": $sessionStorage.collection.endDate
+        "Start": $state.params.coll.startDate,
+        "End": $state.params.coll.endDate
     };
+
+
 
     $scope.yrStartSel = new Date($sessionStorage.filterbyYear.Start);
     $scope.yrEndSel = new Date($sessionStorage.filterbyYear.End);
@@ -125,10 +132,7 @@
     }
 
     $scope.getsets = () => {
-        if ($sessionStorage.User === undefined) {
-            $state.go("logins");
-            return;
-        }
+
         var currentfilterbyRanges = $sessionStorage.filterbyRanges;
         if ($sessionStorage.filterbyRanges.length === $localStorage.lookups.rangeGroup.length) {
             currentfilterbyRanges = ["All"];
@@ -138,8 +142,13 @@
         if ($sessionStorage.filterbySetTypes.length === $localStorage.lookups.typeGroup.length) {
             currentfilterbySetTypes = ["All"];
         }
-
+        if ($sessionStorage.User === undefined && $state.params.source === 'collection') {
+            $state.go("logins");
+            return;
+        }
+        
         $scope.spinLoadingSets = true;
+
         getSetsSrvNg.sets($sessionStorage.User.token).update({
             start: ($sessionStorage.currentPage - 1) * $localStorage.session_pglen,
             length: $sessionStorage.currentPage * $localStorage.session_pglen,
@@ -148,38 +157,41 @@
             filterbyRanges: JSON.stringify(currentfilterbyRanges),
             filterbySetTypes: JSON.stringify(currentfilterbySetTypes),
             groupby: JSON.stringify($sessionStorage.groupby),
-            collectionId: $sessionStorage.collection.collectionId
+            collectionId: $state.params.coll.collectionId
         }).$promise.then(function (response) {
-            $sessionStorage.iColSets = JSON.parse(JSON.stringify(response));
-            $scope.dtMin = new Date($sessionStorage.iColSets.yrstartmin);
-            $scope.dtMax = new Date($sessionStorage.iColSets.yrendmax);
-            angular.forEach($sessionStorage.iColSets.data, function (set) {
-                if (set.items.length > 0) {
-                    set.delItems = set.items.filter(item => item.isActive === false);
-                    set.items = set.items.sort(function (a, b) {
-                        return a.position - b.position;
-                    }).filter(item => item.isActive === true);
-                    set.coinList = "";
-                    //if (set.setType === "SingleCoin") {
-                        angular.forEach(set.items, function (item) {
-                            if (item.type === "Coin") {
-                                set.singleDenominator =  item.denominator 
-                                set.singleWeight = item.weight
-                                set.singleMetalContent = item.metalContent;
-                                set.singleMintMark = item.mintMark;
-                            }
-                        })
-                    //}
-                }
-            });
-            $sessionStorage.numberOfPages = Math.ceil($sessionStorage.iColSets.recordsTotal / $localStorage.session_pglen);
-            $scope.spinLoadingSets = false;
+            $scope.processResponse(response);
         }, function (error) {
             $scope.spinLoadingSets = false;
             $sessionStorage.iComsErr = JSON.parse(JSON.stringify(error));
             alert("Error " + $sessionStorage.iComsErr.status + " Retrieving Sets : " + $sessionStorage.iComsErr.data);
         });
     };
+
+    $scope.processResponse = function (response)
+    {
+        $sessionStorage.iColSets = JSON.parse(JSON.stringify(response));
+        $scope.dtMin = new Date($sessionStorage.iColSets.yrstartmin);
+        $scope.dtMax = new Date($sessionStorage.iColSets.yrendmax);
+        angular.forEach($sessionStorage.iColSets.data, function (set) {
+            if (set.items.length > 0) {
+                set.delItems = set.items.filter(item => item.isActive === false);
+                set.items = set.items.sort(function (a, b) {
+                    return a.position - b.position;
+                }).filter(item => item.isActive === true);
+                set.coinList = "";
+                angular.forEach(set.items, function (item) {
+                    if (item.type === "Coin") {
+                        set.singleDenominator = item.denominator
+                        set.singleWeight = item.weight
+                        set.singleMetalContent = item.metalContent;
+                        set.singleMintMark = item.mintMark;
+                    }
+                })
+            }
+        });
+        $sessionStorage.numberOfPages = Math.ceil($sessionStorage.iColSets.recordsTotal / $localStorage.session_pglen);
+        $scope.spinLoadingSets = false;
+    }
 
     $scope.setItemsPerPage = function (num) {
         $localStorage.session_pglen = num;

@@ -2,8 +2,8 @@
     $scope.spinLoadingCollections = false;
 
     $scope.GotoCollection = (catalogCollection) => {
-        $sessionStorage.collection = catalogCollection.collection;
-        $state.go('app.setsng', { viewLayout: 'Tiles'});
+        //$sessionStorage.collection = catalogCollection.collection;
+        $state.go('app.setsng', { viewLayout: 'Tiles' , coll : collection, source : 'collection'});
     };
 
     $scope.EditCollection = (catalogCollection) => {
