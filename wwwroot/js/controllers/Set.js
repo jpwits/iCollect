@@ -64,7 +64,7 @@
         if (set.setId === undefined) {
             set.setId = 0;
             set.year = set.date.getFullYear();
-            set.collectionId = 1;
+            set.catalogId = 1;
             set.isActive = true;
         }
         $scope.searchButtonText = "Saving";
@@ -72,7 +72,7 @@
         if (clone.delItems !== undefined) {
             clone.items = clone.items.concat(clone.delItems);
         }
-        $scope.entry = new updateSet(clone);
+        $scope.entry = new updateSet(clone,$sessionStorage.User.token);
         $scope.entry.$update(function (response) {
             if (response.items.length > 0) {
                 response.delItems = response.items.filter(item => item.isActive === false);

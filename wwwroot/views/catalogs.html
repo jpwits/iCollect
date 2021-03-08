@@ -1,0 +1,95 @@
+﻿<div ng-controller="CatalogsCtrl">
+    <div class="row wrapper bSet-bottom white-bg page-heading">
+        <div class="col-sm-4">
+            <h2>Catalog list</h2>
+            <ol class="breadcrumb">
+                <li>
+                    <a href="index.html">Home</a>
+                </li>
+                <li class="active">
+                    <strong>Catalog list</strong>
+                </li>
+            </ol>
+        </div>
+    </div>
+    <div class="animated fadeInRight">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="wrapper wrapper-content">
+                    <div class="ibox">
+                        <div class="ibox-title">
+                            <h5>All catalogs</h5>
+                            <div class="ibox-tools">
+                                <a ng-click="createCatalog()" ng-show="ifAdmin();" class="btn btn-primary dim">New Catelog</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ibox">
+                        <div class="ibox-content">
+                            <div class="div-table fadeInRight">
+                                <!--Header-->
+                                <div class="div-table-row">
+                                    <div class="div-table-col">
+                                        <strong>Name</strong>
+                                    </div>
+                                    <div class="div-table-col">
+                                        <strong>Description</strong>
+                                    </div>
+                                    <div class="div-table-col">
+                                        <strong>Start Date</strong>
+                                    </div>
+                                    <div class="div-table-col">
+                                        <strong>End Date</strong>
+                                    </div>
+                                    <div class="div-table-col">
+                                        <strong>Catalog Type</strong>
+                                    </div>
+                                    <div class="div-table-col">
+                                        <strong>Total</strong>
+                                    </div>
+                                    <div class="div-table-col">
+                                        <strong>Action</strong>
+                                    </div>
+                                </div>
+                                <!--Details-->
+                                <div class="div-table-row">
+                                    <div ng-show="spinLoadingCats == true">
+                                        <i style="font-size: 30px;" class="glyphicon glyphicon-refresh spinning"></i>
+                                    </div>
+                                    <div ng-repeat="(catidx,cat) in $sessionStorage.iCats" class="div-table-row">
+                                        <div class="div-table-col">
+                                            <a href="" ng-click="loadCatalog($event,cat)">{{cat.name}}</a>
+                                        </div>
+                                        <div class="div-table-col">
+                                            <a href="" ng-click="gotoCatalog(cat)">{{cat.description}}</a>
+                                        </div>
+                                        <div class="div-table-col">
+                                            <a href="">{{cat.sStartDate}}</a>
+                                        </div>
+                                        <div class="div-table-col">
+                                            <a href="">{{cat.sEndDate}}</a>
+                                        </div>
+                                        <div class="div-table-col">
+                                            <a href="">{{cat.catalogType.type}}</a>
+                                        </div>
+                                        <div class="div-table-col">
+                                            <a href="">0</a>
+                                        </div>
+                                        <div class="div-table-col">
+                                            <a ng-click="editCatalog(cat)" ng-show="ifAdmin();" class="btn btn-primary dim">Edit...</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--<h5>params</h5>
+   <pre>{{$stateParams | json}}</pre>
+   <h5>state</h5>
+   <pre>{{$state.current | json}}</pre>-->

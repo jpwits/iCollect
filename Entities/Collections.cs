@@ -7,18 +7,21 @@ namespace iCollect.Entities
     {
         public Collections()
         {
-            AlbumCollections = new HashSet<AlbumCollections>();
-            Sets = new HashSet<Sets>();
+            CatalogCollections = new HashSet<CatalogCollections>();
+            UserItems = new HashSet<UserItems>();
         }
 
         public int CollectionId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public int? CollectionTypeId { get; set; }
+        public string UserId { get; set; }
+        public DateTime? StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
         public bool? IsActive { get; set; }
+        public string JsonRanges { get; set; }
+        public string JsonSetTypes { get; set; }
 
-        public virtual CollectionTypes CollectionType { get; set; }
-        public virtual ICollection<AlbumCollections> AlbumCollections { get; set; }
-        public virtual ICollection<Sets> Sets { get; set; }
+        public virtual ICollection<CatalogCollections> CatalogCollections { get; set; }
+        public virtual ICollection<UserItems> UserItems { get; set; }
     }
 }

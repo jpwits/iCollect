@@ -44,8 +44,8 @@ namespace iCollect.Controllers
         }
 
         [Authorize]
-        [HttpPut, Route("GetSets/{start}/{length}/{sortby}/{filterbyYear}/{filterbyRanges}/{filterbySetTypes}/{groupby}/{albumId}")]
-        public ActionResult GetSets(int start, int length, string sortby, string filterbyYear, string filterbyRanges, string filterbySetTypes, string groupby, int albumId)
+        [HttpPut, Route("GetSets/{start}/{length}/{sortby}/{filterbyYear}/{filterbyRanges}/{filterbySetTypes}/{groupby}/{collectionId}")]
+        public ActionResult GetSets(int start, int length, string sortby, string filterbyYear, string filterbyRanges, string filterbySetTypes, string groupby, int collectionId)
         {
             var sortbyObj = JsonConvert.DeserializeObject<dynamic>(sortby);
             var filterbyYearObj = JsonConvert.DeserializeObject<dynamic>(filterbyYear);
@@ -72,7 +72,7 @@ namespace iCollect.Controllers
             var qryUser = from sets in qryTake
                           join items in _context.Items on sets.SetId equals items.SetId
                           join userItems in _context.UserItems on items.ItemId equals userItems.ItemId
-                          where (userItems.UserId == User.Identity.Name && userItems.AlbumId == albumId && sets.IsActive == true)
+                          where (userItems.UserId == User.Identity.Name && userItems.CollectionId == collectionId && sets.IsActive == true)
                           select sets;
             var qryUserTake = qryUser.ToList();
 
@@ -90,6 +90,42 @@ namespace iCollect.Controllers
                 data = qryRes
             });
         }
+    
+        [AllowAnonymous]
+        [HttpPut, Route("getAnonymousSets/{start}/{length}/{sortby}/{filterbyYear}/{filterbyRanges}/{filterbySetTypes}/{groupby}/{collectionId}")]
+        public ActionResult getAnonymousSets(int start, int length, string sortby, string filterbyYear, string filterbyRanges, string filterbySetTypes, string groupby, int collectionId)
+        {
+            var sortbyObj = JsonConvert.DeserializeObject<dynamic>(sortby);
+            var filterbyYearObj = JsonConvert.DeserializeObject<dynamic>(filterbyYear);
+            var filterbyRangesObj = JsonConvert.DeserializeObject<dynamic>(filterbyRanges);
+            var filterbySetTypesObj = JsonConvert.DeserializeObject<dynamic>(filterbySetTypes);
+            var groupbyObj = JsonConvert.DeserializeObject<dynamic>(groupby);
+            var yrGroup = _context.Sets.AsEnumerable().GroupBy(a => a.Year);
+            int dtMin = yrGroup.FirstOrDefault().Key ?? 1987;
+            int yrEndMax = yrGroup.OrderByDescending(a => a.Key).FirstOrDefault().Key ?? 2015;
+            var sortCol = sortbyObj.Columns;
+            var qry = _context.Sets.AsQueryable();
+            qry = qry.Where(y => y.IsActive == true);
+            qry = filterQry(qry, filterbyYearObj, filterbyRangesObj, filterbySetTypesObj);
+            var recordsTotal = qry.Count();
+
+            qry = sortQry(qry, sortbyObj);
+
+            qry = qry.Skip(start)
+                .Take(length)
+                .Include(a => a.Items);
+
+            var qryTake = qry.ToList();
+         
+            return Json(new
+            {
+                recordsTotal = recordsTotal,
+                yrstartmin = dtMin,
+                yrendmax = yrEndMax,
+                data = qryTake
+            });
+        }
+
 
         [Authorize]
         [HttpGet, Route("GetRangeCoins/{year}/{type}/{range}")]

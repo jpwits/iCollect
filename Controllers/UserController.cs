@@ -1,4 +1,5 @@
 ﻿using iCollect.Entities;
+using iCollect.Enums;
 using iCollect.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
@@ -45,7 +46,8 @@ namespace iCollect.Controllers
                     //var name = _signInManager.GetExternalLoginInfoAsync();
                     //Retrieve authenticated user's details
                     var user = await _userManager.FindByEmailAsync(model.Username);
-
+                    var test = _userManager.GetRolesAsync(user);
+                    _userManager.AddToRoleAsync(user, RoleNames.Admin);
                     //Generate unique token with user's details
                     var tokenString = await GenerateJSONWebToken(user);
 
@@ -53,6 +55,24 @@ namespace iCollect.Controllers
                     return Ok(new { token = tokenString });
                 }
                 return Unauthorized();
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, e.Message);
+            }
+        }
+
+        [Authorize]
+        [HttpGet, Route("getroles/{username}")]
+        public async Task<IActionResult> GetRoles(string username)
+        {
+            try
+            {
+                    //Retrieve authenticated user's details
+                    var user = await _userManager.FindByEmailAsync(username);
+                    var roles = await _userManager.GetRolesAsync(user);
+                   
+                    return Ok(new { roles = roles });
             }
             catch (Exception e)
             {
@@ -88,6 +108,7 @@ namespace iCollect.Controllers
             //Return token string
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
+
 
         //[Authorize(Roles = RoleEnum.Admin)]
         //[HttpGet]

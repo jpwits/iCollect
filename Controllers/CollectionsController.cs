@@ -2,82 +2,110 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Cors;
 using iCollect.Entities;
-using System.IO;
-using System.Drawing;
-using System.Text;
-using Newtonsoft.Json;
-using System.Drawing.Imaging;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace iCollect.Controllers
 {
+    [Authorize]
+    [ApiController]
     [Route("api/Collections"), Produces("application/json"), EnableCors("AppPolicy")]
     public class CollectionsController : Controller
     {
+        //private readonly UserManager<IdentityUser> _userManager;
+        //private readonly SignInManager<IdentityUser> _signInManager;
+        //private readonly RoleManager<IdentityRole> _roleManager;
+
         private readonly icollectdbContext _context;
 
         public CollectionsController(icollectdbContext context)
         {
+            //_signInManager = signInManager;
+            //_userManager = userManager;
+            //_roleManager = roleManager;
             _context = context;
         }
 
-        [HttpPost, Route("getData")]
-        public ActionResult getData()
+        //[Authorize(Roles = "Admin")]
+        [HttpGet, Route("getCatalogCollections")]
+        public async Task<IActionResult> getCatalogCollections()
         {
-            //Datatable parameter
-            var draw = Request.Form.Where(a => a.Key == "draw").Select(b => b.Value).FirstOrDefault()[0];
-            //paging parameter
-            var start = Request.Form.Where(a => a.Key == "start").Select(b => b.Value).FirstOrDefault()[0];
-            var length = Request.Form.Where(a => a.Key == "length").Select(b => b.Value).FirstOrDefault()[0];
-            //sorting parameter
-            //var sortColumn = Request.Form.Select(a => a.Key == "columns[" + Request.Form.Select(ab => ab.Key == "order[0][column]").FirstOrDefault() + "][name]").FirstOrDefault();
-            //var sortColumnDir = Request.Form.Select(a => a.Key == "order[0][dir]").FirstOrDefault();
-            //filter parameter
-            //var searchValue = Request.Form.Select(a => a.Key == "search[value]").FirstOrDefault();
-            List<Collections> allCollections = new List<Collections>();
-            int pageSize = length != null ? Convert.ToInt32(length) : 1;
-            int skip = start != null ? Convert.ToInt32(start) : 0;
-            int recordsTotal = 0;
-            //Database query
-            using (icollectdbContext dc = new icollectdbContext())
+            System.Security.Claims.ClaimsPrincipal currentUser = this.User;
+            var username = User.Identities.First().Name;//.Claims.First().Value;
+            bool IsAdmin = currentUser.IsInRole("Admin");
+            var catalogCollections = _context.CatalogCollections.Where(b => b.Collection.UserId == username &&
+                  b.Collection.IsActive == true).Include(a => a.Collection).Include(a=>a.Catalog).ThenInclude(b=>b.CatalogType);
+
+            //var catalogCollections = from CatalogCollections in _context.CatalogCollections
+            //                          join collection in _context.Collections on CatalogCollections.CollectionId equals collection.CollectionId
+            //                          where collection.UserId == User.Identity.Name && collection.IsActive == true
+            //                          select CatalogCollections;
+            var _debug = catalogCollections.ToList();
+            //return Ok(_debug);
+            return Json(new
             {
-                recordsTotal = dc.Collections.Count();
-                allCollections = dc.Collections.OrderBy(a => a.Name).Skip(skip).Take(pageSize).ToList();
+                catalogCollections
+            });
+        }
+
+        // [Authorize(Roles = "Admin")]
+        [HttpGet, Route("getCatalogCollection/{collectionId}")]
+        public ActionResult getCatalogCollection(int collectionId)
+        {
+            var catalogCollection = _context.CatalogCollections.Where(b => b.CollectionId == collectionId &&
+                                b.Collection.UserId == User.Identity.Name && b.Collection.IsActive == true);
+
+            //var catalogCollection = from userItems in _context.UserItems
+            //             join collection in _context.Collection on userItems.CollectionId equals collection.CollectionId
+            //             where userItems.UserId == User.Identity.Name
+            //             select collection;
+            return Ok(catalogCollection);
+            //return Json(new
+            //{
+            //    catalogCollection,
+            //});
+        }
+
+        [AllowAnonymous]
+        // [Authorize(Roles = "Admin")]
+        [HttpGet, Route("getMasterCollection/{catalogId}")]
+        public ActionResult getMasterCollection(int catalogId)
+        {
+            var masterCollection = _context.CatalogCollections.Include(a=>a.Collection).FirstOrDefault(b => b.CatalogId == catalogId &&
+                                b.Collection.UserId == "jpwits@gmail.com" && b.Collection.IsActive == true && b.IsMaster == true);
+
+            //var catalogCollection = from userItems in _context.UserItems
+            //             join collection in _context.Collection on userItems.CollectionId equals collection.CollectionId
+            //             where userItems.UserId == User.Identity.Name
+            //             select collection;
+            return Ok(masterCollection);
+            //return Json(new
+            //{
+            //    catalogCollection,
+            //});
+        }
+
+        // [Authorize(Roles = "Admin")]
+        [HttpPut("updateCatalogCollection")]
+        //[ValidateAntiForgeryToken]
+        public async Task<CatalogCollections> updateCatalogCollection([FromBody] CatalogCollections data)
+        {
+            //warning check data collectionid not null, do not check for the impossible ever, we want the error :)
+            if (!_context.CatalogCollections.Any(m => m.CollectionId == data.CollectionId))
+            {
+                data.CatalogId = 1;
             }
-            return Json(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = allCollections });
-        }
-
-        // GET: Collections
-        [HttpGet, Route("GetCollections")]
-        public ActionResult GetCollections()
-        {
-            var qry = _context.Collections
-                .ToList();
-
-            return Json(new { data = qry });
-        }
-
-        [HttpGet, Route("GetCollection/{id}")]
-        public async Task<IActionResult> GetCollection(int id)
-        {
-            var set = await _context.Collections
-                .FirstOrDefaultAsync(m => m.CollectionId == id);
-
-            return new JsonResult(set);
-        }
-
-        [HttpPut("Edit")]
-        [ValidateAntiForgeryToken]
-        public async Task<int> Edit([FromBody] Collections data)
-        {
+            else
+            {
+                data.CatalogId = 1;
+            }
             _context.Update(data);
             int rc = await _context.SaveChangesAsync();
-            return rc;
+            return data;
         }
     }
 }
-

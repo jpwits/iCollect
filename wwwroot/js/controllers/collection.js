@@ -1,100 +1,97 @@
-﻿
-function CollectionsCtrl($scope, $state, DTOptionsBuilder, DTColumnBuilder, $compile, $templateCache, getCollectionSrv, passData, $timeout) {
-    $scope.collection_pglen = passData.get("collection_pglen");
-    if ($scope.collection_pglen === undefined) { $scope.collection_pglen = 10; }
+﻿function CollectionCtrl($scope, $state, $stateParams, $sessionStorage, $localStorage, $q, updateCatalogCollectionsrv) {
+    $scope.spinUpdateCollection = "Save";
 
-    $scope.createCollection = function () {
-        if (id === undefined) {
-            passData.set("CurCollection", { items: [], delItems: [] });
-            $state.go('app.collection');
+    if ($sessionStorage.catalogCollection.collection == undefined) {
+        $sessionStorage.catalogCollection.collection = {}
+        $scope.dtStart = new Date(1987, 1, 1);
+        $scope.dtEnd = new Date(2020, 1, 1);
+        $sessionStorage.catalogCollection.collection.isActive = true;
+        $sessionStorage.catalogCollection.collection.userId = $sessionStorage.User.name;
+    }
+    else {
+        //var jsonResp = JSON.parse(JSON.stringify(response));
+        $scope.jsonRanges = JSON.parse($sessionStorage.catalogCollection.collection.jsonRanges);
+        $scope.jsonSetTypes = JSON.parse($sessionStorage.catalogCollection.collection.jsonSetTypes);
+        $scope.dtStart = new Date($sessionStorage.catalogCollection.collection.startDate);
+        $scope.dtEnd = new Date($sessionStorage.catalogCollection.collection.endDate);
+    }
+    $scope.dateOptions = {
+        datepickerMode: 'year',
+        minMode: 'year',
+        showWeeks: 'false',
+        dateDisabled: false,
+        formatYear: 'yyyy',
+        maxDate: $scope.dtEnd,
+        minDate: $scope.dtStart,
+        startingDay: 1
+    };
+
+    $scope.openStart = function () {
+        $scope.popupStart.opened = true;
+    };
+
+    $scope.openEnd = function () {
+        $scope.popupEnd.opened = true;
+    };
+
+    $scope.formats = ['yyyy'];
+    $scope.format = $scope.formats[0];
+    $scope.altInputFormats = ['M!/d!/yyyy'];
+
+    $scope.popupStart = {
+        opened: false
+    };
+
+    $scope.popupEnd = {
+        opened: false
+    };
+
+    $scope.toCats = function() {
+        $state.go('app.catalogs');
+    }
+
+    $scope.updateCollection = function (catalogCollection) {
+        $scope.spinUpdateCollection = "Saving";
+        catalogCollection.collection.startDate = $scope.dtStart;
+        catalogCollection.collection.endDate = $scope.dtEnd;
+        $sessionStorage.catalogCollection.collection.jsonRanges = JSON.stringify($scope.jsonRanges);
+        $sessionStorage.catalogCollection.collection.jsonSetTypes = JSON.stringify($scope.jsonSetTypes);
+
+        $scope.entry = new updateCatalogCollectionsrv(catalogCollection);
+        $scope.entry.$update(function (response) {
+            $scope.spinUpdateCollection = "Save";
+            $state.go("ui.Collections");
+        }, function (error) {
+            $sessionStorage.iComsErr = JSON.parse(JSON.stringify(error));
+            alert("Error " + $sessionStorage.iComsErr.status + " Updating Collection : " + $sessionStorage.iComsErr.data);
+        });
+    };
+
+    $scope.RemoveCollection = (catalogCollection) => {
+        if (confirm('Are you sure you want to delete this collection, by deleting this collection you will loose all the item quantities in this collection?')) {
+            // Save it!
+            if (catalogCollection.isMaster === true) {
+                alert("In order to remove the master collection, you have to remove it's catalog...")
+            }
+            else {
+                catalogCollection.collection.isActive = false;
+                $scope.entry = new updateCatalogCollectionsrv(catalogCollection);
+                $scope.entry.$update(function (response) {
+                    $sessionStorage.CatalogCollections.push(response);
+                    //alert("Collection Saved successfully...");
+                    $state.go('ui.Collections'); //replace with $scope.apply!
+                }, function (error) {
+                    $sessionStorage.iComsErr = JSON.parse(JSON.stringify(error));
+                    alert("Error " + $sessionStorage.iComsErr.status + " Deleting Collection : " + $sessionStorage.iComsErr.data);
+                });
+            }
         }
     };
 
-    $scope.loadCollection = function (id) {
-        getCollectionSrv.get({ id: id }).$promise.then(function (response) {
-            var curCollection = JSON.parse(JSON.stringify(response));
-            //curCollection.delItems = curCollection.items.filter(img => img.isActive === false);
-            //curCollection.items = curCollection.items.sort(function (a, b) {
-            //    return a.position - b.position;
-            //}).filter(img => img.isActive === true);
-            passData.set("CurCollection", curCollection);
-            $state.go('app.collection');
-        },
-        function (error) {
-            alert("Error Retrieving collections : " + error);
-        });
-    };
-
-    $scope.dtColumnsColls = [
-        DTColumnBuilder.newColumn("name", "Description").withOption('name', 'description')
-            .renderWith(function (data, type, full, meta) {
-                html = '<a ng-click="loadCollection(' + full.collectionId + ')">' + data + '</a>';
-                return html;
-            }),
-        DTColumnBuilder.newColumn("description", "Description").withOption('name', 'Description')
-    ];
-
-    $scope.dtOptionsColls = DTOptionsBuilder.newOptions()
-        .withOption('ajax', {
-            dataSrc: "data",
-            url: "api/Collections/getData",
-            type: "POST"
-        })
-        .withOption('processing', true) //for show progress bar
-        .withOption('serverSide', true) // for server side processing
-        .withOption('responsive', true)
-        .withOption('stateSave', true)
-        .withOption('createdRow', function (row, data, dataIndex) {
-            $compile(angular.element(row).contents())($scope);      // Recompiling so we can bind Angular directive to the DT
-        })
-        .withPaginationType('full_numbers') // for get full pagination options // first / last / prev / next and page numbers
-        .withDisplayLength($scope.collection_pglen) // Page size
-        .withOption('aaSorting', [1, 'asc']) // for default sorting column // here 0 means first column
-        .withOption('drawCallback', function () {
-            var table = this.DataTable();
-            passData.set("collection_pglen", table.page.len());
-        })
-        .withDOM('<"html5buttons"B>lTfgitp')
-        .withButtons([
-            {
-                text: 'New',
-                action: function (e, dt, node, config) {
-                    $scope.createCollection();
-                }
-            },
-            { extend: 'copy' },
-            { extend: 'csv' },
-            { extend: 'excel', title: 'ExampleFile' },
-            { extend: 'pdf', title: 'ExampleFile' },
-            {
-                extend: 'print',
-                customize: function (win) {
-                    $(win.document.body).addClass('white-bg');
-                    $(win.document.body).css('font-size', '10px');
-
-                    $(win.document.body).find('table')
-                        .addClass('compact')
-                        .css('font-size', 'inherit');
-                }
-            }
-        ]);
-
-    $scope.dtInstanceCallbackColls = (dtInstance) => {
-        dtInstance.DataTable.on('draw.dt', () => {
-            let elements = angular.element("#" + dtInstance.id + " .ng-scope");
-            angular.forEach(elements, (element) => {
-                $compile(element)($scope);
-            });
-        });
-    };
-
-    $scope.SelectSet = (event) => {
-        
-    };
+    $(function () {
+        $('.selectpicker').selectpicker();
+    });
 }
-
 angular
     .module('inspinia')
-    .controller('CollectionsCtrl', CollectionsCtrl);
-
-   
+    .controller('CollectionCtrl', CollectionCtrl);
