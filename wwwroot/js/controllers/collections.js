@@ -3,7 +3,7 @@
 
     $scope.GotoCollection = (catalogCollection) => {
         //$sessionStorage.collection = catalogCollection.collection;
-        $state.go('app.setsng', { viewLayout: 'Tiles' , coll : collection, source : 'collection'});
+        $state.go('app.setsng', { viewLayout: 'Tiles', coll: catalogCollection.collection, source : 'collection'});
     };
 
     $scope.EditCollection = (catalogCollection) => {

@@ -64,10 +64,12 @@
     //    $sessionStorage.collection = 0;
     //}
 
-    if ($sessionStorage.filterbyYear === undefined) $sessionStorage.filterbyYear = {
-        "Start": $state.params.coll.startDate,
-        "End": $state.params.coll.endDate
-    };
+    if ($sessionStorage.filterbyYear === undefined || $sessionStorage.filterbyYear.Start === undefined) {
+        $sessionStorage.filterbyYear = {
+            "Start": $state.params.coll.startDate,
+            "End": $state.params.coll.endDate
+        };
+    }
 
 
 
