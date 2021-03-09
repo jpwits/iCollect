@@ -1,0 +1,11 @@
+<publishData>
+  <publishProfile profileName="WApp-iCollect - Web Deploy" publishMethod="MSDeploy" publishUrl="wapp-icollect.scm.azurewebsites.net:443" msdeploySite="WApp-iCollect" userName="$WApp-iCollect" userPWD="8nqhh7KdhkqxM2tmGrhcbLhplivHpbD7ZwxNM5SFkyiwddtfpHjosxin8jB7" destinationAppUrl="http://wapp-icollect.azurewebsites.net" SQLServerDBConnectionString="" mySQLDBConnectionString="" hostingProviderForumLink="" controlPanelLink="http://windows.azure.com" webSystem="WebSites">
+    <databases />
+  </publishProfile>
+  <publishProfile profileName="WApp-iCollect - FTP" publishMethod="FTP" publishUrl="ftp://waws-prod-dm1-193.ftp.azurewebsites.windows.net/site/wwwroot" ftpPassiveMode="True" userName="WApp-iCollect\$WApp-iCollect" userPWD="8nqhh7KdhkqxM2tmGrhcbLhplivHpbD7ZwxNM5SFkyiwddtfpHjosxin8jB7" destinationAppUrl="http://wapp-icollect.azurewebsites.net" SQLServerDBConnectionString="" mySQLDBConnectionString="" hostingProviderForumLink="" controlPanelLink="http://windows.azure.com" webSystem="WebSites">
+    <databases />
+  </publishProfile>
+  <publishProfile profileName="WApp-iCollect - Zip Deploy" publishMethod="ZipDeploy" publishUrl="wapp-icollect.scm.azurewebsites.net:443" userName="$WApp-iCollect" userPWD="8nqhh7KdhkqxM2tmGrhcbLhplivHpbD7ZwxNM5SFkyiwddtfpHjosxin8jB7" destinationAppUrl="http://wapp-icollect.azurewebsites.net" SQLServerDBConnectionString="" mySQLDBConnectionString="" hostingProviderForumLink="" controlPanelLink="http://windows.azure.com" webSystem="WebSites">
+    <databases />
+  </publishProfile>
+</publishData>
