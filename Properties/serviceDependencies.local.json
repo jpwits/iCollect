@@ -1,0 +1,15 @@
+{
+  "dependencies": {
+    "mssql1": {
+      "resourceId": null,
+      "type": "mssql.local",
+      "connectionId": "CollectConnection",
+      "secretStore": "LocalSecretsFile"
+    },
+    "mssql2": {
+      "type": "mssql.local",
+      "connectionId": "AuthConnection",
+      "secretStore": "LocalSecretsFile"
+    }
+  }
+}
