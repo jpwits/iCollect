@@ -115,6 +115,10 @@
     {
       "library": "ngStorage@0.3.11",
       "destination": "wwwroot/js/plugins/ngStorage/"
+    },
+    {
+      "library": "angular-datatables@0.5.3",
+      "destination": "wwwroot/js/plugins/angular-datatables/"
     }
   ]
 }

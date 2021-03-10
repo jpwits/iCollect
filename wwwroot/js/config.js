@@ -1,5 +1,4 @@
-/// <reference path="../lib/blueimp-gallery/js/blueimp-gallery.min.js" />
-/// <reference path="../lib/blueimp-gallery/js/blueimp-gallery.min.js" />
+/// <reference path="../js/plugins/blueimp-gallery/js/blueimp-gallery.min.js" />
 /*
  * INSPINIA - Responsive Admin Theme
  *
