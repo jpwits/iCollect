@@ -4,117 +4,121 @@
   "libraries": [
     {
       "library": "jquery@3.3.1",
-      "destination": "wwwroot/lib/jquery/",
+      "destination": "wwwroot/js/plugins/jquery/",
       "files": [
         "jquery.min.js"
       ]
     },
     {
       "library": "angular-resource@1.7.8",
-      "destination": "wwwroot/lib/angular-resource/",
+      "destination": "wwwroot/js/plugins/angular-resource/",
       "files": [
         "angular-resource.min.js"
       ]
     },
     {
       "library": "angular.js@1.7.8",
-      "destination": "wwwroot/lib/angular.js/",
+      "destination": "wwwroot/js/plugins/angular.js/",
       "files": [
         "angular.min.js"
       ]
     },
     {
       "library": "angular-sanitize@1.7.8",
-      "destination": "wwwroot/lib/angular-sanitize/"
+      "destination": "wwwroot/js/plugins/angular-sanitize/"
     },
     {
       "library": "oclazyload@1.1.0",
-      "destination": "wwwroot/lib/oclazyload/",
+      "destination": "wwwroot/js/plugins/oclazyload/",
       "files": [
         "ocLazyLoad.min.js"
       ]
     },
     {
       "library": "angular-translate@2.18.1",
-      "destination": "wwwroot/lib/angular-translate/",
+      "destination": "wwwroot/js/plugins/angular-translate/",
       "files": [
         "angular-translate.min.js"
       ]
     },
     {
       "library": "angular-ui-router@1.0.22",
-      "destination": "wwwroot/lib/angular-ui-router/",
+      "destination": "wwwroot/js/plugins/angular-ui-router/",
       "files": [
         "angular-ui-router.min.js"
       ]
     },
     {
       "library": "angular-ui-bootstrap@2.5.0",
-      "destination": "wwwroot/lib/angular-ui-bootstrap/",
+      "destination": "wwwroot/js/plugins/angular-ui-bootstrap/",
       "files": [
         "ui-bootstrap-tpls.min.js"
       ]
     },
     {
       "library": "jqueryui@1.12.1",
-      "destination": "wwwroot/lib/jqueryui/"
+      "destination": "wwwroot/js/plugins/jqueryui/"
     },
     {
       "library": "pace@1.0.2",
-      "destination": "wwwroot/lib/pace/"
+      "destination": "wwwroot/js/plugins/pace/"
     },
     {
       "library": "jquery-validate@1.19.1",
-      "destination": "wwwroot/lib/jquery-validate/"
+      "destination": "wwwroot/js/plugins/jquery-validate/"
     },
     {
       "library": "jquery-validation-unobtrusive@3.2.11",
-      "destination": "wwwroot/lib/jquery-validation-unobtrusive/"
+      "destination": "wwwroot/js/plugins/jquery-validation-unobtrusive/"
     },
     {
       "library": "danialfarid-angular-file-upload@12.2.13",
-      "destination": "wwwroot/lib/danialfarid-angular-file-upload/"
+      "destination": "wwwroot/js/plugins/danialfarid-angular-file-upload/"
     },
     {
       "library": "font-awesome@4.7.0",
-      "destination": "wwwroot/lib/font-awesome/"
+      "destination": "wwwroot/js/plugins/font-awesome/"
     },
     {
       "provider": "jsdelivr",
       "library": "bootstrap@3.3.7",
-      "destination": "wwwroot/js/bootstrap/"
+      "destination": "wwwroot/js/plugins/bootstrap/"
     },
     {
       "library": "ng-idle@1.0.2",
-      "destination": "wwwroot/lib/ng-idle/"
+      "destination": "wwwroot/js/plugins/ng-idle/"
     },
     {
       "library": "metisMenu@2.0.2",
-      "destination": "wwwroot/lib/metisMenu/"
+      "destination": "wwwroot/js/plugins/metisMenu/"
     },
     {
       "library": "jQuery-slimScroll@1.3.6",
-      "destination": "wwwroot/lib/jQuery-slimScroll/"
+      "destination": "wwwroot/js/plugins/jQuery-slimScroll/"
     },
     {
       "library": "angular-datatables@0.5.3",
-      "destination": "wwwroot/lib/angular-datatables/"
+      "destination": "wwwroot/js/plugins/angular-datatables/"
     },
     {
       "library": "blueimp-gallery@2.11.1",
-      "destination": "wwwroot/lib/blueimp-gallery/"
+      "destination": "wwwroot/js/plugins/blueimp-gallery/"
     },
     {
       "library": "bootstrap-datepicker@1.9.0",
-      "destination": "wwwroot/lib/bootstrap-datepicker/"
+      "destination": "wwwroot/js/plugins/bootstrap-datepicker/"
     },
     {
       "library": "bootstrap-select@1.13.15",
-      "destination": "wwwroot/lib/bootstrap-select/"
+      "destination": "wwwroot/js/plugins/bootstrap-select/"
     },
     {
       "library": "ngStorage@0.3.11",
-      "destination": "wwwroot/lib/ngStorage/"
+      "destination": "wwwroot/js/plugins/ngStorage/"
+    },
+    {
+      "library": "angular-datatables@0.5.3",
+      "destination": "wwwroot/js/plugins/angular-datatables/"
     }
   ]
 }
