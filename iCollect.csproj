@@ -29,100 +29,28 @@
     <Compile Remove="wwwroot\css\plugins\**" />
     <Compile Remove="wwwroot\font-awesome\**" />
     <Compile Remove="wwwroot\js\**" />
-    <Compile Remove="wwwroot\lib\angular-resource\**" />
-    <Compile Remove="wwwroot\lib\angular-sanitize\**" />
-    <Compile Remove="wwwroot\lib\angular-translate\**" />
-    <Compile Remove="wwwroot\lib\angular-ui-bootstrap\**" />
-    <Compile Remove="wwwroot\lib\angular-ui-router\**" />
-    <Compile Remove="wwwroot\lib\angular.js\**" />
-    <Compile Remove="wwwroot\lib\danialfarid-angular-file-upload\**" />
-    <Compile Remove="wwwroot\lib\font-awesome\js\**" />
-    <Compile Remove="wwwroot\lib\font-awesome\sprites\**" />
-    <Compile Remove="wwwroot\lib\font-awesome\webfonts\**" />
-    <Compile Remove="wwwroot\lib\jQuery-slimScroll\**" />
-    <Compile Remove="wwwroot\lib\jquery-validate\**" />
-    <Compile Remove="wwwroot\lib\jquery-validation-unobtrusive\**" />
-    <Compile Remove="wwwroot\lib\jqueryui\**" />
-    <Compile Remove="wwwroot\lib\jquery\**" />
-    <Compile Remove="wwwroot\lib\metisMenu\**" />
-    <Compile Remove="wwwroot\lib\ng-idle\**" />
-    <Compile Remove="wwwroot\lib\oclazyload\**" />
-    <Compile Remove="wwwroot\lib\pace\**" />
+    <Compile Remove="wwwroot\lib\**" />
     <Content Remove="Agile\**" />
     <Content Remove="ControllersAPI\**" />
     <Content Remove="obj\**" />
     <Content Remove="wwwroot\css\plugins\**" />
     <Content Remove="wwwroot\font-awesome\**" />
     <Content Remove="wwwroot\js\**" />
-    <Content Remove="wwwroot\lib\angular-resource\**" />
-    <Content Remove="wwwroot\lib\angular-sanitize\**" />
-    <Content Remove="wwwroot\lib\angular-translate\**" />
-    <Content Remove="wwwroot\lib\angular-ui-bootstrap\**" />
-    <Content Remove="wwwroot\lib\angular-ui-router\**" />
-    <Content Remove="wwwroot\lib\angular.js\**" />
-    <Content Remove="wwwroot\lib\danialfarid-angular-file-upload\**" />
-    <Content Remove="wwwroot\lib\font-awesome\js\**" />
-    <Content Remove="wwwroot\lib\font-awesome\sprites\**" />
-    <Content Remove="wwwroot\lib\font-awesome\webfonts\**" />
-    <Content Remove="wwwroot\lib\jQuery-slimScroll\**" />
-    <Content Remove="wwwroot\lib\jquery-validate\**" />
-    <Content Remove="wwwroot\lib\jquery-validation-unobtrusive\**" />
-    <Content Remove="wwwroot\lib\jqueryui\**" />
-    <Content Remove="wwwroot\lib\jquery\**" />
-    <Content Remove="wwwroot\lib\metisMenu\**" />
-    <Content Remove="wwwroot\lib\ng-idle\**" />
-    <Content Remove="wwwroot\lib\oclazyload\**" />
-    <Content Remove="wwwroot\lib\pace\**" />
+    <Content Remove="wwwroot\lib\**" />
     <EmbeddedResource Remove="Agile\**" />
     <EmbeddedResource Remove="ControllersAPI\**" />
     <EmbeddedResource Remove="obj\**" />
     <EmbeddedResource Remove="wwwroot\css\plugins\**" />
     <EmbeddedResource Remove="wwwroot\font-awesome\**" />
     <EmbeddedResource Remove="wwwroot\js\**" />
-    <EmbeddedResource Remove="wwwroot\lib\angular-resource\**" />
-    <EmbeddedResource Remove="wwwroot\lib\angular-sanitize\**" />
-    <EmbeddedResource Remove="wwwroot\lib\angular-translate\**" />
-    <EmbeddedResource Remove="wwwroot\lib\angular-ui-bootstrap\**" />
-    <EmbeddedResource Remove="wwwroot\lib\angular-ui-router\**" />
-    <EmbeddedResource Remove="wwwroot\lib\angular.js\**" />
-    <EmbeddedResource Remove="wwwroot\lib\danialfarid-angular-file-upload\**" />
-    <EmbeddedResource Remove="wwwroot\lib\font-awesome\js\**" />
-    <EmbeddedResource Remove="wwwroot\lib\font-awesome\sprites\**" />
-    <EmbeddedResource Remove="wwwroot\lib\font-awesome\webfonts\**" />
-    <EmbeddedResource Remove="wwwroot\lib\jQuery-slimScroll\**" />
-    <EmbeddedResource Remove="wwwroot\lib\jquery-validate\**" />
-    <EmbeddedResource Remove="wwwroot\lib\jquery-validation-unobtrusive\**" />
-    <EmbeddedResource Remove="wwwroot\lib\jqueryui\**" />
-    <EmbeddedResource Remove="wwwroot\lib\jquery\**" />
-    <EmbeddedResource Remove="wwwroot\lib\metisMenu\**" />
-    <EmbeddedResource Remove="wwwroot\lib\ng-idle\**" />
-    <EmbeddedResource Remove="wwwroot\lib\oclazyload\**" />
-    <EmbeddedResource Remove="wwwroot\lib\pace\**" />
+    <EmbeddedResource Remove="wwwroot\lib\**" />
     <None Remove="Agile\**" />
     <None Remove="ControllersAPI\**" />
     <None Remove="obj\**" />
     <None Remove="wwwroot\css\plugins\**" />
     <None Remove="wwwroot\font-awesome\**" />
     <None Remove="wwwroot\js\**" />
-    <None Remove="wwwroot\lib\angular-resource\**" />
-    <None Remove="wwwroot\lib\angular-sanitize\**" />
-    <None Remove="wwwroot\lib\angular-translate\**" />
-    <None Remove="wwwroot\lib\angular-ui-bootstrap\**" />
-    <None Remove="wwwroot\lib\angular-ui-router\**" />
-    <None Remove="wwwroot\lib\angular.js\**" />
-    <None Remove="wwwroot\lib\danialfarid-angular-file-upload\**" />
-    <None Remove="wwwroot\lib\font-awesome\js\**" />
-    <None Remove="wwwroot\lib\font-awesome\sprites\**" />
-    <None Remove="wwwroot\lib\font-awesome\webfonts\**" />
-    <None Remove="wwwroot\lib\jQuery-slimScroll\**" />
-    <None Remove="wwwroot\lib\jquery-validate\**" />
-    <None Remove="wwwroot\lib\jquery-validation-unobtrusive\**" />
-    <None Remove="wwwroot\lib\jqueryui\**" />
-    <None Remove="wwwroot\lib\jquery\**" />
-    <None Remove="wwwroot\lib\metisMenu\**" />
-    <None Remove="wwwroot\lib\ng-idle\**" />
-    <None Remove="wwwroot\lib\oclazyload\**" />
-    <None Remove="wwwroot\lib\pace\**" />
+    <None Remove="wwwroot\lib\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -1539,10 +1467,6 @@
     <Content Update="wwwroot\img\off_canvas.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="wwwroot\lib\" />
   </ItemGroup>
 
 </Project>
