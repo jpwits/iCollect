@@ -25,6 +25,20 @@
             <li ui-sref-active="active"><a ui-sref="app.setsng({viewLayout : 'Details' })">{{ 'SA MINT-RSA-NG' | translate }}</a></li>
         </ul>
     </li>-->
+            <li ui-sref-active="active">
+                <a ui-sref="ui.Collections"><i class="fa fa-book"></i>{{ 'Views' | translate }}</a>
+            </li>
+
+            <li ng-class="{active: $state.includes('Views')}">
+                <a href="#">
+                    <i class="fa fa-th-large"></i>
+                    <span class="nav-label" ui-sref="ui.Views">{{ 'Views' | translate }}</span>
+                    <!--<span class="fa arrow"></span>-->
+                </a>
+                <ul class="nav nav-second-level collapse" ng-class="{in: $state.includes('ui')}">
+            <li ui-sref-active="active"><a ui-sref="app.setsng({viewLayout : 'Views' })">{{ 'Views' | translate }}</a></li>
+        </ul>
+            </li>
 
             <li ng-class="{active: $state.includes('Collections')}">
                 <a href="#">

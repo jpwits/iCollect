@@ -1,0 +1,26 @@
+<publishData>
+  <publishProfile profileName="YouCollect - Web Deploy" publishMethod="MSDeploy" publishUrl="youcollect.scm.azurewebsites.net:443" msdeploySite="YouCollect" userName="$YouCollect" userPWD="xsyifp6wlovBinjoaS1AmN6aEEWeYiKx9d20v30iPflp0kAEypbqhrrNmXvx" destinationAppUrl="http://youcollect.azurewebsites.net" SQLServerDBConnectionString="Data Source=tcp:icollect.database.windows.net,1433;Initial Catalog=iCollect;User Id=icollect@icollect;Password=Monitor3##" mySQLDBConnectionString="" hostingProviderForumLink="" controlPanelLink="http://windows.azure.com" webSystem="WebSites" targetDatabaseEngineType="sqlazuredatabase" targetServerVersion="Version100">
+    <databases>
+      <add name="AuthConnection" connectionString="Data Source=tcp:icollect.database.windows.net,1433;Initial Catalog=iCollect;User Id=icollect@icollect;Password=Monitor3##" providerName="System.Data.SqlClient" type="Sql" targetDatabaseEngineType="sqlazuredatabase" targetServerVersion="Version100" />
+      <add name="CollectConnection" connectionString="Data Source=tcp:icollect.database.windows.net,1433;Initial Catalog=iCollect;User Id=icollect@icollect;Password=Monitor3##" providerName="System.Data.SqlClient" type="Sql" targetDatabaseEngineType="sqlazuredatabase" targetServerVersion="Version100" />
+    </databases>
+  </publishProfile>
+  <publishProfile profileName="YouCollect - FTP" publishMethod="FTP" publishUrl="ftp://waws-prod-dm1-167.ftp.azurewebsites.windows.net/site/wwwroot" ftpPassiveMode="True" userName="YouCollect\$YouCollect" userPWD="xsyifp6wlovBinjoaS1AmN6aEEWeYiKx9d20v30iPflp0kAEypbqhrrNmXvx" destinationAppUrl="http://youcollect.azurewebsites.net" SQLServerDBConnectionString="Data Source=tcp:icollect.database.windows.net,1433;Initial Catalog=iCollect;User Id=icollect@icollect;Password=Monitor3##" mySQLDBConnectionString="" hostingProviderForumLink="" controlPanelLink="http://windows.azure.com" webSystem="WebSites" targetDatabaseEngineType="sqlazuredatabase" targetServerVersion="Version100">
+    <databases>
+      <add name="AuthConnection" connectionString="Data Source=tcp:icollect.database.windows.net,1433;Initial Catalog=iCollect;User Id=icollect@icollect;Password=Monitor3##" providerName="System.Data.SqlClient" type="Sql" targetDatabaseEngineType="sqlazuredatabase" targetServerVersion="Version100" />
+      <add name="CollectConnection" connectionString="Data Source=tcp:icollect.database.windows.net,1433;Initial Catalog=iCollect;User Id=icollect@icollect;Password=Monitor3##" providerName="System.Data.SqlClient" type="Sql" targetDatabaseEngineType="sqlazuredatabase" targetServerVersion="Version100" />
+    </databases>
+  </publishProfile>
+  <publishProfile profileName="YouCollect - Zip Deploy" publishMethod="ZipDeploy" publishUrl="youcollect.scm.azurewebsites.net:443" userName="$YouCollect" userPWD="xsyifp6wlovBinjoaS1AmN6aEEWeYiKx9d20v30iPflp0kAEypbqhrrNmXvx" destinationAppUrl="http://youcollect.azurewebsites.net" SQLServerDBConnectionString="Data Source=tcp:icollect.database.windows.net,1433;Initial Catalog=iCollect;User Id=icollect@icollect;Password=Monitor3##" mySQLDBConnectionString="" hostingProviderForumLink="" controlPanelLink="http://windows.azure.com" webSystem="WebSites" targetDatabaseEngineType="sqlazuredatabase" targetServerVersion="Version100">
+    <databases>
+      <add name="AuthConnection" connectionString="Data Source=tcp:icollect.database.windows.net,1433;Initial Catalog=iCollect;User Id=icollect@icollect;Password=Monitor3##" providerName="System.Data.SqlClient" type="Sql" targetDatabaseEngineType="sqlazuredatabase" targetServerVersion="Version100" />
+      <add name="CollectConnection" connectionString="Data Source=tcp:icollect.database.windows.net,1433;Initial Catalog=iCollect;User Id=icollect@icollect;Password=Monitor3##" providerName="System.Data.SqlClient" type="Sql" targetDatabaseEngineType="sqlazuredatabase" targetServerVersion="Version100" />
+    </databases>
+  </publishProfile>
+  <publishProfile profileName="YouCollect - ReadOnly - FTP" publishMethod="FTP" publishUrl="ftp://waws-prod-dm1-167dr.ftp.azurewebsites.windows.net/site/wwwroot" ftpPassiveMode="True" userName="YouCollect\$YouCollect" userPWD="xsyifp6wlovBinjoaS1AmN6aEEWeYiKx9d20v30iPflp0kAEypbqhrrNmXvx" destinationAppUrl="http://youcollect.azurewebsites.net" SQLServerDBConnectionString="Data Source=tcp:icollect.database.windows.net,1433;Initial Catalog=iCollect;User Id=icollect@icollect;Password=Monitor3##" mySQLDBConnectionString="" hostingProviderForumLink="" controlPanelLink="http://windows.azure.com" webSystem="WebSites" targetDatabaseEngineType="sqlazuredatabase" targetServerVersion="Version100">
+    <databases>
+      <add name="AuthConnection" connectionString="Data Source=tcp:icollect.database.windows.net,1433;Initial Catalog=iCollect;User Id=icollect@icollect;Password=Monitor3##" providerName="System.Data.SqlClient" type="Sql" targetDatabaseEngineType="sqlazuredatabase" targetServerVersion="Version100" />
+      <add name="CollectConnection" connectionString="Data Source=tcp:icollect.database.windows.net,1433;Initial Catalog=iCollect;User Id=icollect@icollect;Password=Monitor3##" providerName="System.Data.SqlClient" type="Sql" targetDatabaseEngineType="sqlazuredatabase" targetServerVersion="Version100" />
+    </databases>
+  </publishProfile>
+</publishData>

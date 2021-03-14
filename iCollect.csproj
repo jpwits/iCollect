@@ -13,6 +13,7 @@
     <AssemblyName>iCollect</AssemblyName>
     <UserSecretsId>a8ad15e8-5295-4e28-8035-2c92e06d2824</UserSecretsId>
     <DockerDefaultTargetOS>Windows</DockerDefaultTargetOS>
+    <OutputType>WinExe</OutputType>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -163,6 +164,10 @@
     <None Remove="Data\Auth.db" />
     <None Remove="Data\Bak\iCollect.bak" />
     <None Remove="Data\Collect.db" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_WebToolingArtifacts Remove="Properties\PublishProfiles\YouCollect_profile.xml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -946,19 +951,19 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="wwwroot\js\app.js" />
-    <None Include="wwwroot\js\config.js" />
-    <None Include="wwwroot\js\controllers.js" />
-    <None Include="wwwroot\js\controllers\account.js" />
-    <None Include="wwwroot\js\controllers\catalog.js" />
-    <None Include="wwwroot\js\controllers\collection.js" />
-    <None Include="wwwroot\js\controllers\collections.js" />
-    <None Include="wwwroot\js\controllers\main.js" />
-    <None Include="wwwroot\js\controllers\set.js" />
-    <None Include="wwwroot\js\controllers\catalogs.js" />
-    <None Include="wwwroot\js\controllers\SetsNg.js" />
-    <None Include="wwwroot\js\directives.js" />
-    <None Include="wwwroot\js\inspinia.js" />
+    <Content Include="wwwroot\js\app.js" />
+    <Content Include="wwwroot\js\config.js" />
+    <Content Include="wwwroot\js\controllers.js" />
+    <Content Include="wwwroot\js\controllers\account.js" />
+    <Content Include="wwwroot\js\controllers\catalog.js" />
+    <Content Include="wwwroot\js\controllers\collection.js" />
+    <Content Include="wwwroot\js\controllers\collections.js" />
+    <Content Include="wwwroot\js\controllers\main.js" />
+    <Content Include="wwwroot\js\controllers\set.js" />
+    <Content Include="wwwroot\js\controllers\catalogs.js" />
+    <Content Include="wwwroot\js\controllers\SetsNg.js" />
+    <Content Include="wwwroot\js\directives.js" />
+    <Content Include="wwwroot\js\inspinia.js" />
     <None Include="wwwroot\app\junk.js" />
     <None Include="wwwroot\js\plugins\angular-datatables\angular-datatables.js" />
     <None Include="wwwroot\js\plugins\angular-datatables\angular-datatables.min.js" />
@@ -1521,8 +1526,8 @@
     <None Include="wwwroot\js\plugins\pace\pace.min.js" />
     <None Include="wwwroot\js\plugins\peity\angular-peity.js" />
     <None Include="wwwroot\js\plugins\peity\jquery.peity.min.js" />
-    <None Include="wwwroot\js\services.js" />
-    <None Include="wwwroot\js\translations.js" />
+    <Content Include="wwwroot\js\services.js" />
+    <Content Include="wwwroot\js\translations.js" />
   </ItemGroup>
 
   <ItemGroup>
