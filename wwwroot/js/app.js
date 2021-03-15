@@ -1,7 +1,3 @@
-/**
- * INSPINIA - Responsive Admin Theme
- *
- */
 (function () {
     angular.module('inspinia', [
         'ui.router',                    // Routing
@@ -12,6 +8,8 @@
         'ngIdle',                       // Idle timer
         'ngSanitize',                   // ngSanitize
         'ngResource',                    // ngResource
+        'ngAnimate',
+        'ngTouch',
         'datatables',
         'datatables.buttons',
         'ngFileUpload',

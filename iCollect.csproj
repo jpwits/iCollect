@@ -893,6 +893,9 @@
     <Content Include="wwwroot\js\directives.js" />
     <Content Include="wwwroot\js\inspinia.js" />
     <None Include="wwwroot\app\junk.js" />
+    <None Include="wwwroot\js\plugins\angular-animate\angular-animate.js" />
+    <None Include="wwwroot\js\plugins\angular-animate\angular-animate.min.js" />
+    <None Include="wwwroot\js\plugins\angular-animate\angular-animate.min.js.map" />
     <None Include="wwwroot\js\plugins\angular-datatables\angular-datatables.js" />
     <None Include="wwwroot\js\plugins\angular-datatables\angular-datatables.min.js" />
     <None Include="wwwroot\js\plugins\angular-datatables\datatables.min.js" />
@@ -922,6 +925,9 @@
     <None Include="wwwroot\js\plugins\angular-sanitize\angular-sanitize.js" />
     <None Include="wwwroot\js\plugins\angular-sanitize\angular-sanitize.min.js" />
     <None Include="wwwroot\js\plugins\angular-sanitize\angular-sanitize.min.js.map" />
+    <None Include="wwwroot\js\plugins\angular-touch\angular-touch.js" />
+    <None Include="wwwroot\js\plugins\angular-touch\angular-touch.min.js" />
+    <None Include="wwwroot\js\plugins\angular-touch\angular-touch.min.js.map" />
     <None Include="wwwroot\js\plugins\angular-translate\angular-translate.min.js" />
     <None Include="wwwroot\js\plugins\angular-ui-bootstrap\ui-bootstrap-tpls.min.js" />
     <None Include="wwwroot\js\plugins\angular-ui-router\angular-ui-router.min.js" />
