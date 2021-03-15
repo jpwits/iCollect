@@ -212,25 +212,6 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, IdlePro
             templateUrl: "views/contacts_2.html",
             data: { pageTitle: 'Contacts 2' }
         })
-        .state('app.profile', {
-            url: "/profile",
-            templateUrl: "views/profile.html",
-            data: { pageTitle: 'Profile' }
-        })
-        .state('app.profile_2', {
-            url: "/profile_2",
-            templateUrl: "views/profile_2.html",
-            data: { pageTitle: 'Profile_2'},
-            resolve: {
-                loadPlugin: function ($ocLazyLoad) {
-                    return $ocLazyLoad.load([
-                        {
-                            files: ['js/plugins/sparkline/jquery.sparkline.min.js']
-                        }
-                    ]);
-                }
-            }
-        })
         .state('app.set', {
             url: "/set/:setIdx",
             templateUrl: "views/set.html",
