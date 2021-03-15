@@ -293,6 +293,12 @@
             fill: ["#1ab394", "#d7d7d7"]
         }
     };
+
+    $scope.slides = [];
+    $scope.active = 0;
+    $scope.slides.push({ text: 'Image1', image: '../img/p_big1.jpg' });
+    $scope.slides.push({ text: 'Image2', image: '../img/p_big2.jpg' });
+    $scope.slides.push({ text: 'Image3', image: '../img/p_big3.jpg' });
 }
 
 angular
