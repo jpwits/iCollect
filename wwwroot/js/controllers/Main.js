@@ -293,6 +293,12 @@
             fill: ["#1ab394", "#d7d7d7"]
         }
     };
+
+    $scope.slides = [];
+    $scope.active = 0;
+    $scope.slides.push({ text: "Keep track of your collection and it's value", image: '../img/p_big1.jpg'});
+    $scope.slides.push({ text: 'New! Catalog of RSA coins', image: '../img/p_big2.jpg'});
+    $scope.slides.push({ text: 'more catalogs added all the time, coming soon, etc', image: '../img/p_big3.jpg' });
 }
 
 angular

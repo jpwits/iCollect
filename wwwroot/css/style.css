@@ -1,7 +1,5 @@
 @import url("https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700");
 @import url("https://fonts.googleapis.com/css?family=Roboto:400,300,500,700");
-/*@import "opensans.css";
-@import "roboto.css";*/
 /*
  *
  *   INSPINIA - Responsive Admin Theme
@@ -4984,7 +4982,6 @@ table.table-mail tr td {
 .mailbox\.inbox nav.navbar,
 .mailbox\.email_view nav.navbar,
 .mailbox\.email_compose nav.navbar,
-.dashboards\.dashboard_4_1 nav.navbar,
 .metrics nav.navbar,
 .metrics\.index nav.navbar,
 .dashboards\.dashboard_5 nav.navbar {
@@ -4993,7 +4990,6 @@ table.table-mail tr td {
 /* For handle diferent bg color in MVC version */
 .Dashboard_2 .navbar.navbar-static-top,
 .Dashboard_3 .navbar.navbar-static-top,
-.Dashboard_4_1 .navbar.navbar-static-top,
 .ComposeEmail .navbar.navbar-static-top,
 .EmailView .navbar.navbar-static-top,
 .Inbox .navbar.navbar-static-top,
@@ -10509,4 +10505,8 @@ thead input {
     to {
         -webkit-transform: rotate(360deg);
     }
+}
+
+.nav, .pagination, .carousel, .panel-title a {
+    cursor: pointer;
 }

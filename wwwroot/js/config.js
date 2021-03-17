@@ -1,12 +1,5 @@
 /// <reference path="../js/plugins/blueimp-gallery/js/blueimp-gallery.min.js" />
-/*
- * INSPINIA - Responsive Admin Theme
- *
- * Inspinia theme use AngularUI Router to manage routing and views
- * Each view are defined as state.
- * Initial there are written state for all view in theme.
- *
- */
+
 function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, IdleProvider, KeepaliveProvider) {
 
     // Configure Idle settings
@@ -132,30 +125,6 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, IdlePro
                 }
             }
         })
-        .state('dashboards.dashboard_4_1', {
-            url: "/dashboard_4_1",
-            templateUrl: "views/dashboard_4_1.html",
-            data: { pageTitle: 'Dashboard 4' },
-            resolve: {
-                loadPlugin: function ($ocLazyLoad) {
-                    return $ocLazyLoad.load([
-                        {
-                            name: 'angles',
-                            files: ['js/plugins/chartJs/angles.js', 'js/plugins/chartJs/Chart.min.js']
-                        },
-                        {
-                            name: 'angular-peity',
-                            files: ['js/plugins/peity/jquery.peity.min.js', 'js/plugins/peity/angular-peity.js']
-                        },
-                        {
-                            serie: true,
-                            name: 'angular-flot',
-                            files: [ 'js/plugins/flot/jquery.flot.js', 'js/plugins/flot/jquery.flot.time.js', 'js/plugins/flot/jquery.flot.tooltip.min.js', 'js/plugins/flot/jquery.flot.spline.js', 'js/plugins/flot/jquery.flot.resize.js', 'js/plugins/flot/jquery.flot.pie.js', 'js/plugins/flot/curvedLines.js', 'js/plugins/flot/angular-flot.js', ]
-                        }
-                    ]);
-                }
-            }
-        })
         .state('dashboards.dashboard_helpDesk', {
             url: "/dashboard_helpDesk",
             templateUrl: "views/dashboard_helpDesk.html",
@@ -235,25 +204,6 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, IdlePro
             url: "/contacts_2",
             templateUrl: "views/contacts_2.html",
             data: { pageTitle: 'Contacts 2' }
-        })
-        .state('app.profile', {
-            url: "/profile",
-            templateUrl: "views/profile.html",
-            data: { pageTitle: 'Profile' }
-        })
-        .state('app.profile_2', {
-            url: "/profile_2",
-            templateUrl: "views/profile_2.html",
-            data: { pageTitle: 'Profile_2'},
-            resolve: {
-                loadPlugin: function ($ocLazyLoad) {
-                    return $ocLazyLoad.load([
-                        {
-                            files: ['js/plugins/sparkline/jquery.sparkline.min.js']
-                        }
-                    ]);
-                }
-            }
         })
         .state('app.set', {
             url: "/set/:setIdx",

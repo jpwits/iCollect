@@ -119,6 +119,14 @@
     {
       "library": "angular-datatables@0.5.3",
       "destination": "wwwroot/js/plugins/angular-datatables/"
+    },
+    {
+      "library": "angular-animate@1.8.2",
+      "destination": "wwwroot/js/plugins/angular-animate"
+    },
+    {
+      "library": "angular-touch@1.8.2",
+      "destination": "wwwroot/js/plugins/angular-touch/"
     }
   ]
 }

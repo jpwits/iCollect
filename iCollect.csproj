@@ -13,6 +13,7 @@
     <AssemblyName>iCollect</AssemblyName>
     <UserSecretsId>a8ad15e8-5295-4e28-8035-2c92e06d2824</UserSecretsId>
     <DockerDefaultTargetOS>Windows</DockerDefaultTargetOS>
+    <OutputType>WinExe</OutputType>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -28,100 +29,28 @@
     <Compile Remove="wwwroot\css\plugins\**" />
     <Compile Remove="wwwroot\font-awesome\**" />
     <Compile Remove="wwwroot\js\**" />
-    <Compile Remove="wwwroot\lib\angular-resource\**" />
-    <Compile Remove="wwwroot\lib\angular-sanitize\**" />
-    <Compile Remove="wwwroot\lib\angular-translate\**" />
-    <Compile Remove="wwwroot\lib\angular-ui-bootstrap\**" />
-    <Compile Remove="wwwroot\lib\angular-ui-router\**" />
-    <Compile Remove="wwwroot\lib\angular.js\**" />
-    <Compile Remove="wwwroot\lib\danialfarid-angular-file-upload\**" />
-    <Compile Remove="wwwroot\lib\font-awesome\js\**" />
-    <Compile Remove="wwwroot\lib\font-awesome\sprites\**" />
-    <Compile Remove="wwwroot\lib\font-awesome\webfonts\**" />
-    <Compile Remove="wwwroot\lib\jQuery-slimScroll\**" />
-    <Compile Remove="wwwroot\lib\jquery-validate\**" />
-    <Compile Remove="wwwroot\lib\jquery-validation-unobtrusive\**" />
-    <Compile Remove="wwwroot\lib\jqueryui\**" />
-    <Compile Remove="wwwroot\lib\jquery\**" />
-    <Compile Remove="wwwroot\lib\metisMenu\**" />
-    <Compile Remove="wwwroot\lib\ng-idle\**" />
-    <Compile Remove="wwwroot\lib\oclazyload\**" />
-    <Compile Remove="wwwroot\lib\pace\**" />
+    <Compile Remove="wwwroot\lib\**" />
     <Content Remove="Agile\**" />
     <Content Remove="ControllersAPI\**" />
     <Content Remove="obj\**" />
     <Content Remove="wwwroot\css\plugins\**" />
     <Content Remove="wwwroot\font-awesome\**" />
     <Content Remove="wwwroot\js\**" />
-    <Content Remove="wwwroot\lib\angular-resource\**" />
-    <Content Remove="wwwroot\lib\angular-sanitize\**" />
-    <Content Remove="wwwroot\lib\angular-translate\**" />
-    <Content Remove="wwwroot\lib\angular-ui-bootstrap\**" />
-    <Content Remove="wwwroot\lib\angular-ui-router\**" />
-    <Content Remove="wwwroot\lib\angular.js\**" />
-    <Content Remove="wwwroot\lib\danialfarid-angular-file-upload\**" />
-    <Content Remove="wwwroot\lib\font-awesome\js\**" />
-    <Content Remove="wwwroot\lib\font-awesome\sprites\**" />
-    <Content Remove="wwwroot\lib\font-awesome\webfonts\**" />
-    <Content Remove="wwwroot\lib\jQuery-slimScroll\**" />
-    <Content Remove="wwwroot\lib\jquery-validate\**" />
-    <Content Remove="wwwroot\lib\jquery-validation-unobtrusive\**" />
-    <Content Remove="wwwroot\lib\jqueryui\**" />
-    <Content Remove="wwwroot\lib\jquery\**" />
-    <Content Remove="wwwroot\lib\metisMenu\**" />
-    <Content Remove="wwwroot\lib\ng-idle\**" />
-    <Content Remove="wwwroot\lib\oclazyload\**" />
-    <Content Remove="wwwroot\lib\pace\**" />
+    <Content Remove="wwwroot\lib\**" />
     <EmbeddedResource Remove="Agile\**" />
     <EmbeddedResource Remove="ControllersAPI\**" />
     <EmbeddedResource Remove="obj\**" />
     <EmbeddedResource Remove="wwwroot\css\plugins\**" />
     <EmbeddedResource Remove="wwwroot\font-awesome\**" />
     <EmbeddedResource Remove="wwwroot\js\**" />
-    <EmbeddedResource Remove="wwwroot\lib\angular-resource\**" />
-    <EmbeddedResource Remove="wwwroot\lib\angular-sanitize\**" />
-    <EmbeddedResource Remove="wwwroot\lib\angular-translate\**" />
-    <EmbeddedResource Remove="wwwroot\lib\angular-ui-bootstrap\**" />
-    <EmbeddedResource Remove="wwwroot\lib\angular-ui-router\**" />
-    <EmbeddedResource Remove="wwwroot\lib\angular.js\**" />
-    <EmbeddedResource Remove="wwwroot\lib\danialfarid-angular-file-upload\**" />
-    <EmbeddedResource Remove="wwwroot\lib\font-awesome\js\**" />
-    <EmbeddedResource Remove="wwwroot\lib\font-awesome\sprites\**" />
-    <EmbeddedResource Remove="wwwroot\lib\font-awesome\webfonts\**" />
-    <EmbeddedResource Remove="wwwroot\lib\jQuery-slimScroll\**" />
-    <EmbeddedResource Remove="wwwroot\lib\jquery-validate\**" />
-    <EmbeddedResource Remove="wwwroot\lib\jquery-validation-unobtrusive\**" />
-    <EmbeddedResource Remove="wwwroot\lib\jqueryui\**" />
-    <EmbeddedResource Remove="wwwroot\lib\jquery\**" />
-    <EmbeddedResource Remove="wwwroot\lib\metisMenu\**" />
-    <EmbeddedResource Remove="wwwroot\lib\ng-idle\**" />
-    <EmbeddedResource Remove="wwwroot\lib\oclazyload\**" />
-    <EmbeddedResource Remove="wwwroot\lib\pace\**" />
+    <EmbeddedResource Remove="wwwroot\lib\**" />
     <None Remove="Agile\**" />
     <None Remove="ControllersAPI\**" />
     <None Remove="obj\**" />
     <None Remove="wwwroot\css\plugins\**" />
     <None Remove="wwwroot\font-awesome\**" />
     <None Remove="wwwroot\js\**" />
-    <None Remove="wwwroot\lib\angular-resource\**" />
-    <None Remove="wwwroot\lib\angular-sanitize\**" />
-    <None Remove="wwwroot\lib\angular-translate\**" />
-    <None Remove="wwwroot\lib\angular-ui-bootstrap\**" />
-    <None Remove="wwwroot\lib\angular-ui-router\**" />
-    <None Remove="wwwroot\lib\angular.js\**" />
-    <None Remove="wwwroot\lib\danialfarid-angular-file-upload\**" />
-    <None Remove="wwwroot\lib\font-awesome\js\**" />
-    <None Remove="wwwroot\lib\font-awesome\sprites\**" />
-    <None Remove="wwwroot\lib\font-awesome\webfonts\**" />
-    <None Remove="wwwroot\lib\jQuery-slimScroll\**" />
-    <None Remove="wwwroot\lib\jquery-validate\**" />
-    <None Remove="wwwroot\lib\jquery-validation-unobtrusive\**" />
-    <None Remove="wwwroot\lib\jqueryui\**" />
-    <None Remove="wwwroot\lib\jquery\**" />
-    <None Remove="wwwroot\lib\metisMenu\**" />
-    <None Remove="wwwroot\lib\ng-idle\**" />
-    <None Remove="wwwroot\lib\oclazyload\**" />
-    <None Remove="wwwroot\lib\pace\**" />
+    <None Remove="wwwroot\lib\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -163,6 +92,10 @@
     <None Remove="Data\Auth.db" />
     <None Remove="Data\Bak\iCollect.bak" />
     <None Remove="Data\Collect.db" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_WebToolingArtifacts Remove="Properties\PublishProfiles\YouCollect_profile.xml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -946,20 +879,23 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="wwwroot\js\app.js" />
-    <None Include="wwwroot\js\config.js" />
-    <None Include="wwwroot\js\controllers.js" />
-    <None Include="wwwroot\js\controllers\account.js" />
-    <None Include="wwwroot\js\controllers\catalog.js" />
-    <None Include="wwwroot\js\controllers\collection.js" />
-    <None Include="wwwroot\js\controllers\collections.js" />
-    <None Include="wwwroot\js\controllers\main.js" />
-    <None Include="wwwroot\js\controllers\set.js" />
-    <None Include="wwwroot\js\controllers\catalogs.js" />
-    <None Include="wwwroot\js\controllers\SetsNg.js" />
-    <None Include="wwwroot\js\directives.js" />
-    <None Include="wwwroot\js\inspinia.js" />
+    <Content Include="wwwroot\js\app.js" />
+    <Content Include="wwwroot\js\config.js" />
+    <Content Include="wwwroot\js\controllers.js" />
+    <Content Include="wwwroot\js\controllers\account.js" />
+    <Content Include="wwwroot\js\controllers\catalog.js" />
+    <Content Include="wwwroot\js\controllers\collection.js" />
+    <Content Include="wwwroot\js\controllers\collections.js" />
+    <Content Include="wwwroot\js\controllers\main.js" />
+    <Content Include="wwwroot\js\controllers\set.js" />
+    <Content Include="wwwroot\js\controllers\catalogs.js" />
+    <Content Include="wwwroot\js\controllers\SetsNg.js" />
+    <Content Include="wwwroot\js\directives.js" />
+    <Content Include="wwwroot\js\inspinia.js" />
     <None Include="wwwroot\app\junk.js" />
+    <None Include="wwwroot\js\plugins\angular-animate\angular-animate.js" />
+    <None Include="wwwroot\js\plugins\angular-animate\angular-animate.min.js" />
+    <None Include="wwwroot\js\plugins\angular-animate\angular-animate.min.js.map" />
     <None Include="wwwroot\js\plugins\angular-datatables\angular-datatables.js" />
     <None Include="wwwroot\js\plugins\angular-datatables\angular-datatables.min.js" />
     <None Include="wwwroot\js\plugins\angular-datatables\datatables.min.js" />
@@ -989,6 +925,9 @@
     <None Include="wwwroot\js\plugins\angular-sanitize\angular-sanitize.js" />
     <None Include="wwwroot\js\plugins\angular-sanitize\angular-sanitize.min.js" />
     <None Include="wwwroot\js\plugins\angular-sanitize\angular-sanitize.min.js.map" />
+    <None Include="wwwroot\js\plugins\angular-touch\angular-touch.js" />
+    <None Include="wwwroot\js\plugins\angular-touch\angular-touch.min.js" />
+    <None Include="wwwroot\js\plugins\angular-touch\angular-touch.min.js.map" />
     <None Include="wwwroot\js\plugins\angular-translate\angular-translate.min.js" />
     <None Include="wwwroot\js\plugins\angular-ui-bootstrap\ui-bootstrap-tpls.min.js" />
     <None Include="wwwroot\js\plugins\angular-ui-router\angular-ui-router.min.js" />
@@ -1521,8 +1460,8 @@
     <None Include="wwwroot\js\plugins\pace\pace.min.js" />
     <None Include="wwwroot\js\plugins\peity\angular-peity.js" />
     <None Include="wwwroot\js\plugins\peity\jquery.peity.min.js" />
-    <None Include="wwwroot\js\services.js" />
-    <None Include="wwwroot\js\translations.js" />
+    <Content Include="wwwroot\js\services.js" />
+    <Content Include="wwwroot\js\translations.js" />
   </ItemGroup>
 
   <ItemGroup>
@@ -1534,10 +1473,6 @@
     <Content Update="wwwroot\img\off_canvas.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="wwwroot\lib\" />
   </ItemGroup>
 
 </Project>
