@@ -1,12 +1,5 @@
 /// <reference path="../js/plugins/blueimp-gallery/js/blueimp-gallery.min.js" />
-/*
- * INSPINIA - Responsive Admin Theme
- *
- * Inspinia theme use AngularUI Router to manage routing and views
- * Each view are defined as state.
- * Initial there are written state for all view in theme.
- *
- */
+
 function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, IdleProvider, KeepaliveProvider) {
 
     // Configure Idle settings
